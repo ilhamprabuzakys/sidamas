@@ -1,0 +1,56 @@
+<div class="modal fade" id="detailModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitleId">Detail Pelaksanaan <b>{{ user.profile.satker }}</b></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead class="bg-soft-blue">
+                            <tr>
+                                <th rowspan="2" class="bg-soft-danger">No</th>
+                                <th rowspan="2" class="bg-soft-danger">Tanggal <br /><span
+                                        class="text-muted">(Hari/Bulan/Tahun)</span></th>
+                                <th rowspan="2" class="bg-soft-danger">Jumlah Hari Pelaksanaan Kerja</th>
+                                <th rowspan="2" class="bg-soft-danger">Satker Target</th>
+                                <th rowspan="2" class="bg-soft-danger">Jumlah Peserta</th>
+                                <th rowspan="1" colspan="3" class="bg-soft-primary">Rincian Hasil Pelaksanaan Program
+                                    Pemberdayaan Alternatif Pada Satker
+                                    Target</th>
+                                <th rowspan="2" class="bg-soft-danger">Tindak Lanjut</th>
+                                <th rowspan="2" class="bg-soft-danger">Dokumentasi</th>
+                            </tr>
+                            <tr>
+                                <th rowspan="1" class="bg-soft-primary">Tujuan</th>
+                                <th rowspan="1" class="bg-soft-primary">Hambatan/Kendala</th>
+                                <th rowspan="1" class="bg-soft-primary">Kesimpulan</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>23/01/2024</td>
+                                <td>8</td>
+                                <td>BNNK Surakarta</td>
+                                <td>12</td>
+                                <td>Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit, ad.</td>
+                                <td>Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit, ad.</td>
+                                <td>Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit, ad.</td>
+                                <td>Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit, ad.</td>
+                                <td><a href="javascript:;" class="text-primary">Lihat dokumetasi</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="fas fa-xmark me-2"></i>
+                    Tutup
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

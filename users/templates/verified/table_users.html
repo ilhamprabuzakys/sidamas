@@ -1,0 +1,45 @@
+<table class="table table-bordered table-sm" id="__table">
+    <thead class="bg-soft-primary">
+        <tr class="text-center">
+            <th>No</th>
+            <th>ID Profile</th> <!-- Profile ID -->
+            <th>ID User</th> <!-- User ID -->
+            <th>Avatars</th>
+            <th>Users</th>
+            <th>Direktorat</th>
+            <th>Satker</th>
+            <th>Status</th>
+            <th>Aksi <i class="fas fa-edit ms-2"></i></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for profile in list_profile_users %}
+        <tr class="align-td-middle">
+            <td>{{ forloop.counter }}</td>
+            <td>{{ profile.id }}</td>
+            <td>{{ profile.user.id }}</td>
+            <td><img src="/media/{{ profile.avatar }}" alt="Users" width="50" height="50"></td>
+            <td>{{ profile.user }}</td>
+            <td>{{ profile.role }}</td>
+            <td>{{ profile.satker }}</td>
+            <td class="text-center">
+                <span class="badge {% if profile.is_verified %} bg-success {% else %} bg-warning {% endif %}">
+                    {% if profile.is_verified %} Terverifikasi {% else %} Pending {% endif %}
+                </span>
+            </td>
+            <td class="__action_button">
+                <div class="list-button gx-3 text-uppercase">
+                    <div>
+                        <a href="javascript:;"
+                            class="badge bg-success text-white text-decoration-none mb-1 button_verifikasi"><i
+                                class="fa-solid fa-check me-2"></i> Verifikasi Sebagai Pegawai</a>
+                        <a href="javascript:;"
+                            class="badge bg-primary text-white text-decoration-none mb-1 button_verifikasi button_verifikasi_admin"><i
+                                class="fa-solid fa-check me-2"></i> Verifikasi Sebagai Admin</a>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>

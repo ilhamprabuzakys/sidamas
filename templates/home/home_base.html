@@ -1,0 +1,146 @@
+{% load static %}
+<!DOCTYPE html>
+<!--=========================================================
+* SIDAMAS - Sistem Informasi Pemberdayaan Masyarakat | v1.0
+==============================================================
+
+* Product : SIDAMAS - Sistem Informasi Pemberdayaan Masyarakat
+* Created by: Iotekno
+* Copyright Iotekno (https://iotekno.net)
+
+========================================================= -->
+<html lang="id">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>
+        {% block title %}{% endblock title %} - Sistem Informasi Deputi Bidang Pemberdayaan Masyarakat (SIDAMAS)
+    </title>
+
+    <meta name="robots" content="index, follow, max-snippet:-1, max-video-preview:-1, max-image-preview:large"/>
+    <link rel="canonical" href="https://sidamas.bnn.go.id/"/>
+    
+    <meta property="og:locale" content="id_ID"/>
+    <meta property="og:type" content="article"/>
+    
+    {% block meta %}
+    <meta name="description" content="Sistem Informasi Deputi Bidang Pemberdayaan Masyarakat" />
+    <meta name="keywords" content="Sistem Informasi Deputi Bidang Pemberdayaan Masyarakat, DAYAMAS, SIDAMAS, DAYATIF, PSM,
+    Deputi Bidang Pemberdayaan Masyarakat, BNN, Badan Narkotika Nasional" />
+    <meta property="og:url" content="https://sidamas.bnn.go.id/"/>
+    <meta property="og:title" content="Sistem Informasi Deputi Bidang Pemberdayaan Masyarakat"/>
+    <meta property="og:description" content="Sistem Informasi Deputi Bidang Pemberdayaan Masyarakat"/>
+    <meta property="og:site_name" content="Sistem Informasi Deputi Bidang Pemberdayaan Masyarakat"/>
+    <meta property="og:updated_time" content="2024-03-30T16:28:05+07:00"/>
+    <meta property="og:image" content="{% static 'assets/images/logo.png' %}"/>
+    <meta property="og:image:secure_url" content="{% static 'assets/images/logo.png' %}"/>
+    <meta property="og:image:width" content="1280"/>
+    <meta property="og:image:height" content="960"/>
+    <meta property="og:image:alt" content="Badan Narkotika Nasional"/>
+    <meta property="og:image:type" content="image/jpeg"/>
+    <meta property="article:published_time" content="2024-03-30T16:28:05+07:00"/>
+    <meta property="article:modified_time" content="2024-03-30T16:28:05+07:00"/>
+    <meta name="twitter:card" content="SIDAMAS"/>
+    <meta name="twitter:title" content="Pengelolaan dari Sistem Informasi Deputi Bidang Pemberdayaan Masyarakat"/>
+    <meta name="twitter:description" content="Pengelolaan dari Sistem Informasi Deputi Bidang Pemberdayaan Masyarakat"/>
+    <meta name="twitter:image" content="{% static 'assets/images/logo.png' %}"/>
+    <meta name="twitter:label1" content="Time to read"/>
+    <meta name="twitter:data1" content="1 minute"/>
+    {% endblock %}
+
+    <meta name="csrf-token" content="{{ csrf_token }}">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="{% static 'assets/images/bnn.png' %}" />
+
+    <!-- Bootstrap CSS v5 -->
+    <link href="{% static 'assets/home/plugins/bootstrap/bootstrap.min.css' %}" rel="stylesheet" />
+
+    <!-- Jquery (Slim version exclude ajax and global effect function) -->
+    <script src="{% static 'assets/home/plugins/jquery/jquery.slim.min.js' %}"></script>
+
+    <!-- Vue 3 Global -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+    <!-- Vue 3 Emitter MITT Library -->
+    <script src="https://unpkg.com/mitt/dist/mitt.umd.js"></script>
+
+    <!-- Vue 3 sfc-loader -->
+    <script src="https://cdn.jsdelivr.net/npm/vue3-sfc-loader/dist/vue3-sfc-loader.js"></script>
+
+    <!-- Vue 3 Script -->
+    {% block vue_script %}
+    {% comment %} <script id="__VUE_DATA__" type="module" src="{% static 'assets/home/vue/app.js' %}"></script> {% endcomment %}
+    {% endblock vue_script %}
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+        integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- <link rel="stylesheet" href="{% static 'assets/home/plugins/font-awesome/all.min.css' %}" /> -->
+
+    <!-- Swal -->
+    <script src="{% static 'assets/home/plugins/sweet-alert/all.min.js' %}"></script>
+    <link href="{% static 'assets/home/plugins/sweet-alert/all.min.css' %}" rel="stylesheet">
+
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="{% static 'assets/home/css/main.css' %}">
+
+    <!-- Page loader -->
+    <link rel="stylesheet" href="{% static 'assets/home/css/libs/pace-theme-default.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/home/css/libs/flash.css' %}">
+
+    <!-- Page CSS -->
+    {% block css_tambahan %} {% endblock css_tambahan %}
+</head>
+
+<body>
+    <div id="app">
+      {% block tambahan_content %} {% endblock %}
+
+      <header>
+        {% include 'home/partials/navbar-html.html' %}
+      </header>
+
+      <main>
+        <div class="{% block container %} container {% endblock %} no-highlight mt-3">
+          {% block content %}
+          {% endblock %}
+        </div>
+      </main>
+
+      {% block modal %} {% endblock %}
+      {% block modal_tambahan %} {% endblock %}
+
+      {% block footer %}
+        {% include 'home/partials/footer.html' %}
+      {% endblock %}
+    </div>
+
+    <!-- Bootstrap JavaScript Libraries -->
+    <script src="{% static 'assets/home/plugins/bootstrap/popper.min.js' %}"></script>
+    <script src="{% static 'assets/home/plugins/bootstrap/bootstrap.min.js' %}"></script>
+
+    <!-- Moment Js -->
+    <script src="{% static 'assets/dashboard/vendor/libs/moment/moment.js' %}"></script>
+
+    <!-- Custom Js -->
+    <!-- Main Js (Website functionality) -->
+    <script src="{% static 'assets/home/js/main.js' %}"></script>
+    <!-- Helper Js (Website helper) -->
+    <script src="{% static 'assets/home/js/home-helpers.js' %}"></script>
+
+    <!-- Page Loader -->
+    <script src="{% static 'assets/home/js/libs/pace.min.js' %}"></script>
+
+    <!-- Axios -->
+    <script src="{% static 'assets/home/plugins/axios/axios.min.js' %}"></script>
+    <script src="{% static 'assets/home/js/vue-helpers.js' %}"></script>
+
+    <!-- Page JS -->
+    {% block js_tambahan %}
+    {% endblock %}
+  </body>
+</html>

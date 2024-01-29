@@ -1,0 +1,51 @@
+<div class="modal fade" id="tambahData" aria-labelledby="modalTambah" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTambah">Tambah Data</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="">
+
+                <div class="modal-body">
+                    <section id="formTambah">
+                        <div class="mb-3">
+                            <label for="tanggal_survei" class="col-form-label required">Tanggal Survei:</label>
+                            <input class="form-control" type="date" value="" id="tanggal_survei" />
+                        </div>
+
+                        <div class="row mb-3">
+                            <label for="waktu_berlaku" class="col-form-label required">Waktu Berlakunya Survei:</label>
+                            <div class="col-6">
+                                <input type="time" name="waktu_berlaku_awal" class="form-control"
+                                    id="waktu_berlaku_awal" />
+                            </div>
+                            <div class="col-6">
+                                <input type="time" name="waktu_berlaku_akhir" class="form-control"
+                                    id="waktu_berlaku_akhir" />
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                        </div>
+
+                        <label for="jumlah_responden" class="col-form-label required">Jumlah Responden:</label>
+                        <div class="input-group mb-3">
+                            <input class="form-control input-maxlength" type="text" value="" id="jumlah_responden"
+                                maxlength="3" />
+                            <span class="input-group-text" id="responden-orang">orang</span>
+                        </div>
+
+                    </section>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="fas fa-xmark me-2"></i>Tutup</button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save me-2"></i>
+                        Simpan</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>

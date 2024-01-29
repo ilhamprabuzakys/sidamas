@@ -1,0 +1,49 @@
+{% extends "dashboard/dashboard_base.html" %}
+{% load static %}
+{% block title %} Registrasi Pengguna {% endblock title %}
+{% block content %}
+<div class="breadcrumb">
+   <div class="row">
+      <h3 class="heading mb-2">
+         Registrasi Pengguna
+      </h3>
+      <span class="mb-0">
+         <span class="text-muted fw-light">Registrasi /</span>
+         <span class="ms-1 fw-medium">Daftar Pengguna</span>
+       </span>
+   </div>
+</div>
+
+<section id="__data">
+   <div class="card">
+      <div class="card-body">
+         <div class="action-button">
+            <div class="d-flex justify-content-end mb-3 gap-2">
+               <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exportData">
+                  <i class="fas fa-file-export me-2"></i>Ekspor Data
+               </button>
+               <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tambahData">
+                  <i class="fas fa-plus me-2"></i>Tambah Data
+               </button>
+            </div>
+         </div>
+         <div class="table-responsive">
+            {% include "registrasi/tables/table_users_list.html" %}
+         </div>
+      </div>
+   </div>
+</section>
+{% endblock content %}
+
+{% block css_tambahan %}
+<link rel="stylesheet" href="{% static 'assets/dashboard/vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}">
+{% endblock css_tambahan %}
+
+{% block js_tambahan %}
+<script src="{% static 'assets/dashboard/vendor/libs/datatables-bs5/datatables-bootstrap5.js' %}"></script>
+<script>
+   let table = $('#__table').DataTable({
+     language: dt_lang_config()
+   });
+</script>
+{% endblock js_tambahan %}

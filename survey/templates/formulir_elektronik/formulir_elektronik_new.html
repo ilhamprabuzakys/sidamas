@@ -1,0 +1,75 @@
+{% extends "dashboard/dashboard_base.html" %}
+{% load static %}
+{% block title %} Formulir Elektronik {% endblock title %}
+{% block content %}
+<div class="breadcrumb">
+   <div class="row">
+      <h3 class="heading mb-2">
+         Formulir Elektronik
+      </h3>
+      <span class="mb-0">
+         <span class="text-muted fw-light">Survei /</span><span class="ms-1 fw-medium">Formulir Elektronik</span>
+       </span>
+   </div>
+</div>
+
+<section id="__data">
+   <div class="card">
+      <div class="card-body">
+
+        <div id="headline" class="mb-3">
+            <h3 class="text-center">PENGELOLAAN DATA FORMULIR ELEKTRONIK TAHUN  2024</h3>
+            <hr>
+        </div>
+
+         <div class="action-button">
+            <div class="d-flex justify-content-end mb-3 gap-2">
+               <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exportData">
+                  <i class="fas fa-file-export me-2"></i>Ekspor Data
+               </button>
+               <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tambahData">
+                  <i class="fas fa-plus me-2"></i>Tambah Data
+               </button>
+            </div>
+         </div>
+         <div class="table-responsive">
+            <div id="table-formulir-elektronik">
+                <v-table></v-table>
+            </div>
+            {% comment %} {% include "formulir_elektronik/table.html" %} {% endcomment %}
+            {% comment %} {% include "psm/tables/table_monev.html" %} {% endcomment %}
+         </div>
+      </div>
+   </div>
+</section>
+{% endblock content %}
+
+{% block css_tambahan %}
+<link rel="stylesheet" href="{% static 'assets/dashboard/vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}">
+
+<style scoped>
+    #headline {
+        font-weight: 600;
+    }
+    
+    #headline hr {
+        color: #ebebeb;
+    }
+
+</style>
+{% endblock css_tambahan %}
+
+{% block js_tambahan %}
+
+<script>
+
+    const app = Vue.createApp({
+        delimiters: ["[[", "]]"],
+        components: {
+            "v-table": loadComponent("components/survei/TableFormulirElektronik.vue"),
+        },
+    });
+    
+    app.mount("#table-formulir-elektronik");
+</script>
+{% endblock js_tambahan %}

@@ -1,0 +1,118 @@
+{% extends 'home/home_base.html' %}
+{% load static %}
+{% block title %} Daftar Literasi {% endblock %}
+
+{% block css_tambahan %}
+<link rel="stylesheet" href="{% static 'assets/home/css/pages/literasi.css' %}" />
+<link href="https://cdn.datatables.net/v/bs5/dt-1.13.8/datatables.min.css" rel="stylesheet" />
+<script src="https://cdn.datatables.net/v/bs5/dt-1.13.8/datatables.min.js"></script>
+{% endblock %}
+{% block content %}
+<section id="literasi">
+    <h4 class="headline">Literasi</h4>
+    <p class="text-muted">
+        Jelajahi dunia melalui kumpulan buku-buku inspiratif ini dan temukan keajaiban yang tak
+        terduga. Dengan membaca, Anda akan terbawa ke dalam petualangan yang memikat dan pengetahuan yang mendalam.
+    </p>
+    <hr />
+    <table id="__table" class="table table-bordered table-sm mt-5">
+        <thead class="thead-dark">
+            <tr>
+                <th>Judul</th>
+                <th>Diunduh</th>
+                <th>Aksi</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for literasi in daftar_literasi %}
+            <tr>
+                <td>
+                    <div class="row">
+                        <h6 class="d-block">{{ literasi.Judul }}</h6>
+                        <span class="text-muted">Dibuat oleh
+                            {% if literasi.created_by %}
+                            {{ literasi.created_by }}
+                            {% else %}
+                            Admin
+                            {% endif %}
+                        </span>
+                    </div>
+                </td>
+                <td class="">
+                    <div class="d-flex justify-content-center align-items-center">
+                        <div>
+                            <a href="javascript:;" class="badge bg-primary text-decoration-none text-white">
+                                <i class="fas fa-download me-1"></i>
+                                28
+                            </a>
+                        </div>
+                    </div>
+                </td>
+                <td class="text-center">
+                    {% if literasi.dokumen %}
+                    <button class="btn btn-success" data-bs-toggle="modal"
+                        data-bs-target="#lihatBuku-{{ literasi.pk }}"><i
+                            class="fas fa-book-open text-white"></i></button>
+                    {% endif %}
+                </td>
+            </tr>
+            <div class="modal fade" id="lihatBuku-{{ literasi.pk }}" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modalTitleId">{{ literasi.Judul }}</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="container-fluid">
+                                <embed src="/media/{{ literasi.dokumen }}" type="application/pdf" width="100%"
+                                    height="500px" />
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i
+                                    class="fas fa-xmark me-2"></i>Tutup</button>
+                            <a href="/media/{{ literasi.dokumen }}" download="{{ literasi.Judul }}.pdf"
+                                class="btn btn-primary unduh-buku"><i class="fas fa-download me-2"></i>Unduh Buku</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+{% endblock %}
+
+{% block modal_tambahan %}
+<div class="modal fade" id="lihatBuku" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitleId">Buku Anak</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <embed src="{% static 'assets/home/sample/book.pdf' %}" type="application/pdf" width="100%"
+                        height="500px" />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i
+                        class="fas fa-xmark me-2"></i>Tutup</button>
+                <a href="{% static 'assets/home/sample/book.pdf' %}" download="book.pdf"
+                    class="btn btn-primary unduh-buku"><i class="fas fa-download me-2"></i>Unduh Buku</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block js_tambahan %}
+<script>
+    $('#__table').DataTable({
+        language: dt_lang_config()
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,85 @@
+{% extends "dashboard/dashboard_base.html" %}
+{% load static %}
+{% block title %} Keberhasilan dan Kewirausahaan {% endblock title %}
+{% block content %}
+<div class="breadcrumb">
+    <div class="row">
+        <h3 class="heading mb-2">
+            Keberhasilan dan Kewirausahaan
+        </h3>
+        <span class="mb-0">
+            <span class="text-muted fw-light">Survei /</span><span class="ms-1 fw-medium">Keberhasilan dan
+                Kewirausahaan</span>
+        </span>
+    </div>
+</div>
+
+<section id="__data">
+    <div class="card">
+        <div class="card-body">
+
+            <div id="headline" class="mb-3">
+                <h3 class="text-center">PENGELOLAAN DATA KEBERHASILAN DAN KEWIRAUSAHAAN 2024</h3>
+                <hr>
+            </div>
+
+            <div class="action-button">
+                <div class="d-flex justify-content-end mb-3 gap-2">
+                    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exportData">
+                        <i class="fas fa-file-export me-2"></i>Ekspor Data
+                    </button>
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tambahData">
+                        <i class="fas fa-plus me-2"></i>Tambah Data
+                    </button>
+                </div>
+            </div>
+            <div class="table-responsive">
+                {% include "dayatif/keberhasilan_kewirausahaan/table.html" %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}
+
+{% block js_tambahan %}
+<script>
+    let table = $('#__table').DataTable({
+        language: dt_lang_config()
+    });
+
+    $('.cetak-link').on('click', () => {
+        const surveyCode = '177013'; // Ganti dengan kode survei yang sesuai
+        const surveyUrl = `${window.location.origin}/pengisian-survei?id=${surveyCode}`;
+
+        Swal.fire({
+            title: `Kode survei : ${surveyCode}`,
+            html: `
+                Silahkan salin kode anda : <br><br>
+                <strong>${surveyUrl}</strong>
+            `,
+            icon: "success",
+            confirmButtonText: "Salin link",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const clipboard = new ClipboardJS('.swal2-confirm', {
+                    text: function () {
+                        return surveyUrl;
+                    }
+                });
+
+                clipboard.on('success', function (e) {
+                    toastr.success('Link berhasil disalin ke clipboard', 'Berhasil');
+                });
+
+                clipboard.on('error', function (e) {
+                    toastr.error('Gagal menyalin link ke clipboard', 'Error');
+                });
+            }
+        });
+    });
+</script>
+{% endblock js_tambahan %}
+
+{% block modal_tambahan %}
+{% include "dayatif/keberhasilan_kewirausahaan/create.html" %}
+{% endblock modal_tambahan %}

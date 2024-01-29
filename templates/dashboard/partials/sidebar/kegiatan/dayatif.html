@@ -1,0 +1,59 @@
+ <ul class="menu-sub">
+    <li class="menu-item {% if '/kegiatan/dayatif/bintek' in request.path %}active{% endif %}">
+       <a href="{% url 'dayatif_bintek' %}" class="menu-link">
+          <div data-i18n="Bintek Dayatif">Bintek Dayatif</div>
+       </a>
+    </li>
+    <li class="menu-item {% if '/kegiatan/dayatif/pemetaan_potensi' in request.path %}active{% endif %}">
+       <a href="{% url 'dayatif_pemetaan_potensi' %}" class="menu-link">
+          <div data-i18n="Pemetaan Potensi">Pemetaan Potensi</div>
+       </a>
+    </li>
+    <li class="menu-item {% if '/kegiatan/dayatif/pemetaan_stakeholder' in request.path %}active{% endif %}">
+       <a href="{% url 'dayatif_pemetaan_stakeholder' %}" class="menu-link">
+          <div data-i18n="Pemetaan Stakeholder">Pemetaan Stakeholder</div>
+       </a>
+    </li>
+    <li class="menu-item {% if '/kegiatan/dayatif/rapat_sinergi_stakeholder' in request.path %}active{% endif %}">
+       <a href="{% url 'dayatif_rapat_sinergi_stakeholder' %}" class="menu-link">
+        <div data-i18n="Rapat Sinergi Stakeholder">Rapat Sinergi Stakeholder</div>
+       </a>
+    </li>
+    <li class="menu-item {% if '/kegiatan/dayatif/bimtek_stakeholder' in request.path %}active{% endif %}">
+       <a href="{% url 'dayatif_bimtek_stakeholder' %}" class="menu-link">
+        <div data-i18n="Bimtek Stakeholder">Bimtek Stakeholder</div>
+       </a>
+    </li>
+    <li class="menu-item {% if '/kegiatan/dayatif/bimtek_lifeskill' in request.path %}active{% endif %}">
+       <a href="{% url 'dayatif_bimtek_lifeskill' %}" class="menu-link">
+        <div data-i18n="Bimtek Life Skill">Bimtek Life Skill</div>
+       </a>
+    </li>
+    <li class="menu-item {% if '/kegiatan/dayatif/monev_dayatif' in request.path %}active{% endif %}">
+       <a href="{% url 'dayatif_monev_dayatif' %}" class="menu-link">
+        <div data-i18n="Monev Dayatif">Monev Dayatif</div>
+       </a>
+    </li>
+    {% comment %} <li class="menu-item {% if '/kegiatan/dayatif/monev_kewirausahaan_dan_ikkr' in request.path %}active{% endif %}">
+       <a href="{% url 'dayatif_monev_kewirausahaan_dan_ikkr' %}" class="menu-link">
+        <div data-i18n="Monev Kewirausahaan dan IKKR">Monev Kewirausahaan dan IKKR</div>
+       </a>
+    </li>
+    <li class="menu-item {% if '/kegiatan/dayatif/monev_pendampingan' in request.path %}active{% endif %}">
+       <a href="{% url 'dayatif_monev_pendampingan' %}" class="menu-link">
+        <div data-i18n="Monev Pendampingan">Monev Pendampingan</div>
+       </a>
+    </li>
+    <li class="menu-item {% if '/kegiatan/dayatif/data_dukungan_stakeholder' in request.path %}active{% endif %}">
+       <a href="{% url 'dayatif_data_dukungan_stakeholder' %}" class="menu-link">
+        <div data-i18n="Data Dukungan Stakeholder">Data Dukungan Stakeholder</div>
+       </a>
+    </li>
+    {% endcomment %}
+
+    <li class="menu-item {% if '/kegiatan/dayatif/dukungan_stakeholder' in request.path %}active{% endif %}">
+       <a href="{% url 'dayatif_dukungan_stakeholder' %}" class="menu-link">
+        <div data-i18n="Dukungan Stakeholder">Dukungan Stakeholder</div>
+       </a>
+    </li>
+ </ul>

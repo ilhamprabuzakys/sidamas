@@ -1,0 +1,223 @@
+{% extends 'home/home_base.html' %}
+{% load static %}
+{% load partials %}
+
+{% block title %} Beranda {% endblock title %}
+{% block container %} container {% endblock %}
+
+{% block css_tambahan %}
+<link rel="stylesheet" href="{% static 'assets/home/css/pages/home.css' %}" />
+{% endblock %}
+{% block content %}
+<section id="headline">
+    <div class="row">
+        <div class="col-lg-4 col-sm-12 d-flex justify-content-lg-end">
+            <div class="me-4">
+                <img src="{% static 'assets/images/logo.png' %}" class="head-img" alt="Logo SIDAMAS"
+                    style="width: 160px" />
+            </div>
+        </div>
+        <div class="col-lg-8 col-sm-12 d-flex align-items-center">
+            <div id="slogan">
+                <h1>
+                    MASYARAKAT <span class="highlight">BERDAYA</span>,<br />
+                    INDONESIA BERSIH NARKOBA
+                </h1>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="daftar-berita" class="mt-5">
+    <div class="row" id="berita-sidamas">
+        <h4>Berita Unggulan Dari Kami</h4>
+        <hr>
+
+        {% for berita in data %}
+        <div class="col-lg-3 col-sm-6 mb-3" id="berita-{{ berita.pk }}">
+
+            <v-card-item-berita url="{% url 'home:detail_berita' berita.slug %}"
+                imageurl="{% get_media_prefix %}{{ berita.gambar_utama }}" title="{{ berita.judul }}"
+                excerpt="{{ berita.isi_berita|truncate_and_escape:20|safe }}"
+                author="Admin Dayamas - {{ berita.tanggal }}" />
+
+        </div>
+        {% endfor %}
+    </div>
+    <div class="row" id="berita-bnn-pusat">
+        <div class="d-flex justify-content-between">
+            <h4>Berita Hangat Terbaru Dari BNN Pusat</h4>
+            <a href="https://bnn.go.id/berita-satker/dayamas/" class="text-primary text-decoration-none">
+                <i class="fas fa-book-open me-2"></i>Lihat Semua</a>
+        </div>
+        <hr>
+
+        <div class="col-lg-3 col-sm-6 mb-3" v-for="(berita, index) in beritaList" :key="index"
+            :id="'berita-ke-' + (index + 1)">
+            <v-card-item-berita :url="berita.link" :imageurl="berita.imageUrl" :title="berita.title"
+                :excerpt="berita.excerpt" :author="berita.author" :tags="berita.tags" ref="cardBerita" />
+        
+        </div>
+
+    </div>
+</section>
+{% endblock %}
+
+{% block js_tambahan %}
+<script>
+    const app = Vue.createApp({
+        components: {
+            "v-card-item-berita": loadComponent('components/home/CardItemBerita.vue'),
+            "v-headline-text": loadComponent('components/home/HeadlineText.vue'),
+        },
+        data() {
+            return {
+                referensi: "?ref=https://sidamas.bnn.go.id",
+                proxyUrl: "https://web-production-f9b8b.up.railway.app/",
+                bnnUrl: "https://bnn.go.id/berita-satker/dayamas/",
+                beritaList: [],
+            }
+        },
+        delimiters: ['[[', ']]'],
+        mounted() {
+            this.getBerita();
+            const interval = setInterval(() => {
+                if (this.$refs.cardBerita) {
+                    console.log(this.$refs.cardBerita)
+                    // VueComponent{}
+                    console.log(this.$refs)
+                    // {nav: VueComponent}
+                    console.log(this.$refs.cardBerita.$refs)
+                    clearInterval(interval)
+                }
+            }, 50)
+        },
+        methods: {
+            getBerita() {
+                axios
+                    .get(this.proxyUrl + this.bnnUrl)
+                    .then((response) => {
+                        try {
+                            const htmlContent = $(response.data);
+
+                            const articles = htmlContent
+                                .find(".posts-container article")
+                                .slice(0, 4);
+
+                            // console.log(articles);
+
+                            articles.each((index, article) => {
+                                // Mengambil data dari setiap artikel
+                                const title = $(article).find(".title a").text();
+                                const imageUrl = $(article)
+                                    .find(".post-featured-img img")
+                                    .data("nectar-img-src");
+                                const link = $(article).find(".title a").attr("href");
+                                const date = this.formatDateBerita(
+                                    $(article).find(".grav-wrap .text span").text()
+                                );
+                                const excerpt = $(article).find(".excerpt").text();
+                                const author =
+                                    $(article)
+                                    .find(".grav-wrap .text a")
+                                    .attr("rel", "author")
+                                    .text() + ` - ${date}`;
+
+                                const tagsEl = $(article).find(
+                                    ".meta-category a"
+                                );
+
+                                const kumpulanTag = tagsEl.map(function () {
+                                    return {
+                                        title: $(this).text(),
+                                        link: $(this).attr("href"),
+                                    };
+                                }).get();
+
+                                this.beritaList.push({
+                                    imageUrl: imageUrl,
+                                    link: link + this.referensi,
+                                    title: title,
+                                    author: author,
+                                    excerpt: excerpt,
+                                    tags: kumpulanTag
+                                });
+                            });
+                        } catch (error) {
+                            console.error("Error: " + error.message);
+                        }
+                    })
+                    .catch((error) => {
+                        console.error("Error GET Request: " + error.message);
+                    });
+            },
+            formatDateBerita(dateText) {
+                let dateParts = dateText.split(" ");
+
+                let day = dateParts[0];
+
+                let monthAbbreviation = dateParts[1];
+
+                let month;
+                switch (monthAbbreviation) {
+                    case "Jan":
+                        month = "Januari";
+                        break;
+                    case "Feb":
+                        month = "Februari";
+                        break;
+                    case "Mar":
+                        month = "Maret";
+                        break;
+                    case "Apr":
+                        month = "April";
+                        break;
+                    case "May":
+                        month = "Mei";
+                        break;
+                    case "Jun":
+                        month = "Juni";
+                        break;
+                    case "Jul":
+                        month = "Juli";
+                        break;
+                    case "Aug":
+                        month = "Agustus";
+                        break;
+                    case "Ag":
+                        month = "Agustus";
+                        break;
+                    case "Sep":
+                        month = "September";
+                        break;
+                    case "Oct":
+                        month = "Oktober";
+                        break;
+                    case "Okt":
+                        month = "Oktober";
+                        break;
+                    case "Nov":
+                        month = "November";
+                        break;
+                    case "Dec":
+                        month = "Desember";
+                        break;
+                    case "Des":
+                        month = "Desember";
+                        break;
+                    default:
+                        break;
+                }
+
+                let year = dateParts[2];
+
+                let formattedDate = day + " " + month + " " + year;
+
+                return formattedDate;
+            }
+        }
+    });
+
+    app.mount('#app');
+</script>
+{% endblock %}

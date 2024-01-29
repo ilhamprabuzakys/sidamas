@@ -1,0 +1,42 @@
+{% load static %}
+<nav class="layout-navbar container-fluid navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
+   id="layout-navbar">
+   <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0   d-xl-none ">
+      <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
+         <i class="ti ti-menu-2 ti-sm"></i>
+      </a>
+   </div>
+   <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
+      <ul class="navbar-nav flex-row align-items-center me-auto">
+         <div class="layout-menu-toggle d-none d-xl-block">
+            <span style="cursor: pointer;"><i class="toggle-icon tf-icons ti ti-menu-2"></i></span>
+         </div>
+      </ul>
+      
+      <ul class="navbar-nav flex-row align-items-center">
+         <a href="javascript:;" id="btn-role">
+            {% if user.is_superuser %}
+            Super Admin
+            {% else %}
+                {% if user.profile.role == 'dayatif' %}
+                    {% if user.is_staff %}
+                        Admin DAYATIF
+                    {% else %}
+                        Pemberdayaan Alternatif
+                    {% endif %}
+                {% else %}
+                    {% if user.is_staff %}
+                        Admin PSM
+                    {% else %}
+                        Peran Serta Masyarakat
+                    {% endif %}
+                {% endif %}
+            {% endif %}
+         </a>
+      </ul>
+
+      {% include "dashboard/partials/components/user-dropdown.html" %}
+
+   </div>
+
+</nav>

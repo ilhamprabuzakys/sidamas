@@ -1,0 +1,95 @@
+{% extends "dashboard/dashboard_base.html" %}
+{% load static %}
+
+{% block title %} Literasi {% endblock title %}
+
+{% block css_tambahan %}
+<link href="https://unpkg.com/tabulator-tables@5.5.2/dist/css/tabulator.min.css" rel="stylesheet">
+{% endblock css_tambahan %}
+
+{% block content %}
+<div class="breadcrumb">
+    <div class="row">
+        <h3 class="heading mb-2">
+            Literasi
+        </h3>
+        <span class="mb-0">
+            <span class="text-muted fw-light">Literasi /</span>
+            <span class="ms-1 fw-medium">Daftar Literasi</span>
+        </span>
+    </div>
+</div>
+
+<section id="__data">
+    <div class="card">
+        <div class="card-body">
+
+            <div id="headline" class="mb-3">
+                <h3 class="text-center">PENGELOLAAN LITERASI</h3>
+                <hr>
+            </div>
+
+            <div class="action-button">
+                <div class="d-flex justify-content-end mb-3 gap-2">
+                    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exportData">
+                        <i class="fas fa-file-export me-2"></i>Ekspor Data
+                    </button>
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tambahData">
+                        <i class="fas fa-plus me-2"></i>Tambah Data
+                    </button>
+                </div>
+            </div>
+            <div id="literasi-table"></div>
+        </div>
+    </div>
+</section>
+{% endblock content %}
+
+{% block js_tambahan %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/luxon/3.4.4/luxon.min.js"
+    integrity="sha512-dUlSLLkxslGILhPdCkALwk4szPhp3xmZIKFtlUD+O9Lslq41Aksmdt5OGqpomDoT4FsCUH70jQU8ezZHI3v1RQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script type="text/javascript" src="https://unpkg.com/tabulator-tables@5.5.2/dist/js/tabulator.min.js"></script>
+<script>
+    //initialize table
+    var printIcon = function (cell, formatterParams) { //plain text value
+        return "<i class='fa fa-print'></i>";
+    };
+    var table = new Tabulator("#literasi-table", {
+        ajaxURL: `${window.location.href}api/v1/literasi/`, //ajax URL
+        pagination: "local",
+        paginationSize: 5,
+        paginationSizeSelector: [5, 10, 15],
+        paginationCounter: "rows",
+        columns: [{
+                title: "Judul",
+                field: "Judul"
+            },
+            {
+                title: "Dokumen",
+                field: "dokumen"
+            },
+            {
+                title: "kategori",
+                field: "kategori"
+            },
+            {
+                title: "Dibuat pada",
+                field: "created"
+            },
+            {
+                title: "Status",
+                field: "status"
+            },
+            {
+                title: "Actions",
+                formatter: printIcon,
+                cellClick: function (e, cell) {
+                    alert("Printing row data for: " + cell.getRow().getData().name)
+                }
+            },
+        ],
+    });
+</script>
+
+{% endblock js_tambahan %}

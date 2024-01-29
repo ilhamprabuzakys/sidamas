@@ -1,0 +1,158 @@
+{% extends 'dashboard/dashboard_base.html' %}
+{% load static %}
+{% block title %}
+Rakernis
+{% endblock %}
+{% block content %}
+<div class="breadcrumb">
+    <div class="row">
+        <h3 class="heading mb-2">Rakernis</h3>
+        <span class="mb-0">
+            <span class="text-muted fw-light">Kegiatan /</span>
+            <span class="ms-1 fw-medium">Rakernis</span>
+        </span>
+    </div>
+</div>
+
+<section id="__data">
+    <div class="card">
+        <div class="card-body">
+            <div id="headline" class="mb-3">
+                <h3 class="text-center">KEGIATAN RAKERNIS PEMBERDAYAAN MASYARAKAT<br /> <span id="currentYear"></span>
+                </h3>
+                <hr />
+            </div>
+
+            <div class="action-button">
+                <div class="d-flex justify-content-end mb-3 gap-2">
+                    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exportData"><i
+                            class="fas fa-file-export me-2"></i>Ekspor Data</button>
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tambahData"><i
+                            class="fas fa-plus me-2"></i>Tambah Data</button>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                {% include 'psm/rakernis/table.html' %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block css_tambahan %}
+<link rel="stylesheet" href="{% static 'assets/dashboard/vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}" />
+{% endblock %}
+
+{% block js_tambahan %}
+<script src="{% static 'assets/dashboard/vendor/libs/datatables-bs5/datatables-bootstrap5.js' %}"></script>
+<script>
+    let table = $('#__table').DataTable({
+        language: dt_lang_config()
+    })
+
+    $('#deleteData').on('click', function () {
+        Swal.fire({
+            title: 'Apakah anda yakin?',
+            html: `Data yang <strong>dihapus</strong> tidak dapat dipulihkan kembali.`,
+            icon: 'warning',
+            showCancelButton: true,
+            cancelButtonText: 'Batalkan',
+            confirmButtonText: 'Ya, hapus data ini!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                console.log('User clicked the confirm button ...')
+
+                Swal.fire({
+                    title: 'Tunggu sebentar',
+                    icon: 'info',
+                    html: `Menghapus <b>data</b> yang anda dipilih..`,
+                    timer: 2000,
+                    didOpen: () => {
+                        Swal.showLoading()
+                    }
+                }).then((result) => {
+                    if (result.dismiss === Swal.DismissReason.timer) {
+                        Swal.fire({
+                            title: 'Berhasil',
+                            html: `Data yang dipilih telah <strong>berhasil</strong> dihapus.`,
+                            icon: 'success',
+                            confirmButtonText: 'OK',
+                            timer: 2000
+                        })
+                    }
+                })
+            }
+        })
+    })
+
+    $('a#buttonEdit').on('click', function () {
+        $('#modalEdit').modal('show') //show modal
+
+        //START SET CURRENT VALUE
+        $('select[name="edit_satker"]').val('BNNP Jawa Barat').trigger('change')
+        $('select[name="edit_satkerDiundang"]').val('BNN Kota Surakarta').trigger('change')
+        //END
+    })
+</script>
+
+<script>
+    $('.deleteKegiatan').on('click', function () {
+        Swal.fire({
+            title: 'Apakah anda yakin?',
+            html: `Data yang <strong>dihapus</strong> tidak dapat dipulihkan kembali.`,
+            icon: 'warning',
+            showCancelButton: true,
+            cancelButtonText: 'Batalkan',
+            confirmButtonText: 'Ya, hapus data ini!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                console.log('User clicked the confirm button ...')
+
+                Swal.fire({
+                    title: 'Tunggu sebentar',
+                    icon: 'info',
+                    html: `Menghapus <b>data</b> yang anda dipilih..`,
+                    timer: 2000,
+                    didOpen: () => {
+                        Swal.showLoading()
+                    }
+                }).then((result) => {
+                    if (result.dismiss === Swal.DismissReason.timer) {
+                        Swal.fire({
+                            title: 'Berhasil',
+                            html: `Data yang dipilih telah <strong>berhasil</strong> dihapus.`,
+                            icon: 'success',
+                            confirmButtonText: 'OK',
+                            timer: 2000
+                        })
+                    }
+                })
+            }
+        })
+    })
+
+    $('.editKegiatan').on('click', function () {
+        $('#detailKegiatanRakernis').modal('hide')
+        $('#editDataKegiatan').modal('show')
+
+        $('select[name="edit_satker"]').val('BNN Kota Surakarta').trigger('change')
+    })
+
+    {% comment %} function updateClock() {
+        var now = moment()
+        var formattedTime = now.format('HH:mm')
+        document.getElementById('currentClock').innerText = formattedTime
+    }
+    setInterval(updateClock, 1000)
+    updateClock() {% endcomment %}
+</script>
+{% endblock %}
+
+{% block modal_tambahan %}
+{% include 'psm/rakernis/create.html' %}
+{% include 'psm/rakernis/create_kegiatan.html' %}
+{% include 'psm/rakernis/detail.html' %}
+{% include 'psm/rakernis/edit.html' %}
+{% include 'psm/rakernis/edit_kegiatan.html' %}
+{% endblock %}

@@ -1,0 +1,35 @@
+<div class="modal fade" id="tambahData" aria-labelledby="modalTambah" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalTambah">Tambah Data</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        {% comment %} <code class="language-js" id="currentClock"></code> {% endcomment %}
+        <form>
+          <div class="mb-3">
+            <label for="create_satker" class="col-form-label">Satuan Kerja:</label>
+            <select name="create_satker" id="create_satker" class="form-control select2">
+              <option value="" selected disabled>Pilih Satuan Kerja</option>
+              {% for item in satker %}
+                <option value="{{ item.nama_satker }}">{{ item.nama_satker }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="jumlah_kegiatan" class="col-form-label">Jumlah Kegiatan</label>
+            <input type="number" class="form-control" name="jumlah_kegiatana" id="jumlah_kegiatan" />
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="fas fa-xmark me-2"></i>Tutup</button>
+        <button type="button" class="btn btn-primary">
+          <i class="fas fa-save me-2"></i>
+          Simpan
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
