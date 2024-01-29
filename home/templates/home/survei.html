@@ -273,6 +273,8 @@
                 tanggal_survei: null,
                 jam_awal_survei: null,
                 jam_akhir_survei: null,
+                batas_responden_survei: null,
+                jumlah_responden_survei: null,
 
                 id_survei: null,
                 id_responden: null,
@@ -389,6 +391,9 @@
                         this.jam_awal_survei = data.jam_awal;
                         this.jam_akhir_survei = data.jam_akhir;
 
+                        this.jumlah_responden_survei = data.get_jumlah_responden
+                        this.batas_responden_survei = data.batas_responden
+
                         // Cek data di sini setelah pemanggilan API selesai
                         console.log(`Tipe : ${this.tipe_survei}`);
                         console.log(`Tanggal : ${this.tanggal_survei}`);
@@ -473,11 +478,25 @@
                 }
             },
             checkSurveiAvailability() {
-                if (!this.tanggal_survei || !this.jam_awal_survei || !this.jam_akhir_survei) {
+                if (!this.tanggal_survei || !this.jam_awal_survei || !this.jam_akhir_survei || !this.jumlah_responden_survei || !this.batas_responden_survei) {
                     console.log('Kosong keneh');
                     return false;
                 }
 
+                // Cek batas responden survei
+                if (this.jumlah_responden_survei >= this.batas_responden_survei) {
+                    Swal.fire({
+                        title: "Mohon Maaf",
+                        html: `Tidak dapat mengisi survei dikarenakan <br>kuota responden survei <b>sudah penuh</b>.`,
+                        icon: "error",
+                        confirmButtonText: "OK",
+                    });
+
+                    this.kode = '';
+                    return false;
+                }
+
+                // Cek tanggal survei
                 const status_tanggal = this.tanggal_survei == this.tanggal_saat_ini;
 
                 if (!status_tanggal) {
@@ -489,10 +508,10 @@
                     });
 
                     this.kode = '';
-                    
                     return false;
                 }
 
+                // Cek waktu survei
                 const status_waktu = this.jam_saat_ini >= this.jam_awal_survei && this.jam_saat_ini <= this.jam_akhir_survei;
 
                 if (!status_waktu) {

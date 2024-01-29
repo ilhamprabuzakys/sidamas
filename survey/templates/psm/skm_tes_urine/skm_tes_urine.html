@@ -33,7 +33,7 @@
                 </div>
             </div>
             <div class="table-responsive">
-                {% include "psm/skm_tes_urine/table.html" %}
+                {% include "psm/skm_tes_urine/table_datatable.html" %}
             </div>
         </div>
     </div>
@@ -43,7 +43,108 @@
 {% block js_tambahan %}
 <script>
     let table = $('#__table').DataTable({
-        language: dt_lang_config()
+        language: dt_lang_config(),
+        ajax: {
+            url: 'http://103.210.54.17:8000/survei/api/v1/data_survei/',
+            dataSrc: ''
+        },
+        columns: [
+            { data: 'id', visible: false },
+            {
+                data: null,
+                render: function (data, type, row, meta) {
+                    return meta.row + 1; // Nomor autoincrement
+                }
+            },
+            { data: 'tanggal', render: function (data, type, row) { return moment(data).format('DD MMMM YYYY'); } },
+            { data: null, render: function (data, type, row) { return `${row.jam_awal} - ${row.jam_akhir}`; } },
+            {
+                data: null, render: function (data, type, row) {
+                    let statusClass = '';
+                    if (row.get_status_keberlangsungan === 'Belum dibuka') {
+                        statusClass = 'bg-secondary';
+                    } else if (row.get_status_keberlangsungan === 'Berlangsung') {
+                        statusClass = 'bg-primary';
+                    } else if (row.get_status_keberlangsungan === 'Berakhir') {
+                        statusClass = 'bg-danger';
+                    }
+                    return `<div class="text-center"><a href="javascript:;" class="badge rounded-pill ${statusClass} text-white"><i class="far fa-clock me-2"></i>${row.get_status_keberlangsungan}</a></div>`;
+                }
+            },
+            {
+                data: 'batas_responden', render: function (data, type, row) { return `
+                        <div class="text-center">${row.batas_responden} orang</div>
+                    `; }
+            },
+            {
+                data: null, render: function (data, type, row) {
+                    let text = '';
+                    if (row.get_jumlah_responden) {
+                        text = `${row.get_jumlah_responden} orang`;
+                    } else {
+                        text = 'Belum ada responden';
+                    }
+                    return `<div class="text-center">${text}</div>`
+                }
+            },
+            {
+                data: null, render: function (data, type, row) {
+                    if (row.get_status_keberlangsungan !== 'Belum dibuka') {
+                        let badgeClass = row.get_jumlah_responden ? 'bg-primary' : 'bg-secondary';
+                        return `<a href="javascript:;" class="badge text-uppercase rounded ${badgeClass} text-white"
+                                onclick="getDaftarResponden('${row.id}', '${moment(row.tanggal).format('DD MMMM YYYY')}')">
+                                <i class="fas fa-eye me-2"></i>Lihat daftar responden</a>`;
+                    } else {
+                        return `<a href="javascript:;" class="badge text-uppercase rounded bg-secondary pointer-none text-white">
+                                <i class="fas fa-eye me-2"></i>Lihat daftar responden</a>`;
+                    }
+                }
+            },
+            {
+                data: null, render: function (data, type, row) {
+                    let actionButtons = '';
+    
+                    if (row.get_status_keberlangsungan !== 'Belum dibuka') {
+                        actionButtons += `<a href="javascript:;" onclick="kirimHasil('${row.id}', '${moment(row.tanggal).format('DD MMMM YYYY')}')"
+                                            class="badge bg-primary text-white text-decoration-none mb-1 me-2">
+                                            <i class="fas fa-plane me-2"></i>Kirim Hasil</a>`;
+                    } else {
+                        actionButtons += `<a href="javascript:;" class="badge bg-secondary pointer-none text-white text-decoration-none mb-1 me-2">
+                                            <i class="fas fa-plane me-2"></i>Kirim Hasil</a>`;
+                    }
+    
+                    if (row.get_status_keberlangsungan === 'Berakhir') {
+                        actionButtons += `<a href="javascript:;" class="badge bg-secondary pointer-none text-white text-decoration-none mb-1 me-2">
+                                            <i class="fas fa-print me-2"></i>Cetak Link</a>`;
+                    } else {
+                        if (row.get_status_responden === 'Sudah penuh') {
+                            actionButtons += `<a href="javascript:;" class="badge bg-secondary pointer-none text-white text-decoration-none mb-1 me-2">
+                                                <i class="fas fa-print me-2"></i>Cetak Link</a>`;
+                        } else {
+                            actionButtons += `<a href="javascript:;" onclick="getLink('${row.kode}')"
+                                                class="badge bg-warning text-white text-decoration-none mb-1 me-2">
+                                                <i class="fas fa-print me-2"></i>Cetak Link</a>`;
+                        }
+                    }
+    
+                    actionButtons += `<a href="javascript:;"
+                                        onclick="editDataSurvei('${row.id}', '${moment(row.tanggal).format('DD MMMM YYYY')}',
+                                        '${table.page.info().start + table.context[0]._iDisplayStart + row.rowIndex + 1}')"
+                                        class="badge bg-success text-white text-decoration-none mb-1 me-2">
+                                        <i class="fas fa-pen-to-square me-2"></i>Edit</a>`;
+
+    
+                    actionButtons += `<a href="javascript:;" class="badge bg-danger text-white text-decoration-none mb-1 me-2"
+                                        onclick="hapusDataSurvei('${row.id}', '${moment(row.tanggal).format('DD MMMM YYYY')}')">
+                                        <i class="fas fa-trash-alt me-2"></i>Hapus</a>`;
+    
+                    return `<div class="list-button gx-3 text-uppercase d-flex flex-column px-5">${actionButtons}</div>`;
+                }
+            }
+        ],
+        createdRow: function (row, data, dataIndex) {
+            $(row).attr('data-id', data.id); // Menambahkan atribut data-id ke setiap baris
+        }
     });
 
     const api = axios.create({
@@ -53,11 +154,17 @@
 
     const TIPE_SURVEI = {{ tipe_survei }}
 
+    const DAFTAR_PERTANYAAN = {{ daftar_pertanyaan|safe }};
+    
     let targetEditedSurveiID = 0;
     let targetEditedSurveiTanggal = 0;
 
+    // Kirim hasil pengisian survei ke Admin/SuperAdmin
     async function kirimHasil(pk, tanggal) {
+
         console.log(`Survei ID : ${pk}`);
+
+        const apiUrl = `/survei/api/v1/`
 
         Swal.fire({
             title: 'Apakah anda yakin?',
@@ -75,15 +182,19 @@
                     html: `Sedang mengirim hasil survei <b>${tanggal}</b>`,
                     timer: 2000,
                     showConfirmButton: true,
-                    allowOutsideClick: false,
-                    allowEscapeKey: false,
-                    allowEnterKey: false,
                     didOpen: () => {
                         Swal.showLoading();
                     },
                 });
 
                 setTimeout(() => {
+
+                    try {
+
+                    } catch (error) {
+                        console.error('Error msg : ', error)
+                    }
+
                     Swal.fire({
                         title: 'Berhasil',
                         icon: 'success',
@@ -94,16 +205,9 @@
                 }, 2000)
             }
         });
-
-        // const apiUrl = `${window.location.origin}/survei/api/v1/kirim_hasil_survei/${pk}/`;
-
-        // try {
-        //     const response = await axios.get(apiUrl);
-
-        //     console.log('Response : ', response);
-        // }
     }
 
+    // Fetch data responden
     async function getDaftarResponden(pk, tanggal) {
         console.log(`Survei ID : ${pk}`);
         let tanggalSurvei = tanggal;
@@ -141,9 +245,8 @@
                 row.append(`<td>${item.jenis_kelamin == 'L' ? 'Laki-Laki' : 'Perempuan'}</td>`);
                 row.append(`<td>${item.rentang_usia} tahun</td>`);
                 row.append(`<td>${item.pendidikan}</td>`);
-                // row.append(`<td class="text-center">${item.created_at}</td>`);
                 row.append(
-                    `<td class="text-center">${momentCreatedAt.format('HH:mm:ss')} - ${momentCreatedAt.format('DD MMMM YYYY')}</td>`
+                    `<td class="text-center">${momentCreatedAt.format('HH:mm:ss')} - <br> ${momentCreatedAt.format('DD MMMM YYYY')}</td>`
                 );
                 row.append(`
                     <td>
@@ -167,6 +270,7 @@
         }
     }
 
+    // Ambil data hasil pengisian dari satu responden
     async function getDetailHasilPengisianResponden(pk, tanggalSurvei) {
         console.log(`Responden ID : ${pk}`);
 
@@ -204,33 +308,54 @@
 
             tbody_jawaban_responden_hasil.find('#survei-jawaban_responden_results').html(`Survei SKM Tes Urine -  ${tanggalSurvei}`)
 
-            tbody_jawaban_responden_hasil.find('#sigma-jawaban_responden_results').html(`${sigmaNilai}`);
+            let sigmaClass = '';
+            let sigmaKeterangan = '';
+
+            if (sigmaNilai >= 1 && sigmaNilai <= 10) {
+                sigmaClass = 'text-danger';
+                sigmaKeterangan = 'Buruk';
+            } else if (sigmaNilai >= 11 && sigmaNilai <= 20) {
+                sigmaClass = 'text-warning';
+                sigmaKeterangan = 'Cukup';
+            } else if (sigmaNilai >= 21 && sigmaNilai <= 30) {
+                sigmaClass = 'text-primary';
+                sigmaKeterangan = 'Baik';
+            } else if (sigmaNilai >= 31 && sigmaNilai <= 40) {
+                sigmaClass = 'text-success';
+                sigmaKeterangan = 'Sangat Baik';
+            }
+
+            tbody_jawaban_responden_hasil.find('#sigma-jawaban_responden_results').html(`<span class="${sigmaClass}">${sigmaNilai} - (${sigmaKeterangan})</span>`);
 
             data_jawaban_responden.forEach((item, index) => {
                 const row = $('<tr class="align-td-middle"></tr>');
-                
+                let pilihanClass = '';
                 let pilihan = 'Z';
 
                 switch(item) {
                     case '1':
                         pilihan = 'A';
+                        pilihanClass = 'text-primary';
                         break;
                     case '2':
                         pilihan = 'B';
+                        pilihanClass = 'text-warning';
                         break;
                     case '3':
                         pilihan = 'C';
+                        pilihanClass = 'text-danger';
                         break;
-                    case '4':
+                        case '4':
                         pilihan = 'D';
+                        pilihanClass = 'text-success';
                         break;
                 }
 
                 
                 row.append(`<td class="text-center">${index + 1}</td>`);
-                row.append(`<td>Pertanyaan ke-${index + 1}</td>`);
-                row.append(`<td>${pilihan}</td>`);
-                row.append(`<td>${item}</td>`);
+                row.append(`<td>Pertanyaan ke-${index + 1} <br> ${DAFTAR_PERTANYAAN[index]}</td>`);
+                row.append(`<td class="${pilihanClass}">${pilihan}</td>`);
+                row.append(`<td class="${pilihanClass}">${item}</td>`);
 
                 tbody_jawaban_responden.append(row);
             });
@@ -244,6 +369,7 @@
         }
     }
 
+    // Hapus data responden
     async function hapusDataResponden(pk, tanggal_survei) {
         console.log(`Responden ID : ${pk}`);
 
@@ -319,6 +445,7 @@
         
     }
 
+    // Hapus data keseluruhan survei
     async function hapusDataSurvei(pk, tanggal) {
 
         console.log(`Menghapus survei ID : ${pk}`);
@@ -352,7 +479,7 @@
 
                     console.log(response);
 
-                    if (!response.status == 204) {
+                    if (response.status !== 204) {
                         console.error('Terjadi Kesalahan : Response status is not 204')
                         return false;
                     }
@@ -365,13 +492,15 @@
                         timer: 2000,
                     });
 
-                    window.location.reload();
+                    //window.location.reload();
+                    table.ajax.reload();
 
                 }, 2000);
             }
         });
     }
 
+    // Edit data survei
     async function editDataSurvei(pk, counter, tanggal) {
         const apiUrl = `/survei/api/v1/data_survei/${pk}/`;
 
@@ -398,14 +527,14 @@
             let tanggal_survei = form.querySelector('#tanggal_survei');
             let waktu_berlaku_awal = form.querySelector('#waktu_berlaku_awal');
             let waktu_berlaku_akhir = form.querySelector('#waktu_berlaku_akhir');
-            let jumlah_responden = form.querySelector('#jumlah_responden');
+            let batas_responden = form.querySelector('#batas_responden');
 
-            // console.log(tanggal_survei, waktu_berlaku_awal, waktu_berlaku_akhir, jumlah_responden);
+            // console.log(tanggal_survei, waktu_berlaku_awal, waktu_berlaku_akhir, batas_responden);
 
             tanggal_survei.value = data.tanggal;
             waktu_berlaku_awal.value = data.jam_awal;
             waktu_berlaku_akhir.value = data.jam_akhir;
-            jumlah_responden.value = data.jumlah_responden;
+            batas_responden.value = data.batas_responden;
 
             $('#editDataSurveiModal').modal('show');
         } catch (error) {
@@ -420,6 +549,7 @@
         }
     }
 
+    // Update data survei
     async function updateDataSurvei(event) {
         event.preventDefault();
 
@@ -454,12 +584,9 @@
                         const form = document.querySelector('#formEdit');
 
                         let tanggal_survei = form.querySelector('#tanggal_survei').value;
-                        let waktu_berlaku_awal = form.querySelector('#waktu_berlaku_awal')
-                        .value;
-                        let waktu_berlaku_akhir = form.querySelector('#waktu_berlaku_akhir')
-                            .value;
-                        let jumlah_responden_survei = form.querySelector('#jumlah_responden')
-                            .value;
+                        let waktu_berlaku_awal = form.querySelector('#waktu_berlaku_awal').value;
+                        let waktu_berlaku_akhir = form.querySelector('#waktu_berlaku_akhir').value;
+                        let batas_responden_survei = form.querySelector('#batas_responden').value;
 
                         if (tanggal_survei == '') {
                             Swal.fire({
@@ -489,7 +616,7 @@
                             });
 
                             return false;
-                        } else if (jumlah_responden_survei == '') {
+                        } else if (batas_responden_survei == '') {
                             Swal.fire({
                                 title: "Terjadi Kesalahan",
                                 text: "Wajib Mengisi Batas Jumlah Responden Survei",
@@ -505,7 +632,7 @@
                             'tanggal': tanggal_survei,
                             'jam_awal': waktu_berlaku_awal,
                             'jam_akhir': waktu_berlaku_akhir,
-                            'jumlah_responden': jumlah_responden_survei,
+                            'batas_responden': batas_responden_survei,
                         };
 
                         const response = await api.put(apiUrl, data);
@@ -536,7 +663,8 @@
                         $('.modal').modal('hide');
 
                         setTimeout(() => {
-                            window.location.reload();
+                            //window.location.reload();
+                            table.ajax.reload();
                         }, 2000)
                     } catch (error) {
                         console.error('Error msg : ', error);
@@ -554,9 +682,9 @@
         });
     }
 
+    // Tambah data survei
     async function createDataSurvei(e) {
         e.preventDefault();
-
 
         const apiUrl = '/survei/api/v1/data_survei/';
 
@@ -566,7 +694,7 @@
             let tanggal_survei = form.querySelector('#tanggal_survei').value;
             let waktu_berlaku_awal = form.querySelector('#waktu_berlaku_awal').value;
             let waktu_berlaku_akhir = form.querySelector('#waktu_berlaku_akhir').value;
-            let jumlah_responden_survei = form.querySelector('#jumlah_responden').value;
+            let batas_responden_survei = form.querySelector('#batas_responden').value;
 
             if (tanggal_survei == '') {
                 Swal.fire({
@@ -596,7 +724,7 @@
                 });
 
                 return false;
-            } else if (jumlah_responden_survei == '') {
+            } else if (batas_responden_survei == '') {
                 Swal.fire({
                     title: "Terjadi Kesalahan",
                     text: "Wajib Mengisi Batas Jumlah Responden Survei",
@@ -611,7 +739,7 @@
                 tanggal: tanggal_survei,
                 jam_awal: waktu_berlaku_awal,
                 jam_akhir: waktu_berlaku_akhir,
-                jumlah_responden: jumlah_responden_survei,
+                batas_responden: batas_responden_survei,
                 tipe: TIPE_SURVEI
             }
 
@@ -639,15 +767,21 @@
             Swal.fire({
                 title: "Berhasil",
                 html: `Data survei telah berhasil <b>dibuat</b>.`,
-                icon: "error",
+                icon: "success",
                 confirmButtonText: "OK",
                 timer: 2000,
             });
 
             $('.modal').modal('hide');
 
+            form.querySelector('#tanggal_survei').value = '';
+            form.querySelector('#waktu_berlaku_awal').value = '';
+            form.querySelector('#waktu_berlaku_akhir').value = '';
+            form.querySelector('#batas_responden').value = '';
+
             setTimeout(() => {
-                window.location.reload();
+                //window.location.reload();
+                table.ajax.reload();
             }, 2000)
         } catch (error) {
             console.error('Error msg : ', error);
@@ -662,6 +796,7 @@
 
     }
 
+    // Ambil link dari survei
     function getLink(kode) {
         const surveyUrl = `${window.location.origin}/pengisian-survei?kode=${kode}`;
 
@@ -674,10 +809,17 @@
             icon: "success",
             confirmButtonText: "Salin link",
         }).then((result) => {
+            console.log(result);
             if (result.isConfirmed) {
+
+                console.log('Ngeklik buat Mendapatkan link ...')
+
                 const clipboard = new ClipboardJS('.swal2-confirm', {
-                    text: function () {
-                        return surveyUrl;
+                    text: function (trigger) {
+                        if (trigger.innerHTML.includes('Salin link')) {
+                            mauGenerateLink = false;
+                            return surveyUrl;
+                        }
                     }
                 });
 
@@ -685,18 +827,26 @@
                     toastr.success('Link berhasil disalin ke clipboard', 'Berhasil');
                 });
 
-                clipboard.on('error', function (e) {
-                    toastr.error('Gagal menyalin link ke clipboard', 'Error');
-                });
+                /*
+                    clipboard.on('error', function (e) {
+                        toastr.error('Gagal menyalin link ke clipboard', 'Error');
+    
+                        mauGenerateLink = false;
+                    });
+                */
             }
         });
     }
-    
-    /*
-        $('#saveEditButton').on('click', function (e) {
-            e.preventDefault();
-        });
-    */
+
+    // Listeners
+    $('#tambahDataSurveiModal').on('hide.bs.modal', function(e) {
+       const form = document.querySelector('#formTambah');
+
+       form.querySelector('#tanggal_survei').value = '';
+       form.querySelector('#waktu_berlaku_awal').value = '';
+       form.querySelector('#waktu_berlaku_akhir').value = '';
+       form.querySelector('#batas_responden').value = '';
+    });
 </script>
 {% endblock js_tambahan %}
 

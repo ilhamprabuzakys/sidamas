@@ -37,7 +37,7 @@
                 {% endif %}
             </td>
 
-            <td class="text-center">{{ item.jumlah_responden }} orang</td>
+            <td class="text-center">{{ item.batas_responden }} orang</td>
             <td class="text-center">
                 {% if item.get_jumlah_responden %}
                     {{ item.get_jumlah_responden }} orang
@@ -87,7 +87,7 @@
                                 class="fas fa-print me-2"></i>Cetak Link</a>
                         {% else %}
                             {% if item.get_status_responden == 'Sudah penuh' %}
-                            <a href="javascript:;"  class="badge bg-warning text-white text-decoration-none mb-1"><i
+                            <a href="javascript:;"  class="badge bg-secondary pointer-none text-white text-decoration-none mb-1"><i
                                     class="fas fa-print me-2"></i>Cetak Link</a>
                             {% else %}
                             <a href="javascript:;" onclick="getLink('{{ item.kode }}')"

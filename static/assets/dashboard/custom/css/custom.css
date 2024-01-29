@@ -54,6 +54,10 @@ table tbody tr.align-td-middle td {
     vertical-align: middle;
 }
 
+table tbody.align-tr-middle tr td {
+    vertical-align: middle;
+}
+
 #btn-role {
     text-transform: uppercase !important;
 }

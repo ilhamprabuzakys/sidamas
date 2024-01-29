@@ -2750,3 +2750,2319 @@ LINE 1: ...m_akhir", "survei_datasurvei"."jumlah_responden", "survei_da...
 [29/Jan/2024 12:01:33] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 500 257756
 [29/Jan/2024 12:02:23] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 66694
 [29/Jan/2024 12:02:35] "GET /survei/api/v1/data_responden_survei/?survei=1 HTTP/1.1" 200 217
+[29/Jan/2024 12:07:57] "GET / HTTP/1.1" 200 16974
+[29/Jan/2024 12:07:58] code 505, message Invalid HTTP version (2.0)
+[29/Jan/2024 12:07:58] "PRI * HTTP/2.0" 505 -
+[29/Jan/2024 12:07:59] "GET /static/assets/images/bnn.png HTTP/1.1" 200 22974
+Not Found: /favicon.ico
+[29/Jan/2024 12:08:00] "GET /favicon.ico HTTP/1.1" 404 5040
+[29/Jan/2024 12:34:38] "GET /survei/api/v1/data_responden_survei/?survei=1 HTTP/1.1" 200 217
+[29/Jan/2024 12:34:45] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 66694
+[29/Jan/2024 12:34:46] "GET /static/assets/dashboard/custom/css/custom.css HTTP/1.1" 304 0
+[29/Jan/2024 12:34:46] "GET /static/assets/dashboard/vendor/libs/datatables-bs5/datatables.bootstrap5.css HTTP/1.1" 304 0
+[29/Jan/2024 12:34:46] "GET /static/assets/dashboard/custom/js/dashboard-helpers.js HTTP/1.1" 304 0
+[29/Jan/2024 12:34:52] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 12:35:11] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 66694
+[29/Jan/2024 12:35:11] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 12:35:16] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 66696
+[29/Jan/2024 12:35:16] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 12:35:32] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 66709
+[29/Jan/2024 12:35:33] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 13:16:29] "GET /survei/api/v1/data_responden_survei/?survei=1 HTTP/1.1" 200 217
+[29/Jan/2024 13:16:32] "GET /survei/api/v1/data_responden_survei/?survei=1 HTTP/1.1" 200 217
+[29/Jan/2024 13:16:35] "GET /survei/api/v1/data_pengisian_survei/?responden=12 HTTP/1.1" 200 806
+/home/intioptima/sidamas/survey/views.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+January 29, 2024 - 13:18:30
+Django version 4.1.7, using settings 'sidamas.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+[{'jawaban': [{'opsi': 'Tidak sesuai', 'nilai': '1'}, {'opsi': 'Kurang sesuai', 'nilai': '2'}, {'opsi': 'Sesuai', 'nilai': '3'}, {'opsi': 'Sangat sesuai', 'nilai': '4'}], 'pertanyaan': 'Bagaimana pendapat Saudara tentang kesesuaian persyaratan pelayanan dengan jenis pelayanannya?'}, {'jawaban': [{'opsi': 'Tidak paham', 'nilai': '1'}, {'opsi': 'Kurang paham', 'nilai': '2'}, {'opsi': 'Paham', 'nilai': '3'}, {'opsi': 'Sangat paham', 'nilai': '4'}], 'pertanyaan': 'Bagaimana pemahaman Saudara tentang kemudahan prosedur pelayanan yang diberikan?'}, {'jawaban': [{'opsi': 'Tidak cepat', 'nilai': '1'}, {'opsi': 'Kurang cepat', 'nilai': '2'}, {'opsi': 'Cepat', 'nilai': '3'}, {'opsi': 'Sangat cepat', 'nilai': '4'}], 'pertanyaan': 'Bagaimana pendapat Saudara tentang kecepatan waktu dalam memberikan pelayanan?'}, {'jawaban': [{'opsi': 'Sangat mahal', 'nilai': '1'}, {'opsi': 'Cukup mahal', 'nilai': '2'}, {'opsi': 'Murah', 'nilai': '3'}, {'opsi': 'Gratis', 'nilai': '4'}], 'pertanyaan': 'Bagaimana pendapat Saudara tentang kewajaran biaya/tarif dalam pelayanan?'}, {'jawaban': [{'opsi': 'Tidak setuju', 'nilai': '1'}, {'opsi': 'Kurang setuju', 'nilai': '2'}, {'opsi': 'Setuju', 'nilai': '3'}, {'opsi': 'Sangat Setuju', 'nilai': '4'}], 'pertanyaan': 'Petugas tidak pernah meminta imbalan dan melakukan pungutan liar?'}, {'jawaban': [{'opsi': 'Tidak sesuai', 'nilai': '1'}, {'opsi': 'Kurang sesuai', 'nilai': '2'}, {'opsi': 'Sesuai', 'nilai': '3'}, {'opsi': 'Sangat sesuai', 'nilai': '4'}], 'pertanyaan': 'Bagaimana pendapat Saudara tentang kesesuaian produk pelayanan antara yang tercantum dalam standar pelayanan dengan hasil yang diberikan?'}, {'jawaban': [{'opsi': 'Tidak kompeten', 'nilai': '1'}, {'opsi': 'Kurang kompeten', 'nilai': '2'}, {'opsi': 'Kompeten', 'nilai': '3'}, {'opsi': 'Sangat kompeten', 'nilai': '4'}], 'pertanyaan': 'Bagaimana pendapat Saudara tentang kompetensi/kemampuan petugas dalam pelayanan?'}, {'jawaban': [{'opsi': 'Tidak sopan dan ramah', 'nilai': '1'}, {'opsi': 'Kurang sopan dan ramah', 'nilai': '2'}, {'opsi': 'Sopan dan ramah', 'nilai': '3'}, {'opsi': 'Sangat sopan dan ramah', 'nilai': '4'}], 'pertanyaan': 'Bagaimana pendapat Saudara tentang perilaku petugas dalam pelayanan terkait kesopanan dan keramahan?'}, {'jawaban': [{'opsi': 'Tidak ada', 'nilai': '1'}, {'opsi': 'Ada tetapi tidak berfungsi', 'nilai': '2'}, {'opsi': 'Berfungsi kurang maksimal', 'nilai': '3'}, {'opsi': 'Dikelola dengan baik', 'nilai': '4'}], 'pertanyaan': 'Bagaimana pendapat Saudara tentang penanganan pengaduan pengguna layanan?'}, {'jawaban': [{'opsi': 'Buruk', 'nilai': '1'}, {'opsi': 'Cukup', 'nilai': '2'}, {'opsi': 'Baik', 'nilai': '3'}, {'opsi': 'Sangat baik', 'nilai': '4'}], 'pertanyaan': 'Bagaimana pendapat Saudara tentang kualitas sarana dan prasarana?'}]
+[29/Jan/2024 13:18:31] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 66709
+[29/Jan/2024 13:18:31] "GET /static/assets/dashboard/custom/css/custom.css HTTP/1.1" 304 0
+/home/intioptima/sidamas/survey/views.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+January 29, 2024 - 13:20:20
+Django version 4.1.7, using settings 'sidamas.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+['Bagaimana pendapat Saudara tentang kesesuaian persyaratan pelayanan dengan jenis pelayanannya?', 'Bagaimana pemahaman Saudara tentang kemudahan prosedur pelayanan yang diberikan?', 'Bagaimana pendapat Saudara tentang kecepatan waktu dalam memberikan pelayanan?', 'Bagaimana pendapat Saudara tentang kewajaran biaya/tarif dalam pelayanan?', 'Petugas tidak pernah meminta imbalan dan melakukan pungutan liar?', 'Bagaimana pendapat Saudara tentang kesesuaian produk pelayanan antara yang tercantum dalam standar pelayanan dengan hasil yang diberikan?', 'Bagaimana pendapat Saudara tentang kompetensi/kemampuan petugas dalam pelayanan?', 'Bagaimana pendapat Saudara tentang perilaku petugas dalam pelayanan terkait kesopanan dan keramahan?', 'Bagaimana pendapat Saudara tentang penanganan pengaduan pengguna layanan?', 'Bagaimana pendapat Saudara tentang kualitas sarana dan prasarana?']
+[29/Jan/2024 13:20:23] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 66709
+/home/intioptima/sidamas/survey/views.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+January 29, 2024 - 13:20:47
+Django version 4.1.7, using settings 'sidamas.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+/home/intioptima/sidamas/survey/views.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+January 29, 2024 - 13:20:59
+Django version 4.1.7, using settings 'sidamas.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+10
+[29/Jan/2024 13:21:00] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 66709
+[29/Jan/2024 13:21:05] "GET /survei/api/v1/data_responden_survei/?survei=1 HTTP/1.1" 200 217
+[29/Jan/2024 13:21:07] "GET /survei/api/v1/data_pengisian_survei/?responden=12 HTTP/1.1" 200 806
+/home/intioptima/sidamas/survey/views.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+January 29, 2024 - 13:21:31
+Django version 4.1.7, using settings 'sidamas.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+[29/Jan/2024 13:21:56] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 67748
+[29/Jan/2024 13:21:58] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 13:22:07] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 67648
+[29/Jan/2024 13:22:08] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 13:22:55] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 67648
+[29/Jan/2024 13:22:56] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 13:23:26] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 67694
+[29/Jan/2024 13:23:27] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 13:24:34] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 67709
+[29/Jan/2024 13:24:35] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 13:24:50] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 67709
+[29/Jan/2024 13:24:50] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+/home/intioptima/sidamas/survey/views.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+January 29, 2024 - 13:25:25
+Django version 4.1.7, using settings 'sidamas.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+[29/Jan/2024 13:25:34] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 67695
+[29/Jan/2024 13:25:34] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 13:26:22] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 67765
+[29/Jan/2024 13:26:23] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 13:26:38] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 67768
+[29/Jan/2024 13:26:39] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 13:27:22] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 67697
+[29/Jan/2024 13:27:23] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 13:27:26] "GET /survei/api/v1/data_responden_survei/?survei=1 HTTP/1.1" 200 217
+[29/Jan/2024 13:27:28] "GET /survei/api/v1/data_pengisian_survei/?responden=12 HTTP/1.1" 200 806
+/home/intioptima/sidamas/survey/views.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+January 29, 2024 - 13:27:56
+Django version 4.1.7, using settings 'sidamas.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+[29/Jan/2024 13:27:58] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 67410
+[29/Jan/2024 13:27:58] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 13:28:02] "GET /survei/api/v1/data_responden_survei/?survei=1 HTTP/1.1" 200 217
+[29/Jan/2024 13:28:04] "GET /survei/api/v1/data_pengisian_survei/?responden=12 HTTP/1.1" 200 806
+[29/Jan/2024 13:28:23] "GET /survei/api/v1/data_responden_survei/?survei=1 HTTP/1.1" 200 217
+[29/Jan/2024 13:28:25] "GET /survei/api/v1/data_pengisian_survei/?responden=12 HTTP/1.1" 200 806
+/home/intioptima/sidamas/survei/models.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+Exception in thread django-main-thread:
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/threading.py", line 1016, in _bootstrap_inner
+    self.run()
+  File "/usr/lib/python3.10/threading.py", line 953, in run
+    self._target(*self._args, **self._kwargs)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/utils/autoreload.py", line 64, in wrapper
+    fn(*args, **kwargs)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/core/management/commands/runserver.py", line 134, in inner_run
+    self.check(display_num_errors=True)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/core/management/base.py", line 546, in check
+    raise SystemCheckError(msg)
+django.core.management.base.SystemCheckError: SystemCheckError: System check identified some issues:
+
+ERRORS:
+berita.Berita.created_by: (fields.E304) Reverse accessor 'User.berita_created_by' for 'berita.Berita.created_by' clashes with reverse accessor for 'survei.TipeSurvei.created_by'.
+	HINT: Add or change a related_name argument to the definition for 'berita.Berita.created_by' or 'survei.TipeSurvei.created_by'.
+berita.Berita.created_by: (fields.E305) Reverse query name for 'berita.Berita.created_by' clashes with reverse query name for 'survei.TipeSurvei.created_by'.
+	HINT: Add or change a related_name argument to the definition for 'berita.Berita.created_by' or 'survei.TipeSurvei.created_by'.
+berita.Berita.updated_by: (fields.E304) Reverse accessor 'User.berita_updated_by' for 'berita.Berita.updated_by' clashes with reverse accessor for 'survei.TipeSurvei.updated_by'.
+	HINT: Add or change a related_name argument to the definition for 'berita.Berita.updated_by' or 'survei.TipeSurvei.updated_by'.
+berita.Berita.updated_by: (fields.E305) Reverse query name for 'berita.Berita.updated_by' clashes with reverse query name for 'survei.TipeSurvei.updated_by'.
+	HINT: Add or change a related_name argument to the definition for 'berita.Berita.updated_by' or 'survei.TipeSurvei.updated_by'.
+survei.TipeSurvei.created_by: (fields.E304) Reverse accessor 'User.berita_created_by' for 'survei.TipeSurvei.created_by' clashes with reverse accessor for 'berita.Berita.created_by'.
+	HINT: Add or change a related_name argument to the definition for 'survei.TipeSurvei.created_by' or 'berita.Berita.created_by'.
+survei.TipeSurvei.created_by: (fields.E305) Reverse query name for 'survei.TipeSurvei.created_by' clashes with reverse query name for 'berita.Berita.created_by'.
+	HINT: Add or change a related_name argument to the definition for 'survei.TipeSurvei.created_by' or 'berita.Berita.created_by'.
+survei.TipeSurvei.updated_by: (fields.E304) Reverse accessor 'User.berita_updated_by' for 'survei.TipeSurvei.updated_by' clashes with reverse accessor for 'berita.Berita.updated_by'.
+	HINT: Add or change a related_name argument to the definition for 'survei.TipeSurvei.updated_by' or 'berita.Berita.updated_by'.
+survei.TipeSurvei.updated_by: (fields.E305) Reverse query name for 'survei.TipeSurvei.updated_by' clashes with reverse query name for 'berita.Berita.updated_by'.
+	HINT: Add or change a related_name argument to the definition for 'survei.TipeSurvei.updated_by' or 'berita.Berita.updated_by'.
+
+System check identified 8 issues (0 silenced).
+/home/intioptima/sidamas/survei/models.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+January 29, 2024 - 13:30:21
+Django version 4.1.7, using settings 'sidamas.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+/home/intioptima/sidamas/survei/models.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+January 29, 2024 - 13:31:32
+Django version 4.1.7, using settings 'sidamas.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+/home/intioptima/sidamas/survei/models.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+January 29, 2024 - 13:32:04
+Django version 4.1.7, using settings 'sidamas.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+/home/intioptima/sidamas/survei/models.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+January 29, 2024 - 13:32:20
+Django version 4.1.7, using settings 'sidamas.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+/home/intioptima/sidamas/survei/models.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+January 29, 2024 - 13:33:16
+Django version 4.1.7, using settings 'sidamas.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+/home/intioptima/sidamas/survei/models.py changed, reloading.
+Watching for file changes with StatReloader
+Exception in thread django-main-thread:
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/threading.py", line 1016, in _bootstrap_inner
+    self.run()
+  File "/usr/lib/python3.10/threading.py", line 953, in run
+    self._target(*self._args, **self._kwargs)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/utils/autoreload.py", line 64, in wrapper
+    fn(*args, **kwargs)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/core/management/commands/runserver.py", line 125, in inner_run
+    autoreload.raise_last_exception()
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/utils/autoreload.py", line 87, in raise_last_exception
+    raise _exception[1]
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/core/management/__init__.py", line 398, in execute
+    autoreload.check_errors(django.setup)()
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/utils/autoreload.py", line 64, in wrapper
+    fn(*args, **kwargs)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/__init__.py", line 24, in setup
+    apps.populate(settings.INSTALLED_APPS)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/apps/registry.py", line 124, in populate
+    app_config.ready()
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/contrib/admin/apps.py", line 27, in ready
+    self.module.autodiscover()
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/contrib/admin/__init__.py", line 50, in autodiscover
+    autodiscover_modules("admin", register_to=site)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/utils/module_loading.py", line 58, in autodiscover_modules
+    import_module("%s.%s" % (app_config.name, module_to_search))
+  File "/usr/lib/python3.10/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/home/intioptima/sidamas/survei/admin.py", line 5, in <module>
+    from . import forms as survei_forms
+  File "/home/intioptima/sidamas/survei/forms.py", line 5, in <module>
+    class tbl_responden_surveiForm(forms.ModelForm):
+  File "/home/intioptima/sidamas/survei/forms.py", line 6, in tbl_responden_surveiForm
+    class Meta:
+  File "/home/intioptima/sidamas/survei/forms.py", line 7, in Meta
+    model = models.tbl_responden_survei
+AttributeError: module 'survei.models' has no attribute 'tbl_responden_survei'. Did you mean: 'DataRespondenSurvei'?
+/home/intioptima/sidamas/survei/forms.py changed, reloading.
+Watching for file changes with StatReloader
+Exception in thread django-main-thread:
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/threading.py", line 1016, in _bootstrap_inner
+    self.run()
+  File "/usr/lib/python3.10/threading.py", line 953, in run
+    self._target(*self._args, **self._kwargs)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/utils/autoreload.py", line 64, in wrapper
+    fn(*args, **kwargs)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/core/management/commands/runserver.py", line 125, in inner_run
+    autoreload.raise_last_exception()
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/utils/autoreload.py", line 87, in raise_last_exception
+    raise _exception[1]
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/core/management/__init__.py", line 398, in execute
+    autoreload.check_errors(django.setup)()
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/utils/autoreload.py", line 64, in wrapper
+    fn(*args, **kwargs)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/__init__.py", line 24, in setup
+    apps.populate(settings.INSTALLED_APPS)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/apps/registry.py", line 124, in populate
+    app_config.ready()
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/contrib/admin/apps.py", line 27, in ready
+    self.module.autodiscover()
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/contrib/admin/__init__.py", line 50, in autodiscover
+    autodiscover_modules("admin", register_to=site)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/utils/module_loading.py", line 58, in autodiscover_modules
+    import_module("%s.%s" % (app_config.name, module_to_search))
+  File "/usr/lib/python3.10/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/home/intioptima/sidamas/survei/admin.py", line 38, in <module>
+    class tbl_responden_surveiAdminForm(forms.ModelForm):
+  File "/home/intioptima/sidamas/survei/admin.py", line 40, in tbl_responden_surveiAdminForm
+    class Meta:
+  File "/home/intioptima/sidamas/survei/admin.py", line 41, in Meta
+    model = models.tbl_responden_survei
+AttributeError: module 'survei.models' has no attribute 'tbl_responden_survei'. Did you mean: 'DataRespondenSurvei'?
+/home/intioptima/sidamas/survei/admin.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+January 29, 2024 - 13:36:15
+Django version 4.1.7, using settings 'sidamas.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+Internal Server Error: /survey/psm/skm_tes_urine/
+Traceback (most recent call last):
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/db/backends/utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+psycopg2.errors.UndefinedColumn: column survei_tipesurvei.created_by_id does not exist
+LINE 1: ..."."created_at", "survei_tipesurvei"."updated_at", "survei_ti...
+                                                             ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/core/handlers/exception.py", line 56, in inner
+    response = get_response(request)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/views/generic/base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/intioptima/sidamas/survey/views.py", line 24, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/contrib/auth/mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/views/generic/base.py", line 142, in dispatch
+    return handler(request, *args, **kwargs)
+  File "/home/intioptima/sidamas/survey/views.py", line 121, in get
+    tipe_survei = TipeSurvei.objects.get(nama="SKM Tes Urine")
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/db/models/manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/db/models/query.py", line 646, in get
+    num = len(clone)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/db/models/query.py", line 376, in __len__
+    self._fetch_all()
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/db/models/query.py", line 1867, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/db/models/query.py", line 87, in __iter__
+    results = compiler.execute_sql(
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/db/models/sql/compiler.py", line 1398, in execute_sql
+    cursor.execute(sql, params)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/db/backends/utils.py", line 102, in execute
+    return super().execute(sql, params)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/db/backends/utils.py", line 67, in execute
+    return self._execute_with_wrappers(
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/db/backends/utils.py", line 80, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/db/backends/utils.py", line 84, in _execute
+    with self.db.wrap_database_errors:
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/db/backends/utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+django.db.utils.ProgrammingError: column survei_tipesurvei.created_by_id does not exist
+LINE 1: ..."."created_at", "survei_tipesurvei"."updated_at", "survei_ti...
+                                                             ^
+
+[29/Jan/2024 13:36:19] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 500 144950
+[29/Jan/2024 13:36:49] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 67410
+[29/Jan/2024 13:36:49] "GET /static/assets/dashboard/custom/css/custom.css HTTP/1.1" 304 0
+[29/Jan/2024 13:36:50] "GET /static/assets/dashboard/custom/js/dashboard-helpers.js HTTP/1.1" 304 0
+[29/Jan/2024 13:36:59] "GET /survei/api/v1/data_responden_survei/?survei=1 HTTP/1.1" 200 217
+[29/Jan/2024 13:37:04] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 67314
+[29/Jan/2024 13:37:07] "GET /survei/api/v1/data_responden_survei/?survei=1 HTTP/1.1" 200 217
+[29/Jan/2024 13:37:10] "GET /survei/api/v1/data_pengisian_survei/?responden=12 HTTP/1.1" 200 806
+Internal Server Error: /survei/api/v1/data_survei/1/
+Traceback (most recent call last):
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/core/handlers/exception.py", line 56, in inner
+    response = get_response(request)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/views/decorators/csrf.py", line 55, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/mixins.py", line 56, in retrieve
+    return Response(serializer.data)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 555, in data
+    ret = super().data
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 253, in data
+    self._data = self.to_representation(self.instance)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 507, in to_representation
+    for field in fields:
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 368, in _readable_fields
+    for field in self.fields.values():
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/utils/functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 356, in fields
+    for key, value in self.get_fields().items():
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 1076, in get_fields
+    field_class, field_kwargs = self.build_field(
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 1222, in build_field
+    return self.build_unknown_field(field_name, model_class)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 1340, in build_unknown_field
+    raise ImproperlyConfigured(
+django.core.exceptions.ImproperlyConfigured: Field name `status` is not valid for model `DataSurvei`.
+[29/Jan/2024 13:37:16] "GET /survei/api/v1/data_survei/1/ HTTP/1.1" 500 138950
+[29/Jan/2024 13:37:24] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 67314
+[29/Jan/2024 13:37:26] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+Internal Server Error: /survei/api/v1/data_survei/1/
+Traceback (most recent call last):
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/core/handlers/exception.py", line 56, in inner
+    response = get_response(request)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/views/decorators/csrf.py", line 55, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/mixins.py", line 56, in retrieve
+    return Response(serializer.data)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 555, in data
+    ret = super().data
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 253, in data
+    self._data = self.to_representation(self.instance)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 507, in to_representation
+    for field in fields:
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 368, in _readable_fields
+    for field in self.fields.values():
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/utils/functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 356, in fields
+    for key, value in self.get_fields().items():
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 1076, in get_fields
+    field_class, field_kwargs = self.build_field(
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 1222, in build_field
+    return self.build_unknown_field(field_name, model_class)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 1340, in build_unknown_field
+    raise ImproperlyConfigured(
+django.core.exceptions.ImproperlyConfigured: Field name `status` is not valid for model `DataSurvei`.
+[29/Jan/2024 13:37:31] "GET /survei/api/v1/data_survei/1/ HTTP/1.1" 500 138950
+/home/intioptima/sidamas/survei/serializers.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+January 29, 2024 - 13:38:43
+Django version 4.1.7, using settings 'sidamas.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+/home/intioptima/sidamas/survei/admin.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+January 29, 2024 - 13:39:18
+Django version 4.1.7, using settings 'sidamas.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+[29/Jan/2024 13:39:24] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 67314
+[29/Jan/2024 13:39:24] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 13:39:27] "GET /survei/api/v1/data_survei/1/ HTTP/1.1" 200 259
+[29/Jan/2024 13:39:30] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 67314
+[29/Jan/2024 13:39:33] "GET /survei/api/v1/data_survei/1/ HTTP/1.1" 200 259
+[29/Jan/2024 13:39:39] "GET /survei/api/v1/data_responden_survei/?survei=1 HTTP/1.1" 200 217
+[29/Jan/2024 13:39:42] "GET /survei/api/v1/data_pengisian_survei/?responden=12 HTTP/1.1" 200 806
+[29/Jan/2024 13:40:13] "GET /survei/api/v1/data_survei/1/ HTTP/1.1" 200 259
+[29/Jan/2024 13:40:28] "PUT /survei/api/v1/data_survei/1/ HTTP/1.1" 200 259
+[29/Jan/2024 13:40:31] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 67410
+[29/Jan/2024 13:40:37] "GET /survei/api/v1/data_survei/1/ HTTP/1.1" 200 259
+[29/Jan/2024 13:40:45] "PUT /survei/api/v1/data_survei/1/ HTTP/1.1" 200 259
+[29/Jan/2024 13:40:47] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 67457
+[29/Jan/2024 13:40:54] "GET /pengisian-survei/?kode=ABCDEFG10 HTTP/1.1" 200 44418
+[29/Jan/2024 13:40:54] "GET /static/assets/home/css/pages/survei.css HTTP/1.1" 304 0
+[29/Jan/2024 13:40:54] "GET /static/assets/home/js/home-helpers.js HTTP/1.1" 304 0
+[29/Jan/2024 13:41:02] "GET /survei/api/v1/data_survei/?kode=ABCDEFG102 HTTP/1.1" 200 2
+[29/Jan/2024 13:41:08] "GET /survei/api/v1/data_survei/?kode=ABCDEFG10 HTTP/1.1" 200 261
+[29/Jan/2024 13:41:08] "GET /survei/api/v1/tipe_survei/1/ HTTP/1.1" 200 2737
+[29/Jan/2024 13:41:28] "POST /survei/api/v1/data_responden_survei/ HTTP/1.1" 201 215
+[29/Jan/2024 13:41:29] "POST /survei/api/v1/data_pengisian_survei/ HTTP/1.1" 201 804
+[29/Jan/2024 13:41:34] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 67410
+[29/Jan/2024 13:41:37] "GET /survei/api/v1/data_responden_survei/?survei=1 HTTP/1.1" 200 433
+[29/Jan/2024 13:41:41] "GET /survei/api/v1/data_pengisian_survei/?responden=13 HTTP/1.1" 200 806
+/home/intioptima/sidamas/survei/models.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+January 29, 2024 - 13:42:28
+Django version 4.1.7, using settings 'sidamas.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+/home/intioptima/sidamas/survei/models.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+January 29, 2024 - 13:43:00
+Django version 4.1.7, using settings 'sidamas.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+[29/Jan/2024 13:46:47] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 67410
+[29/Jan/2024 13:46:49] "GET /survei/api/v1/data_survei/1/ HTTP/1.1" 200 259
+[29/Jan/2024 13:46:56] "PUT /survei/api/v1/data_survei/1/ HTTP/1.1" 200 259
+[29/Jan/2024 13:46:58] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 67457
+[29/Jan/2024 13:47:08] "GET /pengisian-survei/?kode=ABCDEFG10 HTTP/1.1" 200 44418
+[29/Jan/2024 13:47:09] "GET /static/assets/home/vue/components/survei/Pertanyaan.vue HTTP/1.1" 304 0
+[29/Jan/2024 13:47:09] "GET /static/assets/home/vue/components/survei/pilihan/PilihanJenisKelamin.vue HTTP/1.1" 304 0
+[29/Jan/2024 13:47:09] "GET /static/assets/home/vue/components/survei/ButtonLanjutkan.vue HTTP/1.1" 304 0
+[29/Jan/2024 13:47:09] "GET /static/assets/home/vue/components/survei/pilihan/PilihanPendidikan.vue HTTP/1.1" 304 0
+[29/Jan/2024 13:47:09] "GET /static/assets/home/vue/components/survei/pilihan/PilihanSurvei.vue HTTP/1.1" 304 0
+[29/Jan/2024 13:47:09] "GET /static/assets/home/vue/components/survei/pilihan/PilihanRentangUsia.vue HTTP/1.1" 304 0
+[29/Jan/2024 13:47:09] "GET /static/assets/home/vue/components/survei/ButtonKeluar.vue HTTP/1.1" 304 0
+[29/Jan/2024 13:47:12] "GET /survei/api/v1/data_survei/?kode=ABCDEFG10 HTTP/1.1" 200 261
+[29/Jan/2024 13:47:13] "GET /survei/api/v1/tipe_survei/1/ HTTP/1.1" 200 2737
+[29/Jan/2024 13:48:37] "GET /survei/api/v1/data_responden_survei/?survei=1 HTTP/1.1" 200 433
+[29/Jan/2024 13:48:39] "GET /survei/api/v1/data_pengisian_survei/?responden=13 HTTP/1.1" 200 806
+[29/Jan/2024 13:48:50] "GET /survei/api/v1/data_responden_survei/?survei=1 HTTP/1.1" 200 433
+[29/Jan/2024 13:49:14] "GET /survei/api/v1/data_pengisian_survei/?responden=13 HTTP/1.1" 200 806
+[29/Jan/2024 13:50:47] "GET /survei/api/v1/data_survei/1/ HTTP/1.1" 200 259
+[29/Jan/2024 13:50:53] "GET /survei/api/v1/data_responden_survei/?survei=1 HTTP/1.1" 200 433
+[29/Jan/2024 13:50:55] "GET /survei/api/v1/data_pengisian_survei/?responden=12 HTTP/1.1" 200 806
+[29/Jan/2024 13:51:18] "POST /survei/api/v1/data_responden_survei/ HTTP/1.1" 201 215
+[29/Jan/2024 13:51:18] "POST /survei/api/v1/data_pengisian_survei/ HTTP/1.1" 201 804
+[29/Jan/2024 13:51:21] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 67410
+[29/Jan/2024 13:51:24] "GET /survei/api/v1/data_responden_survei/?survei=1 HTTP/1.1" 200 649
+[29/Jan/2024 13:51:31] "GET /survei/api/v1/data_pengisian_survei/?responden=14 HTTP/1.1" 200 806
+[29/Jan/2024 13:51:52] "GET /survei/api/v1/data_responden_survei/?survei=1 HTTP/1.1" 200 649
+[29/Jan/2024 13:52:56] "GET /pengisian-survei/?kode=ABCDEFG10 HTTP/1.1" 200 44418
+[29/Jan/2024 13:53:01] "GET /survei/api/v1/data_survei/?kode=ABCDEFG102 HTTP/1.1" 200 2
+[29/Jan/2024 13:53:05] "GET /survei/api/v1/data_survei/1/ HTTP/1.1" 200 259
+[29/Jan/2024 13:53:14] "PUT /survei/api/v1/data_survei/1/ HTTP/1.1" 200 259
+[29/Jan/2024 13:53:17] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 67216
+[29/Jan/2024 13:53:22] "GET /pengisian-survei/?kode=ABCDEFG10 HTTP/1.1" 200 44418
+[29/Jan/2024 13:53:28] "GET /survei/api/v1/data_survei/?kode=ABCDEFG10 HTTP/1.1" 200 261
+[29/Jan/2024 13:53:36] "GET /survei/api/v1/data_survei/1/ HTTP/1.1" 200 259
+[29/Jan/2024 13:53:44] "PUT /survei/api/v1/data_survei/1/ HTTP/1.1" 200 259
+[29/Jan/2024 13:53:47] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 67410
+[29/Jan/2024 13:53:53] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 67410
+[29/Jan/2024 13:54:04] "GET /survei/api/v1/data_survei/1/ HTTP/1.1" 200 259
+[29/Jan/2024 13:54:18] "PUT /survei/api/v1/data_survei/1/ HTTP/1.1" 200 259
+[29/Jan/2024 13:54:21] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 67457
+[29/Jan/2024 13:54:33] "GET /survei/api/v1/data_responden_survei/?survei=1 HTTP/1.1" 200 649
+[29/Jan/2024 13:54:43] "GET /survei/api/v1/data_survei/1/ HTTP/1.1" 200 259
+[29/Jan/2024 13:55:02] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 67457
+[29/Jan/2024 13:55:02] "GET /static/assets/dashboard/custom/css/custom.css HTTP/1.1" 304 0
+[29/Jan/2024 13:55:03] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 13:55:12] "GET /survei/api/v1/data_responden_survei/?survei=1 HTTP/1.1" 200 649
+[29/Jan/2024 13:55:18] "DELETE /survei/api/v1/data_responden_survei/12/ HTTP/1.1" 204 0
+[29/Jan/2024 13:55:21] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 67457
+[29/Jan/2024 13:55:24] "GET /survei/api/v1/data_responden_survei/?survei=1 HTTP/1.1" 200 433
+[29/Jan/2024 13:56:11] "GET /survei/api/v1/data_responden_survei/?survei=1 HTTP/1.1" 200 433
+[29/Jan/2024 14:07:50] "GET /pengisian-survei/?kode=ABCDEFG10 HTTP/1.1" 200 44483
+[29/Jan/2024 14:07:53] "GET /static/assets/home/plugins/bootstrap/popper.min.js.map HTTP/1.1" 404 1904
+[29/Jan/2024 14:07:53] "GET /static/assets/home/plugins/bootstrap/bootstrap.min.js.map HTTP/1.1" 404 1913
+[29/Jan/2024 14:07:53] "GET /static/assets/home/plugins/axios/axios.min.js.map HTTP/1.1" 404 1889
+[29/Jan/2024 14:07:53] "GET /static/assets/home/plugins/bootstrap/bootstrap.min.css.map HTTP/1.1" 404 1916
+[29/Jan/2024 14:07:57] "GET /survei/api/v1/data_survei/?kode=ABCDEFG10 HTTP/1.1" 200 261
+[29/Jan/2024 14:07:58] "GET /survei/api/v1/tipe_survei/1/ HTTP/1.1" 200 2737
+/home/intioptima/sidamas/survei/serializers.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+January 29, 2024 - 14:08:30
+Django version 4.1.7, using settings 'sidamas.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+[29/Jan/2024 14:08:38] "GET /pengisian-survei/?kode=ABCDEFG10 HTTP/1.1" 200 44483
+[29/Jan/2024 14:08:39] "GET /static/assets/home/plugins/bootstrap/bootstrap.min.css.map HTTP/1.1" 404 1916
+[29/Jan/2024 14:08:39] "GET /static/assets/home/plugins/bootstrap/popper.min.js.map HTTP/1.1" 404 1904
+[29/Jan/2024 14:08:39] "GET /static/assets/home/plugins/bootstrap/bootstrap.min.js.map HTTP/1.1" 404 1913
+[29/Jan/2024 14:08:39] "GET /static/assets/home/plugins/axios/axios.min.js.map HTTP/1.1" 404 1889
+Internal Server Error: /survei/api/v1/data_survei/
+Traceback (most recent call last):
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/core/handlers/exception.py", line 56, in inner
+    response = get_response(request)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/views/decorators/csrf.py", line 55, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/mixins.py", line 46, in list
+    return Response(serializer.data)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 768, in data
+    ret = super().data
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 253, in data
+    self._data = self.to_representation(self.instance)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 686, in to_representation
+    return [
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 687, in <listcomp>
+    self.child.to_representation(item) for item in iterable
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 507, in to_representation
+    for field in fields:
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 368, in _readable_fields
+    for field in self.fields.values():
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/utils/functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 356, in fields
+    for key, value in self.get_fields().items():
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 1076, in get_fields
+    field_class, field_kwargs = self.build_field(
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 1222, in build_field
+    return self.build_unknown_field(field_name, model_class)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 1340, in build_unknown_field
+    raise ImproperlyConfigured(
+django.core.exceptions.ImproperlyConfigured: Field name `get_jumlah_respondenkode` is not valid for model `DataSurvei`.
+[29/Jan/2024 14:08:44] "GET /survei/api/v1/data_survei/?kode=ABCDEFG10 HTTP/1.1" 500 148998
+/home/intioptima/sidamas/survei/serializers.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+January 29, 2024 - 14:10:56
+Django version 4.1.7, using settings 'sidamas.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+[29/Jan/2024 14:11:05] "GET /pengisian-survei/?kode=ABCDEFG10 HTTP/1.1" 200 44483
+[29/Jan/2024 14:11:06] "GET /static/assets/home/plugins/bootstrap/popper.min.js.map HTTP/1.1" 404 1904
+[29/Jan/2024 14:11:06] "GET /static/assets/home/plugins/bootstrap/bootstrap.min.js.map HTTP/1.1" 404 1913
+[29/Jan/2024 14:11:06] "GET /static/assets/home/plugins/bootstrap/bootstrap.min.css.map HTTP/1.1" 404 1916
+[29/Jan/2024 14:11:06] "GET /static/assets/home/plugins/axios/axios.min.js.map HTTP/1.1" 404 1889
+Internal Server Error: /survei/api/v1/data_survei/
+Traceback (most recent call last):
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/core/handlers/exception.py", line 56, in inner
+    response = get_response(request)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/views/decorators/csrf.py", line 55, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/mixins.py", line 46, in list
+    return Response(serializer.data)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 768, in data
+    ret = super().data
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 253, in data
+    self._data = self.to_representation(self.instance)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 686, in to_representation
+    return [
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 687, in <listcomp>
+    self.child.to_representation(item) for item in iterable
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 507, in to_representation
+    for field in fields:
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 368, in _readable_fields
+    for field in self.fields.values():
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/utils/functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 356, in fields
+    for key, value in self.get_fields().items():
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 1076, in get_fields
+    field_class, field_kwargs = self.build_field(
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 1222, in build_field
+    return self.build_unknown_field(field_name, model_class)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 1340, in build_unknown_field
+    raise ImproperlyConfigured(
+django.core.exceptions.ImproperlyConfigured: Field name `get_jumlah_respondenkode` is not valid for model `DataSurvei`.
+[29/Jan/2024 14:11:10] "GET /survei/api/v1/data_survei/?kode=ABCDEFG10 HTTP/1.1" 500 148998
+/home/intioptima/sidamas/survei/serializers.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+January 29, 2024 - 14:11:50
+Django version 4.1.7, using settings 'sidamas.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+/home/intioptima/sidamas/survei/api.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+January 29, 2024 - 14:12:37
+Django version 4.1.7, using settings 'sidamas.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+/home/intioptima/sidamas/survei/api.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+January 29, 2024 - 14:14:09
+Django version 4.1.7, using settings 'sidamas.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+[29/Jan/2024 14:14:11] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 67457
+[29/Jan/2024 14:14:11] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 14:14:15] "GET /survei/api/v1/ HTTP/1.1" 200 10861
+[29/Jan/2024 14:14:18] "GET /survei/api/v1/data_survei/ HTTP/1.1" 200 17364
+/home/intioptima/sidamas/survei/serializers.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+January 29, 2024 - 14:15:50
+Django version 4.1.7, using settings 'sidamas.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+/home/intioptima/sidamas/survei/api.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+January 29, 2024 - 14:16:00
+Django version 4.1.7, using settings 'sidamas.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+[29/Jan/2024 14:16:05] "GET /survei/api/v1/data_survei/ HTTP/1.1" 200 17364
+[29/Jan/2024 14:16:08] "GET /survei/api/v1/data_survei/ HTTP/1.1" 200 17364
+[29/Jan/2024 14:16:11] "GET /survei/api/v1/data_survei/1/ HTTP/1.1" 200 17863
+/home/intioptima/sidamas/survei/serializers.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+January 29, 2024 - 14:17:08
+Django version 4.1.7, using settings 'sidamas.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+[29/Jan/2024 14:17:13] "GET /survei/api/v1/data_survei/1/ HTTP/1.1" 200 17908
+[29/Jan/2024 14:17:17] "GET /survei/api/v1/data_survei/ HTTP/1.1" 200 17503
+/home/intioptima/sidamas/survei/api.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+January 29, 2024 - 14:17:28
+Django version 4.1.7, using settings 'sidamas.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+/home/intioptima/sidamas/survei/models.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+Exception in thread django-main-thread:
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/threading.py", line 1016, in _bootstrap_inner
+    self.run()
+  File "/usr/lib/python3.10/threading.py", line 953, in run
+    self._target(*self._args, **self._kwargs)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/utils/autoreload.py", line 64, in wrapper
+    fn(*args, **kwargs)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/core/management/commands/runserver.py", line 134, in inner_run
+    self.check(display_num_errors=True)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/core/management/base.py", line 546, in check
+    raise SystemCheckError(msg)
+django.core.management.base.SystemCheckError: SystemCheckError: System check identified some issues:
+
+ERRORS:
+<class 'survei.admin.DataSurveiAdmin'>: (admin.E108) The value of 'list_display[5]' refers to 'jumlah_responden', which is not a callable, an attribute of 'DataSurveiAdmin', or an attribute or method on 'survei.DataSurvei'.
+
+System check identified 1 issue (0 silenced).
+/home/intioptima/sidamas/survei/models.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+Exception in thread django-main-thread:
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/threading.py", line 1016, in _bootstrap_inner
+    self.run()
+  File "/usr/lib/python3.10/threading.py", line 953, in run
+    self._target(*self._args, **self._kwargs)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/utils/autoreload.py", line 64, in wrapper
+    fn(*args, **kwargs)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/core/management/commands/runserver.py", line 134, in inner_run
+    self.check(display_num_errors=True)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/core/management/base.py", line 546, in check
+    raise SystemCheckError(msg)
+django.core.management.base.SystemCheckError: SystemCheckError: System check identified some issues:
+
+ERRORS:
+<class 'survei.admin.DataSurveiAdmin'>: (admin.E108) The value of 'list_display[5]' refers to 'jumlah_responden', which is not a callable, an attribute of 'DataSurveiAdmin', or an attribute or method on 'survei.DataSurvei'.
+
+System check identified 1 issue (0 silenced).
+/home/intioptima/sidamas/survei/admin.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+January 29, 2024 - 14:22:22
+Django version 4.1.7, using settings 'sidamas.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+Internal Server Error: /survei/api/v1/data_survei/
+Traceback (most recent call last):
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/core/handlers/exception.py", line 56, in inner
+    response = get_response(request)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/views/decorators/csrf.py", line 55, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/mixins.py", line 46, in list
+    return Response(serializer.data)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 768, in data
+    ret = super().data
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 253, in data
+    self._data = self.to_representation(self.instance)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 686, in to_representation
+    return [
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 687, in <listcomp>
+    self.child.to_representation(item) for item in iterable
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 507, in to_representation
+    for field in fields:
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 368, in _readable_fields
+    for field in self.fields.values():
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/utils/functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 356, in fields
+    for key, value in self.get_fields().items():
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 1076, in get_fields
+    field_class, field_kwargs = self.build_field(
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 1222, in build_field
+    return self.build_unknown_field(field_name, model_class)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 1340, in build_unknown_field
+    raise ImproperlyConfigured(
+django.core.exceptions.ImproperlyConfigured: Field name `jumlah_responden` is not valid for model `DataSurvei`.
+[29/Jan/2024 14:32:21] "GET /survei/api/v1/data_survei/ HTTP/1.1" 500 148586
+/home/intioptima/sidamas/survei/serializers.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+January 29, 2024 - 14:33:31
+Django version 4.1.7, using settings 'sidamas.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+/home/intioptima/sidamas/survei/serializers.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+January 29, 2024 - 14:33:56
+Django version 4.1.7, using settings 'sidamas.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+/home/intioptima/sidamas/survei/serializers.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+January 29, 2024 - 14:34:05
+Django version 4.1.7, using settings 'sidamas.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+/home/intioptima/sidamas/survei/serializers.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+January 29, 2024 - 14:34:56
+Django version 4.1.7, using settings 'sidamas.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+Internal Server Error: /survei/api/v1/data_survei/
+Traceback (most recent call last):
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/core/handlers/exception.py", line 56, in inner
+    response = get_response(request)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/views/decorators/csrf.py", line 55, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/mixins.py", line 46, in list
+    return Response(serializer.data)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 768, in data
+    ret = super().data
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 253, in data
+    self._data = self.to_representation(self.instance)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 686, in to_representation
+    return [
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 687, in <listcomp>
+    self.child.to_representation(item) for item in iterable
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 507, in to_representation
+    for field in fields:
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 368, in _readable_fields
+    for field in self.fields.values():
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/utils/functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 356, in fields
+    for key, value in self.get_fields().items():
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 1076, in get_fields
+    field_class, field_kwargs = self.build_field(
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 1222, in build_field
+    return self.build_unknown_field(field_name, model_class)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 1340, in build_unknown_field
+    raise ImproperlyConfigured(
+django.core.exceptions.ImproperlyConfigured: Field name `jumlah_responden` is not valid for model `DataSurvei`.
+[29/Jan/2024 14:35:15] "GET /survei/api/v1/data_survei/ HTTP/1.1" 500 149186
+Internal Server Error: /survei/api/v1/data_survei/
+Traceback (most recent call last):
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/core/handlers/exception.py", line 56, in inner
+    response = get_response(request)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/views/decorators/csrf.py", line 55, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/mixins.py", line 46, in list
+    return Response(serializer.data)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 768, in data
+    ret = super().data
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 253, in data
+    self._data = self.to_representation(self.instance)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 686, in to_representation
+    return [
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 687, in <listcomp>
+    self.child.to_representation(item) for item in iterable
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 507, in to_representation
+    for field in fields:
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 368, in _readable_fields
+    for field in self.fields.values():
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/utils/functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 356, in fields
+    for key, value in self.get_fields().items():
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 1076, in get_fields
+    field_class, field_kwargs = self.build_field(
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 1222, in build_field
+    return self.build_unknown_field(field_name, model_class)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 1340, in build_unknown_field
+    raise ImproperlyConfigured(
+django.core.exceptions.ImproperlyConfigured: Field name `jumlah_responden` is not valid for model `DataSurvei`.
+[29/Jan/2024 14:35:17] "GET /survei/api/v1/data_survei/ HTTP/1.1" 500 149186
+Internal Server Error: /survei/api/v1/data_survei/
+Traceback (most recent call last):
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/core/handlers/exception.py", line 56, in inner
+    response = get_response(request)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/views/decorators/csrf.py", line 55, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/mixins.py", line 46, in list
+    return Response(serializer.data)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 768, in data
+    ret = super().data
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 253, in data
+    self._data = self.to_representation(self.instance)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 686, in to_representation
+    return [
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 687, in <listcomp>
+    self.child.to_representation(item) for item in iterable
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 507, in to_representation
+    for field in fields:
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 368, in _readable_fields
+    for field in self.fields.values():
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/utils/functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 356, in fields
+    for key, value in self.get_fields().items():
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 1076, in get_fields
+    field_class, field_kwargs = self.build_field(
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 1222, in build_field
+    return self.build_unknown_field(field_name, model_class)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 1340, in build_unknown_field
+    raise ImproperlyConfigured(
+django.core.exceptions.ImproperlyConfigured: Field name `jumlah_responden` is not valid for model `DataSurvei`.
+[29/Jan/2024 14:37:18] "GET /survei/api/v1/data_survei/ HTTP/1.1" 500 149186
+[29/Jan/2024 14:37:24] "GET /survei/api/v1/ HTTP/1.1" 200 10861
+[29/Jan/2024 14:37:27] "GET /survei/api/v1/data_pengisian_survei/ HTTP/1.1" 200 18744
+Internal Server Error: /survei/api/v1/data_survei/
+Traceback (most recent call last):
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/core/handlers/exception.py", line 56, in inner
+    response = get_response(request)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/views/decorators/csrf.py", line 55, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/mixins.py", line 46, in list
+    return Response(serializer.data)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 768, in data
+    ret = super().data
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 253, in data
+    self._data = self.to_representation(self.instance)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 686, in to_representation
+    return [
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 687, in <listcomp>
+    self.child.to_representation(item) for item in iterable
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 507, in to_representation
+    for field in fields:
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 368, in _readable_fields
+    for field in self.fields.values():
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/utils/functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 356, in fields
+    for key, value in self.get_fields().items():
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 1076, in get_fields
+    field_class, field_kwargs = self.build_field(
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 1222, in build_field
+    return self.build_unknown_field(field_name, model_class)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 1340, in build_unknown_field
+    raise ImproperlyConfigured(
+django.core.exceptions.ImproperlyConfigured: Field name `jumlah_responden` is not valid for model `DataSurvei`.
+[29/Jan/2024 14:37:31] "GET /survei/api/v1/data_survei/ HTTP/1.1" 500 149211
+/home/intioptima/sidamas/survei/serializers.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+January 29, 2024 - 14:38:12
+Django version 4.1.7, using settings 'sidamas.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+[29/Jan/2024 14:38:13] "GET /survei/api/v1/data_survei/ HTTP/1.1" 200 17497
+[29/Jan/2024 14:38:13] "GET /survei/api/v1/data_survei/ HTTP/1.1" 200 17497
+/home/intioptima/sidamas/survei/serializers.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+January 29, 2024 - 14:38:24
+Django version 4.1.7, using settings 'sidamas.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+Internal Server Error: /survei/api/v1/data_survei/
+Traceback (most recent call last):
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/core/handlers/exception.py", line 56, in inner
+    response = get_response(request)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/views/decorators/csrf.py", line 55, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/mixins.py", line 46, in list
+    return Response(serializer.data)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 768, in data
+    ret = super().data
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 253, in data
+    self._data = self.to_representation(self.instance)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 686, in to_representation
+    return [
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 687, in <listcomp>
+    self.child.to_representation(item) for item in iterable
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 507, in to_representation
+    for field in fields:
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 368, in _readable_fields
+    for field in self.fields.values():
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/utils/functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 356, in fields
+    for key, value in self.get_fields().items():
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 1076, in get_fields
+    field_class, field_kwargs = self.build_field(
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 1222, in build_field
+    return self.build_unknown_field(field_name, model_class)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 1340, in build_unknown_field
+    raise ImproperlyConfigured(
+django.core.exceptions.ImproperlyConfigured: Field name `jumlah_responden` is not valid for model `DataSurvei`.
+[29/Jan/2024 14:38:25] "GET /survei/api/v1/data_survei/ HTTP/1.1" 500 149348
+Internal Server Error: /survei/api/v1/data_survei/
+Traceback (most recent call last):
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/core/handlers/exception.py", line 56, in inner
+    response = get_response(request)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/views/decorators/csrf.py", line 55, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/mixins.py", line 46, in list
+    return Response(serializer.data)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 768, in data
+    ret = super().data
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 253, in data
+    self._data = self.to_representation(self.instance)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 686, in to_representation
+    return [
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 687, in <listcomp>
+    self.child.to_representation(item) for item in iterable
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 507, in to_representation
+    for field in fields:
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 368, in _readable_fields
+    for field in self.fields.values():
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/utils/functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 356, in fields
+    for key, value in self.get_fields().items():
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 1076, in get_fields
+    field_class, field_kwargs = self.build_field(
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 1222, in build_field
+    return self.build_unknown_field(field_name, model_class)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 1340, in build_unknown_field
+    raise ImproperlyConfigured(
+django.core.exceptions.ImproperlyConfigured: Field name `jumlah_responden` is not valid for model `DataSurvei`.
+[29/Jan/2024 14:38:25] "GET /survei/api/v1/data_survei/ HTTP/1.1" 500 149348
+/home/intioptima/sidamas/survei/serializers.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+January 29, 2024 - 14:38:34
+Django version 4.1.7, using settings 'sidamas.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+[29/Jan/2024 14:38:51] "GET /survei/api/v1/data_survei/ HTTP/1.1" 200 17497
+[29/Jan/2024 14:39:14] "GET /pengisian-survei/?kode=ABCDEFG10 HTTP/1.1" 200 45313
+[29/Jan/2024 14:39:15] "GET /static/assets/home/css/main.css HTTP/1.1" 304 0
+[29/Jan/2024 14:39:18] "GET /static/assets/home/plugins/bootstrap/bootstrap.min.js.map HTTP/1.1" 404 1913
+[29/Jan/2024 14:39:18] "GET /static/assets/home/plugins/bootstrap/popper.min.js.map HTTP/1.1" 404 1904
+[29/Jan/2024 14:39:18] "GET /static/assets/home/plugins/bootstrap/bootstrap.min.css.map HTTP/1.1" 404 1916
+[29/Jan/2024 14:39:18] "GET /static/assets/home/plugins/axios/axios.min.js.map HTTP/1.1" 404 1889
+[29/Jan/2024 14:39:23] "GET /survei/api/v1/data_survei/?kode=ABCDEFG10 HTTP/1.1" 200 285
+[29/Jan/2024 14:39:23] "GET /survei/api/v1/tipe_survei/1/ HTTP/1.1" 200 2737
+[29/Jan/2024 14:39:41] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 67304
+[29/Jan/2024 14:39:41] "GET /static/assets/dashboard/custom/css/custom.css HTTP/1.1" 304 0
+[29/Jan/2024 14:39:41] "GET /static/assets/dashboard/vendor/libs/datatables-bs5/datatables.bootstrap5.css HTTP/1.1" 304 0
+[29/Jan/2024 14:39:41] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 14:40:06] "GET /survei/api/v1/data_survei/1/ HTTP/1.1" 200 283
+[29/Jan/2024 14:40:15] "PUT /survei/api/v1/data_survei/1/ HTTP/1.1" 200 283
+[29/Jan/2024 14:40:17] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 67257
+[29/Jan/2024 14:40:18] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 14:40:22] "GET /survei/api/v1/data_responden_survei/?survei=1 HTTP/1.1" 200 433
+[29/Jan/2024 14:40:29] "GET /pengisian-survei/?kode=ABCDEFG10 HTTP/1.1" 200 45313
+[29/Jan/2024 14:40:29] "GET /static/assets/home/plugins/bootstrap/bootstrap.min.css.map HTTP/1.1" 404 1916
+[29/Jan/2024 14:40:30] "GET /static/assets/home/plugins/bootstrap/popper.min.js.map HTTP/1.1" 404 1904
+[29/Jan/2024 14:40:30] "GET /static/assets/home/plugins/bootstrap/bootstrap.min.js.map HTTP/1.1" 404 1913
+[29/Jan/2024 14:40:30] "GET /static/assets/home/plugins/axios/axios.min.js.map HTTP/1.1" 404 1889
+[29/Jan/2024 14:40:34] "GET /survei/api/v1/data_survei/?kode=ABCDEFG10 HTTP/1.1" 200 285
+[29/Jan/2024 14:41:12] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 67261
+[29/Jan/2024 14:44:34] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 64985
+[29/Jan/2024 14:44:34] "GET /static/assets/dashboard/custom/js/dashboard-helpers.js HTTP/1.1" 304 0
+[29/Jan/2024 14:44:34] "GET /survei/api/v1/data_survei/?_=1706514274576 HTTP/1.1" 200 850
+[29/Jan/2024 14:44:37] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 14:46:09] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 65047
+[29/Jan/2024 14:46:09] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 14:46:11] "GET /survei/api/v1/data_survei/?_=1706514370329 HTTP/1.1" 200 850
+Internal Server Error: /survei/api/v1/data_responden_survei/
+Traceback (most recent call last):
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/db/models/fields/__init__.py", line 2018, in get_prep_value
+    return int(value)
+ValueError: invalid literal for int() with base 10: 'undefined'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/core/handlers/exception.py", line 56, in inner
+    response = get_response(request)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/views/decorators/csrf.py", line 55, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/mixins.py", line 38, in list
+    queryset = self.filter_queryset(self.get_queryset())
+  File "/home/intioptima/sidamas/survei/api.py", line 44, in get_queryset
+    return models.DataRespondenSurvei.objects.filter(survei=survei_id)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/db/models/manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/db/models/query.py", line 1421, in filter
+    return self._filter_or_exclude(False, args, kwargs)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/db/models/query.py", line 1439, in _filter_or_exclude
+    clone._filter_or_exclude_inplace(negate, args, kwargs)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/db/models/query.py", line 1446, in _filter_or_exclude_inplace
+    self._query.add_q(Q(*args, **kwargs))
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/db/models/sql/query.py", line 1532, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/db/models/sql/query.py", line 1562, in _add_q
+    child_clause, needed_inner = self.build_filter(
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/db/models/sql/query.py", line 1478, in build_filter
+    condition = self.build_lookup(lookups, col, value)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/db/models/sql/query.py", line 1303, in build_lookup
+    lookup = lookup_class(lhs, rhs)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/db/models/lookups.py", line 27, in __init__
+    self.rhs = self.get_prep_lookup()
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/db/models/fields/related_lookups.py", line 166, in get_prep_lookup
+    self.rhs = target_field.get_prep_value(self.rhs)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/db/models/fields/__init__.py", line 2020, in get_prep_value
+    raise e.__class__(
+ValueError: Field 'id' expected a number but got 'undefined'.
+[29/Jan/2024 14:46:17] "GET /survei/api/v1/data_responden_survei/?survei=undefined HTTP/1.1" 500 152577
+[29/Jan/2024 14:46:19] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 65047
+[29/Jan/2024 14:46:20] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 14:46:21] "GET /survei/api/v1/data_survei/?_=1706514380632 HTTP/1.1" 200 850
+Not Found: /survei/api/v1/data_survei/undefined/
+[29/Jan/2024 14:46:25] "GET /survei/api/v1/data_survei/undefined/ HTTP/1.1" 404 23
+[29/Jan/2024 14:46:29] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 65047
+[29/Jan/2024 14:46:30] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 14:46:31] "GET /survei/api/v1/data_survei/?_=1706514390623 HTTP/1.1" 200 850
+[29/Jan/2024 14:47:27] "GET /kegiatan/psm/workshop_penggiat/ HTTP/1.1" 200 73422
+[29/Jan/2024 14:47:30] "GET /static/assets/dashboard/vendor/fonts/fontawesome.css HTTP/1.1" 200 101301
+[29/Jan/2024 14:47:30] "GET /static/assets/dashboard/vendor/fonts/tabler-icons.css HTTP/1.1" 200 178068
+[29/Jan/2024 14:47:30] "GET /static/assets/dashboard/css/demo.css HTTP/1.1" 200 3376
+[29/Jan/2024 14:47:30] "GET /static/assets/dashboard/vendor/fonts/flag-icons.css HTTP/1.1" 200 26085
+[29/Jan/2024 14:47:30] "GET /static/assets/dashboard/vendor/css/rtl/theme-semi-dark.css HTTP/1.1" 200 54722
+[29/Jan/2024 14:47:30] "GET /static/assets/home/plugins/sweet-alert/all.min.css HTTP/1.1" 200 31008
+[29/Jan/2024 14:47:30] "GET /static/assets/dashboard/vendor/libs/toastr/toastr.css HTTP/1.1" 200 11411
+[29/Jan/2024 14:47:30] "GET /static/assets/dashboard/custom/css/custom.css HTTP/1.1" 200 3166
+[29/Jan/2024 14:47:30] "GET /static/assets/dashboard/vendor/css/rtl/core.css HTTP/1.1" 200 716009
+[29/Jan/2024 14:47:30] "GET /static/assets/dashboard/custom/css/psm.css HTTP/1.1" 200 1871
+[29/Jan/2024 14:47:30] "GET /static/assets/dashboard/vendor/libs/node-waves/node-waves.css HTTP/1.1" 200 4080
+[29/Jan/2024 14:47:30] "GET /static/assets/dashboard/vendor/libs/perfect-scrollbar/perfect-scrollbar.css HTTP/1.1" 200 5474
+[29/Jan/2024 14:47:30] "GET /static/assets/dashboard/vendor/libs/typeahead-js/typeahead.css HTTP/1.1" 200 1812
+[29/Jan/2024 14:47:30] "GET /static/assets/dashboard/vendor/libs/apex-charts/apex-charts.css HTTP/1.1" 200 19809
+[29/Jan/2024 14:47:30] "GET /static/assets/dashboard/vendor/libs/swiper/swiper.css HTTP/1.1" 200 19655
+[29/Jan/2024 14:47:30] "GET /static/assets/dashboard/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css HTTP/1.1" 200 4885
+[29/Jan/2024 14:47:30] "GET /static/assets/dashboard/vendor/libs/datatables-bs5/datatables.bootstrap5.css HTTP/1.1" 200 22799
+[29/Jan/2024 14:47:30] "GET /static/assets/dashboard/vendor/libs/datatables-checkboxes-jquery/datatables.checkboxes.css HTTP/1.1" 200 511
+[29/Jan/2024 14:47:30] "GET /static/assets/dashboard/vendor/css/pages/cards-advance.css HTTP/1.1" 200 1609
+[29/Jan/2024 14:47:30] "GET /static/assets/dashboard/vendor/libs/select2/select2.css HTTP/1.1" 200 24453
+[29/Jan/2024 14:47:30] "GET /static/assets/home/plugins/sweet-alert/all.min.js HTTP/1.1" 200 69996
+[29/Jan/2024 14:47:30] "GET /static/assets/dashboard/vendor/libs/jquery/jquery.min.js HTTP/1.1" 200 87533
+[29/Jan/2024 14:47:30] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js HTTP/1.1" 200 33621
+[29/Jan/2024 14:47:31] "GET /static/assets/dashboard/js/bawaan/config.js HTTP/1.1" 200 1695
+[29/Jan/2024 14:47:31] "GET /static/assets/dashboard/vendor/js/helpers.js HTTP/1.1" 200 37423
+[29/Jan/2024 14:47:31] "GET /static/assets/images/bnn.png HTTP/1.1" 200 22974
+[29/Jan/2024 14:47:31] "GET /media/images/avatar.png HTTP/1.1" 200 7824
+[29/Jan/2024 14:47:31] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 14:47:31] "GET /static/assets/dashboard/vendor/libs/popper/popper.js HTTP/1.1" 200 20791
+[29/Jan/2024 14:47:31] "GET /static/assets/dashboard/vendor/libs/jquery/jquery.js HTTP/1.1" 200 88114
+[29/Jan/2024 14:47:31] "GET /static/assets/dashboard/vendor/js/bootstrap.js HTTP/1.1" 200 99223
+[29/Jan/2024 14:47:31] "GET /static/assets/dashboard/vendor/libs/node-waves/node-waves.js HTTP/1.1" 200 7575
+[29/Jan/2024 14:47:31] "GET /static/assets/dashboard/vendor/libs/perfect-scrollbar/perfect-scrollbar.js HTTP/1.1" 200 19579
+[29/Jan/2024 14:47:31] "GET /static/assets/dashboard/vendor/libs/hammer/hammer.js HTTP/1.1" 200 21150
+[29/Jan/2024 14:47:31] "GET /static/assets/dashboard/vendor/js/menu.js HTTP/1.1" 200 21666
+[29/Jan/2024 14:47:31] "GET /static/assets/dashboard/vendor/libs/i18n/i18n.js HTTP/1.1" 200 71850
+[29/Jan/2024 14:47:31] "GET /static/assets/dashboard/vendor/libs/swiper/swiper.js HTTP/1.1" 200 139411
+[29/Jan/2024 14:47:31] "GET /static/assets/dashboard/vendor/libs/typeahead-js/typeahead.js HTTP/1.1" 200 40322
+[29/Jan/2024 14:47:31] "GET /static/assets/dashboard/vendor/libs/select2/select2.js HTTP/1.1" 200 80459
+[29/Jan/2024 14:47:31] "GET /static/assets/dashboard/vendor/libs/toastr/toastr.js HTTP/1.1" 200 5958
+[29/Jan/2024 14:47:31] "GET /static/assets/dashboard/vendor/libs/cleave/dist/cleave.min.js HTTP/1.1" 200 21133
+[29/Jan/2024 14:47:31] "GET /static/assets/dashboard/vendor/libs/cleave/dist/addons/cleave-phone.id.js HTTP/1.1" 200 14725
+[29/Jan/2024 14:47:31] "GET /static/assets/dashboard/vendor/libs/bootstrap-maxlength/bootstrap-maxlength.js HTTP/1.1" 200 5951
+[29/Jan/2024 14:47:31] "GET /static/assets/dashboard/vendor/libs/datatables-bs5/datatables-bootstrap5.js HTTP/1.1" 200 89645
+[29/Jan/2024 14:47:32] "GET /static/assets/dashboard/js/bawaan/main.js HTTP/1.1" 200 19111
+[29/Jan/2024 14:47:32] "GET /static/assets/dashboard/custom/js/dashboard-helpers.js HTTP/1.1" 200 4260
+[29/Jan/2024 14:47:32] "GET /static/assets/dashboard/custom/js/custom.js HTTP/1.1" 200 2219
+[29/Jan/2024 14:47:32] "GET /static/assets/dashboard/vendor/libs/moment/moment.js HTTP/1.1" 200 297837
+[29/Jan/2024 14:47:32] "GET /static/assets/dashboard/custom/js/fix-select.js HTTP/1.1" 200 1254
+[29/Jan/2024 14:47:32] "GET /static/assets/dashboard/custom/js/kegiatan_helpers.js HTTP/1.1" 200 1572
+[29/Jan/2024 14:47:32] "GET /static/assets/dashboard/vendor/fonts/fontawesome/fa-solid-900.woff2 HTTP/1.1" 200 150020
+[29/Jan/2024 14:47:32] "GET /static/assets/dashboard/vendor/fonts/tabler/tabler-icons.woff2 HTTP/1.1" 200 702272
+[29/Jan/2024 14:47:33] "GET /static/assets/dashboard/json/locales/en.json HTTP/1.1" 200 55
+[29/Jan/2024 14:47:33] "GET /static/assets/images/bnn.png HTTP/1.1" 200 22974
+Not Found: /google.com:443
+[29/Jan/2024 14:47:34] "CONNECT google.com:443 HTTP/1.1" 404 1791
+[29/Jan/2024 14:48:17] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 65212
+[29/Jan/2024 14:48:17] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 14:48:19] "GET /survei/api/v1/data_survei/?_=1706514498053 HTTP/1.1" 200 850
+[29/Jan/2024 14:48:29] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 65192
+[29/Jan/2024 14:48:29] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 14:48:30] "GET /survei/api/v1/data_survei/?_=1706514509733 HTTP/1.1" 200 850
+[29/Jan/2024 14:48:44] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 65047
+[29/Jan/2024 14:48:44] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 14:48:45] "GET /survei/api/v1/data_survei/?_=1706514525310 HTTP/1.1" 200 850
+[29/Jan/2024 14:48:50] "GET /survei/api/v1/data_survei/1/ HTTP/1.1" 200 283
+[29/Jan/2024 14:48:54] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 65047
+[29/Jan/2024 14:48:54] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 14:48:55] "GET /survei/api/v1/data_survei/?_=1706514534980 HTTP/1.1" 200 850
+[29/Jan/2024 14:49:24] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 65085
+[29/Jan/2024 14:49:24] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 14:49:25] "GET /survei/api/v1/data_survei/?_=1706514565117 HTTP/1.1" 200 850
+/home/intioptima/sidamas/survei/serializers.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+January 29, 2024 - 14:50:17
+Django version 4.1.7, using settings 'sidamas.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+[29/Jan/2024 14:50:31] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 65085
+[29/Jan/2024 14:50:33] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+Internal Server Error: /survei/api/v1/data_survei/
+Traceback (most recent call last):
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/core/handlers/exception.py", line 56, in inner
+    response = get_response(request)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/views/decorators/csrf.py", line 55, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/mixins.py", line 46, in list
+    return Response(serializer.data)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 768, in data
+    ret = super().data
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 253, in data
+    self._data = self.to_representation(self.instance)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 686, in to_representation
+    return [
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 687, in <listcomp>
+    self.child.to_representation(item) for item in iterable
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 507, in to_representation
+    for field in fields:
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 368, in _readable_fields
+    for field in self.fields.values():
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/utils/functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 356, in fields
+    for key, value in self.get_fields().items():
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 1076, in get_fields
+    field_class, field_kwargs = self.build_field(
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 1222, in build_field
+    return self.build_unknown_field(field_name, model_class)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 1340, in build_unknown_field
+    raise ImproperlyConfigured(
+django.core.exceptions.ImproperlyConfigured: Field name `get_status_keberlangsungantipe` is not valid for model `DataSurvei`.
+[29/Jan/2024 14:50:35] "GET /survei/api/v1/data_survei/?_=1706514634157 HTTP/1.1" 500 149863
+/home/intioptima/sidamas/survei/serializers.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+January 29, 2024 - 14:51:06
+Django version 4.1.7, using settings 'sidamas.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+/home/intioptima/sidamas/survei/serializers.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+January 29, 2024 - 14:51:10
+Django version 4.1.7, using settings 'sidamas.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+[29/Jan/2024 14:51:11] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 65085
+[29/Jan/2024 14:51:12] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+Internal Server Error: /survei/api/v1/data_survei/
+Traceback (most recent call last):
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/core/handlers/exception.py", line 56, in inner
+    response = get_response(request)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/views/decorators/csrf.py", line 55, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/mixins.py", line 46, in list
+    return Response(serializer.data)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 768, in data
+    ret = super().data
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 253, in data
+    self._data = self.to_representation(self.instance)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 686, in to_representation
+    return [
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 687, in <listcomp>
+    self.child.to_representation(item) for item in iterable
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 507, in to_representation
+    for field in fields:
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 368, in _readable_fields
+    for field in self.fields.values():
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/utils/functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 356, in fields
+    for key, value in self.get_fields().items():
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 1076, in get_fields
+    field_class, field_kwargs = self.build_field(
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 1222, in build_field
+    return self.build_unknown_field(field_name, model_class)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 1340, in build_unknown_field
+    raise ImproperlyConfigured(
+django.core.exceptions.ImproperlyConfigured: Field name `get_status_keberlangsungan_surveitipe` is not valid for model `DataSurvei`.
+[29/Jan/2024 14:51:13] "GET /survei/api/v1/data_survei/?_=1706514672925 HTTP/1.1" 500 150024
+/home/intioptima/sidamas/survei/serializers.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+January 29, 2024 - 14:52:26
+Django version 4.1.7, using settings 'sidamas.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+[29/Jan/2024 14:52:27] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 65085
+[29/Jan/2024 14:52:28] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+Internal Server Error: /survei/api/v1/data_survei/
+Traceback (most recent call last):
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/core/handlers/exception.py", line 56, in inner
+    response = get_response(request)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/views/decorators/csrf.py", line 55, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/mixins.py", line 46, in list
+    return Response(serializer.data)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 768, in data
+    ret = super().data
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 253, in data
+    self._data = self.to_representation(self.instance)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 686, in to_representation
+    return [
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 687, in <listcomp>
+    self.child.to_representation(item) for item in iterable
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 507, in to_representation
+    for field in fields:
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 368, in _readable_fields
+    for field in self.fields.values():
+  File "/home/intioptima/.local/lib/python3.10/site-packages/django/utils/functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 356, in fields
+    for key, value in self.get_fields().items():
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 1076, in get_fields
+    field_class, field_kwargs = self.build_field(
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 1222, in build_field
+    return self.build_unknown_field(field_name, model_class)
+  File "/home/intioptima/.local/lib/python3.10/site-packages/rest_framework/serializers.py", line 1340, in build_unknown_field
+    raise ImproperlyConfigured(
+django.core.exceptions.ImproperlyConfigured: Field name `get_status_surveitipe` is not valid for model `DataSurvei`.
+[29/Jan/2024 14:52:29] "GET /survei/api/v1/data_survei/?_=1706514748896 HTTP/1.1" 500 149656
+[29/Jan/2024 14:52:51] "GET /kegiatan/psm/workshop_penggiat/ HTTP/1.1" 200 74451
+[29/Jan/2024 14:52:53] "GET /static/assets/dashboard/vendor/fonts/fontawesome.css HTTP/1.1" 200 101301
+[29/Jan/2024 14:52:53] "GET /static/assets/dashboard/css/demo.css HTTP/1.1" 200 3376
+[29/Jan/2024 14:52:53] "GET /static/assets/dashboard/vendor/fonts/flag-icons.css HTTP/1.1" 200 26085
+[29/Jan/2024 14:52:53] "GET /static/assets/dashboard/vendor/css/rtl/theme-semi-dark.css HTTP/1.1" 200 54722
+[29/Jan/2024 14:52:53] "GET /static/assets/dashboard/vendor/fonts/tabler-icons.css HTTP/1.1" 200 178068
+[29/Jan/2024 14:52:53] "GET /static/assets/home/plugins/sweet-alert/all.min.css HTTP/1.1" 200 31008
+[29/Jan/2024 14:52:53] "GET /static/assets/dashboard/vendor/libs/toastr/toastr.css HTTP/1.1" 200 11411
+[29/Jan/2024 14:52:53] "GET /static/assets/dashboard/custom/css/custom.css HTTP/1.1" 200 3166
+[29/Jan/2024 14:52:53] "GET /static/assets/dashboard/custom/css/psm.css HTTP/1.1" 200 1871
+[29/Jan/2024 14:52:53] "GET /static/assets/dashboard/vendor/libs/node-waves/node-waves.css HTTP/1.1" 200 4080
+[29/Jan/2024 14:52:53] "GET /static/assets/dashboard/vendor/libs/typeahead-js/typeahead.css HTTP/1.1" 200 1812
+[29/Jan/2024 14:52:53] "GET /static/assets/dashboard/vendor/libs/perfect-scrollbar/perfect-scrollbar.css HTTP/1.1" 200 5474
+[29/Jan/2024 14:52:53] "GET /static/assets/dashboard/vendor/libs/apex-charts/apex-charts.css HTTP/1.1" 200 19809
+[29/Jan/2024 14:52:53] "GET /static/assets/dashboard/vendor/css/rtl/core.css HTTP/1.1" 200 716009
+[29/Jan/2024 14:52:53] "GET /static/assets/dashboard/vendor/libs/swiper/swiper.css HTTP/1.1" 200 19655
+[29/Jan/2024 14:52:53] "GET /static/assets/dashboard/vendor/libs/datatables-bs5/datatables.bootstrap5.css HTTP/1.1" 200 22799
+[29/Jan/2024 14:52:53] "GET /static/assets/dashboard/vendor/libs/datatables-checkboxes-jquery/datatables.checkboxes.css HTTP/1.1" 200 511
+[29/Jan/2024 14:52:53] "GET /static/assets/dashboard/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css HTTP/1.1" 200 4885
+[29/Jan/2024 14:52:53] "GET /static/assets/dashboard/vendor/css/pages/cards-advance.css HTTP/1.1" 200 1609
+[29/Jan/2024 14:52:53] "GET /static/assets/dashboard/vendor/libs/select2/select2.css HTTP/1.1" 200 24453
+[29/Jan/2024 14:52:53] "GET /static/assets/home/plugins/sweet-alert/all.min.js HTTP/1.1" 200 69996
+[29/Jan/2024 14:52:53] "GET /static/assets/dashboard/vendor/libs/jquery/jquery.min.js HTTP/1.1" 200 87533
+[29/Jan/2024 14:52:53] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js HTTP/1.1" 200 33621
+[29/Jan/2024 14:52:53] "GET /static/assets/dashboard/vendor/js/helpers.js HTTP/1.1" 200 37423
+[29/Jan/2024 14:52:53] "GET /static/assets/dashboard/js/bawaan/config.js HTTP/1.1" 200 1695
+[29/Jan/2024 14:52:53] "GET /static/assets/images/bnn.png HTTP/1.1" 200 22974
+[29/Jan/2024 14:52:53] "GET /media/images/avatar.png HTTP/1.1" 200 7824
+[29/Jan/2024 14:52:53] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 14:52:53] "GET /static/assets/dashboard/vendor/libs/jquery/jquery.js HTTP/1.1" 200 88114
+[29/Jan/2024 14:52:53] "GET /static/assets/dashboard/vendor/libs/popper/popper.js HTTP/1.1" 200 20791
+[29/Jan/2024 14:52:53] "GET /static/assets/dashboard/vendor/js/bootstrap.js HTTP/1.1" 200 99223
+[29/Jan/2024 14:52:54] "GET /static/assets/dashboard/vendor/libs/hammer/hammer.js HTTP/1.1" 200 21150
+[29/Jan/2024 14:52:54] "GET /static/assets/dashboard/vendor/libs/node-waves/node-waves.js HTTP/1.1" 200 7575
+[29/Jan/2024 14:52:54] "GET /static/assets/dashboard/vendor/libs/typeahead-js/typeahead.js HTTP/1.1" 200 40322
+[29/Jan/2024 14:52:54] "GET /static/assets/dashboard/vendor/libs/perfect-scrollbar/perfect-scrollbar.js HTTP/1.1" 200 19579
+[29/Jan/2024 14:52:54] "GET /static/assets/dashboard/vendor/libs/i18n/i18n.js HTTP/1.1" 200 71850
+[29/Jan/2024 14:52:54] "GET /static/assets/dashboard/vendor/js/menu.js HTTP/1.1" 200 21666
+[29/Jan/2024 14:52:54] "GET /static/assets/dashboard/vendor/libs/toastr/toastr.js HTTP/1.1" 200 5958
+[29/Jan/2024 14:52:54] "GET /static/assets/dashboard/vendor/libs/cleave/dist/cleave.min.js HTTP/1.1" 200 21133
+[29/Jan/2024 14:52:54] "GET /static/assets/dashboard/vendor/libs/cleave/dist/addons/cleave-phone.id.js HTTP/1.1" 200 14725
+[29/Jan/2024 14:52:54] "GET /static/assets/dashboard/vendor/libs/select2/select2.js HTTP/1.1" 200 80459
+[29/Jan/2024 14:52:54] "GET /static/assets/dashboard/vendor/libs/datatables-bs5/datatables-bootstrap5.js HTTP/1.1" 200 89645
+[29/Jan/2024 14:52:54] "GET /static/assets/dashboard/vendor/libs/swiper/swiper.js HTTP/1.1" 200 139411
+[29/Jan/2024 14:52:54] "GET /static/assets/dashboard/vendor/fonts/fontawesome/fa-solid-900.woff2 HTTP/1.1" 200 150020
+[29/Jan/2024 14:52:54] "GET /static/assets/dashboard/vendor/libs/bootstrap-maxlength/bootstrap-maxlength.js HTTP/1.1" 200 5951
+[29/Jan/2024 14:52:54] "GET /static/assets/dashboard/js/bawaan/main.js HTTP/1.1" 200 19111
+[29/Jan/2024 14:52:54] "GET /static/assets/dashboard/vendor/libs/moment/moment.js HTTP/1.1" 200 297837
+[29/Jan/2024 14:52:54] "GET /static/assets/dashboard/custom/js/custom.js HTTP/1.1" 200 2219
+[29/Jan/2024 14:52:54] "GET /static/assets/dashboard/custom/js/dashboard-helpers.js HTTP/1.1" 200 4260
+[29/Jan/2024 14:52:54] "GET /static/assets/dashboard/custom/js/fix-select.js HTTP/1.1" 200 1254
+[29/Jan/2024 14:52:54] "GET /static/assets/dashboard/custom/js/kegiatan_helpers.js HTTP/1.1" 200 1572
+[29/Jan/2024 14:52:54] "GET /static/assets/dashboard/vendor/fonts/tabler/tabler-icons.woff2 HTTP/1.1" 200 702272
+[29/Jan/2024 14:52:55] "GET /static/assets/dashboard/json/locales/en.json HTTP/1.1" 200 55
+[29/Jan/2024 14:52:55] "GET /static/assets/images/bnn.png HTTP/1.1" 200 22974
+[29/Jan/2024 14:53:33] "GET /kegiatan/psm/workshop_penggiat/ HTTP/1.1" 200 74451
+[29/Jan/2024 14:53:33] "GET /static/assets/dashboard/vendor/fonts/fontawesome.css HTTP/1.1" 200 101301
+[29/Jan/2024 14:53:33] "GET /static/assets/dashboard/vendor/fonts/flag-icons.css HTTP/1.1" 200 26085
+[29/Jan/2024 14:53:33] "GET /static/assets/dashboard/vendor/fonts/tabler-icons.css HTTP/1.1" 200 178068
+[29/Jan/2024 14:53:33] "GET /static/assets/dashboard/vendor/css/rtl/core.css HTTP/1.1" 200 716009
+[29/Jan/2024 14:53:33] "GET /static/assets/dashboard/css/demo.css HTTP/1.1" 200 3376
+[29/Jan/2024 14:53:33] "GET /static/assets/dashboard/vendor/css/rtl/theme-semi-dark.css HTTP/1.1" 200 54722
+[29/Jan/2024 14:53:33] "GET /static/assets/home/plugins/sweet-alert/all.min.css HTTP/1.1" 200 31008
+[29/Jan/2024 14:53:33] "GET /static/assets/dashboard/vendor/libs/toastr/toastr.css HTTP/1.1" 200 11411
+[29/Jan/2024 14:53:33] "GET /static/assets/dashboard/custom/css/custom.css HTTP/1.1" 200 3166
+[29/Jan/2024 14:53:33] "GET /static/assets/dashboard/custom/css/psm.css HTTP/1.1" 200 1871
+[29/Jan/2024 14:53:33] "GET /static/assets/dashboard/vendor/libs/node-waves/node-waves.css HTTP/1.1" 200 4080
+[29/Jan/2024 14:53:33] "GET /static/assets/dashboard/vendor/libs/perfect-scrollbar/perfect-scrollbar.css HTTP/1.1" 200 5474
+[29/Jan/2024 14:53:33] "GET /static/assets/dashboard/vendor/libs/typeahead-js/typeahead.css HTTP/1.1" 200 1812
+[29/Jan/2024 14:53:33] "GET /static/assets/dashboard/vendor/libs/apex-charts/apex-charts.css HTTP/1.1" 200 19809
+[29/Jan/2024 14:53:33] "GET /static/assets/dashboard/vendor/libs/datatables-bs5/datatables.bootstrap5.css HTTP/1.1" 200 22799
+[29/Jan/2024 14:53:33] "GET /static/assets/dashboard/vendor/libs/swiper/swiper.css HTTP/1.1" 200 19655
+[29/Jan/2024 14:53:33] "GET /static/assets/dashboard/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css HTTP/1.1" 200 4885
+[29/Jan/2024 14:53:33] "GET /static/assets/dashboard/vendor/css/pages/cards-advance.css HTTP/1.1" 200 1609
+[29/Jan/2024 14:53:33] "GET /static/assets/dashboard/vendor/libs/datatables-checkboxes-jquery/datatables.checkboxes.css HTTP/1.1" 200 511
+[29/Jan/2024 14:53:34] "GET /static/assets/dashboard/vendor/libs/select2/select2.css HTTP/1.1" 200 24453
+[29/Jan/2024 14:53:34] "GET /static/assets/home/plugins/sweet-alert/all.min.js HTTP/1.1" 200 69996
+[29/Jan/2024 14:53:34] "GET /static/assets/dashboard/vendor/libs/jquery/jquery.min.js HTTP/1.1" 200 87533
+[29/Jan/2024 14:53:34] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js HTTP/1.1" 200 33621
+[29/Jan/2024 14:53:34] "GET /static/assets/dashboard/vendor/js/helpers.js HTTP/1.1" 200 37423
+[29/Jan/2024 14:53:34] "GET /static/assets/dashboard/js/bawaan/config.js HTTP/1.1" 200 1695
+[29/Jan/2024 14:53:34] "GET /static/assets/images/bnn.png HTTP/1.1" 200 22974
+[29/Jan/2024 14:53:34] "GET /media/images/avatar.png HTTP/1.1" 200 7824
+[29/Jan/2024 14:53:34] "GET /static/assets/dashboard/vendor/libs/popper/popper.js HTTP/1.1" 200 20791
+[29/Jan/2024 14:53:34] "GET /static/assets/dashboard/vendor/libs/jquery/jquery.js HTTP/1.1" 200 88114
+[29/Jan/2024 14:53:34] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 14:53:34] "GET /static/assets/dashboard/vendor/js/bootstrap.js HTTP/1.1" 200 99223
+[29/Jan/2024 14:53:34] "GET /static/assets/dashboard/vendor/libs/node-waves/node-waves.js HTTP/1.1" 200 7575
+[29/Jan/2024 14:53:34] "GET /static/assets/dashboard/vendor/js/menu.js HTTP/1.1" 200 21666
+[29/Jan/2024 14:53:34] "GET /static/assets/dashboard/vendor/libs/i18n/i18n.js HTTP/1.1" 200 71850
+[29/Jan/2024 14:53:34] "GET /static/assets/dashboard/vendor/libs/typeahead-js/typeahead.js HTTP/1.1" 200 40322
+[29/Jan/2024 14:53:34] "GET /static/assets/dashboard/vendor/libs/perfect-scrollbar/perfect-scrollbar.js HTTP/1.1" 200 19579
+[29/Jan/2024 14:53:34] "GET /static/assets/dashboard/vendor/libs/hammer/hammer.js HTTP/1.1" 200 21150
+[29/Jan/2024 14:53:34] "GET /static/assets/dashboard/vendor/libs/swiper/swiper.js HTTP/1.1" 200 139411
+[29/Jan/2024 14:53:34] "GET /static/assets/dashboard/vendor/libs/select2/select2.js HTTP/1.1" 200 80459
+[29/Jan/2024 14:53:34] "GET /static/assets/dashboard/vendor/libs/toastr/toastr.js HTTP/1.1" 200 5958
+[29/Jan/2024 14:53:34] "GET /static/assets/dashboard/vendor/libs/datatables-bs5/datatables-bootstrap5.js HTTP/1.1" 200 89645
+[29/Jan/2024 14:53:34] "GET /static/assets/dashboard/vendor/libs/cleave/dist/cleave.min.js HTTP/1.1" 200 21133
+[29/Jan/2024 14:53:34] "GET /static/assets/dashboard/vendor/libs/cleave/dist/addons/cleave-phone.id.js HTTP/1.1" 200 14725
+[29/Jan/2024 14:53:34] "GET /static/assets/dashboard/custom/js/custom.js HTTP/1.1" 200 2219
+[29/Jan/2024 14:53:34] "GET /static/assets/dashboard/vendor/libs/bootstrap-maxlength/bootstrap-maxlength.js HTTP/1.1" 200 5951
+[29/Jan/2024 14:53:34] "GET /static/assets/dashboard/js/bawaan/main.js HTTP/1.1" 200 19111
+[29/Jan/2024 14:53:34] "GET /static/assets/dashboard/vendor/libs/moment/moment.js HTTP/1.1" 200 297837
+[29/Jan/2024 14:53:34] "GET /static/assets/dashboard/custom/js/fix-select.js HTTP/1.1" 200 1254
+[29/Jan/2024 14:53:34] "GET /static/assets/dashboard/custom/js/dashboard-helpers.js HTTP/1.1" 200 4260
+[29/Jan/2024 14:53:34] "GET /static/assets/dashboard/custom/js/kegiatan_helpers.js HTTP/1.1" 200 1572
+[29/Jan/2024 14:53:34] "GET /static/assets/dashboard/vendor/fonts/fontawesome/fa-solid-900.woff2 HTTP/1.1" 200 150020
+[29/Jan/2024 14:53:35] "GET /static/assets/dashboard/vendor/fonts/tabler/tabler-icons.woff2 HTTP/1.1" 200 702272
+[29/Jan/2024 14:53:35] "GET /static/assets/dashboard/json/locales/en.json HTTP/1.1" 200 55
+[29/Jan/2024 14:53:35] "GET /static/assets/images/bnn.png HTTP/1.1" 200 22974
+[29/Jan/2024 14:53:41] "GET /kegiatan/psm/workshop_penggiat/ HTTP/1.1" 200 74451
+[29/Jan/2024 14:53:42] "GET /static/assets/dashboard/vendor/fonts/fontawesome.css HTTP/1.1" 200 101301
+[29/Jan/2024 14:53:42] "GET /static/assets/dashboard/css/demo.css HTTP/1.1" 200 3376
+[29/Jan/2024 14:53:42] "GET /static/assets/dashboard/vendor/css/rtl/core.css HTTP/1.1" 200 716009
+[29/Jan/2024 14:53:42] "GET /static/assets/dashboard/vendor/fonts/flag-icons.css HTTP/1.1" 200 26085
+[29/Jan/2024 14:53:42] "GET /static/assets/dashboard/vendor/fonts/tabler-icons.css HTTP/1.1" 200 178068
+[29/Jan/2024 14:53:42] "GET /static/assets/dashboard/vendor/css/rtl/theme-semi-dark.css HTTP/1.1" 200 54722
+[29/Jan/2024 14:53:42] "GET /static/assets/dashboard/vendor/libs/toastr/toastr.css HTTP/1.1" 200 11411
+[29/Jan/2024 14:53:42] "GET /static/assets/home/plugins/sweet-alert/all.min.css HTTP/1.1" 200 31008
+[29/Jan/2024 14:53:42] "GET /static/assets/dashboard/custom/css/custom.css HTTP/1.1" 200 3166
+[29/Jan/2024 14:53:42] "GET /static/assets/dashboard/custom/css/psm.css HTTP/1.1" 200 1871
+[29/Jan/2024 14:53:42] "GET /static/assets/dashboard/vendor/libs/node-waves/node-waves.css HTTP/1.1" 200 4080
+[29/Jan/2024 14:53:42] "GET /static/assets/dashboard/vendor/libs/perfect-scrollbar/perfect-scrollbar.css HTTP/1.1" 200 5474
+[29/Jan/2024 14:53:42] "GET /static/assets/dashboard/vendor/libs/typeahead-js/typeahead.css HTTP/1.1" 200 1812
+[29/Jan/2024 14:53:42] "GET /static/assets/dashboard/vendor/libs/apex-charts/apex-charts.css HTTP/1.1" 200 19809
+[29/Jan/2024 14:53:42] "GET /static/assets/dashboard/vendor/libs/swiper/swiper.css HTTP/1.1" 200 19655
+[29/Jan/2024 14:53:42] "GET /static/assets/dashboard/vendor/libs/datatables-bs5/datatables.bootstrap5.css HTTP/1.1" 200 22799
+[29/Jan/2024 14:53:42] "GET /static/assets/dashboard/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css HTTP/1.1" 200 4885
+[29/Jan/2024 14:53:42] "GET /static/assets/dashboard/vendor/libs/datatables-checkboxes-jquery/datatables.checkboxes.css HTTP/1.1" 200 511
+[29/Jan/2024 14:53:42] "GET /static/assets/dashboard/vendor/css/pages/cards-advance.css HTTP/1.1" 200 1609
+[29/Jan/2024 14:53:42] "GET /static/assets/dashboard/vendor/libs/select2/select2.css HTTP/1.1" 200 24453
+[29/Jan/2024 14:53:42] "GET /static/assets/home/plugins/sweet-alert/all.min.js HTTP/1.1" 200 69996
+[29/Jan/2024 14:53:42] "GET /static/assets/dashboard/vendor/libs/jquery/jquery.min.js HTTP/1.1" 200 87533
+[29/Jan/2024 14:53:42] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js HTTP/1.1" 200 33621
+[29/Jan/2024 14:53:42] "GET /static/assets/dashboard/js/bawaan/config.js HTTP/1.1" 200 1695
+[29/Jan/2024 14:53:42] "GET /static/assets/dashboard/vendor/js/helpers.js HTTP/1.1" 200 37423
+[29/Jan/2024 14:53:42] "GET /static/assets/images/bnn.png HTTP/1.1" 200 22974
+[29/Jan/2024 14:53:42] "GET /media/images/avatar.png HTTP/1.1" 200 7824
+[29/Jan/2024 14:53:42] "GET /static/assets/dashboard/vendor/libs/jquery/jquery.js HTTP/1.1" 200 88114
+[29/Jan/2024 14:53:42] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 14:53:42] "GET /static/assets/dashboard/vendor/libs/perfect-scrollbar/perfect-scrollbar.js HTTP/1.1" 200 19579
+[29/Jan/2024 14:53:42] "GET /static/assets/dashboard/vendor/libs/node-waves/node-waves.js HTTP/1.1" 200 7575
+[29/Jan/2024 14:53:42] "GET /static/assets/dashboard/vendor/libs/hammer/hammer.js HTTP/1.1" 200 21150
+[29/Jan/2024 14:53:42] "GET /static/assets/dashboard/vendor/js/bootstrap.js HTTP/1.1" 200 99223
+[29/Jan/2024 14:53:42] "GET /static/assets/dashboard/vendor/libs/popper/popper.js HTTP/1.1" 200 20791
+[29/Jan/2024 14:53:42] "GET /static/assets/dashboard/vendor/libs/i18n/i18n.js HTTP/1.1" 200 71850
+[29/Jan/2024 14:53:42] "GET /static/assets/dashboard/vendor/libs/typeahead-js/typeahead.js HTTP/1.1" 200 40322
+[29/Jan/2024 14:53:42] "GET /static/assets/dashboard/vendor/js/menu.js HTTP/1.1" 200 21666
+[29/Jan/2024 14:53:42] "GET /static/assets/dashboard/vendor/libs/swiper/swiper.js HTTP/1.1" 200 139411
+[29/Jan/2024 14:53:42] "GET /static/assets/dashboard/vendor/libs/toastr/toastr.js HTTP/1.1" 200 5958
+[29/Jan/2024 14:53:42] "GET /static/assets/dashboard/vendor/libs/select2/select2.js HTTP/1.1" 200 80459
+[29/Jan/2024 14:53:43] "GET /static/assets/dashboard/vendor/libs/datatables-bs5/datatables-bootstrap5.js HTTP/1.1" 200 89645
+[29/Jan/2024 14:53:43] "GET /static/assets/dashboard/vendor/libs/cleave/dist/cleave.min.js HTTP/1.1" 200 21133
+[29/Jan/2024 14:53:43] "GET /static/assets/dashboard/vendor/libs/cleave/dist/addons/cleave-phone.id.js HTTP/1.1" 200 14725
+[29/Jan/2024 14:53:43] "GET /static/assets/dashboard/vendor/libs/bootstrap-maxlength/bootstrap-maxlength.js HTTP/1.1" 200 5951
+[29/Jan/2024 14:53:43] "GET /static/assets/dashboard/vendor/libs/moment/moment.js HTTP/1.1" 200 297837
+[29/Jan/2024 14:53:43] "GET /static/assets/dashboard/js/bawaan/main.js HTTP/1.1" 200 19111
+[29/Jan/2024 14:53:43] "GET /static/assets/dashboard/vendor/fonts/fontawesome/fa-solid-900.woff2 HTTP/1.1" 200 150020
+[29/Jan/2024 14:53:43] "GET /static/assets/dashboard/custom/js/custom.js HTTP/1.1" 200 2219
+[29/Jan/2024 14:53:43] "GET /static/assets/dashboard/custom/js/dashboard-helpers.js HTTP/1.1" 200 4260
+[29/Jan/2024 14:53:43] "GET /static/assets/dashboard/custom/js/fix-select.js HTTP/1.1" 200 1254
+[29/Jan/2024 14:53:43] "GET /static/assets/dashboard/custom/js/kegiatan_helpers.js HTTP/1.1" 200 1572
+[29/Jan/2024 14:53:43] "GET /static/assets/dashboard/vendor/fonts/tabler/tabler-icons.woff2 HTTP/1.1" 200 702272
+[29/Jan/2024 14:53:44] "GET /static/assets/dashboard/json/locales/en.json HTTP/1.1" 200 55
+[29/Jan/2024 14:53:44] "GET /static/assets/images/bnn.png HTTP/1.1" 200 22974
+[29/Jan/2024 14:53:57] "GET /kegiatan/psm/workshop_penggiat/ HTTP/1.1" 200 74453
+[29/Jan/2024 14:53:57] "GET /static/assets/dashboard/vendor/fonts/fontawesome.css HTTP/1.1" 200 101301
+[29/Jan/2024 14:53:57] "GET /static/assets/dashboard/vendor/fonts/flag-icons.css HTTP/1.1" 200 26085
+[29/Jan/2024 14:53:57] "GET /static/assets/dashboard/css/demo.css HTTP/1.1" 200 3376
+[29/Jan/2024 14:53:57] "GET /static/assets/dashboard/vendor/css/rtl/core.css HTTP/1.1" 200 716009
+[29/Jan/2024 14:53:57] "GET /static/assets/dashboard/vendor/fonts/tabler-icons.css HTTP/1.1" 200 178068
+[29/Jan/2024 14:53:57] "GET /static/assets/dashboard/vendor/css/rtl/theme-semi-dark.css HTTP/1.1" 200 54722
+[29/Jan/2024 14:53:57] "GET /static/assets/home/plugins/sweet-alert/all.min.css HTTP/1.1" 200 31008
+[29/Jan/2024 14:53:57] "GET /static/assets/dashboard/vendor/libs/toastr/toastr.css HTTP/1.1" 200 11411
+[29/Jan/2024 14:53:57] "GET /static/assets/dashboard/custom/css/custom.css HTTP/1.1" 200 3166
+[29/Jan/2024 14:53:57] "GET /static/assets/dashboard/custom/css/psm.css HTTP/1.1" 200 1871
+[29/Jan/2024 14:53:57] "GET /static/assets/dashboard/vendor/libs/node-waves/node-waves.css HTTP/1.1" 200 4080
+[29/Jan/2024 14:53:57] "GET /static/assets/dashboard/vendor/libs/perfect-scrollbar/perfect-scrollbar.css HTTP/1.1" 200 5474
+[29/Jan/2024 14:53:58] "GET /static/assets/dashboard/vendor/libs/typeahead-js/typeahead.css HTTP/1.1" 200 1812
+[29/Jan/2024 14:53:58] "GET /static/assets/dashboard/vendor/libs/apex-charts/apex-charts.css HTTP/1.1" 200 19809
+[29/Jan/2024 14:53:58] "GET /static/assets/dashboard/vendor/libs/swiper/swiper.css HTTP/1.1" 200 19655
+[29/Jan/2024 14:53:58] "GET /static/assets/dashboard/vendor/libs/datatables-bs5/datatables.bootstrap5.css HTTP/1.1" 200 22799
+[29/Jan/2024 14:53:58] "GET /static/assets/dashboard/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css HTTP/1.1" 200 4885
+[29/Jan/2024 14:53:58] "GET /static/assets/dashboard/vendor/libs/select2/select2.css HTTP/1.1" 200 24453
+[29/Jan/2024 14:53:58] "GET /static/assets/dashboard/vendor/css/pages/cards-advance.css HTTP/1.1" 200 1609
+[29/Jan/2024 14:53:58] "GET /static/assets/dashboard/vendor/libs/jquery/jquery.min.js HTTP/1.1" 200 87533
+[29/Jan/2024 14:53:58] "GET /static/assets/dashboard/vendor/libs/datatables-checkboxes-jquery/datatables.checkboxes.css HTTP/1.1" 200 511
+[29/Jan/2024 14:53:58] "GET /static/assets/home/plugins/sweet-alert/all.min.js HTTP/1.1" 200 69996
+[29/Jan/2024 14:53:58] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js HTTP/1.1" 200 33621
+[29/Jan/2024 14:53:58] "GET /static/assets/dashboard/js/bawaan/config.js HTTP/1.1" 200 1695
+[29/Jan/2024 14:53:58] "GET /static/assets/dashboard/vendor/js/helpers.js HTTP/1.1" 200 37423
+[29/Jan/2024 14:53:58] "GET /static/assets/images/bnn.png HTTP/1.1" 200 22974
+[29/Jan/2024 14:53:58] "GET /media/images/avatar.png HTTP/1.1" 200 7824
+[29/Jan/2024 14:53:58] "GET /static/assets/dashboard/vendor/libs/jquery/jquery.js HTTP/1.1" 200 88114
+[29/Jan/2024 14:53:58] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 14:53:58] "GET /static/assets/dashboard/vendor/libs/popper/popper.js HTTP/1.1" 200 20791
+[29/Jan/2024 14:53:58] "GET /static/assets/dashboard/vendor/js/bootstrap.js HTTP/1.1" 200 99223
+[29/Jan/2024 14:53:58] "GET /static/assets/dashboard/vendor/libs/node-waves/node-waves.js HTTP/1.1" 200 7575
+[29/Jan/2024 14:53:58] "GET /static/assets/dashboard/vendor/libs/perfect-scrollbar/perfect-scrollbar.js HTTP/1.1" 200 19579
+[29/Jan/2024 14:53:58] "GET /static/assets/dashboard/vendor/libs/hammer/hammer.js HTTP/1.1" 200 21150
+[29/Jan/2024 14:53:58] "GET /static/assets/dashboard/vendor/libs/i18n/i18n.js HTTP/1.1" 200 71850
+[29/Jan/2024 14:53:58] "GET /static/assets/dashboard/vendor/libs/typeahead-js/typeahead.js HTTP/1.1" 200 40322
+[29/Jan/2024 14:53:58] "GET /static/assets/dashboard/vendor/js/menu.js HTTP/1.1" 200 21666
+[29/Jan/2024 14:53:58] "GET /static/assets/dashboard/vendor/libs/select2/select2.js HTTP/1.1" 200 80459
+[29/Jan/2024 14:53:58] "GET /static/assets/dashboard/vendor/libs/swiper/swiper.js HTTP/1.1" 200 139411
+[29/Jan/2024 14:53:58] "GET /static/assets/dashboard/vendor/libs/toastr/toastr.js HTTP/1.1" 200 5958
+[29/Jan/2024 14:53:58] "GET /static/assets/dashboard/vendor/libs/datatables-bs5/datatables-bootstrap5.js HTTP/1.1" 200 89645
+[29/Jan/2024 14:53:58] "GET /static/assets/dashboard/vendor/libs/cleave/dist/addons/cleave-phone.id.js HTTP/1.1" 200 14725
+[29/Jan/2024 14:53:58] "GET /static/assets/dashboard/vendor/libs/cleave/dist/cleave.min.js HTTP/1.1" 200 21133
+[29/Jan/2024 14:53:58] "GET /static/assets/dashboard/vendor/libs/bootstrap-maxlength/bootstrap-maxlength.js HTTP/1.1" 200 5951
+[29/Jan/2024 14:53:58] "GET /static/assets/dashboard/vendor/libs/moment/moment.js HTTP/1.1" 200 297837
+[29/Jan/2024 14:53:58] "GET /static/assets/dashboard/js/bawaan/main.js HTTP/1.1" 200 19111
+[29/Jan/2024 14:53:58] "GET /static/assets/dashboard/custom/js/custom.js HTTP/1.1" 200 2219
+[29/Jan/2024 14:53:58] "GET /static/assets/dashboard/custom/js/fix-select.js HTTP/1.1" 200 1254
+[29/Jan/2024 14:53:58] "GET /static/assets/dashboard/custom/js/dashboard-helpers.js HTTP/1.1" 200 4260
+[29/Jan/2024 14:53:58] "GET /static/assets/dashboard/custom/js/kegiatan_helpers.js HTTP/1.1" 200 1572
+[29/Jan/2024 14:53:58] "GET /static/assets/dashboard/vendor/fonts/fontawesome/fa-solid-900.woff2 HTTP/1.1" 200 150020
+[29/Jan/2024 14:53:59] "GET /static/assets/dashboard/vendor/fonts/tabler/tabler-icons.woff2 HTTP/1.1" 200 702272
+[29/Jan/2024 14:53:59] "GET /static/assets/dashboard/json/locales/en.json HTTP/1.1" 200 55
+[29/Jan/2024 14:53:59] "GET /static/assets/images/bnn.png HTTP/1.1" 200 22974
+/home/intioptima/sidamas/survei/serializers.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+January 29, 2024 - 14:54:12
+Django version 4.1.7, using settings 'sidamas.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+/home/intioptima/sidamas/survei/serializers.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+January 29, 2024 - 14:54:22
+Django version 4.1.7, using settings 'sidamas.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+[29/Jan/2024 14:54:23] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 65085
+[29/Jan/2024 14:54:24] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 14:54:25] "GET /survei/api/v1/data_survei/?_=1706514864732 HTTP/1.1" 200 973
+[29/Jan/2024 14:56:11] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 65162
+[29/Jan/2024 14:56:12] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 14:56:13] "GET /survei/api/v1/data_survei/?_=1706514972834 HTTP/1.1" 200 973
+[29/Jan/2024 14:57:16] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 65254
+[29/Jan/2024 14:57:17] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 14:57:18] "GET /survei/api/v1/data_survei/?_=1706515037726 HTTP/1.1" 200 973
+[29/Jan/2024 14:57:26] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 65255
+[29/Jan/2024 14:57:27] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 14:57:29] "GET /survei/api/v1/data_survei/?_=1706515047948 HTTP/1.1" 200 973
+[29/Jan/2024 14:58:04] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 65374
+[29/Jan/2024 14:58:05] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 14:58:06] "GET /survei/api/v1/data_survei/?_=1706515085783 HTTP/1.1" 200 973
+[29/Jan/2024 14:58:28] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 65412
+[29/Jan/2024 14:58:28] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 14:58:29] "GET /survei/api/v1/data_survei/?_=1706515109078 HTTP/1.1" 200 973
+[29/Jan/2024 14:59:33] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 65411
+[29/Jan/2024 14:59:33] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 14:59:35] "GET /survei/api/v1/data_survei/?_=1706515174298 HTTP/1.1" 200 973
+[29/Jan/2024 15:00:33] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 65404
+[29/Jan/2024 15:00:33] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 15:00:34] "GET /survei/api/v1/data_survei/?_=1706515234134 HTTP/1.1" 200 973
+[29/Jan/2024 15:01:35] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 65070
+[29/Jan/2024 15:01:36] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 15:01:38] "GET /survei/api/v1/data_survei/?_=1706515297159 HTTP/1.1" 200 973
+[29/Jan/2024 15:01:42] "GET /survei/api/v1/data_responden_survei/?survei=1 HTTP/1.1" 200 433
+[29/Jan/2024 15:02:36] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 65105
+[29/Jan/2024 15:02:36] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 15:02:38] "GET /survei/api/v1/data_survei/?_=1706515357342 HTTP/1.1" 200 973
+[29/Jan/2024 15:03:47] "GET /survei/api/v1/data_responden_survei/?survei=1 HTTP/1.1" 200 433
+[29/Jan/2024 15:03:50] "GET /survei/api/v1/data_pengisian_survei/?responden=14 HTTP/1.1" 200 806
+[29/Jan/2024 15:04:39] "GET /kegiatan/psm/konsolidasi_kebijakan/ HTTP/1.1" 200 78721
+[29/Jan/2024 15:04:40] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 15:04:47] "GET /kegiatan/psm/workshop_penggiat/ HTTP/1.1" 200 74453
+[29/Jan/2024 15:04:48] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 15:05:19] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 65274
+[29/Jan/2024 15:05:20] "GET /static/assets/dashboard/custom/css/custom.css HTTP/1.1" 304 0
+[29/Jan/2024 15:05:21] "GET /survei/api/v1/data_survei/?_=1706515520602 HTTP/1.1" 200 973
+[29/Jan/2024 15:05:42] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 65317
+[29/Jan/2024 15:05:47] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 15:06:00] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 65302
+[29/Jan/2024 15:06:00] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 15:06:17] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 65302
+[29/Jan/2024 15:06:17] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 15:06:44] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 65315
+[29/Jan/2024 15:06:44] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 15:06:52] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 65146
+[29/Jan/2024 15:06:52] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 15:07:14] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 65105
+[29/Jan/2024 15:07:14] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 15:07:15] "GET /survei/api/v1/data_survei/?_=1706515634934 HTTP/1.1" 200 973
+[29/Jan/2024 15:08:15] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 65105
+[29/Jan/2024 15:08:15] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 15:08:17] "GET /survei/api/v1/data_survei/?_=1706515696203 HTTP/1.1" 200 973
+[29/Jan/2024 15:08:37] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 65273
+[29/Jan/2024 15:08:38] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 15:08:44] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 65274
+[29/Jan/2024 15:08:45] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 15:08:46] "GET /survei/api/v1/data_survei/?_=1706515725572 HTTP/1.1" 200 973
+[29/Jan/2024 15:08:59] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 65302
+[29/Jan/2024 15:08:59] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 15:09:11] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 65105
+[29/Jan/2024 15:09:11] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 15:09:12] "GET /survei/api/v1/data_survei/?_=1706515752052 HTTP/1.1" 200 973
+[29/Jan/2024 15:10:48] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 65272
+[29/Jan/2024 15:10:50] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 15:11:05] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 65272
+[29/Jan/2024 15:11:06] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 15:11:16] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 65297
+[29/Jan/2024 15:11:17] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 15:11:18] "GET /survei/api/v1/data_survei/?_=1706515877608 HTTP/1.1" 200 973
+[29/Jan/2024 15:12:24] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 65297
+[29/Jan/2024 15:12:25] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 15:12:26] "GET /survei/api/v1/data_survei/?_=1706515945745 HTTP/1.1" 200 973
+[29/Jan/2024 15:12:41] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 65296
+[29/Jan/2024 15:12:41] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 15:12:42] "GET /survei/api/v1/data_survei/?_=1706515962171 HTTP/1.1" 200 973
+[29/Jan/2024 15:13:23] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 65465
+[29/Jan/2024 15:13:23] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 15:13:24] "GET /survei/api/v1/data_survei/?_=1706516003707 HTTP/1.1" 200 973
+[29/Jan/2024 15:13:48] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 65298
+[29/Jan/2024 15:13:48] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 15:13:49] "GET /survei/api/v1/data_survei/?_=1706516028828 HTTP/1.1" 200 973
+[29/Jan/2024 15:14:03] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 65296
+[29/Jan/2024 15:14:03] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 15:14:04] "GET /survei/api/v1/data_survei/?_=1706516043877 HTTP/1.1" 200 973
+[29/Jan/2024 15:14:36] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 65460
+[29/Jan/2024 15:14:37] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 15:14:38] "GET /survei/api/v1/data_survei/?_=1706516077643 HTTP/1.1" 200 973
+[29/Jan/2024 15:15:57] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 65448
+[29/Jan/2024 15:15:57] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 15:15:58] "GET /survei/api/v1/data_survei/?_=1706516158081 HTTP/1.1" 200 973
+[29/Jan/2024 15:16:40] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 65501
+[29/Jan/2024 15:16:40] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 15:16:41] "GET /survei/api/v1/data_survei/?_=1706516200999 HTTP/1.1" 200 973
+[29/Jan/2024 15:17:10] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 65544
+[29/Jan/2024 15:17:10] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 15:17:12] "GET /survei/api/v1/data_survei/?_=1706516231504 HTTP/1.1" 200 973
+[29/Jan/2024 15:17:32] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 65497
+[29/Jan/2024 15:17:33] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 15:17:34] "GET /survei/api/v1/data_survei/?_=1706516253623 HTTP/1.1" 200 973
+[29/Jan/2024 15:17:50] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 65466
+[29/Jan/2024 15:17:51] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 15:17:52] "GET /survei/api/v1/data_survei/?_=1706516271327 HTTP/1.1" 200 973
+[29/Jan/2024 15:18:14] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 65303
+[29/Jan/2024 15:18:14] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 15:18:15] "GET /survei/api/v1/data_survei/?_=1706516294770 HTTP/1.1" 200 973
+[29/Jan/2024 15:18:57] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 65278
+[29/Jan/2024 15:18:57] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 15:19:02] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 65303
+[29/Jan/2024 15:19:03] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 15:19:04] "GET /survei/api/v1/data_survei/?_=1706516343624 HTTP/1.1" 200 973
+[29/Jan/2024 15:19:44] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 65339
+[29/Jan/2024 15:19:44] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 15:19:45] "GET /survei/api/v1/data_survei/?_=1706516384986 HTTP/1.1" 200 973
+[29/Jan/2024 15:20:25] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 65301
+[29/Jan/2024 15:20:26] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 15:20:27] "GET /survei/api/v1/data_survei/?_=1706516426613 HTTP/1.1" 200 973
+[29/Jan/2024 15:26:11] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 65446
+[29/Jan/2024 15:26:12] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 15:26:13] "GET /survei/api/v1/data_survei/?_=1706516772776 HTTP/1.1" 200 973
+/home/intioptima/sidamas/survei/models.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+January 29, 2024 - 15:26:39
+Django version 4.1.7, using settings 'sidamas.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+[29/Jan/2024 15:26:40] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 65446
+[29/Jan/2024 15:26:40] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 65446
+[29/Jan/2024 15:26:41] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 15:26:42] "GET /survei/api/v1/data_survei/?_=1706516801735 HTTP/1.1" 200 973
+/home/intioptima/sidamas/survei/models.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+January 29, 2024 - 15:26:52
+Django version 4.1.7, using settings 'sidamas.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+[29/Jan/2024 15:26:53] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 65446
+[29/Jan/2024 15:26:54] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 15:26:55] "GET /survei/api/v1/data_survei/?_=1706516814567 HTTP/1.1" 200 973
+[29/Jan/2024 15:28:09] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 65579
+[29/Jan/2024 15:28:11] "GET /survei/api/v1/data_survei/?_=1706516890378 HTTP/1.1" 200 973
+[29/Jan/2024 15:28:19] "DELETE /survei/api/v1/data_survei/4/ HTTP/1.1" 204 0
+[29/Jan/2024 15:28:19] "GET /survei/api/v1/data_survei/?_=1706516890379 HTTP/1.1" 200 650
+[29/Jan/2024 15:28:26] "DELETE /survei/api/v1/data_survei/5/ HTTP/1.1" 204 0
+[29/Jan/2024 15:28:26] "GET /survei/api/v1/data_survei/?_=1706516890380 HTTP/1.1" 200 328
+[29/Jan/2024 15:28:28] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 65579
+[29/Jan/2024 15:28:29] "GET /survei/api/v1/data_survei/?_=1706516909308 HTTP/1.1" 200 328
+[29/Jan/2024 15:28:32] "GET /survei/api/v1/data_responden_survei/?survei=1 HTTP/1.1" 200 433
+[29/Jan/2024 15:28:58] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 15:29:20] "GET /kegiatan/psm/workshop_penggiat/ HTTP/1.1" 200 74444
+[29/Jan/2024 15:29:20] "GET /static/assets/dashboard/custom/css/custom.css HTTP/1.1" 304 0
+[29/Jan/2024 15:29:22] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 65619
+[29/Jan/2024 15:29:23] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 15:29:24] "GET /survei/api/v1/data_survei/?_=1706516963788 HTTP/1.1" 200 328
+[29/Jan/2024 15:29:31] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 15:29:49] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 65605
+[29/Jan/2024 15:29:50] "GET /survei/api/v1/data_survei/?_=1706516989663 HTTP/1.1" 200 328
+[29/Jan/2024 15:30:56] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 65661
+[29/Jan/2024 15:30:57] "GET /survei/api/v1/data_survei/?_=1706517057113 HTTP/1.1" 200 328
+[29/Jan/2024 15:31:24] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 65605
+[29/Jan/2024 15:31:25] "GET /survei/api/v1/data_survei/?_=1706517084988 HTTP/1.1" 200 328
+[29/Jan/2024 15:31:54] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 65624
+[29/Jan/2024 15:31:54] "GET /static/assets/dashboard/custom/css/custom.css HTTP/1.1" 304 0
+[29/Jan/2024 15:31:55] "GET /survei/api/v1/data_survei/?_=1706517115005 HTTP/1.1" 200 328
+[29/Jan/2024 15:32:37] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 65629
+[29/Jan/2024 15:32:38] "GET /survei/api/v1/data_survei/?_=1706517158308 HTTP/1.1" 200 328
+[29/Jan/2024 15:32:48] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 65629
+[29/Jan/2024 15:32:49] "GET /survei/api/v1/data_survei/?_=1706517169470 HTTP/1.1" 200 328
+[29/Jan/2024 15:33:20] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 65649
+[29/Jan/2024 15:33:20] "GET /survei/api/v1/data_survei/?_=1706517200489 HTTP/1.1" 200 328
+[29/Jan/2024 15:33:23] "GET /survei/api/v1/data_responden_survei/?survei=1 HTTP/1.1" 200 433
+[29/Jan/2024 15:33:43] "POST /survei/api/v1/data_survei/ HTTP/1.1" 201 322
+[29/Jan/2024 15:33:45] "GET /survei/api/v1/data_survei/?_=1706517200490 HTTP/1.1" 200 651
+[29/Jan/2024 15:33:46] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 15:34:12] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 65651
+[29/Jan/2024 15:34:13] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 15:34:14] "GET /survei/api/v1/data_survei/?_=1706517253634 HTTP/1.1" 200 651
+[29/Jan/2024 15:34:21] "DELETE /survei/api/v1/data_survei/7/ HTTP/1.1" 204 0
+[29/Jan/2024 15:34:22] "GET /survei/api/v1/data_survei/?_=1706517253635 HTTP/1.1" 200 328
+[29/Jan/2024 15:34:41] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 65652
+[29/Jan/2024 15:34:42] "GET /survei/api/v1/data_survei/?_=1706517281833 HTTP/1.1" 200 328
+[29/Jan/2024 15:34:57] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 65657
+[29/Jan/2024 15:34:58] "GET /survei/api/v1/data_survei/?_=1706517298019 HTTP/1.1" 200 328
+[29/Jan/2024 15:35:36] "GET /accounts/logout/ HTTP/1.1" 302 0
+[29/Jan/2024 15:35:36] "GET /accounts/selesai-logout/ HTTP/1.1" 200 8702
+[29/Jan/2024 15:35:39] "GET /accounts/login/ HTTP/1.1" 200 16507
+[29/Jan/2024 15:35:39] "GET /static/assets/home/css/auth.css HTTP/1.1" 304 0
+[29/Jan/2024 15:35:40] "GET /static/assets/home/vue/components/forms/InputGroup.vue HTTP/1.1" 304 0
+[29/Jan/2024 15:35:40] "GET /static/assets/home/vue/components/forms/Button.vue HTTP/1.1" 304 0
+[29/Jan/2024 15:35:55] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 15:35:55] "GET /kegiatan/psm/workshop_penggiat/ HTTP/1.1" 200 74444
+User superadmin1 berhasil login ...
+Data user profile : superadmin1 Profile
+Data user satker:  BNN Kota Lhokseumawe
+Data user direktorat:  dayatif
+[29/Jan/2024 15:37:10] "POST /accounts/login/ HTTP/1.1" 302 0
+[29/Jan/2024 15:37:10] "GET /dashboard/ HTTP/1.1" 200 31307
+[29/Jan/2024 15:37:16] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 65657
+[29/Jan/2024 15:37:17] "GET /survei/api/v1/data_survei/?_=1706517436934 HTTP/1.1" 200 328
+[29/Jan/2024 15:37:28] "GET /survei/api/v1/data_survei/1/ HTTP/1.1" 200 326
+[29/Jan/2024 15:38:05] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+/home/intioptima/sidamas/survei/models.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+January 29, 2024 - 15:38:27
+Django version 4.1.7, using settings 'sidamas.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+/home/intioptima/sidamas/survei/serializers.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+January 29, 2024 - 15:38:42
+Django version 4.1.7, using settings 'sidamas.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+/home/intioptima/sidamas/survei/serializers.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+January 29, 2024 - 15:41:41
+Django version 4.1.7, using settings 'sidamas.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+[29/Jan/2024 15:41:42] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 65657
+[29/Jan/2024 15:41:43] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 65657
+[29/Jan/2024 15:41:43] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 65657
+[29/Jan/2024 15:41:43] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 15:41:44] "GET /survei/api/v1/data_survei/?_=1706517704072 HTTP/1.1" 200 365
+[29/Jan/2024 15:41:49] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 65657
+[29/Jan/2024 15:41:49] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 15:41:50] "GET /survei/api/v1/data_survei/?_=1706517709793 HTTP/1.1" 200 365
+[29/Jan/2024 15:41:58] "GET /survei/api/v1/data_survei/1/ HTTP/1.1" 200 363
+[29/Jan/2024 15:42:06] "PUT /survei/api/v1/data_survei/1/ HTTP/1.1" 200 363
+[29/Jan/2024 15:42:08] "GET /survei/api/v1/data_survei/?_=1706517709794 HTTP/1.1" 200 365
+[29/Jan/2024 15:42:17] "GET /pengisian-survei/?kode=ABCDEFG10 HTTP/1.1" 200 45313
+[29/Jan/2024 15:42:22] "GET /survei/api/v1/data_survei/1/ HTTP/1.1" 200 363
+[29/Jan/2024 15:42:29] "PUT /survei/api/v1/data_survei/1/ HTTP/1.1" 200 363
+[29/Jan/2024 15:42:32] "GET /survei/api/v1/data_survei/?_=1706517709795 HTTP/1.1" 200 365
+[29/Jan/2024 15:42:54] "GET /survei/api/v1/data_survei/?kode=ABCDEFG10 HTTP/1.1" 200 365
+[29/Jan/2024 15:42:56] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 65657
+[29/Jan/2024 15:42:57] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 15:42:58] "GET /survei/api/v1/data_survei/?_=1706517777558 HTTP/1.1" 200 365
+[29/Jan/2024 15:43:00] "GET /survei/api/v1/data_survei/1/ HTTP/1.1" 200 363
+[29/Jan/2024 15:43:06] "PUT /survei/api/v1/data_survei/1/ HTTP/1.1" 200 363
+[29/Jan/2024 15:43:08] "GET /survei/api/v1/data_survei/?_=1706517777559 HTTP/1.1" 200 365
+[29/Jan/2024 15:43:18] "GET /survei/api/v1/data_survei/1/ HTTP/1.1" 200 363
+[29/Jan/2024 15:43:25] "PUT /survei/api/v1/data_survei/1/ HTTP/1.1" 200 363
+[29/Jan/2024 15:43:27] "GET /survei/api/v1/data_survei/?_=1706517777560 HTTP/1.1" 200 365
+[29/Jan/2024 15:44:24] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 65724
+[29/Jan/2024 15:44:25] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 15:44:26] "GET /survei/api/v1/data_survei/?_=1706517865771 HTTP/1.1" 200 365
+[29/Jan/2024 15:44:28] "GET /survei/api/v1/data_survei/1/ HTTP/1.1" 200 363
+[29/Jan/2024 15:44:37] "PUT /survei/api/v1/data_survei/1/ HTTP/1.1" 200 363
+[29/Jan/2024 15:44:39] "GET /survei/api/v1/data_survei/?_=1706517865772 HTTP/1.1" 200 365
+[29/Jan/2024 15:45:29] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 65757
+[29/Jan/2024 15:45:30] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 15:45:31] "GET /survei/api/v1/data_survei/?_=1706517930820 HTTP/1.1" 200 365
+[29/Jan/2024 15:47:00] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 65842
+[29/Jan/2024 15:47:01] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 15:47:02] "GET /survei/api/v1/data_survei/?_=1706518021689 HTTP/1.1" 200 365
+[29/Jan/2024 15:47:23] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 66026
+[29/Jan/2024 15:47:24] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 15:47:25] "GET /survei/api/v1/data_survei/?_=1706518044692 HTTP/1.1" 200 365
+[29/Jan/2024 15:48:23] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 66026
+[29/Jan/2024 15:48:23] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 15:48:25] "GET /survei/api/v1/data_survei/?_=1706518104397 HTTP/1.1" 200 365
+[29/Jan/2024 15:48:47] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 66002
+[29/Jan/2024 15:48:47] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 15:48:49] "GET /survei/api/v1/data_survei/?_=1706518128441 HTTP/1.1" 200 365
+[29/Jan/2024 15:51:16] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 66160
+[29/Jan/2024 15:51:17] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 15:51:18] "GET /survei/api/v1/data_survei/?_=1706518277648 HTTP/1.1" 200 365
+[29/Jan/2024 15:52:00] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 66172
+[29/Jan/2024 15:52:00] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 15:52:01] "GET /survei/api/v1/data_survei/?_=1706518321091 HTTP/1.1" 200 365
+[29/Jan/2024 15:52:23] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 66172
+[29/Jan/2024 15:52:24] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 15:52:25] "GET /survei/api/v1/data_survei/?_=1706518344454 HTTP/1.1" 200 365
+[29/Jan/2024 15:53:19] "GET /pengisian-survei/?kode=ABCDEFG10 HTTP/1.1" 200 45313
+[29/Jan/2024 15:53:21] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 66023
+[29/Jan/2024 15:53:22] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 15:53:23] "GET /survei/api/v1/data_survei/?_=1706518402463 HTTP/1.1" 200 365
+[29/Jan/2024 15:53:39] "GET /survei/api/v1/data_survei/1/ HTTP/1.1" 200 363
+[29/Jan/2024 15:54:06] "GET /survei/api/v1/data_responden_survei/?survei=1 HTTP/1.1" 200 433
+[29/Jan/2024 15:54:09] "GET /survei/api/v1/data_pengisian_survei/?responden=13 HTTP/1.1" 200 806
+[29/Jan/2024 15:54:17] "GET /survei/api/v1/data_responden_survei/?survei=1 HTTP/1.1" 200 433
+[29/Jan/2024 15:55:46] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 66023
+[29/Jan/2024 15:55:47] "GET /survei/api/v1/data_survei/?_=1706518546997 HTTP/1.1" 200 365
+[29/Jan/2024 15:55:48] "GET /survei/api/v1/data_responden_survei/?survei=1 HTTP/1.1" 200 433
+[29/Jan/2024 15:55:58] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 66022
+[29/Jan/2024 15:55:59] "GET /survei/api/v1/data_survei/?_=1706518558555 HTTP/1.1" 200 365
+[29/Jan/2024 15:56:00] "GET /survei/api/v1/data_responden_survei/?survei=1 HTTP/1.1" 200 433
+[29/Jan/2024 15:56:15] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 66027
+[29/Jan/2024 15:56:16] "GET /survei/api/v1/data_survei/?_=1706518575968 HTTP/1.1" 200 365
+[29/Jan/2024 15:56:17] "GET /survei/api/v1/data_responden_survei/?survei=1 HTTP/1.1" 200 433
+[29/Jan/2024 15:58:31] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 15:59:01] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 66052
+[29/Jan/2024 15:59:01] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 15:59:02] "GET /static/assets/dashboard/custom/js/dashboard-helpers.js HTTP/1.1" 304 0
+[29/Jan/2024 15:59:02] "GET /survei/api/v1/data_survei/?_=1706518742439 HTTP/1.1" 200 365
+[29/Jan/2024 15:59:05] "GET /survei/api/v1/data_responden_survei/?survei=1 HTTP/1.1" 200 433
+[29/Jan/2024 15:59:23] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 66048
+[29/Jan/2024 15:59:23] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 15:59:24] "GET /survei/api/v1/data_survei/?_=1706518764224 HTTP/1.1" 200 365
+[29/Jan/2024 15:59:26] "GET /survei/api/v1/data_responden_survei/?survei=1 HTTP/1.1" 200 433
+[29/Jan/2024 15:59:38] "GET /pengisian-survei/?kode=ABCDEFG10 HTTP/1.1" 200 45313
+[29/Jan/2024 16:03:30] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 66632
+[29/Jan/2024 16:03:30] "GET /static/assets/dashboard/custom/css/custom.css HTTP/1.1" 304 0
+[29/Jan/2024 16:03:32] "GET /survei/api/v1/data_survei/?_=1706519011688 HTTP/1.1" 200 365
+[29/Jan/2024 16:03:33] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 16:04:12] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 66641
+[29/Jan/2024 16:04:12] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 16:04:13] "GET /survei/api/v1/data_survei/?_=1706519052771 HTTP/1.1" 200 365
+[29/Jan/2024 16:04:25] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 66986
+[29/Jan/2024 16:04:25] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 16:04:26] "GET /survei/api/v1/data_survei/?_=1706519066350 HTTP/1.1" 200 365
+[29/Jan/2024 16:05:00] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 66905
+[29/Jan/2024 16:05:00] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 16:05:01] "GET /survei/api/v1/data_survei/?_=1706519101054 HTTP/1.1" 200 365
+[29/Jan/2024 16:05:43] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 66721
+[29/Jan/2024 16:05:44] "GET /survei/api/v1/data_survei/?_=1706519143812 HTTP/1.1" 200 365
+[29/Jan/2024 16:06:04] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 66721
+[29/Jan/2024 16:06:06] "GET /survei/api/v1/data_survei/?_=1706519165498 HTTP/1.1" 200 365
+[29/Jan/2024 16:35:39] "GET /survei/api/v1/data_responden_survei/?survei=1 HTTP/1.1" 200 433
+[29/Jan/2024 16:38:14] "GET /dashboard/ HTTP/1.1" 200 31307
+[29/Jan/2024 16:38:14] "GET /static/assets/home/plugins/sweet-alert/all.min.css HTTP/1.1" 200 31008
+[29/Jan/2024 16:38:14] "GET /static/assets/dashboard/vendor/libs/toastr/toastr.css HTTP/1.1" 200 11411
+[29/Jan/2024 16:38:14] "GET /static/assets/dashboard/vendor/libs/apex-charts/apex-charts.css HTTP/1.1" 200 19809
+[29/Jan/2024 16:38:15] "GET /static/assets/dashboard/vendor/libs/swiper/swiper.css HTTP/1.1" 200 19655
+[29/Jan/2024 16:38:15] "GET /static/assets/dashboard/vendor/libs/datatables-bs5/datatables.bootstrap5.css HTTP/1.1" 200 22799
+[29/Jan/2024 16:38:15] "GET /static/assets/dashboard/vendor/libs/select2/select2.css HTTP/1.1" 200 24453
+[29/Jan/2024 16:38:15] "GET /static/assets/dashboard/custom/css/custom.css HTTP/1.1" 304 0
+[29/Jan/2024 16:38:15] "GET /static/assets/images/bnn.png HTTP/1.1" 200 22974
+[29/Jan/2024 16:38:15] "GET /static/assets/dashboard/custom/js/dashboard-helpers.js HTTP/1.1" 304 0
+[29/Jan/2024 16:38:15] "GET /static/assets/dashboard/vendor/libs/chartjs/chartjs.js HTTP/1.1" 200 202246
+[29/Jan/2024 16:38:27] "GET /kegiatan/psm/rakernis/ HTTP/1.1" 200 126261
+[29/Jan/2024 16:38:27] "GET /static/assets/dashboard/custom/js/kegiatan_helpers.js HTTP/1.1" 200 1572
+[29/Jan/2024 16:38:57] "GET /pengisian-survei/?kode=ABCDEFG10 HTTP/1.1" 200 45313
+[29/Jan/2024 16:39:40] "GET /dashboard/ HTTP/1.1" 200 31307
+[29/Jan/2024 16:39:43] "GET /dashboard/literasi/ HTTP/1.1" 200 25023
+[29/Jan/2024 16:39:48] "GET /dashboard/literasi/api/v1/literasi/ HTTP/1.1" 200 306
+[29/Jan/2024 16:41:14] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 16:41:19] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 67016
+[29/Jan/2024 16:41:20] "GET /static/assets/dashboard/custom/css/custom.css HTTP/1.1" 304 0
+[29/Jan/2024 16:41:21] "GET /survei/api/v1/data_survei/?_=1706521280403 HTTP/1.1" 200 362
+[29/Jan/2024 16:41:24] "GET /dashboard/literasi/ HTTP/1.1" 200 25023
+[29/Jan/2024 16:41:24] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 16:41:24] "GET /dashboard/literasi/api/v1/literasi/ HTTP/1.1" 200 306
+[29/Jan/2024 16:41:29] "GET / HTTP/1.1" 200 18130
+[29/Jan/2024 16:41:29] "GET /static/assets/home/plugins/bootstrap/bootstrap.min.css HTTP/1.1" 200 248990
+[29/Jan/2024 16:41:29] "GET /static/assets/home/css/main.css HTTP/1.1" 200 2994
+[29/Jan/2024 16:41:29] "GET /static/assets/home/plugins/jquery/jquery.slim.min.js HTTP/1.1" 304 0
+[29/Jan/2024 16:41:29] "GET /static/assets/home/css/pages/home.css HTTP/1.1" 200 1282
+[29/Jan/2024 16:41:29] "GET /static/assets/home/css/libs/pace-theme-default.min.css HTTP/1.1" 200 362
+[29/Jan/2024 16:41:29] "GET /static/assets/home/css/libs/flash.css HTTP/1.1" 200 2989
+[29/Jan/2024 16:41:29] "GET /static/assets/images/logo-coklat.png HTTP/1.1" 304 0
+[29/Jan/2024 16:41:29] "GET /static/assets/images/avatar.png HTTP/1.1" 200 8312
+[29/Jan/2024 16:41:29] "GET /static/assets/images/logo.png HTTP/1.1" 200 237427
+[29/Jan/2024 16:41:29] "GET /static/assets/home/plugins/bootstrap/popper.min.js HTTP/1.1" 304 0
+[29/Jan/2024 16:41:29] "GET /static/assets/home/plugins/bootstrap/bootstrap.min.js HTTP/1.1" 304 0
+[29/Jan/2024 16:41:29] "GET /static/assets/home/js/main.js HTTP/1.1" 304 0
+[29/Jan/2024 16:41:29] "GET /static/assets/home/js/home-helpers.js HTTP/1.1" 200 1838
+[29/Jan/2024 16:41:29] "GET /static/assets/home/js/libs/pace.min.js HTTP/1.1" 304 0
+[29/Jan/2024 16:41:29] "GET /static/assets/home/plugins/axios/axios.min.js HTTP/1.1" 304 0
+[29/Jan/2024 16:41:29] "GET /static/assets/home/js/vue-helpers.js HTTP/1.1" 304 0
+[29/Jan/2024 16:41:30] "GET /static/assets/home/plugins/bootstrap/bootstrap.min.css.map HTTP/1.1" 404 1916
+[29/Jan/2024 16:41:30] "GET /static/assets/fonts/SquadaOne-Regular.ttf HTTP/1.1" 304 0
+[29/Jan/2024 16:41:30] "GET /static/assets/home/plugins/bootstrap/popper.min.js.map HTTP/1.1" 404 1904
+[29/Jan/2024 16:41:30] "GET /static/assets/home/plugins/bootstrap/bootstrap.min.js.map HTTP/1.1" 404 1913
+[29/Jan/2024 16:41:30] "GET /static/assets/home/vue/components/home/CardItemBerita.vue HTTP/1.1" 200 1233
+[29/Jan/2024 16:41:30] "GET /static/assets/home/plugins/axios/axios.min.js.map HTTP/1.1" 404 1889
+[29/Jan/2024 16:41:30] "GET /media/upload/files/berita/675c2bfe-0420-4bd4-a51a-974cfd78ffe6.jpeg HTTP/1.1" 200 51438
+[29/Jan/2024 16:41:30] "GET /media/upload/files/berita/2d1363bf-c81f-4647-9ed6-202acd8ab7fd.jpeg HTTP/1.1" 200 97180
+[29/Jan/2024 16:41:30] "GET /media/upload/files/berita/3eaa29b5-5b2b-4d02-8678-55101aac546b_x6fcbJQ.jpeg HTTP/1.1" 200 55656
+[29/Jan/2024 16:42:03] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 67095
+[29/Jan/2024 16:42:04] "GET /survei/api/v1/data_survei/?_=1706521323639 HTTP/1.1" 200 362
+[29/Jan/2024 16:42:10] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 16:42:46] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 67093
+[29/Jan/2024 16:42:47] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 16:42:49] "GET /survei/api/v1/data_survei/?_=1706521368186 HTTP/1.1" 200 362
+[29/Jan/2024 16:43:48] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 67196
+[29/Jan/2024 16:43:49] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 16:43:50] "GET /survei/api/v1/data_survei/?_=1706521429881 HTTP/1.1" 200 362
+[29/Jan/2024 16:43:55] "GET /survei/api/v1/data_responden_survei/?survei=1 HTTP/1.1" 200 433
+[29/Jan/2024 16:43:59] "GET /survei/api/v1/data_responden_survei/?survei=1 HTTP/1.1" 200 433
+[29/Jan/2024 16:44:02] "GET /pengisian-survei/ HTTP/1.1" 200 45313
+[29/Jan/2024 16:44:02] "GET /static/assets/home/css/pages/survei.css HTTP/1.1" 200 9476
+[29/Jan/2024 16:44:02] "GET /static/assets/home/images/survei/check.png HTTP/1.1" 200 12950
+[29/Jan/2024 16:44:02] "GET /static/assets/home/images/survei/mulai-tr.png HTTP/1.1" 200 1371457
+[29/Jan/2024 16:44:02] "GET /static/assets/home/images/survei/bg-survei.png HTTP/1.1" 200 210244
+[29/Jan/2024 16:44:02] "GET /static/assets/home/vue/components/survei/Pertanyaan.vue HTTP/1.1" 200 648
+[29/Jan/2024 16:44:02] "GET /static/assets/home/vue/components/survei/pilihan/PilihanJenisKelamin.vue HTTP/1.1" 200 1430
+[29/Jan/2024 16:44:02] "GET /static/assets/home/vue/components/survei/ButtonLanjutkan.vue HTTP/1.1" 200 1560
+[29/Jan/2024 16:44:02] "GET /static/assets/home/vue/components/survei/pilihan/PilihanRentangUsia.vue HTTP/1.1" 200 935
+[29/Jan/2024 16:44:02] "GET /static/assets/home/vue/components/survei/pilihan/PilihanPendidikan.vue HTTP/1.1" 200 1155
+[29/Jan/2024 16:44:02] "GET /static/assets/home/vue/components/survei/pilihan/PilihanSurvei.vue HTTP/1.1" 200 985
+[29/Jan/2024 16:44:02] "GET /static/assets/home/vue/components/survei/ButtonKeluar.vue HTTP/1.1" 200 714
+[29/Jan/2024 16:44:02] "GET /static/assets/home/images/survei/pilihan/level-2.png HTTP/1.1" 200 255537
+[29/Jan/2024 16:44:02] "GET /static/assets/home/images/survei/pilihan/level-3.png HTTP/1.1" 200 230280
+[29/Jan/2024 16:44:02] "GET /static/assets/home/images/survei/pilihan/level-4.png HTTP/1.1" 200 203673
+[29/Jan/2024 16:44:02] "GET /static/assets/home/images/survei/pilihan/level-1.png HTTP/1.1" 200 262097
+[29/Jan/2024 16:44:15] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 67226
+[29/Jan/2024 16:44:16] "GET /survei/api/v1/data_survei/?_=1706521455971 HTTP/1.1" 200 362
+[29/Jan/2024 16:44:18] "GET /survei/api/v1/data_responden_survei/?survei=1 HTTP/1.1" 200 433
+[29/Jan/2024 16:45:01] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 67257
+[29/Jan/2024 16:45:02] "GET /survei/api/v1/data_survei/?_=1706521501869 HTTP/1.1" 200 362
+[29/Jan/2024 16:45:23] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 67257
+[29/Jan/2024 16:45:23] "GET /static/assets/dashboard/vendor/libs/datatables-bs5/datatables.bootstrap5.css HTTP/1.1" 304 0
+[29/Jan/2024 16:45:24] "GET /survei/api/v1/data_survei/?_=1706521523898 HTTP/1.1" 200 362
+[29/Jan/2024 16:45:40] "GET /survei/api/v1/data_survei/1/ HTTP/1.1" 200 360
+[29/Jan/2024 16:46:06] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 67290
+[29/Jan/2024 16:46:06] "GET /survei/api/v1/data_survei/?_=1706521566496 HTTP/1.1" 200 362
+[29/Jan/2024 16:46:07] "GET /static/assets/dashboard/vendor/fonts/fontawesome/fa-regular-400.woff2 HTTP/1.1" 200 24488
+[29/Jan/2024 16:46:20] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 16:46:57] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 67314
+[29/Jan/2024 16:46:57] "GET /static/assets/dashboard/vendor/fonts/fontawesome.css HTTP/1.1" 200 101301
+[29/Jan/2024 16:46:57] "GET /static/assets/dashboard/vendor/fonts/flag-icons.css HTTP/1.1" 200 26085
+[29/Jan/2024 16:46:57] "GET /static/assets/dashboard/css/demo.css HTTP/1.1" 200 3376
+[29/Jan/2024 16:46:57] "GET /static/assets/dashboard/vendor/fonts/tabler-icons.css HTTP/1.1" 200 178068
+[29/Jan/2024 16:46:57] "GET /static/assets/dashboard/vendor/css/rtl/theme-semi-dark.css HTTP/1.1" 200 54722
+[29/Jan/2024 16:46:57] "GET /static/assets/home/plugins/sweet-alert/all.min.css HTTP/1.1" 200 31008
+[29/Jan/2024 16:46:57] "GET /static/assets/dashboard/vendor/libs/toastr/toastr.css HTTP/1.1" 200 11411
+[29/Jan/2024 16:46:57] "GET /static/assets/dashboard/custom/css/custom.css HTTP/1.1" 200 3237
+[29/Jan/2024 16:46:57] "GET /static/assets/dashboard/vendor/libs/perfect-scrollbar/perfect-scrollbar.css HTTP/1.1" 200 5474
+[29/Jan/2024 16:46:57] "GET /static/assets/dashboard/vendor/libs/node-waves/node-waves.css HTTP/1.1" 200 4080
+[29/Jan/2024 16:46:57] "GET /static/assets/dashboard/custom/css/superadmin.css HTTP/1.1" 200 1770
+[29/Jan/2024 16:46:57] "GET /static/assets/dashboard/vendor/libs/typeahead-js/typeahead.css HTTP/1.1" 200 1812
+[29/Jan/2024 16:46:58] "GET /static/assets/dashboard/vendor/libs/apex-charts/apex-charts.css HTTP/1.1" 200 19809
+[29/Jan/2024 16:46:58] "GET /static/assets/dashboard/vendor/libs/swiper/swiper.css HTTP/1.1" 200 19655
+[29/Jan/2024 16:46:58] "GET /static/assets/dashboard/vendor/libs/datatables-bs5/datatables.bootstrap5.css HTTP/1.1" 200 22799
+[29/Jan/2024 16:46:58] "GET /static/assets/dashboard/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css HTTP/1.1" 200 4885
+[29/Jan/2024 16:46:58] "GET /static/assets/dashboard/vendor/libs/datatables-checkboxes-jquery/datatables.checkboxes.css HTTP/1.1" 200 511
+[29/Jan/2024 16:46:58] "GET /static/assets/dashboard/vendor/css/pages/cards-advance.css HTTP/1.1" 200 1609
+[29/Jan/2024 16:46:58] "GET /static/assets/dashboard/vendor/libs/select2/select2.css HTTP/1.1" 200 24453
+[29/Jan/2024 16:46:58] "GET /static/assets/home/plugins/sweet-alert/all.min.js HTTP/1.1" 200 69996
+[29/Jan/2024 16:46:58] "GET /static/assets/dashboard/vendor/libs/jquery/jquery.min.js HTTP/1.1" 200 87533
+[29/Jan/2024 16:46:58] "GET /static/assets/dashboard/vendor/css/rtl/core.css HTTP/1.1" 200 716009
+[29/Jan/2024 16:46:58] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js HTTP/1.1" 200 33621
+[29/Jan/2024 16:46:58] "GET /static/assets/dashboard/vendor/js/helpers.js HTTP/1.1" 200 37423
+[29/Jan/2024 16:46:58] "GET /static/assets/dashboard/js/bawaan/config.js HTTP/1.1" 200 1695
+[29/Jan/2024 16:46:58] "GET /static/assets/images/bnn.png HTTP/1.1" 200 22974
+[29/Jan/2024 16:46:58] "GET /media/images/avatar.png HTTP/1.1" 200 7824
+[29/Jan/2024 16:46:58] "GET /static/assets/dashboard/vendor/libs/jquery/jquery.js HTTP/1.1" 200 88114
+[29/Jan/2024 16:46:58] "GET /static/assets/dashboard/vendor/libs/popper/popper.js HTTP/1.1" 200 20791
+[29/Jan/2024 16:46:58] "GET /static/assets/dashboard/vendor/js/bootstrap.js HTTP/1.1" 200 99223
+[29/Jan/2024 16:46:58] "GET /static/assets/dashboard/vendor/libs/node-waves/node-waves.js HTTP/1.1" 200 7575
+[29/Jan/2024 16:46:59] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 16:46:59] "GET /static/assets/dashboard/vendor/libs/hammer/hammer.js HTTP/1.1" 200 21150
+[29/Jan/2024 16:46:59] "GET /static/assets/dashboard/vendor/libs/perfect-scrollbar/perfect-scrollbar.js HTTP/1.1" 200 19579
+[29/Jan/2024 16:46:59] "GET /static/assets/dashboard/vendor/libs/i18n/i18n.js HTTP/1.1" 200 71850
+[29/Jan/2024 16:46:59] "GET /static/assets/dashboard/vendor/libs/typeahead-js/typeahead.js HTTP/1.1" 200 40322
+[29/Jan/2024 16:46:59] "GET /static/assets/dashboard/vendor/js/menu.js HTTP/1.1" 200 21666
+[29/Jan/2024 16:46:59] "GET /static/assets/dashboard/vendor/libs/swiper/swiper.js HTTP/1.1" 200 139411
+[29/Jan/2024 16:46:59] "GET /static/assets/dashboard/vendor/libs/toastr/toastr.js HTTP/1.1" 200 5958
+[29/Jan/2024 16:46:59] "GET /static/assets/dashboard/vendor/libs/cleave/dist/addons/cleave-phone.id.js HTTP/1.1" 200 14725
+[29/Jan/2024 16:46:59] "GET /static/assets/dashboard/vendor/libs/cleave/dist/cleave.min.js HTTP/1.1" 200 21133
+[29/Jan/2024 16:46:59] "GET /static/assets/dashboard/vendor/libs/select2/select2.js HTTP/1.1" 200 80459
+[29/Jan/2024 16:46:59] "GET /static/assets/dashboard/vendor/libs/datatables-bs5/datatables-bootstrap5.js HTTP/1.1" 200 89645
+[29/Jan/2024 16:46:59] "GET /static/assets/dashboard/vendor/libs/bootstrap-maxlength/bootstrap-maxlength.js HTTP/1.1" 200 5951
+[29/Jan/2024 16:46:59] "GET /static/assets/dashboard/vendor/fonts/fontawesome/fa-solid-900.woff2 HTTP/1.1" 200 150020
+[29/Jan/2024 16:46:59] "GET /static/assets/dashboard/js/bawaan/main.js HTTP/1.1" 200 19111
+[29/Jan/2024 16:46:59] "GET /static/assets/dashboard/vendor/libs/moment/moment.js HTTP/1.1" 200 297837
+[29/Jan/2024 16:47:00] "GET /static/assets/dashboard/custom/js/custom.js HTTP/1.1" 200 2219
+[29/Jan/2024 16:47:00] "GET /static/assets/dashboard/custom/js/dashboard-helpers.js HTTP/1.1" 200 4260
+[29/Jan/2024 16:47:00] "GET /static/assets/dashboard/custom/js/fix-select.js HTTP/1.1" 200 1254
+[29/Jan/2024 16:47:00] "GET /static/assets/dashboard/vendor/fonts/tabler/tabler-icons.woff2 HTTP/1.1" 200 702272
+[29/Jan/2024 16:47:00] "GET /static/assets/dashboard/json/locales/en.json HTTP/1.1" 200 55
+[29/Jan/2024 16:47:01] "GET /survei/api/v1/data_survei/?_=1706521619678 HTTP/1.1" 200 362
+[29/Jan/2024 16:47:01] "GET /static/assets/dashboard/vendor/fonts/fontawesome/fa-regular-400.woff2 HTTP/1.1" 200 24488
+[29/Jan/2024 16:47:02] "GET /static/assets/images/bnn.png HTTP/1.1" 200 22974
+[29/Jan/2024 16:51:34] "GET /survei/api/v1/data_responden_survei/?survei=1 HTTP/1.1" 200 433
+[29/Jan/2024 16:52:04] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 67314
+[29/Jan/2024 16:52:05] "GET /static/assets/dashboard/custom/css/custom.css HTTP/1.1" 304 0
+[29/Jan/2024 16:52:06] "GET /survei/api/v1/data_survei/?_=1706521925749 HTTP/1.1" 200 362
+[29/Jan/2024 16:52:07] "GET /survei/api/v1/data_responden_survei/?survei=1 HTTP/1.1" 200 433
+[29/Jan/2024 16:52:13] "GET /survei/api/v1/data_responden_survei/?survei=1 HTTP/1.1" 200 433
+[29/Jan/2024 16:52:15] "GET /survei/api/v1/data_pengisian_survei/?responden=14 HTTP/1.1" 200 806
+[29/Jan/2024 16:54:17] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 67595
+[29/Jan/2024 16:54:17] "GET /static/assets/dashboard/custom/css/custom.css HTTP/1.1" 304 0
+[29/Jan/2024 16:54:18] "GET /survei/api/v1/data_survei/?_=1706522058129 HTTP/1.1" 200 362
+[29/Jan/2024 16:54:20] "GET /survei/api/v1/data_responden_survei/?survei=1 HTTP/1.1" 200 433
+[29/Jan/2024 16:54:22] "GET /survei/api/v1/data_pengisian_survei/?responden=13 HTTP/1.1" 200 806
+[29/Jan/2024 16:55:12] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 67623
+[29/Jan/2024 16:55:12] "GET /static/assets/dashboard/custom/css/custom.css HTTP/1.1" 304 0
+[29/Jan/2024 16:55:13] "GET /survei/api/v1/data_survei/?_=1706522112780 HTTP/1.1" 200 362
+[29/Jan/2024 16:55:51] "GET /survei/api/v1/data_responden_survei/?survei=1 HTTP/1.1" 200 433
+[29/Jan/2024 16:55:54] "GET /survei/api/v1/data_pengisian_survei/?responden=13 HTTP/1.1" 200 806
+[29/Jan/2024 16:58:55] "GET / HTTP/1.1" 200 18130
+[29/Jan/2024 16:59:26] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 68059
+[29/Jan/2024 16:59:26] "GET /static/assets/dashboard/custom/css/custom.css HTTP/1.1" 304 0
+[29/Jan/2024 16:59:27] "GET /survei/api/v1/data_survei/?_=1706522367268 HTTP/1.1" 200 362
+[29/Jan/2024 16:59:28] "GET /survei/api/v1/data_responden_survei/?survei=1 HTTP/1.1" 200 433
+[29/Jan/2024 16:59:31] "GET /survei/api/v1/data_pengisian_survei/?responden=13 HTTP/1.1" 200 806
+[29/Jan/2024 17:00:00] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 68059
+[29/Jan/2024 17:00:01] "GET /survei/api/v1/data_survei/?_=1706522401130 HTTP/1.1" 200 362
+[29/Jan/2024 17:00:03] "GET /survei/api/v1/data_responden_survei/?survei=1 HTTP/1.1" 200 433
+[29/Jan/2024 17:00:06] "GET /survei/api/v1/data_pengisian_survei/?responden=13 HTTP/1.1" 200 806
+[29/Jan/2024 17:00:29] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 68104
+[29/Jan/2024 17:00:30] "GET /survei/api/v1/data_survei/?_=1706522429473 HTTP/1.1" 200 362
+[29/Jan/2024 17:00:30] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 17:00:33] "GET /survei/api/v1/data_responden_survei/?survei=1 HTTP/1.1" 200 433
+[29/Jan/2024 17:00:36] "GET /survei/api/v1/data_pengisian_survei/?responden=14 HTTP/1.1" 200 806
+[29/Jan/2024 17:00:58] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 68142
+[29/Jan/2024 17:00:58] "GET /static/assets/dashboard/custom/css/custom.css HTTP/1.1" 304 0
+[29/Jan/2024 17:00:58] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 17:00:59] "GET /survei/api/v1/data_survei/?_=1706522458827 HTTP/1.1" 200 362
+[29/Jan/2024 17:01:01] "GET /survei/api/v1/data_responden_survei/?survei=1 HTTP/1.1" 200 433
+[29/Jan/2024 17:01:03] "GET /survei/api/v1/data_pengisian_survei/?responden=14 HTTP/1.1" 200 806
+[29/Jan/2024 17:02:35] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 68115
+[29/Jan/2024 17:02:35] "GET /static/assets/dashboard/custom/css/custom.css HTTP/1.1" 304 0
+[29/Jan/2024 17:02:35] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 17:02:36] "GET /survei/api/v1/data_survei/?_=1706522556002 HTTP/1.1" 200 362
+[29/Jan/2024 17:02:38] "GET /survei/api/v1/data_responden_survei/?survei=1 HTTP/1.1" 200 433
+[29/Jan/2024 17:02:39] "GET /survei/api/v1/data_pengisian_survei/?responden=13 HTTP/1.1" 200 806
+[29/Jan/2024 17:03:15] "GET /survei/api/v1/data_responden_survei/?survei=1 HTTP/1.1" 200 433
+[29/Jan/2024 17:03:18] "GET /survei/api/v1/data_pengisian_survei/?responden=13 HTTP/1.1" 200 806
+[29/Jan/2024 17:03:27] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 68114
+[29/Jan/2024 17:03:28] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 17:03:29] "GET /survei/api/v1/data_survei/?_=1706522608776 HTTP/1.1" 200 362
+[29/Jan/2024 17:03:31] "GET /survei/api/v1/data_responden_survei/?survei=1 HTTP/1.1" 200 433
+[29/Jan/2024 17:03:33] "GET /survei/api/v1/data_pengisian_survei/?responden=14 HTTP/1.1" 200 806
+[29/Jan/2024 17:04:34] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 68128
+[29/Jan/2024 17:04:34] "GET /static/assets/dashboard/custom/css/custom.css HTTP/1.1" 304 0
+[29/Jan/2024 17:04:34] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[29/Jan/2024 17:04:36] "GET /survei/api/v1/data_survei/?_=1706522675335 HTTP/1.1" 200 362
+[29/Jan/2024 17:04:38] "GET /survei/api/v1/data_responden_survei/?survei=1 HTTP/1.1" 200 433
+[29/Jan/2024 17:04:41] "GET /survei/api/v1/data_pengisian_survei/?responden=14 HTTP/1.1" 200 806
+[29/Jan/2024 17:05:07] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 68128
+[29/Jan/2024 17:05:08] "GET /survei/api/v1/data_survei/?_=1706522708239 HTTP/1.1" 200 362
+[29/Jan/2024 17:05:10] "GET /survei/api/v1/data_responden_survei/?survei=1 HTTP/1.1" 200 433
+[29/Jan/2024 17:05:12] "GET /survei/api/v1/data_pengisian_survei/?responden=13 HTTP/1.1" 200 806
+[29/Jan/2024 17:05:17] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 68127
+[29/Jan/2024 17:05:19] "GET /survei/api/v1/data_survei/?_=1706522718457 HTTP/1.1" 200 362
+[29/Jan/2024 17:05:20] "GET /survei/api/v1/data_responden_survei/?survei=1 HTTP/1.1" 200 433
+[29/Jan/2024 17:05:22] "GET /survei/api/v1/data_pengisian_survei/?responden=13 HTTP/1.1" 200 806
+[29/Jan/2024 17:06:25] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 68366
+[29/Jan/2024 17:06:25] "GET /static/assets/dashboard/custom/css/custom.css HTTP/1.1" 304 0
+[29/Jan/2024 17:06:26] "GET /survei/api/v1/data_survei/?_=1706522786019 HTTP/1.1" 200 362
+[29/Jan/2024 17:06:34] "GET /survei/api/v1/data_responden_survei/?survei=1 HTTP/1.1" 200 433
+[29/Jan/2024 17:06:35] "GET /survei/api/v1/data_pengisian_survei/?responden=13 HTTP/1.1" 200 806
+[29/Jan/2024 17:07:20] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 68454
+[29/Jan/2024 17:07:22] "GET /survei/api/v1/data_survei/?_=1706522841702 HTTP/1.1" 200 362
+[29/Jan/2024 17:07:30] "GET /survey/psm/skm_tes_urine/ HTTP/1.1" 200 68454
+[29/Jan/2024 17:07:31] "GET /survei/api/v1/data_survei/?_=1706522850955 HTTP/1.1" 200 362
+[29/Jan/2024 17:07:33] "GET /survei/api/v1/data_responden_survei/?survei=1 HTTP/1.1" 200 433
+[29/Jan/2024 17:07:34] "GET /survei/api/v1/data_pengisian_survei/?responden=13 HTTP/1.1" 200 806

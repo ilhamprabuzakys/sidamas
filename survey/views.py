@@ -1,5 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render
+from django.template.defaultfilters import length
 from django.views import View, generic
 from django.urls import reverse, reverse_lazy
 
@@ -119,11 +120,14 @@ class SKMTesUrineView(SurveyBaseView, View):
     def get(self, request):
         tipe_survei = TipeSurvei.objects.get(nama="SKM Tes Urine")
         
+        daftar_pertanyaan = [pertanyaan['pertanyaan'] for pertanyaan in tipe_survei.daftar_pertanyaan]
+        
         list_survei = DataSurvei.objects.filter(tipe=tipe_survei.id)
         
         context = {
             'list_survei': list_survei,
-            'tipe_survei': tipe_survei.id
+            'tipe_survei': tipe_survei.id,
+            'daftar_pertanyaan': json.dumps(daftar_pertanyaan)
         }
         
         return render(request, self.template_name, context)

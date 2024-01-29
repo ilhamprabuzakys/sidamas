@@ -15,6 +15,10 @@ class TipeSurveiSerializer(serializers.ModelSerializer):
         ]
 
 class DataSurveiSerializer(serializers.ModelSerializer):
+    get_jumlah_responden = serializers.SerializerMethodField()
+    get_status_keberlangsungan = serializers.SerializerMethodField()
+    get_status_responden = serializers.SerializerMethodField()
+    
     class Meta:
         model = models.DataSurvei
         fields = [
@@ -25,12 +29,46 @@ class DataSurveiSerializer(serializers.ModelSerializer):
             "tanggal",
             "jam_awal",
             "jam_akhir",
-            "jumlah_responden",
-            "status",
+            "batas_responden",
+            "status_pengiriman",
             "kode",
-            
+            "get_jumlah_responden",
+            "get_status_keberlangsungan",
+            "get_status_responden",
             "tipe",
         ]
+    
+    def get_jumlah_responden(self, obj):
+        return obj.get_jumlah_responden()
+    
+    def get_status_keberlangsungan(self, obj):
+        return obj.get_status_keberlangsungan()
+    
+    def get_status_responden(self, obj):
+        return obj.get_status_responden()
+        
+class DataSurveiDetailSerializer(serializers.ModelSerializer):
+    jumlah_responden = serializers.SerializerMethodField()
+
+    class Meta:
+        model = models.DataSurvei
+        fields = [
+            "created_at",
+            "updated_at",
+            "id",
+            "judul",
+            "tanggal",
+            "jam_awal",
+            "jam_akhir",
+            "batas_responden",
+            "status_pengiriman",
+            "jumlah_responden",
+            "kode",
+            "tipe",
+        ]
+
+    def jumlah_responden(self, obj):
+        return obj.get_jumlah_responden()
 
 class DataRespondenSurveiSerializer(serializers.ModelSerializer):
     class Meta:
@@ -62,82 +100,3 @@ class DataPengisianSurveiSerializer(serializers.ModelSerializer):
             "survei",
             "responden",
         ]
-        
-class tbl_responden_surveiSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.tbl_responden_survei
-        fields = [
-            "last_updated",
-            "pendidikan",
-            "jawaban",
-            "id_survei",
-            "nama",
-            "jenis_kelamin",
-            "perusahaan",
-            "created",
-            "pekerjaan",
-        ]
-
-
-class tbl_surveiSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.tbl_survei
-        fields = [
-            "tanggal",
-            "url",
-            "created",
-            "jam_awal",
-            "last_updated",
-            "role",
-            "tipe",
-            "judul",
-            "status",
-            "jam_akhir",
-        ]
-
-
-class tbl_data_respondenSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.tbl_data_responden
-        fields = [
-            "id",  # Menambahkan ID
-            "created",
-            "rentang_usia",
-            "pendidikan_terkahir",
-            "last_updated",
-            "jenis_kelamin",
-        ]
-
-
-class tbl_isi_surveiSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.tbl_isi_survei
-        fields = [
-            "id",
-            "id_data_survei",
-            "id_data_responden",
-            "last_updated",
-            "array_nilai_jawaban",
-            "created",
-            "data_mentahan",
-            "sigma_nilai",
-        ]
-
-class tbl_data_surveiSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.tbl_data_survei
-        fields = [
-            "id",
-            "nama",
-            "tipe",
-            "tanggal",
-            "daftar_pertanyaan",
-            "jam_awal",
-            "jam_akhir",
-            "jumlah_responden",
-            "status",
-            "kode",
-            "created",
-            "updated",
-        ]
-        
