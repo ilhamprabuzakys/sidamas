@@ -4,6 +4,8 @@ from django.contrib.auth.models import User
 from ckeditor.fields import RichTextField
 from django.utils.text import slugify
 
+from . import validators
+
 
 class Kategori(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, editable=False)
@@ -36,33 +38,30 @@ class Berita(models.Model):
     """
 
     DRAFT = 'draft'
-    PENDING = 'pending'
     PUBLISHED = 'published'
     ARCHIVED = 'archived'
 
     STATUS_CHOICES = [
         (DRAFT, 'Draft'),
-        (PENDING, 'Pending'),
         (PUBLISHED, 'Published'),
         (ARCHIVED, 'Archived'),
     ]
 
-    updated_at = models.DateTimeField(auto_now=True, editable=False)
     created_at = models.DateTimeField(auto_now_add=True, editable=False)
+    updated_at = models.DateTimeField(auto_now=True, editable=False)
     
-    kategori = models.ForeignKey(Kategori, on_delete=models.CASCADE, blank=True, null=True)
     judul = models.TextField(max_length=100)
     slug = models.SlugField(max_length=150, blank=True, null=True)
     isi_berita = RichTextField()
-    tanggal = models.DateField()
     status = models.CharField(max_length=12, choices=STATUS_CHOICES, default="draft")
     tags = models.TextField(max_length=1000)
-    gambar_utama = models.ImageField(upload_to="upload/files/berita/")
     
-    created_by = models.ForeignKey(
-        User, on_delete=models.CASCADE, blank=True, null=True, related_name="berita_created_by")
-    updated_by = models.ForeignKey(
-        User, on_delete=models.CASCADE, blank=True, null=True, related_name="berita_updated_by")
+    gambar_utama = models.ImageField(upload_to="upload/files/berita/", validators=[validators.validate_file_extension])
+    
+    kategori = models.ForeignKey(Kategori, on_delete=models.CASCADE, blank=True, null=True)
+    
+    created_by = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, related_name="berita_created_by")
+    updated_by = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, related_name="berita_updated_by")
 
     class Meta:
         ordering = ['-updated_at']

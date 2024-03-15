@@ -14,7 +14,7 @@ const PilihanSurvei = {
         <div :class="'card level-' + bobot" @click="jawabSurvei">
             <div class="card-body">
                 <h4 class="card-title" :id="'option' + bobot">{{ getTitle }}</h4>
-                <img :src="src" :alt="getTitle">
+                <img :src="src" class="img-fluid" style="max-width: 50%; width: 50px; height: auto;" :alt="getTitle">
             </div>
         </div>
     `,

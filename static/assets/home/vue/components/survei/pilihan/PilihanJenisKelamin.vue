@@ -1,14 +1,10 @@
 <template>
-        <div class="row" :id="'pilihan-jenis-kelamin-' + gender">
-            <div class="col-5 d-flex justify-content-center">
+            <div class="form-check" style="display: flex; align-items: stretch;" :id="'pilihan-jenis-kelamin-' + gender">
                 <input class="form-check-input" type="radio" :name="radioName" :id="'jenis_kelamin-' + gender" :value="gender" @change="handleRadioChange">
-            </div>
-            <div class="col-5 d-flex justify-content-start">
-                <label class="form-check-label" :for="'jenis_kelamin-' + gender">
-                    <h4 class="card-title">{{ detailGender }}</h4>
+                <label class="form-check-label" style="margin-left: 5px;" :for="'jenis_kelamin-' + gender">
+                <h5 class="card-title">{{ detailGender }}</h5>
                 </label>
             </div>
-        </div>
 </template>
 <script>
 export default {
@@ -28,15 +24,14 @@ export default {
     },
     methods: {
         handleRadioChange() {
-            console.log('changed jenis kelamin ...');
             this.emitter.emit(`${this.buttonId}-gender-changed`, this.gender);
         },
     },
     computed: {
         detailGender() {
             const genderMap = {
-                L: "Laki Laki",
-                P: "Perempuan",
+                L: " Laki-laki",
+                P: " Perempuan",
             };
             return genderMap[this.gender] || "";
         },

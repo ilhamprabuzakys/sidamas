@@ -12,6 +12,7 @@ urlpatterns = (
     path("login/", views.CustomLoginView.as_view(), name="login"),
     path('logout/', views.CustomLogoutView.as_view(), name='logout'),
     path('selesai-logout/', views.LoggedOutView.as_view(), name='selesai_logout'),
+    
     # path("pilih-direktorat/", views.PilihDirektoratView.as_view(), name="pilih_direktorat"),
     # path("lupa-password/", views.LupaPasswordView.as_view(), name="lupa_password"),
     # path("reset-password/", views.ResetPasswordView.as_view(), name="reset_password"),

@@ -1,8 +1,12 @@
 {% extends 'dashboard/dashboard_base.html' %}
 {% load static %}
-{% block title %}
-Daftar Berita
-{% endblock %}
+{% block title %} Daftar Berita {% endblock %}
+
+{% block modal_tambahan %}
+{% include "berita/modals/create_berita_modal.html" %}
+{% include "berita/modals/edit_berita_modal.html" %}
+{% endblock modal_tambahan %}
+
 {% block content %}
 
 <div class="breadcrumb">
@@ -22,10 +26,10 @@ Daftar Berita
 
             <div class="action-button">
                 <div class="d-flex justify-content-end mb-3 gap-2">
-                    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exportData"><i
-                            class="fas fa-file-export me-2"></i>Ekspor Data</button>
-                    <a href="{% url 'berita:create' %}" class="btn btn-primary"><i class="fas fa-plus me-2"></i>Tambah
-                        Data</a>
+                    {% comment %} <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exportData"><i
+                            class="fas fa-file-export me-2"></i>Ekspor Data</button> {% endcomment %}
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createModal"><i
+                            class="fas fa-plus me-2"></i>Tambah Data</button>
                 </div>
             </div>
 
@@ -38,49 +42,35 @@ Daftar Berita
 {% endblock %}
 
 {% block js_tambahan %}
+<!-- CK EDITOR -->
+<script src="https://cdn.ckeditor.com/ckeditor5/41.0.0/classic/ckeditor.js"></script>
+
 <script>
-    $(document).ready(function () {
-        $('#__table').DataTable({
-            language: dt_lang_config()
+    let create_berita_editor = null;
+    let edit_berita_editor = null;
+
+    ClassicEditor
+        .create(document.querySelector('#isi_berita'))
+        .then(editor => {
+            console.log('Editor was initialized :', editor);
+            create_berita_editor = editor;
+        })
+        .catch(error => {
+            console.error(error);
         });
-
-
-        $('.delete-data').on('click', function () {
-            Swal.fire({
-                title: "Apakah anda yakin?",
-                html: `Data yang <strong>dihapus</strong> tidak dapat dipulihkan kembali.`,
-                icon: "warning",
-                showCancelButton: true,
-                cancelButtonText: "Batalkan",
-                confirmButtonText: "Ya, hapus data ini!",
-                //confirmButtonColor: "#3f858a",
-                //cancelButtonColor: '#d33',
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    console.log('User clicked the confirm button ...');
-
-                    Swal.fire({
-                        title: "Tunggu sebentar",
-                        icon: "info",
-                        html: `Menghapus <b>data</b> yang anda dipilih..`,
-                        timer: 2000,
-                        didOpen: () => {
-                            Swal.showLoading();
-                        },
-                    }).then((result) => {
-                        if (result.dismiss === Swal.DismissReason.timer) {
-                            Swal.fire({
-                                title: "Berhasil",
-                                html: `Data yang dipilih telah <strong>berhasil</strong> dihapus.`,
-                                icon: "success",
-                                confirmButtonText: "OK",
-                                timer: 2000,
-                            });
-                        }
-                    });
-                }
-            })
+    
+    ClassicEditor
+        .create(document.querySelector('#edited_isi_berita'))
+        .then(editor => {
+            console.log('Editor was initialized :', editor);
+            edit_berita_editor = editor;
+        })
+        .catch(error => {
+            console.error(error);
         });
-    });
 </script>
+
+<script src="{% static 'berita/dt.js' %}"></script>
+<script src="{% static 'berita/dt_filters.js' %}"></script>
+<script src="{% static 'berita/actions.js' %}"></script>
 {% endblock %}

@@ -1,5 +1,6 @@
 <template>
-    <button class="btn btn-mulai w-100" :class="{ 'disabled': !isActive }">
+    <button class="btn btn-mulai w-100">
+    <!-- <button class="btn btn-mulai w-100" :class="{ 'disabled': !isActive }"> -->
         <i :class="icon + ' me-3'"></i>
         <slot></slot>
     </button>
@@ -15,6 +16,7 @@ export default {
         };
     },
     mounted() {
+        this.emitter.on(`nama-changed`, this.handleRadioChanged);
         this.emitter.on(`${this.id}-gender-changed`, this.handleRadioChanged);
         this.emitter.on(`${this.id}-usia-changed`, this.handleRadioChanged);
         this.emitter.on(`${this.id}-pendidikan-changed`, this.handleRadioChanged);

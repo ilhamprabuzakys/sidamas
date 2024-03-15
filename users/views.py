@@ -35,7 +35,7 @@ class UserVerificationListView(UsersBaseView, View):
         user = request.user
         role = user.profile.role
 
-        list_profile_users = models.Profile.objects.filter(is_verified=False)
+        list_profile_users = models.Profile.objects.order_by('-id')
 
         if role == "psm":
             list_profile_users = list_profile_users.filter(role="psm")

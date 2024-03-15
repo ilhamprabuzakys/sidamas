@@ -5,15 +5,43 @@
                 <h5 class="modal-title" id="modalTambah">Tambah Data</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="">
+            <form action="" id="formTambah" onsubmit="createDataSurvei(event);">
 
                 <div class="modal-body">
                     <section id="formTambah">
-                        <div class="mb-3">
-                            <label for="tanggal_survei" class="col-form-label required">Tanggal Survei:</label>
-                            <input class="form-control" type="date" value="" id="tanggal_survei" />
+                        <!-- pilih satker -->
+                        <label for="jumlah_responden" class="col-form-label required">Pilih Satuan Kerja:</label>
+                        <div class="input-group mb-3">
+                            <select id="satker" class="select2 form-select" v-model="satker" ref="satker">
+                                <option value="" selected disabled>Pilih Satuan Kerja</option>
+                                {% for satker_item in daftar_satker %}
+                                    <option value="{{ satker_item.id }}" :selected="'{{ satker_item }}' == satker">{{ satker_item }}</option>
+                                {% endfor %}>
+                            </select>
+                            {% if user.profile.satker is None %}
+                                <small class="text-danger">Tolong pilih satuan kerja anda</small>
+                            {% endif %}
                         </div>
 
+                        <!-- Range tanggal survei -->
+                        <div class="row mb-3">
+                            <div class="col-6">
+                                <div>
+                                    <label for="tanggal_awal_survei" class="col-form-label required">Tanggal Awal:</label>
+                                    <input type="date" id="tanggal_awal_survei" class="form-control" value="" />
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div>
+                                    <label for="tanggal_akhir_survei" class="col-form-label">Tanggal Akhir:</label>
+                                    <input type="date" id="tanggal_akhir_survei" class="form-control" value="" />
+                                </div>
+                            </div>
+
+                            <span class="text-muted mt-2">Jika waktu hanya sehari, maka <b>Tanggal Akhir</b> tidak perlu diisi</span>
+                        </div>
+
+                        <!-- range waktu survei -->
                         <div class="row mb-3">
                             <label for="waktu_berlaku" class="col-form-label required">Waktu Berlakunya Survei:</label>
                             <div class="col-6">
@@ -25,26 +53,24 @@
                                     id="waktu_berlaku_akhir" />
                             </div>
                         </div>
-                        <div class="mb-3">
-                        </div>
 
-                        <label for="jumlah_responden" class="col-form-label required">Jumlah Responden:</label>
+                        <label for="jumlah_responden" class="col-form-label required">Batas Responden:</label>
                         <div class="input-group mb-3">
-                            <input class="form-control input-maxlength" type="text" value="" id="jumlah_responden"
+                            <input class="form-control input-maxlength" type="text" value="" id="batas_responden"
                                 maxlength="3" />
                             <span class="input-group-text" id="responden-orang">orang</span>
                         </div>
 
+                        <span class="text-muted mt-3">Kode survei akan dibuat otomatis oleh sistem.</span>
                     </section>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                         <i class="fas fa-xmark me-2"></i>Tutup</button>
-                    <button type="submit" class="btn btn-primary">
+                    <button type="submit" class="btn btn-primary" id="saveCreateButton">
                         <i class="fas fa-save me-2"></i>
                         Simpan</button>
                 </div>
-
             </form>
         </div>
     </div>

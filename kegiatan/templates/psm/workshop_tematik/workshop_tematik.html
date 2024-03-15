@@ -85,10 +85,56 @@
         }
       })
     })
+
+    $('a#buttonEdit').on('click', function () {
+      $('#editWorkshopTematik').modal('show') //show modal
+    
+      //START SET CURRENT VALUE
+      $('select[name="edit_satker"]').val('BNNP Jawa Barat').trigger('change')
+      //END
+    })
+    
+    $('.deleteKegiatan').on('click', function () {
+      Swal.fire({
+        title: 'Apakah anda yakin?',
+        html: `Data yang <strong>dihapus</strong> tidak dapat dipulihkan kembali.`,
+        icon: 'warning',
+        showCancelButton: true,
+        cancelButtonText: 'Batalkan',
+        confirmButtonText: 'Ya, hapus data ini!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          console.log('User clicked the confirm button ...')
+    
+          Swal.fire({
+            title: 'Tunggu sebentar',
+            icon: 'info',
+            html: `Menghapus <b>data</b> yang anda dipilih..`,
+            timer: 2000,
+            didOpen: () => {
+              Swal.showLoading()
+            }
+          }).then((result) => {
+            if (result.dismiss === Swal.DismissReason.timer) {
+              Swal.fire({
+                title: 'Berhasil',
+                html: `Data yang dipilih telah <strong>berhasil</strong> dihapus.`,
+                icon: 'success',
+                confirmButtonText: 'OK',
+                timer: 2000
+              })
+            }
+          })
+        }
+      })
+    })
   </script>
 {% endblock %}
 
 {% block modal_tambahan %}
   {% include 'psm/workshop_tematik/create.html' %}
+  {% include 'psm/workshop_tematik/create_kegiatan.html' %}
+  {% include 'psm/workshop_tematik/edit.html' %}
+  {% include 'psm/workshop_tematik/edit_kegiatan.html' %}
   {% include 'psm/workshop_tematik/detail.html' %}
 {% endblock %}

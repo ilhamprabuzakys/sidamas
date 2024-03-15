@@ -1,5 +1,5 @@
 <div class="modal fade" id="tambahData" aria-labelledby="modalTambah" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-md">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="modalTambah">Tambah Data</h5>
@@ -9,7 +9,7 @@
         {% comment %} <code class="language-js" id="currentClock"></code> {% endcomment %}
         <form>
           <div class="mb-3">
-            <label for="create_satker" class="col-form-label">Satuan Kerja:</label>
+            <label for="create_satker" class="col-form-label required">Satuan Kerja:</label>
             <select name="create_satker" id="create_satker" class="form-control select2">
               <option value="" selected disabled>Pilih Satuan Kerja</option>
               {% for item in satker %}
@@ -18,7 +18,7 @@
             </select>
           </div>
           <div class="mb-3">
-            <label for="jumlah_kegiatan" class="col-form-label">Jumlah Kegiatan</label>
+            <label for="jumlah_kegiatan" class="col-form-label required">Jumlah Kegiatan</label>
             <input type="number" class="form-control" name="jumlah_kegiatana" id="jumlah_kegiatan" />
           </div>
         </form>

@@ -10,9 +10,9 @@ main {
 }
 
 /* MASUKAN KODE */
-#input-code {
+/* #input-code {
     width: 600px;
-}
+} */
 
 /* #survei-container {
    position: relative;
@@ -23,6 +23,15 @@ main {
 #mulai-container {
     /* margin: 5rem 0 6rem 0; */
     margin: 2rem 0;
+}
+
+#mulai-container .text-description ul li span.option {
+    width: 70px;
+    display: inline-block
+}
+
+#mulai-container .text-description ul li span.isi {
+    margin-left: 5px
 }
 
 #mulai-container .img-mulai {
@@ -143,6 +152,66 @@ main {
 }
 
 /* DAFTAR PILIHAN */
+.card.level-1 {
+    background-color: #ff7e0a;
+}
+
+.card.level-1:hover,
+.card.level-1:active,
+.card.level-1:focus {
+    background-color: #aa5408;
+}
+
+.card.level-2 {
+    background-color: #ebbd86;
+}
+
+.card.level-2:hover,
+.card.level-2:active,
+.card.level-2:focus {
+    background-color: #b18958;
+}
+
+.card.level-3 {
+    background-color: #9bd8dc;
+}
+
+.card.level-3:hover,
+.card.level-3:active,
+.card.level-3:focus {
+    background-color: #5f9da1;
+}
+
+.card.level-4 {
+    background-color: #99ea59;
+}
+
+.card.level-4:hover,
+.card.level-4:active,
+.card.level-4:focus {
+    background-color: #63a035;
+}
+
+#id_daftar_pilihan .row > *{
+    padding-right: 0px;
+    padding-left: 0px;
+}
+
+#id_daftar_pilihan .row > *{
+    padding-right: 0px;
+    padding-left: 0px;
+}
+
+#id_daftar_pilihan .pilihan:hover {
+    margin-bottom: 10px;
+    transition: margin-bottom 0.1s ease-in-out;
+}
+
+#id_daftar_pilihan .pilihan:hover::after {
+    content: ""; /* Add content or styling here if needed */
+    transition: opacity 0.1s ease-in-out; /* Example transition */
+}
+
 #daftar-pilihan .row {
     align-items: end;
 }
@@ -150,12 +219,13 @@ main {
 #daftar-pilihan .card .card-title {
     text-align: center;
     margin-bottom: 8px;
+    height: 58px;
 }
 
 #daftar-pilihan .card {
     position: relative;
     color: #fff;
-    height: 300px !important;
+    height: 350px !important;
     cursor: pointer;
     transition: background-color 0.3s ease-in-out,
         margin-bottom 0.3s ease-in-out;
@@ -174,19 +244,19 @@ main {
 #daftar-pilihan .card .card-body {
     position: relative;
     color: #fff;
-    height: 282px !important;
+    /* height: 282px !important; */
     cursor: pointer;
     transition: background-color 0.3s ease-in-out,
         margin-bottom 0.3s ease-in-out;
 }
 
-#daftar-pilihan .card .card-body img {
+/* #daftar-pilihan .card .card-body img {
     position: absolute;
     top: 58%;
     left: 50%;
     transform: translate(-50%, -50%);
     width: 8rem;
-}
+} */
 
 
 /* #daftar-pilihan .card .card-body img {
@@ -280,7 +350,7 @@ main {
    } */
 
     #daftar-pilihan .card .card-title {
-        font-size: 1.5rem;
+        font-size: 1rem;
     }
 
     #daftar-pilihan .row {
@@ -289,13 +359,13 @@ main {
 }
 
 @media (max-width: 990px) {
-    #daftar-pilihan .card .card-body img {
+    /* #daftar-pilihan .card .card-body img {
         width: 8rem;
-    }
+    } */
 
-    #daftar-pilihan .card.level-2 .card-body img {
+    /* #daftar-pilihan .card.level-2 .card-body img {
         top: 51%;
-    }
+    } */
 
     /* #daftar-pilihan .card.level-4 .card-body img {
       top: 55%;
@@ -321,9 +391,9 @@ main {
         font-size: 1.1rem;
     }
 
-    #daftar-pilihan .card {
+    /* #daftar-pilihan .card {
         height: 180px !important;
-    }
+    } */
 
     #daftar-pilihan .row {
         height: 200px;
@@ -331,7 +401,7 @@ main {
 
     #daftar-pilihan .card .card-body img {
         width: 8rem;
-        top: 55%;
+        top: 55% !important;
     }
 
     /* #daftar-pilihan .card.level-4 .card-body img {
@@ -343,18 +413,14 @@ main {
         width: 90%;
         margin-bottom: 2rem;
     }
-
+/* 
     #usia-container #usia-daftar-pilihan .pilihan:nth-child(3) {
         margin-top: 1.5rem;
     }
 
-    #usia-container
-        #usia-daftar-pilihan
-        .pilihan:nth-child(3).col-sm-6
-        .row
-        .col-4 {
+    #usia-container #usia-daftar-pilihan .pilihan:nth-child(3).col-sm-6 .row .col-4 {
         width: 30%;
-    }
+    } */
 
     #selesai-container #button-keluar {
         width: 63%;
@@ -394,6 +460,12 @@ main {
     }
 }
 
+@media (max-width: 380px) {
+    .pilihan_pendidikan{
+        margin-left: 10%;
+    }
+}
+
 /* Phone */
 @media (max-width: 450px) {
     /* .row>* {
@@ -405,6 +477,11 @@ main {
         padding-right: calc(var(--bs-gutter-x) * 0.5);
         padding-left: calc(var(--bs-gutter-x) * 0.5);
     }
+
+    #nama-container #pertanyaan .card .card-text {
+        font-size: 1.3rem;
+    }
+
     #jenis_kelamin-container #pertanyaan .card .card-text {
         font-size: 1.3rem;
     }
@@ -456,17 +533,13 @@ main {
         margin-left: 0;
     }
 
-    #usia-container #usia-daftar-pilihan .pilihan:nth-child(3) {
+    /* #usia-container #usia-daftar-pilihan .pilihan:nth-child(3) {
         margin-top: 0;
     }
 
-    #usia-container
-        #usia-daftar-pilihan
-        .pilihan:nth-child(3).col-sm-6
-        .row
-        .col-4 {
+    #usia-container #usia-daftar-pilihan .pilihan:nth-child(3).col-sm-6 .row .col-4 {
         width: 33.33333333%;
-    }
+    } */
 
     #selesai-container h3 {
         margin-top: 1rem;

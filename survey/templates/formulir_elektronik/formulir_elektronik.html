@@ -57,16 +57,39 @@ var table = new Tabulator("#eform-table", {
    paginationSizeSelector:[5, 10, 15],
    paginationCounter:"rows",
    columns:[
-        {title:"Judul", field:"judul"},
-        {title:"Pemilik", field:"pemilik"},
-        {title:"Dibuat oleh", field:"dibuat_oleh.username"},
-        {title:"Dibuat pada", field:"created"},
-        {title:"Status", field:"status", },
-        {
-            title:"Actions", formatter:printIcon, cellClick: function(e, cell) {
-                alert("Printing row data for: " + cell.getRow().getData().name)
-            }
-        },
+   {
+    title: "Judul",
+    field: "judul",
+    width: "40%"
+},
+{
+    title: "Pemilik",
+    field: "pemilik",
+    width: "10%"
+},
+{
+    title: "Dibuat oleh",
+    field: "dibuat_oleh.username",
+    width: "10%"
+},
+{
+    title: "Dibuat pada",
+    field: "created",
+    width: "20%"
+},
+{
+    title: "Status",
+    field: "status",
+    width: "10%"
+},
+{
+    title: "Actions",
+    formatter: printIcon,
+    cellClick: function(e, cell) {
+        alert("Printing row data for: " + cell.getRow().getData().name)
+    },
+    width: "10%"
+}
     ],
 });
 </script>

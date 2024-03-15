@@ -27,16 +27,16 @@
                <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exportData">
                   <i class="fas fa-file-export me-2"></i>Ekspor Data
                </button>
-               <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tambahData">
+               <a class="btn btn-primary" href="/survey/formulir_elektronik/create/">
                   <i class="fas fa-plus me-2"></i>Tambah Data
-               </button>
+               </a>
             </div>
          </div>
          <div class="table-responsive">
             <div id="table-formulir-elektronik">
                 <v-table></v-table>
             </div>
-            {% comment %} {% include "formulir_elektronik/table.html" %} {% endcomment %}
+            {% include "formulir_elektronik/table.html" %}
             {% comment %} {% include "psm/tables/table_monev.html" %} {% endcomment %}
          </div>
       </div>
@@ -44,32 +44,36 @@
 </section>
 {% endblock content %}
 
-{% block css_tambahan %}
-<link rel="stylesheet" href="{% static 'assets/dashboard/vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}">
-
-<style scoped>
-    #headline {
-        font-weight: 600;
-    }
-    
-    #headline hr {
-        color: #ebebeb;
-    }
-
-</style>
-{% endblock css_tambahan %}
-
 {% block js_tambahan %}
-
 <script>
+    $(document).ready(function () {
 
-    const app = Vue.createApp({
-        delimiters: ["[[", "]]"],
-        components: {
-            "v-table": loadComponent("components/survei/TableFormulirElektronik.vue"),
-        },
+        let dataTable = $('#__table').DataTable({
+            language: dt_lang_config(),
+            columnDefs: [{
+                targets: [1],
+                visible: false,
+            }],
+            order: [[1, 'desc']]
+        });
+
+        $('#__table tbody').on('click', '.button_edit', function () {
+
+            let rowData = dataTable.row($(this).closest('tr')).data();
+            let id = rowData[1];
+
+            console.log(rowData)
+           
+        });
+
+        $('#__table tbody').on('click', '.button_delete', function () {
+
+            let rowData = dataTable.row($(this).closest('tr')).data();
+            let id = rowData[1];
+
+            console.log(rowData)
+
+         });
     });
-    
-    app.mount("#table-formulir-elektronik");
 </script>
-{% endblock js_tambahan %}
+{% endblock %}

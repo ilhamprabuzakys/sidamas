@@ -26,3 +26,28 @@ class ProfileViewSet(viewsets.ModelViewSet):
             return Response({'detail': 'is_staff updated successfully.'}, status=status.HTTP_200_OK)
         except models.Profile.DoesNotExist:
             return Response({'detail': 'Profile not found.'}, status=status.HTTP_404_NOT_FOUND)
+        
+class SatkerViewSet(viewsets.ModelViewSet):
+    queryset = models.Satker.objects.all()
+    serializer_class = serializers.SatkerSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+class reg_provincesViewSet(viewsets.ModelViewSet):
+    queryset = models.reg_provinces.objects.all()
+    serializer_class = serializers.reg_provincesSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+class reg_regenciesViewSet(viewsets.ModelViewSet):
+    queryset = models.reg_regencies.objects.all()
+    serializer_class = serializers.reg_regenciesSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+class reg_districtViewSet(viewsets.ModelViewSet):
+    queryset = models.reg_district.objects.all()
+    serializer_class = serializers.reg_districtSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+class reg_villagesViewSet(viewsets.ModelViewSet):
+    queryset = models.reg_villages.objects.all()
+    serializer_class = serializers.reg_villagesSerializer
+    permission_classes = [permissions.IsAuthenticated]

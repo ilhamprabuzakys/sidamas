@@ -1,7 +1,7 @@
 {% extends "dashboard/dashboard_base.html" %}
 {% load static %}
 
-{% block title %} Laporan Kegiatan {% endblock title %}
+{% block title %} Laporan Kinerja Harian {% endblock title %}
 
 
 {% block css_tambahan %}
@@ -14,10 +14,10 @@
 <div class="breadcrumb">
     <div class="row">
         <h3 class="heading mb-2">
-            Laporan Kegiatan Admin
+            Laporan Kinerja Harian Admin
         </h3>
         <span class="mb-0">
-            <span class="text-muted fw-light">Laporan Kegiatan /</span>
+            <span class="text-muted fw-light">Laporan Kinerja Harian /</span>
             <span class="ms-1 fw-medium">Admin</span>
         </span>
     </div>
@@ -28,7 +28,7 @@
         <div class="card-body">
 
             <div id="headline" class="mb-3">
-                <h3 class="text-center">PENGELOLAAN DATA LAPORAN KEGIATAN TAHUN 2024</h3>
+                <h3 class="text-center">PENGELOLAAN DATA LAPORAN KINERJA HARIAN TAHUN 2024</h3>
                 <hr>
             </div>
 
@@ -44,7 +44,7 @@
             </div>
 
             <div class="table-responsive">
-                {% include "laporan_kegiatan/table_lk.html" %}
+                {% include "laporan_kegiatan/admin/table_lk.html" %}
             </div>
         </div>
     </div>

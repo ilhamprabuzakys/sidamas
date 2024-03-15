@@ -1,14 +1,9 @@
 <template>
-    <div class="row">
-        <div class="col-4 d-flex">
-            <input class="form-check-input" type="radio" :name="radioName" :id="'rentang_usia-' + value" :value="value"
-                @change="handleRadioChange">
-        </div>
-        <div class="col-7 d-flex">
-            <label class="form-check-label" :for="'rentang_usia-' + value">
-                <h4 class="card-title">{{ value + " tahun" }}</h4>
-            </label>
-        </div>
+    <div class="form-check">
+        <input class="form-check-input" type="radio" :name="radioName" :id="'rentang_usia-' + value" :value="value" @change="handleRadioChange">
+        <label class="form-check-label" :for="'rentang_usia-' + value">
+            <h4 class="card-title">{{ value + " tahun" }}</h4>
+        </label>
     </div>
 </template>
 <script>

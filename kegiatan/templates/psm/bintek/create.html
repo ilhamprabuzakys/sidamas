@@ -8,7 +8,7 @@
       <div class="modal-body">
         <form>
           <div class="mb-3">
-            <label for="create_satker" class="col-form-label">Satuan Kerja:</label>
+            <label for="create_satker" class="required col-form-label">Satuan Kerja:</label>
             <select name="create_satker" id="create_satker" class="form-control select2">
               <option value="" selected disabled>Pilih Satuan Kerja</option>
               {% for item in satker %}
@@ -17,41 +17,9 @@
             </select>
           </div>
           <div class="mb-3">
-            <label for="jumlah_kegiatan" class="col-form-label">Jumlah Kegiatan:</label>
+            <label for="jumlah_kegiatan" class="required col-form-label">Jumlah Kegiatan:</label>
             <input type="number" name="jumlah_kegiatan" class="form-control" id="jumlah_kegiatan" />
           </div>
-
-
-          {% comment %} <div class="mb-3">
-            <label for="nomor" class="col-form-label">Nomor:</label>
-            <input type="text" name="nomor" class="form-control" id="nomor" />
-          </div>
-          <div class="mb-3">
-            <label for="tanggal" class="col-form-label">Tanggal:</label>
-            <input type="date" name="tanggal" class="form-control" id="tanggal" />
-          </div>
-          <div class="mb-3">
-            <label for="satker_dibintek" class="col-form-label">Satuan Kerja Bintek:</label>
-            <select class="form-control select2" name="selectSatkerBintek" id="selectSatkerBintek">
-              <option value="" selected disabled>Pilih Satuan Kerja</option>
-              {% for item in satker %}
-                <option value="{{ item.nama_satker }}">{{ item.nama_satker }}</option>
-              {% endfor %}
-            </select>
-          </div>
-          <div class="mb-3">
-            <label for="deskripsi" class="col-form-label">Deskripsi</label>
-            <textarea class="form-control" name="deskripsi" id="deskripsi"></textarea>
-          </div>
-          <div class="mb-3">
-            <label for="hambatan_kendala" class="col-form-label">Hambatan atau Kendala:</label>
-            <textarea class="form-control" name="hambatan_kendala" id="hambatan_kendala"></textarea>
-          </div>
-          <div class="mb-3">
-            <label for="dokumentasi" class="col-form-label">Dokumentasi</label>
-            <input type="file" class="form-control" id="dokumentasi" aria-describedby="inputGroupFileAddon03" aria-label="Upload" />
-          </div> {% endcomment %}
-
         </form>
       </div>
       <div class="modal-footer">

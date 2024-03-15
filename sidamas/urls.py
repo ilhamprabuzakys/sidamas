@@ -25,6 +25,7 @@ urlpatterns = [
     path("dashboard/berita/", include("berita.urls")),
     path("users/", include("users.urls")),
     path("dashboard/literasi/", include("literasi.urls")),
+    # path("map/", include("map.urls")),
 ]
 
 # Serve media files during development when DEBUG is True

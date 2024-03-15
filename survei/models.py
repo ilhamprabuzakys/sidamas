@@ -4,13 +4,17 @@ import string
 from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
+from users.models import Satker
 
+
+from django.core.serializers import serialize
 
 """
-    Skema nya itu Tabel Data Survei memiliki foreignKey ke Tabel Tipe Survei
-    Di Tipe Survei terdapat daftar_pertanyaan survei
-    Kalo di Tabel Data Survei cuma sebagai tempat buat inisialisasi doang kayak waktu berlakunya survei mulai dari tanggal sampai jam berlakunya survei.
-    
+    DataSurvei memiliki satu TipeSurvei
+    TipeSurvei memiliki banyak DataSurvei
+    DataSurvei memiliki banyak DataRespondenSurvei
+    DataRespondenSurvei memiliki satu DataPengisianSurvei
+    DataPengisianSurvei memiliki satu DataSurvei dan satu DataRespondenSurvei
 """
 
 # Percobaan
@@ -47,17 +51,22 @@ class DataSurvei(models.Model):
     
     judul = models.CharField(max_length=255, blank=True, null=True)
     
-    tanggal = models.DateField(blank=True, null=True)
+    tanggal_awal = models.DateField(blank=True, null=True)
+    tanggal_akhir = models.DateField(blank=True, null=True)
     
     jam_awal = models.TimeField(blank=True, null=True)
     jam_akhir = models.TimeField(blank=True, null=True)
+    
     batas_responden = models.IntegerField(blank=True, null=True)
     
     status_pengiriman = models.BooleanField(blank=True, null=True, default=False)
     kode = models.CharField(max_length=255, blank=True, null=True, unique=True)
+
+    keterangan = models.TextField(blank=True, null=True)
     
     # Relasi
     tipe = models.ForeignKey(TipeSurvei, on_delete=models.CASCADE, blank=True, null=True, related_name='survei')
+    satker = models.ForeignKey(Satker, on_delete=models.CASCADE, blank=True, null=True, related_name='survei')
 
     class Meta:
         ordering = ['id', ]
@@ -75,6 +84,7 @@ class DataSurvei(models.Model):
         return random_string
     
     def get_jumlah_responden(self):
+        print(self.responden.count())
         return self.responden.count()
     
     def save(self, *args, **kwargs):
@@ -89,20 +99,56 @@ class DataSurvei(models.Model):
             return 'Belum penuh'
     
     def get_status_keberlangsungan(self):
-        current_datetime = datetime.now()
+        current_datetime = datetime.now().replace(microsecond=0)
+        current_date = current_datetime.date()
         current_time = current_datetime.time()
 
-        if self.tanggal > current_datetime.date() or (self.tanggal == current_datetime.date() and self.jam_awal > current_time):
-            return 'Belum dibuka'
-        elif self.tanggal == current_datetime.date() and self.jam_awal <= current_time < self.jam_akhir:
-            return 'Berlangsung'
-        elif self.tanggal < current_datetime.date() or (self.tanggal == current_datetime.date() and current_time >= self.jam_akhir):
-            return 'Berakhir'
-        else:
+        expected_start_datetime = datetime.combine(self.tanggal_awal, self.jam_awal)
+
+        try:
+            if self.tanggal_akhir is not None:
+                expected_end_datetime = datetime.combine(self.tanggal_akhir, self.jam_akhir)
+            else:
+                # Jika tanggal_akhir None, anggap batas akhirnya adalah tanggal_awal
+                expected_end_datetime = datetime.combine(self.tanggal_awal, self.jam_akhir)
+
+            if current_datetime < expected_start_datetime:
+                return 'Belum dibuka'
+            elif current_datetime >= expected_start_datetime and current_datetime <= expected_end_datetime:
+                text = 'Berlangsung'
+                if self.get_jumlah_responden() and self.get_jumlah_responden() >= self.batas_responden:
+                    text = 'Berakhir'
+                return text
+            else:
+                return 'Berakhir'
+        except Exception as e:
+            print(f"Error: {e}")
             return '?'
+        
+    def get_data_isian(self):
+        data_isian_queryset = DataPengisianSurvei.objects.filter(survei=self.id)
+        data_isian_list = list(data_isian_queryset.values('responden__nama', 'array_nilai_jawaban', 'data_mentahan', 'sigma_nilai'))
+        return data_isian_list
     
+    def get_data_tipe(self):
+        data_tipe_queryset = TipeSurvei.objects.filter(survei=self.id)
+        data_tipe_list = list(data_tipe_queryset.values())
+        return data_tipe_list
+    
+    def get_satker_name(self):
+        if self.satker:
+            return self.satker.nama_satker
+        return None
+
+    @property
+    def responden(self):
+        return DataRespondenSurvei.objects.filter(survei=self)
+
     def __str__(self):
-        return f'Survei {self.tipe.nama} - {self.tanggal}'
+        return f'Survei {self.tanggal_awal} - {self.tanggal_akhir}'
+    
+    class Meta:
+        ordering = ['-updated_at', ]
     
 class DataRespondenSurvei(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
@@ -141,8 +187,11 @@ class DataRespondenSurvei(models.Model):
     
     # Bisi nanti diperlukan
     nama = models.CharField(blank=True, null=True, max_length=100)
+    alamat = models.TextField(blank=True, null=True, max_length=100)
     pekerjaan = models.CharField(blank=True, null=True, max_length=100)
-    
+    handphone = models.CharField(blank=True, null=True, max_length=13)
+    email = models.CharField(blank=True, null=True, max_length=100)
+
     # Relasi
     survei = models.ForeignKey(DataSurvei, on_delete=models.CASCADE, blank=True, null=True, related_name="responden")
     
@@ -164,21 +213,32 @@ class DataPengisianSurvei(models.Model):
         User, on_delete=models.CASCADE, blank=True, null=True, related_name="data_pengisian_updated_by")
     
     array_nilai_jawaban = models.TextField()
-    data_mentahan = models.TextField()
+    data_mentahan = models.JSONField()
     sigma_nilai = models.FloatField()
     
     # Relasi
     survei = models.ForeignKey(DataSurvei, on_delete=models.CASCADE, blank=True, null=True, related_name="data_pengisian")
     
-    #responden = models.ForeignKey(DataRespondenSurvei, on_delete=models.CASCADE, blank=True, null=True, related_name="data_pengisian")
-    
-    responden = models.OneToOneField(DataRespondenSurvei, on_delete=models.CASCADE, blank=True, null=True, related_name="data_pengisian")
-
+    # responden = models.ForeignKey(DataRespondenSurvei, on_delete=models.CASCADE, blank=True, null=True, related_name="data_pengisian")
+    responden = models.ForeignKey(DataRespondenSurvei, on_delete=models.CASCADE, blank=True, null=True, related_name="data_pengisian")
 
     class Meta:
         ordering = ['-updated_at', ]
         verbose_name = 'Data Pengisian Survei'
         verbose_name_plural = 'Daftar Data Pengisian Survei'
+
+    def get_data_responden(self):
+        if self.responden:
+            data_responden_queryset = DataRespondenSurvei.objects.filter(id=self.responden.id)
+            data_responden_list = list(data_responden_queryset.values())
+            return data_responden_list
+        else:
+            return []
+
+    # def get_data_isian(self):
+    #     data_isian_queryset = DataPengisianSurvei.objects.filter(survei=self.id)
+    #     data_isian_list = list(data_isian_queryset.values())
+    #     return data_isian_list
 
     def __str__(self):
         return str(self.pk)

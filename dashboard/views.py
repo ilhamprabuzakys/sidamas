@@ -26,16 +26,20 @@ class DashboardBaseView(GlobalPermissionMixin, LoginRequiredMixin):
         return context
     
 class DashboardView(DashboardBaseView, View):
-    template_name = "dashboard/dashboard_index.html"
-    
     def get(self, request):
-        if self.request.user.profile.role is None or self.request.user.profile.satker is None or self.request.user.profile.is_verified == False:
+        if not self.request.user.profile.role or not self.request.user.profile.satker or not self.request.user.profile.is_verified:
             return HttpResponseRedirect(reverse("dashboard:profile"))
         
-        return render(request, self.template_name)
+        
+        if self.request.user.profile.role == "psm":
+            template_name = "dashboard/dashboard_index_psm.html"
+        else:
+            template_name = "dashboard/dashboard_index_dayatif.html"
+        
+        return render(request, template_name)
     
 class ProfilView(LoginRequiredMixin, View):
-    template_name = "dashboard/profile.html"
+    template_name = "dashboard/pengaturan/profile.html"
     daftar_direktorat = [
         {
             'value': 'psm',

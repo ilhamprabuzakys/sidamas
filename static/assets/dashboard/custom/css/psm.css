@@ -1,9 +1,9 @@
 /* Variabel */
 :root {
-   --border-color: #fff9d6;
-   --sidebar-nav-link-active: #c5975e;
-   --sidebar-nav-sublink-active: #af7b3a;
-   --bg-sidebar: #e6b374;
+   --border-color: #aee7ff;
+   --sidebar-nav-link-active: #5ecefd;
+   --sidebar-nav-sublink-active: #087fb3;
+   --bg-sidebar: #2ca8dc;
 }
 
 aside#layout-menu.bg-menu-theme {

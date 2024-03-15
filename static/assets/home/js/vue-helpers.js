@@ -1,4 +1,4 @@
-// Setup vue-sfc-loader
+/*== SETUP: VUE SFC LOADER ==*/
 const options = {
     moduleCache: {
         vue: Vue,
@@ -26,9 +26,10 @@ const options = {
 
 const { loadModule } = window["vue3-sfc-loader"];
 
+/** SET BASE COMPONENT URL **/
 const base_component_url = '/static/assets/home/vue/';
 
-// To make it accessible outside this file.
+// Assign to window to make it accessible from outside
 window.loadVueComponent = async (path) => {
     return loadModule(base_component_url + path, options);
 };

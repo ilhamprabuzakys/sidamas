@@ -1,10 +1,29 @@
-/*
-    Utilities
-*/
+/* ===========================
+   CUSTOM DASHBOARD SETTINGS
+============================== */
 
+/* ===SCROLLBAR===  */
+::-webkit-scrollbar {
+    width: 15px;
+}
+
+::-webkit-scrollbar-thumb {
+    height: 6px;
+    border: 4px solid rgba(0, 0, 0, 0);
+    background-clip: padding-box;
+    -webkit-border-radius: 7px;
+    background-color: #a9a9a9;
+}
+
+/* ===Utilities=== */
+/* ==CUSTOM BACKGROUND COLOR */
 .bg-soft-red,
 .bg-soft-danger {
     background-color: #fff2f2 !important;
+}
+
+.bg-soft-warning {
+    background-color: #fffdf0 !important;
 }
 
 .bg-soft-gray {
@@ -31,6 +50,20 @@
     background-color: #9c9c9c;
 }
 
+.bg-lihat-hasil {
+    background-color: #8e19e1;
+}
+
+.bg-lihat-hasil:hover,
+.bg-lihat-hasil:active,
+.bg-lihat-hasil:focus {
+    background-color: #6d16ab;
+}
+
+
+/* ==========================
+ * UTILITY
+============================= */
 .action-disabled {
     cursor: not-allowed;
     /* pointer-events: none; */
@@ -40,14 +73,34 @@
     pointer-events: none;
 }
 
+.text-capitilize {
+    text-transform: capitalize;
+}
+
+.ms-0-15r {
+    margin-left: 0.15rem;
+}
+
+
+/* ==========================
+ * TABLE
+============================= */
 /* Table header align */
 table thead th {
     vertical-align: middle !important;
 }
 
 /* Table body align */
-table tbody td {
+table tbody tr td {
     vertical-align: top;
+}
+
+table tbody tr td:first-child {
+    text-align: center;
+}
+
+table tbody tr td[scope="row"] {
+    text-align: center;
 }
 
 table tbody tr.align-td-middle td {
@@ -58,35 +111,35 @@ table tbody.align-tr-middle tr td {
     vertical-align: middle;
 }
 
+table ul li span.label {
+    width: 150px;
+    display: inline-block;
+}
+
+table ul li span.value {
+    padding-left: 10px;
+    font-weight: bold;
+}
+
+/* ===TOPBAR BUTTON ROLE INFORMATION */
 #btn-role {
     text-transform: uppercase !important;
 }
 
+/* ===UTILITY=== */
 .ms-0-15r {
     margin-left: 0.15rem;
 }
 
-/* Fix Select 2 */
+/* ===SELECT 2=== */
 .select2-container {
     width: auto !important;
     display: block;
 }
 
-/*  Scrollbar  */
-::-webkit-scrollbar {
-    width: 15px;
-}
+/* ==!! OVERRIDING DEFAULT THEME !!== */
 
-::-webkit-scrollbar-thumb {
-    height: 6px;
-    border: 4px solid rgba(0, 0, 0, 0);
-    background-clip: padding-box;
-    -webkit-border-radius: 7px;
-    background-color: #a9a9a9;
-}
-
-/* Overriding default theme */
-/* Sidebar */
+/**=== SIDEBAR ===**/
 aside#layout-menu.bg-menu-theme .menu-header {
     color: #fff;
 }
@@ -97,18 +150,12 @@ aside#layout-menu.bg-menu-theme .menu-horizontal-next {
     color: #fff;
 }
 
-aside#layout-menu.bg-menu-theme
-    .menu-item.open:not(.menu-item-closing)
-    > .menu-toggle,
-.bg-menu-theme .menu-item.active > .menu-link {
+aside#layout-menu.bg-menu-theme .menu-item.open:not(.menu-item-closing)>.menu-toggle,
+.bg-menu-theme .menu-item.active>.menu-link {
     color: #ffffff;
 }
 
-aside#layout-menu.bg-menu-theme
-    .menu-inner
-    .menu-sub
-    .menu-item:not(.active)
-    > .menu-link::before {
+aside#layout-menu.bg-menu-theme .menu-inner .menu-sub .menu-item:not(.active)>.menu-link::before {
     color: #fff !important;
 }
 
@@ -127,7 +174,7 @@ section table.table {
     border-right: 2px solid #eee;
 }
 
-/* Sidebar Brand (BNN) */
+/**=== SIDEBAR BRAND (LOGO BNN) ===**/
 .app-brand-link img {
     width: 50px;
     object-fit: contain;
@@ -139,12 +186,25 @@ section table.table {
     padding-left: 50px !important;
 }
 
-/* Hide template-customizer */
-#template-customizer a.template-customizer-open-btn {
-    display: none !important;
+/* ==========================
+ * MODAL
+============================= */
+.modal.modal-literasi .modal-body {
+    padding: 0;
 }
 
-/* Vue */
+.modal.modal-literasi .modal-body .container-fluid {
+    padding: 5px;
+}
+
+/* ==========================
+ * CKEDITOR CUSTOM CSS
+============================= */
+.ck-editor__editable {
+    min-height: 250px;
+}
+
+/**=== VUE JS STYLING ===**/
 [v-cloak] {
     display: none;
 }
@@ -159,11 +219,14 @@ section table.table {
     opacity: 0;
 }
 
-/* Responsive */
+/* ======================
+   RESPONSIVE BREAKPOINTS
+========================= */
 @media (max-width: 800px) {
     a#btn-role {
         font-size: 1.3rem;
     }
+
     ul li.user-info-dropdown a .row .col:nth-child(2),
     ul li.user-info-dropdown a .row .col:nth-child(3) {
         display: none;

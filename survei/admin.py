@@ -18,8 +18,8 @@ class DataRespondenSurveiAdmin(admin.ModelAdmin):
     form = survei_forms.DataRespondenSurveiForm
 
 class DataSurveiAdmin(admin.ModelAdmin):
-    list_display = ['id', 'judul', 'tanggal', 'jam_awal', 'jam_akhir', 'batas_responden', 'kode']
-    readonly_fields = ['created_at', 'updated_at', 'status_pengiriman']
+    list_display = ['id', 'judul', 'tanggal_awal', 'tanggal_akhir', 'jam_awal', 'jam_akhir', 'batas_responden', 'kode']
+    readonly_fields = ['created_at', 'updated_at']
     
     form = survei_forms.DataSurveiForm
     

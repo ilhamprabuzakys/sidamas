@@ -9,7 +9,6 @@ class BeritaForm(forms.ModelForm):
             "kategori",
             "judul",
             "isi_berita",
-            "tanggal",
             "status",
             "tags",
             "gambar_utama",

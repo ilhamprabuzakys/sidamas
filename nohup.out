@@ -1,0 +1,1327 @@
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+February 20, 2024 - 08:41:02
+Django version 3.2.24, using settings 'sidamas.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+Error: That port is already in use.
+Watching for file changes with StatReloader
+Exception in thread django-main-thread:
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/threading.py", line 1016, in _bootstrap_inner
+    self.run()
+  File "/usr/lib/python3.10/threading.py", line 953, in run
+    self._target(*self._args, **self._kwargs)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/utils/autoreload.py", line 64, in wrapper
+    fn(*args, **kwargs)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/core/management/commands/runserver.py", line 125, in inner_run
+    autoreload.raise_last_exception()
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/utils/autoreload.py", line 87, in raise_last_exception
+    raise _exception[1]
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/core/management/__init__.py", line 398, in execute
+    autoreload.check_errors(django.setup)()
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/utils/autoreload.py", line 64, in wrapper
+    fn(*args, **kwargs)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/__init__.py", line 24, in setup
+    apps.populate(settings.INSTALLED_APPS)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/apps/registry.py", line 91, in populate
+    app_config = AppConfig.create(entry)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/apps/config.py", line 193, in create
+    import_module(entry)
+  File "/usr/lib/python3.10/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1004, in _find_and_load_unlocked
+ModuleNotFoundError: No module named 'map'
+/home/intioptima/sidamas/sidamas/settings.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+Exception in thread django-main-thread:
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/threading.py", line 1016, in _bootstrap_inner
+    self.run()
+  File "/usr/lib/python3.10/threading.py", line 953, in run
+    self._target(*self._args, **self._kwargs)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/utils/autoreload.py", line 64, in wrapper
+    fn(*args, **kwargs)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/core/management/commands/runserver.py", line 134, in inner_run
+    self.check(display_num_errors=True)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/core/management/base.py", line 475, in check
+    all_issues = checks.run_checks(
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/core/checks/registry.py", line 88, in run_checks
+    new_errors = check(app_configs=app_configs, databases=databases)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/core/checks/urls.py", line 14, in check_url_config
+    return check_resolver(resolver)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/core/checks/urls.py", line 24, in check_resolver
+    return check_method()
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 494, in check
+    for pattern in self.url_patterns:
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/utils/functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 715, in url_patterns
+    patterns = getattr(self.urlconf_module, "urlpatterns", self.urlconf_module)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/utils/functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 708, in urlconf_module
+    return import_module(self.urlconf_name)
+  File "/usr/lib/python3.10/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/home/intioptima/sidamas/sidamas/urls.py", line 23, in <module>
+    path("survei/", include("survei.urls")),
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/urls/conf.py", line 38, in include
+    urlconf_module = import_module(urlconf_module)
+  File "/usr/lib/python3.10/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/home/intioptima/sidamas/survei/urls.py", line 5, in <module>
+    from . import views
+  File "/home/intioptima/sidamas/survei/views.py", line 29, in <module>
+    from pyppeteer import launch
+ModuleNotFoundError: No module named 'pyppeteer'
+/home/intioptima/sidamas/sidamas/settings.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+Exception in thread django-main-thread:
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/threading.py", line 1016, in _bootstrap_inner
+    self.run()
+  File "/usr/lib/python3.10/threading.py", line 953, in run
+    self._target(*self._args, **self._kwargs)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/utils/autoreload.py", line 64, in wrapper
+    fn(*args, **kwargs)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/core/management/commands/runserver.py", line 134, in inner_run
+    self.check(display_num_errors=True)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/core/management/base.py", line 475, in check
+    all_issues = checks.run_checks(
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/core/checks/registry.py", line 88, in run_checks
+    new_errors = check(app_configs=app_configs, databases=databases)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/core/checks/urls.py", line 14, in check_url_config
+    return check_resolver(resolver)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/core/checks/urls.py", line 24, in check_resolver
+    return check_method()
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 494, in check
+    for pattern in self.url_patterns:
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/utils/functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 715, in url_patterns
+    patterns = getattr(self.urlconf_module, "urlpatterns", self.urlconf_module)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/utils/functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 708, in urlconf_module
+    return import_module(self.urlconf_name)
+  File "/usr/lib/python3.10/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/home/intioptima/sidamas/sidamas/urls.py", line 23, in <module>
+    path("survei/", include("survei.urls")),
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/urls/conf.py", line 38, in include
+    urlconf_module = import_module(urlconf_module)
+  File "/usr/lib/python3.10/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/home/intioptima/sidamas/survei/urls.py", line 5, in <module>
+    from . import views
+  File "/home/intioptima/sidamas/survei/views.py", line 29, in <module>
+    from pyppeteer import launch
+ModuleNotFoundError: No module named 'pyppeteer'
+/home/intioptima/sidamas/sidamas/settings.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+Exception in thread django-main-thread:
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/threading.py", line 1016, in _bootstrap_inner
+    self.run()
+  File "/usr/lib/python3.10/threading.py", line 953, in run
+    self._target(*self._args, **self._kwargs)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/utils/autoreload.py", line 64, in wrapper
+    fn(*args, **kwargs)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/core/management/commands/runserver.py", line 134, in inner_run
+    self.check(display_num_errors=True)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/core/management/base.py", line 475, in check
+    all_issues = checks.run_checks(
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/core/checks/registry.py", line 88, in run_checks
+    new_errors = check(app_configs=app_configs, databases=databases)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/core/checks/urls.py", line 14, in check_url_config
+    return check_resolver(resolver)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/core/checks/urls.py", line 24, in check_resolver
+    return check_method()
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 494, in check
+    for pattern in self.url_patterns:
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/utils/functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 715, in url_patterns
+    patterns = getattr(self.urlconf_module, "urlpatterns", self.urlconf_module)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/utils/functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 708, in urlconf_module
+    return import_module(self.urlconf_name)
+  File "/usr/lib/python3.10/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/home/intioptima/sidamas/sidamas/urls.py", line 23, in <module>
+    path("survei/", include("survei.urls")),
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/urls/conf.py", line 38, in include
+    urlconf_module = import_module(urlconf_module)
+  File "/usr/lib/python3.10/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/home/intioptima/sidamas/survei/urls.py", line 5, in <module>
+    from . import views
+  File "/home/intioptima/sidamas/survei/views.py", line 29, in <module>
+    from pyppeteer import launch
+ModuleNotFoundError: No module named 'pyppeteer'
+/home/intioptima/sidamas/users/models.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+Exception in thread django-main-thread:
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/threading.py", line 1016, in _bootstrap_inner
+    self.run()
+  File "/usr/lib/python3.10/threading.py", line 953, in run
+    self._target(*self._args, **self._kwargs)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/utils/autoreload.py", line 64, in wrapper
+    fn(*args, **kwargs)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/core/management/commands/runserver.py", line 134, in inner_run
+    self.check(display_num_errors=True)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/core/management/base.py", line 475, in check
+    all_issues = checks.run_checks(
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/core/checks/registry.py", line 88, in run_checks
+    new_errors = check(app_configs=app_configs, databases=databases)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/core/checks/urls.py", line 14, in check_url_config
+    return check_resolver(resolver)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/core/checks/urls.py", line 24, in check_resolver
+    return check_method()
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 494, in check
+    for pattern in self.url_patterns:
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/utils/functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 715, in url_patterns
+    patterns = getattr(self.urlconf_module, "urlpatterns", self.urlconf_module)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/utils/functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 708, in urlconf_module
+    return import_module(self.urlconf_name)
+  File "/usr/lib/python3.10/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/home/intioptima/sidamas/sidamas/urls.py", line 23, in <module>
+    path("survei/", include("survei.urls")),
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/urls/conf.py", line 38, in include
+    urlconf_module = import_module(urlconf_module)
+  File "/usr/lib/python3.10/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/home/intioptima/sidamas/survei/urls.py", line 5, in <module>
+    from . import views
+  File "/home/intioptima/sidamas/survei/views.py", line 29, in <module>
+    from pyppeteer import launch
+ModuleNotFoundError: No module named 'pyppeteer'
+/home/intioptima/sidamas/sidamas/settings.py changed, reloading.
+Watching for file changes with StatReloader
+Exception in thread django-main-thread:
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/threading.py", line 1016, in _bootstrap_inner
+    self.run()
+  File "/usr/lib/python3.10/threading.py", line 953, in run
+    self._target(*self._args, **self._kwargs)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/utils/autoreload.py", line 64, in wrapper
+    fn(*args, **kwargs)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/core/management/commands/runserver.py", line 125, in inner_run
+    autoreload.raise_last_exception()
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/utils/autoreload.py", line 87, in raise_last_exception
+    raise _exception[1]
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/core/management/__init__.py", line 398, in execute
+    autoreload.check_errors(django.setup)()
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/utils/autoreload.py", line 64, in wrapper
+    fn(*args, **kwargs)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/__init__.py", line 24, in setup
+    apps.populate(settings.INSTALLED_APPS)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/apps/registry.py", line 91, in populate
+    app_config = AppConfig.create(entry)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/apps/config.py", line 193, in create
+    import_module(entry)
+  File "/usr/lib/python3.10/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1004, in _find_and_load_unlocked
+ModuleNotFoundError: No module named 'django_select2'
+/home/intioptima/sidamas/sidamas/settings.py changed, reloading.
+Watching for file changes with StatReloader
+Exception in thread django-main-thread:
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/threading.py", line 1016, in _bootstrap_inner
+    self.run()
+  File "/usr/lib/python3.10/threading.py", line 953, in run
+    self._target(*self._args, **self._kwargs)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/utils/autoreload.py", line 64, in wrapper
+    fn(*args, **kwargs)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/core/management/commands/runserver.py", line 125, in inner_run
+    autoreload.raise_last_exception()
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/utils/autoreload.py", line 87, in raise_last_exception
+    raise _exception[1]
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/core/management/__init__.py", line 398, in execute
+    autoreload.check_errors(django.setup)()
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/utils/autoreload.py", line 64, in wrapper
+    fn(*args, **kwargs)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/__init__.py", line 24, in setup
+    apps.populate(settings.INSTALLED_APPS)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/apps/registry.py", line 91, in populate
+    app_config = AppConfig.create(entry)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/apps/config.py", line 193, in create
+    import_module(entry)
+  File "/usr/lib/python3.10/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1004, in _find_and_load_unlocked
+ModuleNotFoundError: No module named 'django_select2'
+/home/intioptima/sidamas/sidamas/settings.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+Exception in thread django-main-thread:
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/threading.py", line 1016, in _bootstrap_inner
+    self.run()
+  File "/usr/lib/python3.10/threading.py", line 953, in run
+    self._target(*self._args, **self._kwargs)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/utils/autoreload.py", line 64, in wrapper
+    fn(*args, **kwargs)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/core/management/commands/runserver.py", line 134, in inner_run
+    self.check(display_num_errors=True)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/core/management/base.py", line 475, in check
+    all_issues = checks.run_checks(
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/core/checks/registry.py", line 88, in run_checks
+    new_errors = check(app_configs=app_configs, databases=databases)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/core/checks/urls.py", line 14, in check_url_config
+    return check_resolver(resolver)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/core/checks/urls.py", line 24, in check_resolver
+    return check_method()
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 494, in check
+    for pattern in self.url_patterns:
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/utils/functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 715, in url_patterns
+    patterns = getattr(self.urlconf_module, "urlpatterns", self.urlconf_module)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/utils/functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 708, in urlconf_module
+    return import_module(self.urlconf_name)
+  File "/usr/lib/python3.10/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/home/intioptima/sidamas/sidamas/urls.py", line 23, in <module>
+    path("survei/", include("survei.urls")),
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/urls/conf.py", line 38, in include
+    urlconf_module = import_module(urlconf_module)
+  File "/usr/lib/python3.10/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/home/intioptima/sidamas/survei/urls.py", line 5, in <module>
+    from . import views
+  File "/home/intioptima/sidamas/survei/views.py", line 39, in <module>
+    from pyppeteer import launch
+ModuleNotFoundError: No module named 'pyppeteer'
+/home/intioptima/sidamas/survei/views.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+Exception in thread django-main-thread:
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/threading.py", line 1016, in _bootstrap_inner
+    self.run()
+  File "/usr/lib/python3.10/threading.py", line 953, in run
+    self._target(*self._args, **self._kwargs)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/utils/autoreload.py", line 64, in wrapper
+    fn(*args, **kwargs)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/core/management/commands/runserver.py", line 134, in inner_run
+    self.check(display_num_errors=True)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/core/management/base.py", line 475, in check
+    all_issues = checks.run_checks(
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/core/checks/registry.py", line 88, in run_checks
+    new_errors = check(app_configs=app_configs, databases=databases)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/core/checks/urls.py", line 14, in check_url_config
+    return check_resolver(resolver)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/core/checks/urls.py", line 24, in check_resolver
+    return check_method()
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 494, in check
+    for pattern in self.url_patterns:
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/utils/functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 715, in url_patterns
+    patterns = getattr(self.urlconf_module, "urlpatterns", self.urlconf_module)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/utils/functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 708, in urlconf_module
+    return import_module(self.urlconf_name)
+  File "/usr/lib/python3.10/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/home/intioptima/sidamas/sidamas/urls.py", line 24, in <module>
+    path("dashboard/", include("dashboard.urls")),
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/urls/conf.py", line 38, in include
+    urlconf_module = import_module(urlconf_module)
+  File "/usr/lib/python3.10/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/home/intioptima/sidamas/dashboard/urls.py", line 6, in <module>
+    from . import api
+  File "/home/intioptima/sidamas/dashboard/api.py", line 7, in <module>
+    from users.serializers import ProfileSerializer
+  File "/home/intioptima/sidamas/users/serializers.py", line 3, in <module>
+    from django_select2.forms import ModelSelect2Widget
+ModuleNotFoundError: No module named 'django_select2'
+/home/intioptima/sidamas/users/serializers.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+Exception in thread django-main-thread:
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/threading.py", line 1016, in _bootstrap_inner
+    self.run()
+  File "/usr/lib/python3.10/threading.py", line 953, in run
+    self._target(*self._args, **self._kwargs)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/utils/autoreload.py", line 64, in wrapper
+    fn(*args, **kwargs)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/core/management/commands/runserver.py", line 134, in inner_run
+    self.check(display_num_errors=True)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/core/management/base.py", line 475, in check
+    all_issues = checks.run_checks(
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/core/checks/registry.py", line 88, in run_checks
+    new_errors = check(app_configs=app_configs, databases=databases)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/core/checks/urls.py", line 14, in check_url_config
+    return check_resolver(resolver)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/core/checks/urls.py", line 24, in check_resolver
+    return check_method()
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 494, in check
+    for pattern in self.url_patterns:
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/utils/functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 715, in url_patterns
+    patterns = getattr(self.urlconf_module, "urlpatterns", self.urlconf_module)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/utils/functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 708, in urlconf_module
+    return import_module(self.urlconf_name)
+  File "/usr/lib/python3.10/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/home/intioptima/sidamas/sidamas/urls.py", line 25, in <module>
+    path("dashboard/berita/", include("berita.urls")),
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/urls/conf.py", line 38, in include
+    urlconf_module = import_module(urlconf_module)
+  File "/usr/lib/python3.10/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/home/intioptima/sidamas/berita/urls.py", line 4, in <module>
+    from . import views
+  File "/home/intioptima/sidamas/berita/views.py", line 7, in <module>
+    from . import forms
+  File "/home/intioptima/sidamas/berita/forms.py", line 5, in <module>
+    class BeritaForm(forms.ModelForm):
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/forms/models.py", line 327, in __new__
+    raise FieldError(message)
+django.core.exceptions.FieldError: Unknown field(s) (tanggal) specified for Berita
+/home/intioptima/sidamas/berita/admin.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified some issues:
+
+WARNINGS:
+?: (staticfiles.W004) The directory '
+    "testmodule",
+    "accounts",
+    "home",
+    "berita",
+    "kegiatan",
+    "lk",
+    "survey",
+    "survei",
+    "literasi",
+    "users",
+    "dashboard",
+    
+    ' in the STATICFILES_DIRS setting does not exist.
+?: (staticfiles.W004) The directory '/home/intioptima/sidamas/masters/static/' in the STATICFILES_DIRS setting does not exist.
+
+System check identified 2 issues (0 silenced).
+March 15, 2024 - 10:30:40
+Django version 4.1.7, using settings 'sidamas.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+[15/Mar/2024 10:31:08] "GET /dashboard/berita/ HTTP/1.1" 200 26834
+[15/Mar/2024 10:31:08] "GET /static/assets/dashboard/custom/css/custom.css HTTP/1.1" 304 0
+[15/Mar/2024 10:31:09] "GET /static/berita/actions.js HTTP/1.1" 200 2863
+[15/Mar/2024 10:31:09] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[15/Mar/2024 10:31:09] "GET /static/assets/plugins/pure-counter/purecounter_vanilla.js.map HTTP/1.1" 404 1925
+[15/Mar/2024 10:31:10] "GET /dashboard/berita/api/v1/?format=datatables&draw=1&columns%5B0%5D%5Bdata%5D=&columns%5B0%5D%5Bname%5D=&columns%5B0%5D%5Bsearchable%5D=true&columns%5B0%5D%5Borderable%5D=true&columns%5B0%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B0%5D%5Bsearch%5D%5Bregex%5D=false&columns%5B1%5D%5Bdata%5D=judul&columns%5B1%5D%5Bname%5D=&columns%5B1%5D%5Bsearchable%5D=true&columns%5B1%5D%5Borderable%5D=true&columns%5B1%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B1%5D%5Bsearch%5D%5Bregex%5D=false&columns%5B2%5D%5Bdata%5D=kategori.nama&columns%5B2%5D%5Bname%5D=&columns%5B2%5D%5Bsearchable%5D=true&columns%5B2%5D%5Borderable%5D=true&columns%5B2%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B2%5D%5Bsearch%5D%5Bregex%5D=false&columns%5B3%5D%5Bdata%5D=status&columns%5B3%5D%5Bname%5D=&columns%5B3%5D%5Bsearchable%5D=true&columns%5B3%5D%5Borderable%5D=true&columns%5B3%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B3%5D%5Bsearch%5D%5Bregex%5D=false&columns%5B4%5D%5Bdata%5D=created_by.username&columns%5B4%5D%5Bname%5D=&columns%5B4%5D%5Bsearchable%5D=true&columns%5B4%5D%5Borderable%5D=true&columns%5B4%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B4%5D%5Bsearch%5D%5Bregex%5D=false&columns%5B5%5D%5Bdata%5D=created_at&columns%5B5%5D%5Bname%5D=&columns%5B5%5D%5Bsearchable%5D=true&columns%5B5%5D%5Borderable%5D=true&columns%5B5%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B5%5D%5Bsearch%5D%5Bregex%5D=false&columns%5B6%5D%5Bdata%5D=id&columns%5B6%5D%5Bname%5D=&columns%5B6%5D%5Bsearchable%5D=true&columns%5B6%5D%5Borderable%5D=true&columns%5B6%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B6%5D%5Bsearch%5D%5Bregex%5D=false&order%5B0%5D%5Bcolumn%5D=0&order%5B0%5D%5Bdir%5D=asc&start=0&length=10&search%5Bvalue%5D=&search%5Bregex%5D=false&_=1710473468814 HTTP/1.1" 200 2604
+Internal Server Error: /survey/formulir_elektronik/
+Traceback (most recent call last):
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/core/handlers/exception.py", line 56, in inner
+    response = get_response(request)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/views/generic/base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/contrib/auth/mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "/home/intioptima/sidamas/survey/views.py", line 26, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/views/generic/base.py", line 142, in dispatch
+    return handler(request, *args, **kwargs)
+  File "/home/intioptima/sidamas/survey/views.py", line 111, in get
+    list_survey_users = list_survey.filter(role="dayatif")
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/db/models/query.py", line 1421, in filter
+    return self._filter_or_exclude(False, args, kwargs)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/db/models/query.py", line 1439, in _filter_or_exclude
+    clone._filter_or_exclude_inplace(negate, args, kwargs)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/db/models/query.py", line 1446, in _filter_or_exclude_inplace
+    self._query.add_q(Q(*args, **kwargs))
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/db/models/sql/query.py", line 1532, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/db/models/sql/query.py", line 1562, in _add_q
+    child_clause, needed_inner = self.build_filter(
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/db/models/sql/query.py", line 1407, in build_filter
+    lookups, parts, reffed_expression = self.solve_lookup_type(arg)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/db/models/sql/query.py", line 1217, in solve_lookup_type
+    _, field, _, lookup_parts = self.names_to_path(lookup_splitted, self.get_meta())
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/db/models/sql/query.py", line 1709, in names_to_path
+    raise FieldError(
+django.core.exceptions.FieldError: Cannot resolve keyword 'role' into field. Choices are: created, dibuat_oleh, dibuat_oleh_id, id, jsontext, judul, last_updated, pemilik, satker, satker_id, status, surveyresult_survey, surveyshort_survey, tanggal_akhir, tanggal_awal
+[15/Mar/2024 10:31:13] "GET /survey/formulir_elektronik/ HTTP/1.1" 500 129331
+[15/Mar/2024 10:31:30] "POST /dashboard/berita/api/v1/ HTTP/1.1" 201 810
+[15/Mar/2024 10:31:31] "GET /dashboard/berita/api/v1/?format=datatables&draw=2&columns%5B0%5D%5Bdata%5D=&columns%5B0%5D%5Bname%5D=&columns%5B0%5D%5Bsearchable%5D=true&columns%5B0%5D%5Borderable%5D=true&columns%5B0%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B0%5D%5Bsearch%5D%5Bregex%5D=false&columns%5B1%5D%5Bdata%5D=judul&columns%5B1%5D%5Bname%5D=&columns%5B1%5D%5Bsearchable%5D=true&columns%5B1%5D%5Borderable%5D=true&columns%5B1%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B1%5D%5Bsearch%5D%5Bregex%5D=false&columns%5B2%5D%5Bdata%5D=kategori.nama&columns%5B2%5D%5Bname%5D=&columns%5B2%5D%5Bsearchable%5D=true&columns%5B2%5D%5Borderable%5D=true&columns%5B2%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B2%5D%5Bsearch%5D%5Bregex%5D=false&columns%5B3%5D%5Bdata%5D=status&columns%5B3%5D%5Bname%5D=&columns%5B3%5D%5Bsearchable%5D=true&columns%5B3%5D%5Borderable%5D=true&columns%5B3%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B3%5D%5Bsearch%5D%5Bregex%5D=false&columns%5B4%5D%5Bdata%5D=created_by.username&columns%5B4%5D%5Bname%5D=&columns%5B4%5D%5Bsearchable%5D=true&columns%5B4%5D%5Borderable%5D=true&columns%5B4%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B4%5D%5Bsearch%5D%5Bregex%5D=false&columns%5B5%5D%5Bdata%5D=created_at&columns%5B5%5D%5Bname%5D=&columns%5B5%5D%5Bsearchable%5D=true&columns%5B5%5D%5Borderable%5D=true&columns%5B5%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B5%5D%5Bsearch%5D%5Bregex%5D=false&columns%5B6%5D%5Bdata%5D=id&columns%5B6%5D%5Bname%5D=&columns%5B6%5D%5Bsearchable%5D=true&columns%5B6%5D%5Borderable%5D=true&columns%5B6%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B6%5D%5Bsearch%5D%5Bregex%5D=false&order%5B0%5D%5Bcolumn%5D=0&order%5B0%5D%5Bdir%5D=asc&start=0&length=10&search%5Bvalue%5D=&search%5Bregex%5D=false&_=1710473468815 HTTP/1.1" 200 3141
+/home/intioptima/sidamas/berita/api.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified some issues:
+
+WARNINGS:
+?: (staticfiles.W004) The directory '
+    "testmodule",
+    "accounts",
+    "home",
+    "berita",
+    "kegiatan",
+    "lk",
+    "survey",
+    "survei",
+    "literasi",
+    "users",
+    "dashboard",
+    
+    ' in the STATICFILES_DIRS setting does not exist.
+?: (staticfiles.W004) The directory '/home/intioptima/sidamas/masters/static/' in the STATICFILES_DIRS setting does not exist.
+
+System check identified 2 issues (0 silenced).
+March 15, 2024 - 10:32:28
+Django version 4.1.7, using settings 'sidamas.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+[15/Mar/2024 10:33:21] "GET /dashboard/berita/ HTTP/1.1" 200 26834
+[15/Mar/2024 10:33:21] "GET /static/assets/dashboard/vendor/fonts/fontawesome.css HTTP/1.1" 200 101301
+[15/Mar/2024 10:33:21] "GET /static/assets/dashboard/vendor/fonts/flag-icons.css HTTP/1.1" 200 26085
+[15/Mar/2024 10:33:21] "GET /static/assets/dashboard/css/demo.css HTTP/1.1" 200 3376
+[15/Mar/2024 10:33:21] "GET /static/assets/dashboard/vendor/css/rtl/theme-semi-dark.css HTTP/1.1" 200 54722
+[15/Mar/2024 10:33:21] "GET /static/assets/dashboard/vendor/fonts/tabler-icons.css HTTP/1.1" 200 178068
+[15/Mar/2024 10:33:21] "GET /static/assets/dashboard/vendor/css/rtl/core.css HTTP/1.1" 200 716009
+[15/Mar/2024 10:33:21] "GET /static/assets/dashboard/custom/css/custom.css HTTP/1.1" 200 4161
+[15/Mar/2024 10:33:21] "GET /static/assets/dashboard/vendor/libs/node-waves/node-waves.css HTTP/1.1" 200 4080
+[15/Mar/2024 10:33:21] "GET /static/assets/dashboard/custom/css/dayatif.css HTTP/1.1" 200 2726
+[15/Mar/2024 10:33:21] "GET /static/assets/dashboard/vendor/libs/perfect-scrollbar/perfect-scrollbar.css HTTP/1.1" 200 5474
+[15/Mar/2024 10:33:21] "GET /static/assets/dashboard/vendor/libs/typeahead-js/typeahead.css HTTP/1.1" 200 1812
+[15/Mar/2024 10:33:21] "GET /static/assets/dashboard/vendor/css/pages/cards-advance.css HTTP/1.1" 200 1609
+[15/Mar/2024 10:33:21] "GET /static/assets/dashboard/vendor/libs/tagify/tagify.css HTTP/1.1" 200 18336
+[15/Mar/2024 10:33:21] "GET /static/assets/home/plugins/sweet-alert/all.min.css HTTP/1.1" 200 31008
+[15/Mar/2024 10:33:21] "GET /static/assets/dashboard/vendor/libs/toastr/toastr.css HTTP/1.1" 200 11411
+[15/Mar/2024 10:33:21] "GET /static/assets/dashboard/vendor/libs/datatables-bs5/datatables.bootstrap5.css HTTP/1.1" 200 22799
+[15/Mar/2024 10:33:21] "GET /static/assets/dashboard/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css HTTP/1.1" 200 4885
+[15/Mar/2024 10:33:21] "GET /static/assets/dashboard/vendor/libs/datatables-checkboxes-jquery/datatables.checkboxes.css HTTP/1.1" 200 511
+[15/Mar/2024 10:33:21] "GET /static/assets/dashboard/vendor/libs/select2/select2.css HTTP/1.1" 200 24453
+[15/Mar/2024 10:33:21] "GET /static/assets/home/plugins/sweet-alert/all.min.js HTTP/1.1" 200 69996
+[15/Mar/2024 10:33:22] "GET /static/assets/dashboard/vendor/libs/jquery/jquery.min.js HTTP/1.1" 200 87533
+[15/Mar/2024 10:33:22] "GET /static/assets/dashboard/vendor/js/helpers.js HTTP/1.1" 200 37423
+[15/Mar/2024 10:33:22] "GET /static/assets/dashboard/js/bawaan/config.js HTTP/1.1" 200 1695
+[15/Mar/2024 10:33:22] "GET /static/assets/images/bnn.png HTTP/1.1" 200 22974
+[15/Mar/2024 10:33:22] "GET /media/images/avatar.png HTTP/1.1" 200 7824
+[15/Mar/2024 10:33:22] "GET /static/assets/dashboard/vendor/libs/popper/popper.js HTTP/1.1" 200 20791
+[15/Mar/2024 10:33:22] "GET /static/assets/dashboard/vendor/libs/jquery/jquery.js HTTP/1.1" 200 88114
+[15/Mar/2024 10:33:22] "GET /static/assets/dashboard/vendor/libs/node-waves/node-waves.js HTTP/1.1" 200 7575
+[15/Mar/2024 10:33:22] "GET /static/assets/dashboard/vendor/js/bootstrap.js HTTP/1.1" 200 99223
+[15/Mar/2024 10:33:22] "GET /static/assets/dashboard/vendor/libs/perfect-scrollbar/perfect-scrollbar.js HTTP/1.1" 200 19579
+[15/Mar/2024 10:33:22] "GET /static/assets/dashboard/vendor/libs/hammer/hammer.js HTTP/1.1" 200 21150
+[15/Mar/2024 10:33:22] "GET /static/assets/dashboard/vendor/libs/i18n/i18n.js HTTP/1.1" 200 71850
+[15/Mar/2024 10:33:22] "GET /static/assets/dashboard/vendor/libs/typeahead-js/typeahead.js HTTP/1.1" 200 40322
+[15/Mar/2024 10:33:22] "GET /static/assets/dashboard/vendor/fonts/fontawesome/fa-solid-900.woff2 HTTP/1.1" 200 150020
+[15/Mar/2024 10:33:22] "GET /static/assets/dashboard/vendor/fonts/tabler/tabler-icons.woff2 HTTP/1.1" 200 702272
+[15/Mar/2024 10:33:22] "GET /static/assets/dashboard/vendor/js/menu.js HTTP/1.1" 200 21666
+[15/Mar/2024 10:33:22] "GET /static/assets/dashboard/vendor/libs/swiper/swiper.js HTTP/1.1" 200 139411
+[15/Mar/2024 10:33:22] "GET /static/assets/dashboard/vendor/libs/block-ui/block-ui.js HTTP/1.1" 200 10266
+[15/Mar/2024 10:33:22] "GET /static/assets/dashboard/vendor/libs/select2/select2.js HTTP/1.1" 200 80459
+[15/Mar/2024 10:33:22] "GET /static/assets/dashboard/vendor/libs/tagify/tagify.js HTTP/1.1" 200 59588
+[15/Mar/2024 10:33:22] "GET /static/assets/dashboard/vendor/libs/toastr/toastr.js HTTP/1.1" 200 5958
+[15/Mar/2024 10:33:22] "GET /static/assets/dashboard/vendor/libs/datatables-bs5/datatables-bootstrap5.js HTTP/1.1" 200 89645
+[15/Mar/2024 10:33:22] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js HTTP/1.1" 200 33621
+[15/Mar/2024 10:33:22] "GET /static/assets/dashboard/vendor/libs/cleave/dist/cleave.min.js HTTP/1.1" 200 21133
+[15/Mar/2024 10:33:22] "GET /static/assets/dashboard/vendor/libs/cleave/dist/addons/cleave-phone.id.js HTTP/1.1" 200 14725
+[15/Mar/2024 10:33:22] "GET /static/assets/plugins/jquery/input-masks/input-masks.binding.js HTTP/1.1" 200 853
+[15/Mar/2024 10:33:22] "GET /static/assets/dashboard/vendor/libs/bootstrap-maxlength/bootstrap-maxlength.js HTTP/1.1" 200 5951
+[15/Mar/2024 10:33:22] "GET /static/assets/plugins/pure-counter/pure-counter.min.js HTTP/1.1" 200 5417
+[15/Mar/2024 10:33:22] "GET /static/assets/plugins/jquery/input-masks/input-masks.min.js HTTP/1.1" 200 233951
+[15/Mar/2024 10:33:22] "GET /static/assets/dashboard/vendor/libs/moment/moment.js HTTP/1.1" 200 297837
+[15/Mar/2024 10:33:22] "GET /static/assets/dashboard/vendor/libs/moment/moment-with-locales.js HTTP/1.1" 200 651209
+[15/Mar/2024 10:33:23] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[15/Mar/2024 10:33:23] "GET /static/assets/dashboard/js/bawaan/main.js HTTP/1.1" 200 19111
+[15/Mar/2024 10:33:23] "GET /static/assets/dashboard/custom/js/main.js HTTP/1.1" 200 2008
+[15/Mar/2024 10:33:23] "GET /static/assets/js/initialize/select2_dashboard.js HTTP/1.1" 200 1802
+[15/Mar/2024 10:33:23] "GET /static/assets/js/initialize/tagify_dashboard.js HTTP/1.1" 200 375
+[15/Mar/2024 10:33:23] "GET /static/assets/js/fix/select2_fix.js HTTP/1.1" 200 466
+[15/Mar/2024 10:33:23] "GET /static/assets/plugins/pure-counter/purecounter_vanilla.js.map HTTP/1.1" 404 1925
+[15/Mar/2024 10:33:23] "GET /static/assets/js/helpers/utils_helpers.js HTTP/1.1" 200 2840
+[15/Mar/2024 10:33:23] "GET /static/assets/js/helpers/ajax_helpers.js HTTP/1.1" 200 1279
+[15/Mar/2024 10:33:23] "GET /static/assets/js/helpers/alert_helpers.js HTTP/1.1" 200 2627
+[15/Mar/2024 10:33:23] "GET /static/assets/js/helpers/datatable_helpers.js HTTP/1.1" 200 3260
+[15/Mar/2024 10:33:23] "GET /static/assets/js/helpers/form_helpers.js HTTP/1.1" 200 2940
+[15/Mar/2024 10:33:23] "GET /static/berita/dt.js HTTP/1.1" 200 3224
+[15/Mar/2024 10:33:23] "GET /static/berita/dt_filters.js HTTP/1.1" 200 726
+[15/Mar/2024 10:33:23] "GET /static/berita/actions.js HTTP/1.1" 200 3631
+[15/Mar/2024 10:33:24] "GET /static/assets/dashboard/json/locales/en.json HTTP/1.1" 200 55
+[15/Mar/2024 10:33:24] "GET /static/assets/images/bnn.png HTTP/1.1" 200 22974
+[15/Mar/2024 10:33:24] "GET /dashboard/berita/api/v1/?format=datatables&draw=1&columns%5B0%5D%5Bdata%5D=&columns%5B0%5D%5Bname%5D=&columns%5B0%5D%5Bsearchable%5D=true&columns%5B0%5D%5Borderable%5D=true&columns%5B0%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B0%5D%5Bsearch%5D%5Bregex%5D=false&columns%5B1%5D%5Bdata%5D=judul&columns%5B1%5D%5Bname%5D=&columns%5B1%5D%5Bsearchable%5D=true&columns%5B1%5D%5Borderable%5D=true&columns%5B1%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B1%5D%5Bsearch%5D%5Bregex%5D=false&columns%5B2%5D%5Bdata%5D=kategori.nama&columns%5B2%5D%5Bname%5D=&columns%5B2%5D%5Bsearchable%5D=true&columns%5B2%5D%5Borderable%5D=true&columns%5B2%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B2%5D%5Bsearch%5D%5Bregex%5D=false&columns%5B3%5D%5Bdata%5D=status&columns%5B3%5D%5Bname%5D=&columns%5B3%5D%5Bsearchable%5D=true&columns%5B3%5D%5Borderable%5D=true&columns%5B3%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B3%5D%5Bsearch%5D%5Bregex%5D=false&columns%5B4%5D%5Bdata%5D=created_by.username&columns%5B4%5D%5Bname%5D=&columns%5B4%5D%5Bsearchable%5D=true&columns%5B4%5D%5Borderable%5D=true&columns%5B4%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B4%5D%5Bsearch%5D%5Bregex%5D=false&columns%5B5%5D%5Bdata%5D=created_at&columns%5B5%5D%5Bname%5D=&columns%5B5%5D%5Bsearchable%5D=true&columns%5B5%5D%5Borderable%5D=true&columns%5B5%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B5%5D%5Bsearch%5D%5Bregex%5D=false&columns%5B6%5D%5Bdata%5D=id&columns%5B6%5D%5Bname%5D=&columns%5B6%5D%5Bsearchable%5D=true&columns%5B6%5D%5Borderable%5D=true&columns%5B6%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B6%5D%5Bsearch%5D%5Bregex%5D=false&order%5B0%5D%5Bcolumn%5D=0&order%5B0%5D%5Bdir%5D=asc&start=0&length=10&search%5Bvalue%5D=&search%5Bregex%5D=false&_=1710473602452 HTTP/1.1" 200 3141
+/home/intioptima/sidamas/survey/views.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified some issues:
+
+WARNINGS:
+?: (staticfiles.W004) The directory '
+    "testmodule",
+    "accounts",
+    "home",
+    "berita",
+    "kegiatan",
+    "lk",
+    "survey",
+    "survei",
+    "literasi",
+    "users",
+    "dashboard",
+    
+    ' in the STATICFILES_DIRS setting does not exist.
+?: (staticfiles.W004) The directory '/home/intioptima/sidamas/masters/static/' in the STATICFILES_DIRS setting does not exist.
+
+System check identified 2 issues (0 silenced).
+March 15, 2024 - 10:33:29
+Django version 4.1.7, using settings 'sidamas.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+/home/intioptima/sidamas/survey/views.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified some issues:
+
+WARNINGS:
+?: (staticfiles.W004) The directory '
+    "testmodule",
+    "accounts",
+    "home",
+    "berita",
+    "kegiatan",
+    "lk",
+    "survey",
+    "survei",
+    "literasi",
+    "users",
+    "dashboard",
+    
+    ' in the STATICFILES_DIRS setting does not exist.
+?: (staticfiles.W004) The directory '/home/intioptima/sidamas/masters/static/' in the STATICFILES_DIRS setting does not exist.
+
+System check identified 2 issues (0 silenced).
+March 15, 2024 - 10:33:42
+Django version 4.1.7, using settings 'sidamas.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+[15/Mar/2024 10:33:46] "GET /survey/formulir_elektronik/ HTTP/1.1" 200 21670
+[15/Mar/2024 10:33:47] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[15/Mar/2024 10:33:47] "GET /static/assets/plugins/pure-counter/purecounter_vanilla.js.map HTTP/1.1" 404 1925
+/home/intioptima/sidamas/survey/views.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified some issues:
+
+WARNINGS:
+?: (staticfiles.W004) The directory '
+    "testmodule",
+    "accounts",
+    "home",
+    "berita",
+    "kegiatan",
+    "lk",
+    "survey",
+    "survei",
+    "literasi",
+    "users",
+    "dashboard",
+    
+    ' in the STATICFILES_DIRS setting does not exist.
+?: (staticfiles.W004) The directory '/home/intioptima/sidamas/masters/static/' in the STATICFILES_DIRS setting does not exist.
+
+System check identified 2 issues (0 silenced).
+March 15, 2024 - 10:34:06
+Django version 4.1.7, using settings 'sidamas.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+[15/Mar/2024 10:34:07] "GET /survey/formulir_elektronik/ HTTP/1.1" 200 21670
+[15/Mar/2024 10:34:07] "GET /static/assets/plugins/pure-counter/purecounter_vanilla.js.map HTTP/1.1" 404 1925
+[15/Mar/2024 10:34:07] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+/home/intioptima/sidamas/survey/views.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified some issues:
+
+WARNINGS:
+?: (staticfiles.W004) The directory '
+    "testmodule",
+    "accounts",
+    "home",
+    "berita",
+    "kegiatan",
+    "lk",
+    "survey",
+    "survei",
+    "literasi",
+    "users",
+    "dashboard",
+    
+    ' in the STATICFILES_DIRS setting does not exist.
+?: (staticfiles.W004) The directory '/home/intioptima/sidamas/masters/static/' in the STATICFILES_DIRS setting does not exist.
+
+System check identified 2 issues (0 silenced).
+March 15, 2024 - 10:34:34
+Django version 4.1.7, using settings 'sidamas.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+/home/intioptima/sidamas/berita/api.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified some issues:
+
+WARNINGS:
+?: (staticfiles.W004) The directory '
+    "testmodule",
+    "accounts",
+    "home",
+    "berita",
+    "kegiatan",
+    "lk",
+    "survey",
+    "survei",
+    "literasi",
+    "users",
+    "dashboard",
+    
+    ' in the STATICFILES_DIRS setting does not exist.
+?: (staticfiles.W004) The directory '/home/intioptima/sidamas/masters/static/' in the STATICFILES_DIRS setting does not exist.
+
+System check identified 2 issues (0 silenced).
+March 15, 2024 - 10:35:29
+Django version 4.1.7, using settings 'sidamas.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+[15/Mar/2024 10:35:29] "GET /dashboard/berita/ HTTP/1.1" 200 26834
+[15/Mar/2024 10:35:30] "GET /static/assets/dashboard/custom/css/custom.css HTTP/1.1" 304 0
+[15/Mar/2024 10:35:30] "GET /static/berita/actions.js HTTP/1.1" 304 0
+[15/Mar/2024 10:35:30] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[15/Mar/2024 10:35:30] "GET /static/assets/plugins/pure-counter/purecounter_vanilla.js.map HTTP/1.1" 404 1925
+[15/Mar/2024 10:35:32] "GET /dashboard/berita/api/v1/?format=datatables&draw=1&columns%5B0%5D%5Bdata%5D=&columns%5B0%5D%5Bname%5D=&columns%5B0%5D%5Bsearchable%5D=true&columns%5B0%5D%5Borderable%5D=true&columns%5B0%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B0%5D%5Bsearch%5D%5Bregex%5D=false&columns%5B1%5D%5Bdata%5D=judul&columns%5B1%5D%5Bname%5D=&columns%5B1%5D%5Bsearchable%5D=true&columns%5B1%5D%5Borderable%5D=true&columns%5B1%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B1%5D%5Bsearch%5D%5Bregex%5D=false&columns%5B2%5D%5Bdata%5D=kategori.nama&columns%5B2%5D%5Bname%5D=&columns%5B2%5D%5Bsearchable%5D=true&columns%5B2%5D%5Borderable%5D=true&columns%5B2%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B2%5D%5Bsearch%5D%5Bregex%5D=false&columns%5B3%5D%5Bdata%5D=status&columns%5B3%5D%5Bname%5D=&columns%5B3%5D%5Bsearchable%5D=true&columns%5B3%5D%5Borderable%5D=true&columns%5B3%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B3%5D%5Bsearch%5D%5Bregex%5D=false&columns%5B4%5D%5Bdata%5D=created_by.username&columns%5B4%5D%5Bname%5D=&columns%5B4%5D%5Bsearchable%5D=true&columns%5B4%5D%5Borderable%5D=true&columns%5B4%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B4%5D%5Bsearch%5D%5Bregex%5D=false&columns%5B5%5D%5Bdata%5D=created_at&columns%5B5%5D%5Bname%5D=&columns%5B5%5D%5Bsearchable%5D=true&columns%5B5%5D%5Borderable%5D=true&columns%5B5%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B5%5D%5Bsearch%5D%5Bregex%5D=false&columns%5B6%5D%5Bdata%5D=id&columns%5B6%5D%5Bname%5D=&columns%5B6%5D%5Bsearchable%5D=true&columns%5B6%5D%5Borderable%5D=true&columns%5B6%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B6%5D%5Bsearch%5D%5Bregex%5D=false&order%5B0%5D%5Bcolumn%5D=0&order%5B0%5D%5Bdir%5D=asc&start=0&length=10&search%5Bvalue%5D=&search%5Bregex%5D=false&_=1710473730299 HTTP/1.1" 200 3141
+Internal Server Error: /dashboard/berita/api/v1/5/
+Traceback (most recent call last):
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/core/handlers/exception.py", line 56, in inner
+    response = get_response(request)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/views/decorators/csrf.py", line 55, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/rest_framework/viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/rest_framework/mixins.py", line 91, in destroy
+    self.perform_destroy(instance)
+  File "/home/intioptima/sidamas/berita/api.py", line 55, in perform_destroy
+    if instance.gambar:
+AttributeError: 'Berita' object has no attribute 'gambar'
+[15/Mar/2024 10:35:38] "DELETE /dashboard/berita/api/v1/5/ HTTP/1.1" 500 99243
+/home/intioptima/sidamas/berita/api.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified some issues:
+
+WARNINGS:
+?: (staticfiles.W004) The directory '
+    "testmodule",
+    "accounts",
+    "home",
+    "berita",
+    "kegiatan",
+    "lk",
+    "survey",
+    "survei",
+    "literasi",
+    "users",
+    "dashboard",
+    
+    ' in the STATICFILES_DIRS setting does not exist.
+?: (staticfiles.W004) The directory '/home/intioptima/sidamas/masters/static/' in the STATICFILES_DIRS setting does not exist.
+
+System check identified 2 issues (0 silenced).
+March 15, 2024 - 10:35:57
+Django version 4.1.7, using settings 'sidamas.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+/home/intioptima/sidamas/survey/views.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified some issues:
+
+WARNINGS:
+?: (staticfiles.W004) The directory '
+    "testmodule",
+    "accounts",
+    "home",
+    "berita",
+    "kegiatan",
+    "lk",
+    "survey",
+    "survei",
+    "literasi",
+    "users",
+    "dashboard",
+    
+    ' in the STATICFILES_DIRS setting does not exist.
+?: (staticfiles.W004) The directory '/home/intioptima/sidamas/masters/static/' in the STATICFILES_DIRS setting does not exist.
+
+System check identified 2 issues (0 silenced).
+March 15, 2024 - 10:36:19
+Django version 4.1.7, using settings 'sidamas.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+[15/Mar/2024 10:36:29] "PUT /survey/api/v1/survey_create/13/ HTTP/1.1" 200 34452
+/home/intioptima/sidamas/survey/serializers.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified some issues:
+
+WARNINGS:
+?: (staticfiles.W004) The directory '
+    "testmodule",
+    "accounts",
+    "home",
+    "berita",
+    "kegiatan",
+    "lk",
+    "survey",
+    "survei",
+    "literasi",
+    "users",
+    "dashboard",
+    
+    ' in the STATICFILES_DIRS setting does not exist.
+?: (staticfiles.W004) The directory '/home/intioptima/sidamas/masters/static/' in the STATICFILES_DIRS setting does not exist.
+
+System check identified 2 issues (0 silenced).
+March 15, 2024 - 10:38:29
+Django version 4.1.7, using settings 'sidamas.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+[15/Mar/2024 10:38:33] "GET /survey/api/v1/survey_create/13/ HTTP/1.1" 200 35102
+[15/Mar/2024 10:41:11] "GET /sitemap.xml HTTP/1.1" 200 685
+[15/Mar/2024 10:41:12] "GET /sitemap.xml HTTP/1.1" 200 685
+[15/Mar/2024 10:41:19] "GET /dashboard/berita/ HTTP/1.1" 200 26834
+[15/Mar/2024 10:41:19] "GET /static/assets/dashboard/vendor/fonts/fontawesome.css HTTP/1.1" 200 101301
+[15/Mar/2024 10:41:19] "GET /static/assets/dashboard/css/demo.css HTTP/1.1" 200 3376
+[15/Mar/2024 10:41:19] "GET /static/assets/dashboard/vendor/fonts/tabler-icons.css HTTP/1.1" 200 178068
+[15/Mar/2024 10:41:19] "GET /static/assets/dashboard/vendor/css/rtl/core.css HTTP/1.1" 200 716009
+[15/Mar/2024 10:41:19] "GET /static/assets/dashboard/vendor/fonts/flag-icons.css HTTP/1.1" 200 26085
+[15/Mar/2024 10:41:19] "GET /static/assets/dashboard/vendor/css/rtl/theme-semi-dark.css HTTP/1.1" 200 54722
+[15/Mar/2024 10:41:19] "GET /static/assets/dashboard/custom/css/custom.css HTTP/1.1" 200 4161
+[15/Mar/2024 10:41:20] "GET /static/assets/dashboard/custom/css/dayatif.css HTTP/1.1" 200 2726
+[15/Mar/2024 10:41:20] "GET /static/assets/dashboard/vendor/libs/node-waves/node-waves.css HTTP/1.1" 200 4080
+[15/Mar/2024 10:41:20] "GET /static/assets/dashboard/vendor/libs/perfect-scrollbar/perfect-scrollbar.css HTTP/1.1" 200 5474
+[15/Mar/2024 10:41:20] "GET /static/assets/dashboard/vendor/libs/typeahead-js/typeahead.css HTTP/1.1" 200 1812
+[15/Mar/2024 10:41:20] "GET /static/assets/dashboard/vendor/css/pages/cards-advance.css HTTP/1.1" 200 1609
+[15/Mar/2024 10:41:20] "GET /static/assets/home/plugins/sweet-alert/all.min.css HTTP/1.1" 200 31008
+[15/Mar/2024 10:41:20] "GET /static/assets/dashboard/vendor/libs/tagify/tagify.css HTTP/1.1" 200 18336
+[15/Mar/2024 10:41:20] "GET /static/assets/dashboard/vendor/libs/toastr/toastr.css HTTP/1.1" 200 11411
+[15/Mar/2024 10:41:20] "GET /static/assets/dashboard/vendor/libs/datatables-bs5/datatables.bootstrap5.css HTTP/1.1" 200 22799
+[15/Mar/2024 10:41:20] "GET /static/assets/dashboard/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css HTTP/1.1" 200 4885
+[15/Mar/2024 10:41:20] "GET /static/assets/dashboard/vendor/libs/datatables-checkboxes-jquery/datatables.checkboxes.css HTTP/1.1" 200 511
+[15/Mar/2024 10:41:20] "GET /static/assets/dashboard/vendor/libs/select2/select2.css HTTP/1.1" 200 24453
+[15/Mar/2024 10:41:20] "GET /static/assets/home/plugins/sweet-alert/all.min.js HTTP/1.1" 200 69996
+[15/Mar/2024 10:41:20] "GET /static/assets/dashboard/vendor/libs/jquery/jquery.min.js HTTP/1.1" 200 87533
+[15/Mar/2024 10:41:20] "GET /static/assets/dashboard/vendor/js/helpers.js HTTP/1.1" 200 37423
+[15/Mar/2024 10:41:20] "GET /static/assets/dashboard/js/bawaan/config.js HTTP/1.1" 200 1695
+[15/Mar/2024 10:41:20] "GET /static/assets/images/bnn.png HTTP/1.1" 200 22974
+[15/Mar/2024 10:41:20] "GET /media/images/avatar.png HTTP/1.1" 200 7824
+[15/Mar/2024 10:41:20] "GET /static/assets/dashboard/vendor/libs/popper/popper.js HTTP/1.1" 200 20791
+[15/Mar/2024 10:41:20] "GET /static/assets/dashboard/vendor/libs/jquery/jquery.js HTTP/1.1" 200 88114
+[15/Mar/2024 10:41:20] "GET /static/assets/dashboard/vendor/js/bootstrap.js HTTP/1.1" 200 99223
+[15/Mar/2024 10:41:20] "GET /static/assets/dashboard/vendor/libs/node-waves/node-waves.js HTTP/1.1" 200 7575
+[15/Mar/2024 10:41:20] "GET /static/assets/dashboard/vendor/libs/perfect-scrollbar/perfect-scrollbar.js HTTP/1.1" 200 19579
+[15/Mar/2024 10:41:20] "GET /static/assets/dashboard/vendor/libs/hammer/hammer.js HTTP/1.1" 200 21150
+[15/Mar/2024 10:41:20] "GET /static/assets/dashboard/vendor/libs/i18n/i18n.js HTTP/1.1" 200 71850
+[15/Mar/2024 10:41:20] "GET /static/assets/dashboard/vendor/libs/typeahead-js/typeahead.js HTTP/1.1" 200 40322
+[15/Mar/2024 10:41:21] "GET /static/assets/dashboard/vendor/libs/toastr/toastr.js HTTP/1.1" 200 5958
+[15/Mar/2024 10:41:21] "GET /static/assets/dashboard/vendor/libs/tagify/tagify.js HTTP/1.1" 200 59588
+[15/Mar/2024 10:41:21] "GET /static/assets/dashboard/vendor/libs/block-ui/block-ui.js HTTP/1.1" 200 10266
+[15/Mar/2024 10:41:21] "GET /static/assets/dashboard/vendor/libs/swiper/swiper.js HTTP/1.1" 200 139411
+[15/Mar/2024 10:41:21] "GET /static/assets/dashboard/vendor/libs/select2/select2.js HTTP/1.1" 200 80459
+[15/Mar/2024 10:41:21] "GET /static/assets/dashboard/vendor/js/menu.js HTTP/1.1" 200 21666
+[15/Mar/2024 10:41:21] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js HTTP/1.1" 200 33621
+[15/Mar/2024 10:41:21] "GET /static/assets/dashboard/vendor/libs/datatables-bs5/datatables-bootstrap5.js HTTP/1.1" 200 89645
+[15/Mar/2024 10:41:21] "GET /static/assets/dashboard/vendor/fonts/fontawesome/fa-solid-900.woff2 HTTP/1.1" 200 150020
+[15/Mar/2024 10:41:21] "GET /static/assets/dashboard/vendor/fonts/tabler/tabler-icons.woff2 HTTP/1.1" 200 702272
+[15/Mar/2024 10:41:21] "GET /static/assets/dashboard/vendor/libs/cleave/dist/cleave.min.js HTTP/1.1" 200 21133
+[15/Mar/2024 10:41:21] "GET /static/assets/dashboard/vendor/libs/cleave/dist/addons/cleave-phone.id.js HTTP/1.1" 200 14725
+[15/Mar/2024 10:41:21] "GET /static/assets/plugins/jquery/input-masks/input-masks.binding.js HTTP/1.1" 200 853
+[15/Mar/2024 10:41:21] "GET /static/assets/plugins/jquery/input-masks/input-masks.min.js HTTP/1.1" 200 233951
+[15/Mar/2024 10:41:21] "GET /static/assets/dashboard/vendor/libs/bootstrap-maxlength/bootstrap-maxlength.js HTTP/1.1" 200 5951
+[15/Mar/2024 10:41:21] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[15/Mar/2024 10:41:21] "GET /static/assets/plugins/pure-counter/pure-counter.min.js HTTP/1.1" 200 5417
+[15/Mar/2024 10:41:21] "GET /static/assets/dashboard/js/bawaan/main.js HTTP/1.1" 200 19111
+[15/Mar/2024 10:41:21] "GET /static/assets/dashboard/vendor/libs/moment/moment.js HTTP/1.1" 200 297837
+[15/Mar/2024 10:41:21] "GET /static/assets/dashboard/custom/js/main.js HTTP/1.1" 200 2008
+[15/Mar/2024 10:41:21] "GET /static/assets/dashboard/vendor/libs/moment/moment-with-locales.js HTTP/1.1" 200 651209
+[15/Mar/2024 10:41:21] "GET /static/assets/js/initialize/select2_dashboard.js HTTP/1.1" 200 1802
+[15/Mar/2024 10:41:21] "GET /static/assets/plugins/pure-counter/purecounter_vanilla.js.map HTTP/1.1" 404 1925
+[15/Mar/2024 10:41:21] "GET /static/assets/js/initialize/tagify_dashboard.js HTTP/1.1" 200 375
+[15/Mar/2024 10:41:21] "GET /static/assets/js/fix/select2_fix.js HTTP/1.1" 200 466
+[15/Mar/2024 10:41:21] "GET /static/assets/js/helpers/utils_helpers.js HTTP/1.1" 200 2840
+[15/Mar/2024 10:41:21] "GET /static/assets/js/helpers/alert_helpers.js HTTP/1.1" 200 2627
+[15/Mar/2024 10:41:21] "GET /static/assets/js/helpers/ajax_helpers.js HTTP/1.1" 200 2163
+[15/Mar/2024 10:41:21] "GET /static/assets/js/helpers/datatable_helpers.js HTTP/1.1" 200 3260
+[15/Mar/2024 10:41:21] "GET /static/assets/js/helpers/form_helpers.js HTTP/1.1" 200 2940
+[15/Mar/2024 10:41:21] "GET /static/berita/dt.js HTTP/1.1" 200 3282
+[15/Mar/2024 10:41:21] "GET /static/berita/dt_filters.js HTTP/1.1" 200 726
+[15/Mar/2024 10:41:21] "GET /static/berita/actions.js HTTP/1.1" 200 3759
+[15/Mar/2024 10:41:22] "GET /static/assets/dashboard/json/locales/en.json HTTP/1.1" 200 55
+[15/Mar/2024 10:41:23] "GET /static/assets/images/bnn.png HTTP/1.1" 200 22974
+[15/Mar/2024 10:41:23] "GET /dashboard/berita/api/v1/?format=datatables&draw=1&columns%5B0%5D%5Bdata%5D=&columns%5B0%5D%5Bname%5D=&columns%5B0%5D%5Bsearchable%5D=true&columns%5B0%5D%5Borderable%5D=true&columns%5B0%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B0%5D%5Bsearch%5D%5Bregex%5D=false&columns%5B1%5D%5Bdata%5D=judul&columns%5B1%5D%5Bname%5D=&columns%5B1%5D%5Bsearchable%5D=true&columns%5B1%5D%5Borderable%5D=true&columns%5B1%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B1%5D%5Bsearch%5D%5Bregex%5D=false&columns%5B2%5D%5Bdata%5D=kategori.nama&columns%5B2%5D%5Bname%5D=&columns%5B2%5D%5Bsearchable%5D=true&columns%5B2%5D%5Borderable%5D=true&columns%5B2%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B2%5D%5Bsearch%5D%5Bregex%5D=false&columns%5B3%5D%5Bdata%5D=status&columns%5B3%5D%5Bname%5D=&columns%5B3%5D%5Bsearchable%5D=true&columns%5B3%5D%5Borderable%5D=true&columns%5B3%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B3%5D%5Bsearch%5D%5Bregex%5D=false&columns%5B4%5D%5Bdata%5D=created_by.username&columns%5B4%5D%5Bname%5D=&columns%5B4%5D%5Bsearchable%5D=true&columns%5B4%5D%5Borderable%5D=true&columns%5B4%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B4%5D%5Bsearch%5D%5Bregex%5D=false&columns%5B5%5D%5Bdata%5D=created_at&columns%5B5%5D%5Bname%5D=&columns%5B5%5D%5Bsearchable%5D=true&columns%5B5%5D%5Borderable%5D=true&columns%5B5%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B5%5D%5Bsearch%5D%5Bregex%5D=false&columns%5B6%5D%5Bdata%5D=id&columns%5B6%5D%5Bname%5D=&columns%5B6%5D%5Bsearchable%5D=true&columns%5B6%5D%5Borderable%5D=true&columns%5B6%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B6%5D%5Bsearch%5D%5Bregex%5D=false&order%5B0%5D%5Bcolumn%5D=0&order%5B0%5D%5Bdir%5D=asc&start=0&length=10&search%5Bvalue%5D=&search%5Bregex%5D=false&_=1710474081063 HTTP/1.1" 200 3141
+[15/Mar/2024 10:42:05] "GET /dashboard/berita/ HTTP/1.1" 200 26834
+[15/Mar/2024 10:42:06] "GET /static/assets/js/helpers/ajax_helpers.js HTTP/1.1" 304 0
+[15/Mar/2024 10:42:06] "GET /static/berita/dt.js HTTP/1.1" 200 3388
+[15/Mar/2024 10:42:06] "GET /static/berita/actions.js HTTP/1.1" 304 0
+[15/Mar/2024 10:42:06] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[15/Mar/2024 10:42:07] "GET /static/assets/plugins/pure-counter/purecounter_vanilla.js.map HTTP/1.1" 404 1925
+[15/Mar/2024 10:42:08] "GET /dashboard/berita/api/v1/?format=datatables&draw=1&columns%5B0%5D%5Bdata%5D=&columns%5B0%5D%5Bname%5D=&columns%5B0%5D%5Bsearchable%5D=true&columns%5B0%5D%5Borderable%5D=true&columns%5B0%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B0%5D%5Bsearch%5D%5Bregex%5D=false&columns%5B1%5D%5Bdata%5D=judul&columns%5B1%5D%5Bname%5D=&columns%5B1%5D%5Bsearchable%5D=true&columns%5B1%5D%5Borderable%5D=true&columns%5B1%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B1%5D%5Bsearch%5D%5Bregex%5D=false&columns%5B2%5D%5Bdata%5D=kategori.nama&columns%5B2%5D%5Bname%5D=&columns%5B2%5D%5Bsearchable%5D=true&columns%5B2%5D%5Borderable%5D=true&columns%5B2%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B2%5D%5Bsearch%5D%5Bregex%5D=false&columns%5B3%5D%5Bdata%5D=status&columns%5B3%5D%5Bname%5D=&columns%5B3%5D%5Bsearchable%5D=true&columns%5B3%5D%5Borderable%5D=true&columns%5B3%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B3%5D%5Bsearch%5D%5Bregex%5D=false&columns%5B4%5D%5Bdata%5D=created_by.username&columns%5B4%5D%5Bname%5D=&columns%5B4%5D%5Bsearchable%5D=true&columns%5B4%5D%5Borderable%5D=true&columns%5B4%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B4%5D%5Bsearch%5D%5Bregex%5D=false&columns%5B5%5D%5Bdata%5D=created_at&columns%5B5%5D%5Bname%5D=&columns%5B5%5D%5Bsearchable%5D=true&columns%5B5%5D%5Borderable%5D=true&columns%5B5%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B5%5D%5Bsearch%5D%5Bregex%5D=false&columns%5B6%5D%5Bdata%5D=id&columns%5B6%5D%5Bname%5D=&columns%5B6%5D%5Bsearchable%5D=true&columns%5B6%5D%5Borderable%5D=true&columns%5B6%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B6%5D%5Bsearch%5D%5Bregex%5D=false&order%5B0%5D%5Bcolumn%5D=0&order%5B0%5D%5Bdir%5D=asc&start=0&length=10&search%5Bvalue%5D=&search%5Bregex%5D=false&_=1710474126478 HTTP/1.1" 200 3141
+[15/Mar/2024 10:42:19] "GET /dashboard/berita/ HTTP/1.1" 200 26834
+[15/Mar/2024 10:42:20] "GET /static/berita/dt.js HTTP/1.1" 304 0
+[15/Mar/2024 10:42:20] "GET /static/berita/actions.js HTTP/1.1" 200 3762
+[15/Mar/2024 10:42:20] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[15/Mar/2024 10:42:20] "GET /static/assets/plugins/pure-counter/purecounter_vanilla.js.map HTTP/1.1" 404 1925
+[15/Mar/2024 10:42:22] "GET /dashboard/berita/api/v1/?format=datatables&draw=1&columns%5B0%5D%5Bdata%5D=&columns%5B0%5D%5Bname%5D=&columns%5B0%5D%5Bsearchable%5D=true&columns%5B0%5D%5Borderable%5D=true&columns%5B0%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B0%5D%5Bsearch%5D%5Bregex%5D=false&columns%5B1%5D%5Bdata%5D=judul&columns%5B1%5D%5Bname%5D=&columns%5B1%5D%5Bsearchable%5D=true&columns%5B1%5D%5Borderable%5D=true&columns%5B1%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B1%5D%5Bsearch%5D%5Bregex%5D=false&columns%5B2%5D%5Bdata%5D=kategori.nama&columns%5B2%5D%5Bname%5D=&columns%5B2%5D%5Bsearchable%5D=true&columns%5B2%5D%5Borderable%5D=true&columns%5B2%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B2%5D%5Bsearch%5D%5Bregex%5D=false&columns%5B3%5D%5Bdata%5D=status&columns%5B3%5D%5Bname%5D=&columns%5B3%5D%5Bsearchable%5D=true&columns%5B3%5D%5Borderable%5D=true&columns%5B3%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B3%5D%5Bsearch%5D%5Bregex%5D=false&columns%5B4%5D%5Bdata%5D=created_by.username&columns%5B4%5D%5Bname%5D=&columns%5B4%5D%5Bsearchable%5D=true&columns%5B4%5D%5Borderable%5D=true&columns%5B4%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B4%5D%5Bsearch%5D%5Bregex%5D=false&columns%5B5%5D%5Bdata%5D=created_at&columns%5B5%5D%5Bname%5D=&columns%5B5%5D%5Bsearchable%5D=true&columns%5B5%5D%5Borderable%5D=true&columns%5B5%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B5%5D%5Bsearch%5D%5Bregex%5D=false&columns%5B6%5D%5Bdata%5D=id&columns%5B6%5D%5Bname%5D=&columns%5B6%5D%5Bsearchable%5D=true&columns%5B6%5D%5Borderable%5D=true&columns%5B6%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B6%5D%5Bsearch%5D%5Bregex%5D=false&order%5B0%5D%5Bcolumn%5D=0&order%5B0%5D%5Bdir%5D=asc&start=0&length=10&search%5Bvalue%5D=&search%5Bregex%5D=false&_=1710474139811 HTTP/1.1" 200 3141
+[15/Mar/2024 10:42:54] "GET /dashboard/berita/ HTTP/1.1" 200 26834
+[15/Mar/2024 10:42:54] "GET /static/assets/js/helpers/ajax_helpers.js HTTP/1.1" 304 0
+[15/Mar/2024 10:42:54] "GET /static/berita/dt.js HTTP/1.1" 200 3391
+[15/Mar/2024 10:42:54] "GET /static/berita/actions.js HTTP/1.1" 304 0
+[15/Mar/2024 10:42:54] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[15/Mar/2024 10:42:54] "GET /static/assets/plugins/pure-counter/purecounter_vanilla.js.map HTTP/1.1" 404 1925
+[15/Mar/2024 10:42:55] "GET /dashboard/berita/api/v1/?format=datatables&draw=1&columns%5B0%5D%5Bdata%5D=&columns%5B0%5D%5Bname%5D=&columns%5B0%5D%5Bsearchable%5D=true&columns%5B0%5D%5Borderable%5D=true&columns%5B0%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B0%5D%5Bsearch%5D%5Bregex%5D=false&columns%5B1%5D%5Bdata%5D=judul&columns%5B1%5D%5Bname%5D=&columns%5B1%5D%5Bsearchable%5D=true&columns%5B1%5D%5Borderable%5D=true&columns%5B1%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B1%5D%5Bsearch%5D%5Bregex%5D=false&columns%5B2%5D%5Bdata%5D=kategori.nama&columns%5B2%5D%5Bname%5D=&columns%5B2%5D%5Bsearchable%5D=true&columns%5B2%5D%5Borderable%5D=true&columns%5B2%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B2%5D%5Bsearch%5D%5Bregex%5D=false&columns%5B3%5D%5Bdata%5D=status&columns%5B3%5D%5Bname%5D=&columns%5B3%5D%5Bsearchable%5D=true&columns%5B3%5D%5Borderable%5D=true&columns%5B3%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B3%5D%5Bsearch%5D%5Bregex%5D=false&columns%5B4%5D%5Bdata%5D=created_by.username&columns%5B4%5D%5Bname%5D=&columns%5B4%5D%5Bsearchable%5D=true&columns%5B4%5D%5Borderable%5D=true&columns%5B4%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B4%5D%5Bsearch%5D%5Bregex%5D=false&columns%5B5%5D%5Bdata%5D=created_at&columns%5B5%5D%5Bname%5D=&columns%5B5%5D%5Bsearchable%5D=true&columns%5B5%5D%5Borderable%5D=true&columns%5B5%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B5%5D%5Bsearch%5D%5Bregex%5D=false&columns%5B6%5D%5Bdata%5D=id&columns%5B6%5D%5Bname%5D=&columns%5B6%5D%5Bsearchable%5D=true&columns%5B6%5D%5Borderable%5D=true&columns%5B6%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B6%5D%5Bsearch%5D%5Bregex%5D=false&order%5B0%5D%5Bcolumn%5D=0&order%5B0%5D%5Bdir%5D=asc&start=0&length=10&search%5Bvalue%5D=&search%5Bregex%5D=false&_=1710474174540 HTTP/1.1" 200 3141
+[15/Mar/2024 10:44:47] "GET /dashboard/berita/ HTTP/1.1" 200 26834
+[15/Mar/2024 10:44:47] "GET /static/assets/dashboard/custom/css/custom.css HTTP/1.1" 304 0
+[15/Mar/2024 10:44:47] "GET /static/assets/js/helpers/ajax_helpers.js HTTP/1.1" 304 0
+[15/Mar/2024 10:44:47] "GET /static/berita/dt.js HTTP/1.1" 200 3407
+[15/Mar/2024 10:44:47] "GET /static/berita/actions.js HTTP/1.1" 304 0
+[15/Mar/2024 10:44:47] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[15/Mar/2024 10:44:47] "GET /static/assets/plugins/pure-counter/purecounter_vanilla.js.map HTTP/1.1" 404 1925
+[15/Mar/2024 10:44:48] "GET /dashboard/berita/api/v1/?format=datatables&draw=1&columns%5B0%5D%5Bdata%5D=&columns%5B0%5D%5Bname%5D=&columns%5B0%5D%5Bsearchable%5D=true&columns%5B0%5D%5Borderable%5D=true&columns%5B0%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B0%5D%5Bsearch%5D%5Bregex%5D=false&columns%5B1%5D%5Bdata%5D=judul&columns%5B1%5D%5Bname%5D=&columns%5B1%5D%5Bsearchable%5D=true&columns%5B1%5D%5Borderable%5D=true&columns%5B1%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B1%5D%5Bsearch%5D%5Bregex%5D=false&columns%5B2%5D%5Bdata%5D=kategori.nama&columns%5B2%5D%5Bname%5D=&columns%5B2%5D%5Bsearchable%5D=true&columns%5B2%5D%5Borderable%5D=true&columns%5B2%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B2%5D%5Bsearch%5D%5Bregex%5D=false&columns%5B3%5D%5Bdata%5D=status&columns%5B3%5D%5Bname%5D=&columns%5B3%5D%5Bsearchable%5D=true&columns%5B3%5D%5Borderable%5D=true&columns%5B3%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B3%5D%5Bsearch%5D%5Bregex%5D=false&columns%5B4%5D%5Bdata%5D=created_by.username&columns%5B4%5D%5Bname%5D=&columns%5B4%5D%5Bsearchable%5D=true&columns%5B4%5D%5Borderable%5D=true&columns%5B4%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B4%5D%5Bsearch%5D%5Bregex%5D=false&columns%5B5%5D%5Bdata%5D=created_at&columns%5B5%5D%5Bname%5D=&columns%5B5%5D%5Bsearchable%5D=true&columns%5B5%5D%5Borderable%5D=true&columns%5B5%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B5%5D%5Bsearch%5D%5Bregex%5D=false&columns%5B6%5D%5Bdata%5D=id&columns%5B6%5D%5Bname%5D=&columns%5B6%5D%5Bsearchable%5D=true&columns%5B6%5D%5Borderable%5D=true&columns%5B6%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B6%5D%5Bsearch%5D%5Bregex%5D=false&order%5B0%5D%5Bcolumn%5D=0&order%5B0%5D%5Bdir%5D=asc&start=0&length=10&search%5Bvalue%5D=&search%5Bregex%5D=false&_=1710474287511 HTTP/1.1" 200 3141
+[15/Mar/2024 10:46:56] "GET /dashboard/berita/ HTTP/1.1" 200 26834
+[15/Mar/2024 10:46:57] "GET /static/assets/dashboard/custom/css/custom.css HTTP/1.1" 304 0
+[15/Mar/2024 10:46:57] "GET /static/assets/js/helpers/ajax_helpers.js HTTP/1.1" 304 0
+[15/Mar/2024 10:46:57] "GET /static/berita/dt.js HTTP/1.1" 200 3391
+[15/Mar/2024 10:46:57] "GET /static/berita/actions.js HTTP/1.1" 304 0
+[15/Mar/2024 10:46:57] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[15/Mar/2024 10:46:57] "GET /static/assets/plugins/pure-counter/purecounter_vanilla.js.map HTTP/1.1" 404 1925
+[15/Mar/2024 10:46:59] "GET /dashboard/berita/api/v1/?format=datatables&draw=1&columns%5B0%5D%5Bdata%5D=&columns%5B0%5D%5Bname%5D=&columns%5B0%5D%5Bsearchable%5D=true&columns%5B0%5D%5Borderable%5D=true&columns%5B0%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B0%5D%5Bsearch%5D%5Bregex%5D=false&columns%5B1%5D%5Bdata%5D=judul&columns%5B1%5D%5Bname%5D=&columns%5B1%5D%5Bsearchable%5D=true&columns%5B1%5D%5Borderable%5D=true&columns%5B1%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B1%5D%5Bsearch%5D%5Bregex%5D=false&columns%5B2%5D%5Bdata%5D=kategori.nama&columns%5B2%5D%5Bname%5D=&columns%5B2%5D%5Bsearchable%5D=true&columns%5B2%5D%5Borderable%5D=true&columns%5B2%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B2%5D%5Bsearch%5D%5Bregex%5D=false&columns%5B3%5D%5Bdata%5D=status&columns%5B3%5D%5Bname%5D=&columns%5B3%5D%5Bsearchable%5D=true&columns%5B3%5D%5Borderable%5D=true&columns%5B3%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B3%5D%5Bsearch%5D%5Bregex%5D=false&columns%5B4%5D%5Bdata%5D=created_by.username&columns%5B4%5D%5Bname%5D=&columns%5B4%5D%5Bsearchable%5D=true&columns%5B4%5D%5Borderable%5D=true&columns%5B4%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B4%5D%5Bsearch%5D%5Bregex%5D=false&columns%5B5%5D%5Bdata%5D=created_at&columns%5B5%5D%5Bname%5D=&columns%5B5%5D%5Bsearchable%5D=true&columns%5B5%5D%5Borderable%5D=true&columns%5B5%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B5%5D%5Bsearch%5D%5Bregex%5D=false&columns%5B6%5D%5Bdata%5D=id&columns%5B6%5D%5Bname%5D=&columns%5B6%5D%5Bsearchable%5D=true&columns%5B6%5D%5Borderable%5D=true&columns%5B6%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B6%5D%5Bsearch%5D%5Bregex%5D=false&order%5B0%5D%5Bcolumn%5D=0&order%5B0%5D%5Bdir%5D=asc&start=0&length=10&search%5Bvalue%5D=&search%5Bregex%5D=false&_=1710474417555 HTTP/1.1" 200 3141
+[15/Mar/2024 10:47:29] "GET /dashboard/berita/ HTTP/1.1" 200 26834
+[15/Mar/2024 10:47:29] "GET /static/berita/dt.js HTTP/1.1" 200 3407
+[15/Mar/2024 10:47:29] "GET /static/berita/actions.js HTTP/1.1" 304 0
+[15/Mar/2024 10:47:30] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[15/Mar/2024 10:47:30] "GET /static/assets/plugins/pure-counter/purecounter_vanilla.js.map HTTP/1.1" 404 1925
+[15/Mar/2024 10:47:31] "GET /dashboard/berita/api/v1/?format=datatables&draw=1&columns%5B0%5D%5Bdata%5D=&columns%5B0%5D%5Bname%5D=&columns%5B0%5D%5Bsearchable%5D=true&columns%5B0%5D%5Borderable%5D=true&columns%5B0%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B0%5D%5Bsearch%5D%5Bregex%5D=false&columns%5B1%5D%5Bdata%5D=judul&columns%5B1%5D%5Bname%5D=&columns%5B1%5D%5Bsearchable%5D=true&columns%5B1%5D%5Borderable%5D=true&columns%5B1%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B1%5D%5Bsearch%5D%5Bregex%5D=false&columns%5B2%5D%5Bdata%5D=kategori.nama&columns%5B2%5D%5Bname%5D=&columns%5B2%5D%5Bsearchable%5D=true&columns%5B2%5D%5Borderable%5D=true&columns%5B2%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B2%5D%5Bsearch%5D%5Bregex%5D=false&columns%5B3%5D%5Bdata%5D=status&columns%5B3%5D%5Bname%5D=&columns%5B3%5D%5Bsearchable%5D=true&columns%5B3%5D%5Borderable%5D=true&columns%5B3%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B3%5D%5Bsearch%5D%5Bregex%5D=false&columns%5B4%5D%5Bdata%5D=created_by.username&columns%5B4%5D%5Bname%5D=&columns%5B4%5D%5Bsearchable%5D=true&columns%5B4%5D%5Borderable%5D=true&columns%5B4%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B4%5D%5Bsearch%5D%5Bregex%5D=false&columns%5B5%5D%5Bdata%5D=created_at&columns%5B5%5D%5Bname%5D=&columns%5B5%5D%5Bsearchable%5D=true&columns%5B5%5D%5Borderable%5D=true&columns%5B5%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B5%5D%5Bsearch%5D%5Bregex%5D=false&columns%5B6%5D%5Bdata%5D=id&columns%5B6%5D%5Bname%5D=&columns%5B6%5D%5Bsearchable%5D=true&columns%5B6%5D%5Borderable%5D=true&columns%5B6%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B6%5D%5Bsearch%5D%5Bregex%5D=false&order%5B0%5D%5Bcolumn%5D=0&order%5B0%5D%5Bdir%5D=asc&start=0&length=10&search%5Bvalue%5D=&search%5Bregex%5D=false&_=1710474450032 HTTP/1.1" 200 3141
+[15/Mar/2024 10:49:18] "GET /dashboard/berita/ HTTP/1.1" 200 26834
+[15/Mar/2024 10:49:19] "GET /static/assets/dashboard/custom/css/custom.css HTTP/1.1" 304 0
+[15/Mar/2024 10:49:19] "GET /static/berita/dt.js HTTP/1.1" 200 3407
+[15/Mar/2024 10:49:19] "GET /static/berita/actions.js HTTP/1.1" 304 0
+[15/Mar/2024 10:49:19] "GET /static/assets/dashboard/vendor/libs/axios/axios.min.js.map HTTP/1.1" 404 1916
+[15/Mar/2024 10:49:20] "GET /static/assets/plugins/pure-counter/purecounter_vanilla.js.map HTTP/1.1" 404 1925
+[15/Mar/2024 10:49:20] "GET /static/assets/js/helpers/ajax_helpers.js HTTP/1.1" 304 0
+[15/Mar/2024 10:49:21] "GET /dashboard/berita/api/v1/?format=datatables&draw=1&columns%5B0%5D%5Bdata%5D=&columns%5B0%5D%5Bname%5D=&columns%5B0%5D%5Bsearchable%5D=true&columns%5B0%5D%5Borderable%5D=true&columns%5B0%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B0%5D%5Bsearch%5D%5Bregex%5D=false&columns%5B1%5D%5Bdata%5D=judul&columns%5B1%5D%5Bname%5D=&columns%5B1%5D%5Bsearchable%5D=true&columns%5B1%5D%5Borderable%5D=true&columns%5B1%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B1%5D%5Bsearch%5D%5Bregex%5D=false&columns%5B2%5D%5Bdata%5D=kategori.nama&columns%5B2%5D%5Bname%5D=&columns%5B2%5D%5Bsearchable%5D=true&columns%5B2%5D%5Borderable%5D=true&columns%5B2%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B2%5D%5Bsearch%5D%5Bregex%5D=false&columns%5B3%5D%5Bdata%5D=status&columns%5B3%5D%5Bname%5D=&columns%5B3%5D%5Bsearchable%5D=true&columns%5B3%5D%5Borderable%5D=true&columns%5B3%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B3%5D%5Bsearch%5D%5Bregex%5D=false&columns%5B4%5D%5Bdata%5D=created_by.username&columns%5B4%5D%5Bname%5D=&columns%5B4%5D%5Bsearchable%5D=true&columns%5B4%5D%5Borderable%5D=true&columns%5B4%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B4%5D%5Bsearch%5D%5Bregex%5D=false&columns%5B5%5D%5Bdata%5D=created_at&columns%5B5%5D%5Bname%5D=&columns%5B5%5D%5Bsearchable%5D=true&columns%5B5%5D%5Borderable%5D=true&columns%5B5%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B5%5D%5Bsearch%5D%5Bregex%5D=false&columns%5B6%5D%5Bdata%5D=id&columns%5B6%5D%5Bname%5D=&columns%5B6%5D%5Bsearchable%5D=true&columns%5B6%5D%5Borderable%5D=true&columns%5B6%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B6%5D%5Bsearch%5D%5Bregex%5D=false&order%5B0%5D%5Bcolumn%5D=0&order%5B0%5D%5Bdir%5D=asc&start=0&length=10&search%5Bvalue%5D=&search%5Bregex%5D=false&_=1710474559429 HTTP/1.1" 200 3141
+[15/Mar/2024 10:49:39] "DELETE /dashboard/berita/api/v1/5/ HTTP/1.1" 204 0
+[15/Mar/2024 10:49:40] "GET /dashboard/berita/api/v1/?format=datatables&draw=2&columns%5B0%5D%5Bdata%5D=&columns%5B0%5D%5Bname%5D=&columns%5B0%5D%5Bsearchable%5D=true&columns%5B0%5D%5Borderable%5D=true&columns%5B0%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B0%5D%5Bsearch%5D%5Bregex%5D=false&columns%5B1%5D%5Bdata%5D=judul&columns%5B1%5D%5Bname%5D=&columns%5B1%5D%5Bsearchable%5D=true&columns%5B1%5D%5Borderable%5D=true&columns%5B1%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B1%5D%5Bsearch%5D%5Bregex%5D=false&columns%5B2%5D%5Bdata%5D=kategori.nama&columns%5B2%5D%5Bname%5D=&columns%5B2%5D%5Bsearchable%5D=true&columns%5B2%5D%5Borderable%5D=true&columns%5B2%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B2%5D%5Bsearch%5D%5Bregex%5D=false&columns%5B3%5D%5Bdata%5D=status&columns%5B3%5D%5Bname%5D=&columns%5B3%5D%5Bsearchable%5D=true&columns%5B3%5D%5Borderable%5D=true&columns%5B3%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B3%5D%5Bsearch%5D%5Bregex%5D=false&columns%5B4%5D%5Bdata%5D=created_by.username&columns%5B4%5D%5Bname%5D=&columns%5B4%5D%5Bsearchable%5D=true&columns%5B4%5D%5Borderable%5D=true&columns%5B4%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B4%5D%5Bsearch%5D%5Bregex%5D=false&columns%5B5%5D%5Bdata%5D=created_at&columns%5B5%5D%5Bname%5D=&columns%5B5%5D%5Bsearchable%5D=true&columns%5B5%5D%5Borderable%5D=true&columns%5B5%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B5%5D%5Bsearch%5D%5Bregex%5D=false&columns%5B6%5D%5Bdata%5D=id&columns%5B6%5D%5Bname%5D=&columns%5B6%5D%5Bsearchable%5D=true&columns%5B6%5D%5Borderable%5D=true&columns%5B6%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B6%5D%5Bsearch%5D%5Bregex%5D=false&order%5B0%5D%5Bcolumn%5D=0&order%5B0%5D%5Bdir%5D=asc&start=0&length=10&search%5Bvalue%5D=&search%5Bregex%5D=false&_=1710474559430 HTTP/1.1" 200 2604
+Internal Server Error: /dashboard/berita/api/v1/
+Traceback (most recent call last):
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/core/handlers/exception.py", line 56, in inner
+    response = get_response(request)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/views/decorators/csrf.py", line 55, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/rest_framework/viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/rest_framework/mixins.py", line 19, in create
+    self.perform_create(serializer)
+  File "/home/intioptima/sidamas/berita/api.py", line 39, in perform_create
+    serializer.save(created_by=self.request.user, kategori=self.request.data.get('kategori'))
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/rest_framework/serializers.py", line 212, in save
+    self.instance = self.create(validated_data)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/rest_framework/serializers.py", line 962, in create
+    instance = ModelClass._default_manager.create(**validated_data)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/db/models/manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/db/models/query.py", line 669, in create
+    obj = self.model(**kwargs)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/db/models/base.py", line 541, in __init__
+    _setattr(self, field.name, rel_obj)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/db/models/fields/related_descriptors.py", line 237, in __set__
+    raise ValueError(
+ValueError: Cannot assign "'3'": "Berita.kategori" must be a "Kategori" instance.
+[15/Mar/2024 10:50:34] "POST /dashboard/berita/api/v1/ HTTP/1.1" 500 153838
+/home/intioptima/sidamas/berita/api.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified some issues:
+
+WARNINGS:
+?: (staticfiles.W004) The directory '
+    "testmodule",
+    "accounts",
+    "home",
+    "berita",
+    "kegiatan",
+    "lk",
+    "survey",
+    "survei",
+    "literasi",
+    "users",
+    "dashboard",
+    
+    ' in the STATICFILES_DIRS setting does not exist.
+?: (staticfiles.W004) The directory '/home/intioptima/sidamas/masters/static/' in the STATICFILES_DIRS setting does not exist.
+
+System check identified 2 issues (0 silenced).
+March 15, 2024 - 10:50:51
+Django version 4.1.7, using settings 'sidamas.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+[15/Mar/2024 10:50:55] "POST /dashboard/berita/api/v1/ HTTP/1.1" 201 958
+[15/Mar/2024 10:50:56] "GET /dashboard/berita/api/v1/?format=datatables&draw=3&columns%5B0%5D%5Bdata%5D=&columns%5B0%5D%5Bname%5D=&columns%5B0%5D%5Bsearchable%5D=true&columns%5B0%5D%5Borderable%5D=true&columns%5B0%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B0%5D%5Bsearch%5D%5Bregex%5D=false&columns%5B1%5D%5Bdata%5D=judul&columns%5B1%5D%5Bname%5D=&columns%5B1%5D%5Bsearchable%5D=true&columns%5B1%5D%5Borderable%5D=true&columns%5B1%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B1%5D%5Bsearch%5D%5Bregex%5D=false&columns%5B2%5D%5Bdata%5D=kategori.nama&columns%5B2%5D%5Bname%5D=&columns%5B2%5D%5Bsearchable%5D=true&columns%5B2%5D%5Borderable%5D=true&columns%5B2%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B2%5D%5Bsearch%5D%5Bregex%5D=false&columns%5B3%5D%5Bdata%5D=status&columns%5B3%5D%5Bname%5D=&columns%5B3%5D%5Bsearchable%5D=true&columns%5B3%5D%5Borderable%5D=true&columns%5B3%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B3%5D%5Bsearch%5D%5Bregex%5D=false&columns%5B4%5D%5Bdata%5D=created_by.username&columns%5B4%5D%5Bname%5D=&columns%5B4%5D%5Bsearchable%5D=true&columns%5B4%5D%5Borderable%5D=true&columns%5B4%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B4%5D%5Bsearch%5D%5Bregex%5D=false&columns%5B5%5D%5Bdata%5D=created_at&columns%5B5%5D%5Bname%5D=&columns%5B5%5D%5Bsearchable%5D=true&columns%5B5%5D%5Borderable%5D=true&columns%5B5%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B5%5D%5Bsearch%5D%5Bregex%5D=false&columns%5B6%5D%5Bdata%5D=id&columns%5B6%5D%5Bname%5D=&columns%5B6%5D%5Bsearchable%5D=true&columns%5B6%5D%5Borderable%5D=true&columns%5B6%5D%5Bsearch%5D%5Bvalue%5D=&columns%5B6%5D%5Bsearch%5D%5Bregex%5D=false&order%5B0%5D%5Bcolumn%5D=0&order%5B0%5D%5Bdir%5D=asc&start=0&length=10&search%5Bvalue%5D=&search%5Bregex%5D=false&_=1710474559431 HTTP/1.1" 200 3271
+[15/Mar/2024 10:51:08] "GET / HTTP/1.1" 200 18997
+[15/Mar/2024 10:51:08] "GET /static/assets/home/plugins/bootstrap/bootstrap.min.css HTTP/1.1" 200 248990
+[15/Mar/2024 10:51:08] "GET /static/assets/home/plugins/jquery/jquery.slim.min.js HTTP/1.1" 200 70266
+[15/Mar/2024 10:51:08] "GET /static/assets/home/plugins/bootstrap/bootstrap.min.js HTTP/1.1" 200 60441
+[15/Mar/2024 10:51:09] "GET /static/assets/home/js/libs/pace.min.js HTTP/1.1" 200 28135
+[15/Mar/2024 10:51:09] "GET /static/assets/home/plugins/axios/axios.min.js HTTP/1.1" 200 33621
+[15/Mar/2024 10:51:10] "GET /media/upload/files/berita/0c9e53b9-639d-4bf0-9d86-65ab874f6e36.jpeg HTTP/1.1" 200 57125
+[15/Mar/2024 10:51:10] "GET /media/upload/files/berita/675c2bfe-0420-4bd4-a51a-974cfd78ffe6.jpeg HTTP/1.1" 200 51438
+[15/Mar/2024 10:51:10] "GET /media/upload/files/berita/3eaa29b5-5b2b-4d02-8678-55101aac546b_x6fcbJQ.jpeg HTTP/1.1" 200 55656
+[15/Mar/2024 10:51:10] "GET /media/upload/files/berita/2d1363bf-c81f-4647-9ed6-202acd8ab7fd.jpeg HTTP/1.1" 200 97180
+[15/Mar/2024 10:51:10] "GET /media/upload/files/berita/Tampilan_Peta_Akhir_Ekspetasi.jpeg HTTP/1.1" 200 366419
+Internal Server Error: /berita/judul-literasi-dummy/
+Traceback (most recent call last):
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/core/handlers/exception.py", line 56, in inner
+    response = get_response(request)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/views/generic/base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/views/generic/base.py", line 142, in dispatch
+    return handler(request, *args, **kwargs)
+  File "/home/intioptima/sidamas/home/views.py", line 100, in get
+    "tanggal": data.tanggal,
+AttributeError: 'Berita' object has no attribute 'tanggal'
+[15/Mar/2024 10:51:12] "GET /berita/judul-literasi-dummy/ HTTP/1.1" 500 79960
+Not Found: /favicon.ico
+[15/Mar/2024 10:51:13] "GET /favicon.ico HTTP/1.1" 404 5505
+/home/intioptima/sidamas/home/views.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified some issues:
+
+WARNINGS:
+?: (staticfiles.W004) The directory '
+    "testmodule",
+    "accounts",
+    "home",
+    "berita",
+    "kegiatan",
+    "lk",
+    "survey",
+    "survei",
+    "literasi",
+    "users",
+    "dashboard",
+    
+    ' in the STATICFILES_DIRS setting does not exist.
+?: (staticfiles.W004) The directory '/home/intioptima/sidamas/masters/static/' in the STATICFILES_DIRS setting does not exist.
+
+System check identified 2 issues (0 silenced).
+March 15, 2024 - 10:51:36
+Django version 4.1.7, using settings 'sidamas.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+/home/intioptima/sidamas/home/views.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified some issues:
+
+WARNINGS:
+?: (staticfiles.W004) The directory '
+    "testmodule",
+    "accounts",
+    "home",
+    "berita",
+    "kegiatan",
+    "lk",
+    "survey",
+    "survei",
+    "literasi",
+    "users",
+    "dashboard",
+    
+    ' in the STATICFILES_DIRS setting does not exist.
+?: (staticfiles.W004) The directory '/home/intioptima/sidamas/masters/static/' in the STATICFILES_DIRS setting does not exist.
+
+System check identified 2 issues (0 silenced).
+March 15, 2024 - 10:52:01
+Django version 4.1.7, using settings 'sidamas.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+/home/intioptima/sidamas/home/views.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified some issues:
+
+WARNINGS:
+?: (staticfiles.W004) The directory '
+    "testmodule",
+    "accounts",
+    "home",
+    "berita",
+    "kegiatan",
+    "lk",
+    "survey",
+    "survei",
+    "literasi",
+    "users",
+    "dashboard",
+    
+    ' in the STATICFILES_DIRS setting does not exist.
+?: (staticfiles.W004) The directory '/home/intioptima/sidamas/masters/static/' in the STATICFILES_DIRS setting does not exist.
+
+System check identified 2 issues (0 silenced).
+March 15, 2024 - 10:52:12
+Django version 4.1.7, using settings 'sidamas.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+[15/Mar/2024 10:52:32] "GET /berita/judul-literasi-dummy/ HTTP/1.1" 200 10753
+[15/Mar/2024 10:52:32] "GET /static/assets/home/css/pages/detail.css HTTP/1.1" 200 2354
+[15/Mar/2024 10:52:32] "GET /media/upload/files/berita/Tampilan_Peta_Akhir_Ekspetasi.jpeg HTTP/1.1" 304 0
+[15/Mar/2024 10:52:32] "GET /static/assets/home/plugins/image-viewer/assets/css/master.css HTTP/1.1" 200 1306
+[15/Mar/2024 10:52:32] "GET /static/assets/home/plugins/image-viewer/assets/js/main.js HTTP/1.1" 200 197
+[15/Mar/2024 10:52:32] "GET /static/assets/home/js/detail.js HTTP/1.1" 200 1520
+/home/intioptima/sidamas/home/views.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+Exception in thread django-main-thread:
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/threading.py", line 1016, in _bootstrap_inner
+    self.run()
+  File "/usr/lib/python3.10/threading.py", line 953, in run
+    self._target(*self._args, **self._kwargs)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/utils/autoreload.py", line 64, in wrapper
+    fn(*args, **kwargs)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/core/management/commands/runserver.py", line 134, in inner_run
+    self.check(display_num_errors=True)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/core/management/base.py", line 475, in check
+    all_issues = checks.run_checks(
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/core/checks/registry.py", line 88, in run_checks
+    new_errors = check(app_configs=app_configs, databases=databases)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/core/checks/urls.py", line 14, in check_url_config
+    return check_resolver(resolver)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/core/checks/urls.py", line 24, in check_resolver
+    return check_method()
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 494, in check
+    for pattern in self.url_patterns:
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/utils/functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 715, in url_patterns
+    patterns = getattr(self.urlconf_module, "urlpatterns", self.urlconf_module)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/utils/functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 708, in urlconf_module
+    return import_module(self.urlconf_name)
+  File "/usr/lib/python3.10/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/home/intioptima/sidamas/sidamas/urls.py", line 16, in <module>
+    path("", include("home.urls")),
+  File "/home/intioptima/sidamas/venv/lib/python3.10/site-packages/django/urls/conf.py", line 38, in include
+    urlconf_module = import_module(urlconf_module)
+  File "/usr/lib/python3.10/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/home/intioptima/sidamas/home/urls.py", line 3, in <module>
+    from . import views
+  File "/home/intioptima/sidamas/home/views.py", line 90
+    berita_selanjutnya = semua_berita.filter(pk=next_index).first()javascript:;
+                                                                   ^^^^^^^^^^
+SyntaxError: invalid syntax
+/home/intioptima/sidamas/home/views.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified some issues:
+
+WARNINGS:
+?: (staticfiles.W004) The directory '
+    "testmodule",
+    "accounts",
+    "home",
+    "berita",
+    "kegiatan",
+    "lk",
+    "survey",
+    "survei",
+    "literasi",
+    "users",
+    "dashboard",
+    
+    ' in the STATICFILES_DIRS setting does not exist.
+?: (staticfiles.W004) The directory '/home/intioptima/sidamas/masters/static/' in the STATICFILES_DIRS setting does not exist.
+
+System check identified 2 issues (0 silenced).
+March 15, 2024 - 10:55:45
+Django version 4.1.7, using settings 'sidamas.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+Error: That port is already in use.

@@ -10,8 +10,8 @@
             <th>Aksi <i class="fas fa-edit ms-2"></i></th>
         </tr>
     </thead>
-    <tbody>
-        {% for berita in list_berita %}
+    <tbody class="align-tr-middle">
+        {% comment %} {% for berita in list_berita %}
         <tr class="align-td-middle">
             <td>{{ forloop.counter }}</td>
             <td>{{ berita.judul }}</td>
@@ -37,12 +37,13 @@
                                 class="fas fa-pen-to-square me-2"></i>Edit</a>
                     </div>
                     <div>
-                        <a href="javascript:;" class="badge bg-danger text-white text-decoration-none mb-1 delete-data"><i
+                        <a href="javascript:;"
+                            class="badge bg-danger text-white text-decoration-none mb-1 delete-data"><i
                                 class="fas fa-trash-alt me-2"></i>Hapus</a>
                     </div>
                 </div>
             </td>
         </tr>
-        {% endfor %}
+        {% endfor %} {% endcomment %}
     </tbody>
 </table>

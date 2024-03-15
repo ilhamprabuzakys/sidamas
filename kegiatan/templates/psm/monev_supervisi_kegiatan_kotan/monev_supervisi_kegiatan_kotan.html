@@ -43,6 +43,10 @@
 
 {% block js_tambahan %}
   <script src="{% static 'assets/dashboard/vendor/libs/datatables-bs5/datatables-bootstrap5.js' %}"></script>
+  <script src="{% static 'assets/dashboard/vendor/libs/jquery-repeater/jquery-repeater.js' %}"></script>
+  <script src="{% static 'assets/dashboard/vendor/libs/bootstrap-select/bootstrap-select.js' %}"></script>
+  <script src="{% static 'assets/dashboard/js/bawaan/forms-extras.js' %}"></script>
+
   <script>
     let table = $('#__table').DataTable({
       language: dt_lang_config()
@@ -85,6 +89,10 @@
 {% endblock %}
 
 {% block modal_tambahan %}
-  {% include 'psm/monev_supervisi_kegiatan_kotan/detail_pelaksanaan.html' %}
   {% include 'psm/monev_supervisi_kegiatan_kotan/create.html' %}
+  {% include 'psm/monev_supervisi_kegiatan_kotan/create_kegiatan.html' %}
+  {% include 'psm/monev_supervisi_kegiatan_kotan/edit.html' %}
+  {% include 'psm/monev_supervisi_kegiatan_kotan/edit_kegiatan.html' %}
+  {% include 'psm/monev_supervisi_kegiatan_kotan/detail_pelaksanaan.html' %}
+  {% include 'psm/monev_supervisi_kegiatan_kotan/detail_peserta.html' %}
 {% endblock %}

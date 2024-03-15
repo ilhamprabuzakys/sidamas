@@ -1,5 +1,6 @@
 from django.urls import include, path
 from rest_framework import routers
+from django.contrib.auth.decorators import login_required
 
 from . import views
 from . import api
@@ -13,6 +14,6 @@ app_name = 'dashboard'
 
 urlpatterns = (
     path("api/v1/", include(router.urls)),
-    path("", views.DashboardView.as_view(), name="index"),
+    path("", login_required(views.DashboardView.as_view()), name="index"),
     path("profile/", views.ProfilView.as_view(), name="profile"),
 )

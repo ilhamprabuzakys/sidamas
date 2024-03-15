@@ -4,7 +4,6 @@ from django.views import View, generic
 from django.shortcuts import render
 from django.urls import reverse, reverse_lazy
 from . import models
-from . import forms
 
 class GlobalPermissionMixin:
     def dispatch(self, request, *args, **kwargs):
@@ -22,31 +21,11 @@ class LiterasiBaseView(GlobalPermissionMixin, LoginRequiredMixin):
         return context
 
 class LiterasiView(LiterasiBaseView, View):
-    template_name = "literasi/literasi.html"
+    template_name = "literasi/list_literasi.html"
     def get(self, request):
-        return render(request, self.template_name)
-
-class LiterasiListView(generic.ListView):
-    model = models.Literasi
-    form_class = forms.LiterasiForm
-
-
-class LiterasiCreateView(generic.CreateView):
-    model = models.Literasi
-    form_class = forms.LiterasiForm
-
-
-class LiterasiDetailView(generic.DetailView):
-    model = models.Literasi
-    form_class = forms.LiterasiForm
-
-
-class LiterasiUpdateView(generic.UpdateView):
-    model = models.Literasi
-    form_class = forms.LiterasiForm
-    pk_url_kwarg = "pk"
-
-
-class LiterasiDeleteView(generic.DeleteView):
-    model = models.Literasi
-    success_url = reverse_lazy("literasi_literasi_list")
+        context = {
+            "list_literasi" : models.Literasi.objects.all(),
+            "list_status" : models.Literasi.STATUS_CHOICES
+        }
+        
+        return render(request, self.template_name, context)

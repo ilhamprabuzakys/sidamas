@@ -15,6 +15,7 @@ from django.views.generic import TemplateView
 
 from .authbe import SidamasLDAPBackend
 from berita.models import Berita
+from survei.models import DataSurvei, DataPengisianSurvei
 
 from literasi.models import Literasi
 
@@ -28,204 +29,16 @@ class BerandaView(View):
         return render(request, self.template_name, context)
 
 class SurveiView(View):
-    template_name = "home/survei.html"
+    template_name = "home/pengisian_survei.html"
     
     def get(self, request):
-        if self.request.GET.get('tipe') == 'skm':
-            daftarPertanyaan = [
-                {
-                    "pertanyaan" : "Apakah Saudara memenuhi kriteria persyaratan untuk mengikuti pelatihan?",
-                    "jawaban" : [
-                        {"opsi" : "Tidak Setuju" , "nilai" : "1"},
-                        {"opsi" : "Kurang Setuju" , "nilai" : "2"},
-                        {"opsi" : "Setuju" , "nilai" : "3"},
-                        {"opsi" : "Sangat Setuju" , "nilai" : "4"}
-                    ]
-                },
-                {
-                    "pertanyaan" : "Apakah tahapan pelatiha yang diberikan dapat dipahami?",
-                    "jawaban" : [
-                        {"opsi" : "Tidak Paham" , "nilai" : "1"},
-                        {"opsi" : "Kurang Paham" , "nilai" : "2"},
-                        {"opsi" : "Paham" , "nilai" : "3"},
-                        {"opsi" : "Sangat Paham" , "nilai" : "4"}
-                    ]
-                },
-                {
-                    "pertanyaan" : "Apakah waktu pelaihan (3 hari) telah mencukupi dalam menambah keterampilan?",
-                    "jawaban" : [
-                        {"opsi" : "Sangat Tidak Cukup" , "nilai" : "1"},
-                        {"opsi" : "Tidak Cukup" , "nilai" : "2"},
-                        {"opsi" : "Cukup" , "nilai" : "3"},
-                        {"opsi" : "Sangat Cukup" , "nilai" : "4"}
-                    ]
-                },
-                {
-                    "pertanyaan" : "Apakah Uang transport yang diberikan mencukupi sebagai pengganti transport Saudara?",
-                    "jawaban" : [
-                        {"opsi" : "Sangat Tidak Cukup" , "nilai" : "1"},
-                        {"opsi" : "Tidak Cukup" , "nilai" : "2"},
-                        {"opsi" : "Cukup" , "nilai" : "3"},
-                        {"opsi" : "Sangat Cukup" , "nilai" : "4"}
-                    ]
-                },
-                {
-                    "pertanyaan" : "Apakah dengan Pelatihan ini Saudara mampu menghasilkan produk sesuai yang dilatihkan?",
-                    "jawaban" : [
-                        {"opsi" : "Tidak Mampu" , "nilai" : "1"},
-                        {"opsi" : "Kurang Mampu" , "nilai" : "2"},
-                        {"opsi" : "Mampu" , "nilai" : "3"},
-                        {"opsi" : "Sangat Mampu" , "nilai" : "4"}
-                    ]
-                },
-                {
-                    "pertanyaan" : "Bagaimana Kemampuan Insruktur dalam memberikan maeri dan praktek pelatihan?",
-                    "jawaban" : [
-                        {"opsi" : "Tidak Kompoten" , "nilai" : "1"},
-                        {"opsi" : "Kurang Kompoten" , "nilai" : "2"},
-                        {"opsi" : "Kompoten" , "nilai" : "3"},
-                        {"opsi" : "Sangat Kompoten" , "nilai" : "4"}
-                    ]
-                },
-                {
-                    "pertanyaan" : "Bagaimana Sikap Simpatik Pelaksana Kegiatan dalam memberikan pelatihan?",
-                    "jawaban" : [
-                        {"opsi" : "Tidak Simpatik" , "nilai" : "1"},
-                        {"opsi" : "Kurang Simpatik" , "nilai" : "2"},
-                        {"opsi" : "Simpatik" , "nilai" : "3"},
-                        {"opsi" : "Sangat Simpatik" , "nilai" : "4"}
-                    ]
-                },
-                {
-                    "pertanyaan" : "Bagaimana Sikap Pelaksana Kegiatan dalam memberikan pelatihan?",
-                    "jawaban" : [
-                        {"opsi" : "Tidak Peduli" , "nilai" : "1"},
-                        {"opsi" : "Kurang Peduli" , "nilai" : "2"},
-                        {"opsi" : "Peduli" , "nilai" : "3"},
-                        {"opsi" : "Sangat Peduli" , "nilai" : "4"}
-                    ]
-                },
-                {
-                    "pertanyaan" : "Apakah sarana dan prasarana pelatihan telah memadai dalam pelaksanaan pelatihan?",
-                    "jawaban" : [
-                        {"opsi" : "Tidak Memadai" , "nilai" : "1"},
-                        {"opsi" : "Kurang Memadai" , "nilai" : "2"},
-                        {"opsi" : "Memadai" , "nilai" : "3"},
-                        {"opsi" : "Sangat Memadai" , "nilai" : "4"}
-                    ]
-                }
-            ]
-        else:
-            daftarPertanyaan = [
-                {
-                    "pertanyaan":
-                        "Bagaimana pendapat Saudara tentang kesesuaian persyaratan pelayanan dengan jenis pelayanannya?",
-                    "jawaban": [
-                        { "opsi": "Tidak sesuai", "nilai": "1" },
-                        { "opsi": "Kurang sesuai", "nilai": "2" },
-                        { "opsi": "Sesuai", "nilai": "3" },
-                        { "opsi": "Sangat sesuai", "nilai": "4" },
-                    ],
-                },
-                {
-                    "pertanyaan":
-                        "Bagaimana pemahaman Saudara tentang kemudahan prosedur pelayanan yang diberikan?",
-                    "jawaban": [
-                        { "opsi": "Tidak paham", "nilai": "1" },
-                        { "opsi": "Kurang paham", "nilai": "2" },
-                        { "opsi": "Paham", "nilai": "3" },
-                        { "opsi": "Sangat paham", "nilai": "4" },
-                    ],
-                },
-                {
-                    "pertanyaan":
-                        "Bagaimana pendapat Saudara tentang kecepatan waktu dalam memberikan pelayanan?",
-                    "jawaban": [
-                        { "opsi": "Tidak cepat", "nilai": "1" },
-                        { "opsi": "Kurang cepat", "nilai": "2" },
-                        { "opsi": "Cepat", "nilai": "3" },
-                        { "opsi": "Sangat cepat", "nilai": "4" },
-                    ],
-                },
-                {
-                    "pertanyaan":
-                        "Bagaimana pendapat Saudara tentang kewajaran biaya/tarif dalam pelayanan?",
-                    "jawaban": [
-                        { "opsi": "Sangat mahal", "nilai": "1" },
-                        { "opsi": "Cukup mahal", "nilai": "2" },
-                        { "opsi": "Murah", "nilai": "3" },
-                        { "opsi": "Gratis", "nilai": "4" },
-                    ],
-                },
-                {
-                    "pertanyaan":
-                        "Petugas tidak pernah meminta imbalan dan melakukan pungutan liar?",
-                    "jawaban": [
-                        { "opsi": "Tidak setuju", "nilai": "1" },
-                        { "opsi": "Kurang setuju", "nilai": "2" },
-                        { "opsi": "Setuju", "nilai": "3" },
-                        { "opsi": "Sangat Setuju", "nilai": "4" },
-                    ],
-                },
-                {
-                    "pertanyaan":
-                        "Bagaimana pendapat Saudara tentang kesesuaian produk pelayanan antara yang tercantum dalam standar pelayanan dengan hasil yang diberikan?",
-                    "jawaban": [
-                        { "opsi": "Tidak sesuai", "nilai": "1" },
-                        { "opsi": "Kurang sesuai", "nilai": "2" },
-                        { "opsi": "Sesuai", "nilai": "3" },
-                        { "opsi": "Sangat sesuai", "nilai": "4" },
-                    ],
-                },
-                {
-                    "pertanyaan":
-                        "Bagaimana pendapat Saudara tentang kompetensi/kemampuan petugas dalam pelayanan?",
-                    "jawaban": [
-                        { "opsi": "Tidak kompeten", "nilai": "1" },
-                        { "opsi": "Kurang kompeten", "nilai": "2" },
-                        { "opsi": "Kompeten", "nilai": "3" },
-                        { "opsi": "Sangat kompeten", "nilai": "4" },
-                    ],
-                },
-                {
-                    "pertanyaan":
-                        "Bagaimana pendapat Saudara tentang perilaku petugas dalam pelayanan terkait kesopanan dan keramahan?",
-                    "jawaban": [
-                        { "opsi": "Tidak sopan dan ramah", "nilai": "1" },
-                        { "opsi": "Kurang sopan dan ramah", "nilai": "2" },
-                        { "opsi": "Sopan dan ramah", "nilai": "3" },
-                        { "opsi": "Sangat sopan dan ramah", "nilai": "4" },
-                    ],
-                },
-                {
-                    "pertanyaan":
-                        "Bagaimana pendapat Saudara tentang penanganan pengaduan pengguna layanan?",
-                    "jawaban": [
-                        { "opsi": "Tidak ada", "nilai": "1" },
-                        { "opsi": "Ada tetapi tidak berfungsi", "nilai": "2" },
-                        { "opsi": "Berfungsi kurang maksimal", "nilai": "3" },
-                        { "opsi": "Dikelola dengan baik", "nilai": "4" },
-                    ],
-                },
-                {
-                    "pertanyaan":
-                        "Bagaimana pendapat Saudara tentang kualitas sarana dan prasarana?",
-                    "jawaban": [
-                        { "opsi": "Buruk", "nilai": "1" },
-                        { "opsi": "Cukup", "nilai": "2" },
-                        { "opsi": "Baik", "nilai": "3" },
-                        { "opsi": "Sangat baik", "nilai": "4" },
-                    ],
-                },
-            ]
-            
-        data = json.dumps(daftarPertanyaan, ensure_ascii=False)
-
-        context = {
-            "data": data
-        }
+        return render(request, self.template_name)
     
-        return render(request, self.template_name, context)
+class SurveiPersiapanKewirausahaan(View):
+    template_name = "home/pengisian_survei_persiapan_kewirausahaan.html"
+    
+    def get(self, request):
+        return render(request, self.template_name)
 
 class MediaSosialView(TemplateView):
     template_name = "home/media_sosial.html"
@@ -265,7 +78,7 @@ class BeritaDetailView(View):
         data = Berita.objects.get(slug=slug)
         user_pembuat = data.created_by
 
-        tags_list = [tag.lstrip("#\ufeff") for tag in data.tags.split()]
+        tags_list = [tag for tag in data.tags.split(',')]
         
         current_index = semua_berita.filter(slug=slug).first().pk
         total_berita = semua_berita.count()
@@ -281,10 +94,9 @@ class BeritaDetailView(View):
             "slug" : data.slug,
             "judul": data.judul,
             "kategori": data.kategori,
-            "created": data.created_at,
-            "last_updated": data.updated_at,
+            "created_at": data.created_at,
+            "updated_at": data.updated_at,
             "isi_berita": data.isi_berita,
-            "tanggal": data.tanggal,
             "status": data.status,
             "tags": data.tags,
             "tags_list": tags_list,
@@ -299,7 +111,25 @@ class BeritaDetailView(View):
         }
         
         return render(request, self.template_name, context=context)
+
+class SurveiKewirausahaanView(View):
+    template_name = "home/pengisian_survei_kewirausahaan.html"
     
+    def get(self, request, slug, responden):
+
+        data_survei = DataSurvei.objects.get(kode=slug)
+
+        try:
+            data_isi_survei = DataPengisianSurvei.objects.get(responden=responden)
+            data_isi_survei_ada = True
+        except DataPengisianSurvei.DoesNotExist:
+            data_isi_survei_ada = False
+
+        context = { "data_id": data_survei.id,
+                    "data_responden": responden,
+                    "data_isi_responden": data_isi_survei_ada }
+
+        return render(request, self.template_name, context)
     
 def truncate_and_escape(text, max_words):
     """
@@ -321,9 +151,16 @@ def redirect_user_to_login(request):
     return redirect(reverse('login'))
 
 @method_decorator(require_http_methods(["GET", "POST"]), name='dispatch')
-class LoginView(View):
-    template_name = "auth/login.html"
+class testingView(View):
+    template_name = "auth2/login.html"
     redirect_authenticated_user = True
+
+    def get(self, request):
+        return render(request, self.template_name)
+
+    def post(self, request):
+        # Your post method logic here
+        return render(request, self.template_name)  # Update this line based on your post logic
 
     def form_invalid(self, form):
         response = super().form_invalid(form)

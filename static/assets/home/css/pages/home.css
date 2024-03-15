@@ -3,7 +3,7 @@
 }
 
 #headline #slogan {
-   color: #9BD8DC;
+   color: #2ca8dc;
    font-weight: 500;
 }
 
@@ -18,7 +18,7 @@ h3,
 h4,
 h5,
 h6 {
-   color: #9BD8DC;
+   color: #2ca8dc;
    font-weight: 500;
 }
 
@@ -78,4 +78,19 @@ h6 {
 #daftar-berita p {
    color: #444444;
    font-size: 12px;
+}
+
+/**=== VUE JS STYLING ===**/
+[v-cloak] {
+    display: none;
+}
+
+.v-enter-active,
+.v-leave-active {
+    transition: opacity 0.5s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+    opacity: 0;
 }

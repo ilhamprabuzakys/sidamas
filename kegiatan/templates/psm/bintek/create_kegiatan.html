@@ -7,12 +7,23 @@
       </div>
       <div class="modal-body">
         <form>
-          <div class="mb-3">
-            <label for="tanggal" class="col-form-label">Tanggal:</label>
-            <input type="date" name="tanggal" class="form-control" id="tanggal" />
+          <div class="row mb-3">
+            <div class="col-6">
+              <div class="mb-3">
+                <label for="tanggal_awal" class="col-form-label required">Tanggal Awal:</label>
+                <input type="date" id="tanggal_awal" class="form-control" />
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="mb-3">
+                <label for="tanggal_akhir" class="col-form-label">Tanggal Akhir:</label>
+                <input type="date" id="tanggal_akhir" class="form-control" />
+              </div>
+            </div>
+            <label for="pelaksanaan" class="col-form-label text-light">Jika pelaksanaan hanya berlangsung selama satu hari, tanggal akhir tidak perlu diisi.</label>
           </div>
           <div class="mb-3">
-            <label for="satker_dibintek" class="col-form-label">Satuan Kerja:</label>
+            <label for="satker_dibintek" class="col-form-label required">Satuan Kerja:</label>
             <select class="form-control select2" name="satker_dibintek" id="satker_dibintek">
               <option value="" selected disabled>Pilih Satuan Kerja</option>
               {% for item in satker %}
@@ -21,15 +32,15 @@
             </select>
           </div>
           <div class="mb-3">
-            <label for="deskripsi" class="col-form-label">Deskripsi</label>
+            <label for="deskripsi" class="col-form-label required">Deskripsi</label>
             <textarea class="form-control" name="deskripsi" id="deskripsi"></textarea>
           </div>
           <div class="mb-3">
-            <label for="hambatan_kendala" class="col-form-label">Hambatan atau Kendala:</label>
+            <label for="hambatan_kendala" class="col-form-label required">Hambatan atau Kendala:</label>
             <textarea class="form-control" name="hambatan_kendala" id="hambatan_kendala"></textarea>
           </div>
           <div class="mb-3">
-            <label for="dokumentasi" class="col-form-label">Dokumentasi</label>
+            <label for="dokumentasi" class="col-form-label required">Dokumentasi</label>
             <input type="file" class="form-control" id="dokumentasi" aria-describedby="inputGroupFileAddon03" aria-label="Upload" />
           </div>
         </form>

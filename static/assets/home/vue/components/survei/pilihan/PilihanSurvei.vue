@@ -1,8 +1,8 @@
 <template>
-    <div :class="'card level-' + bobot">
-        <div class="card-body">
-            <h4 class="card-title" :id="'option' + bobot">{{ getTitle }}</h4>
-            <img :src="src" :alt="getTitle">
+    <div :class="'card level-' + bobot" style="height: 100%;">
+        <div class="card-body :" style="display: flex;flex-flow: column wrap;align-items: center;justify-content: space-between;">
+            <h5 class="card-title text-center text-white" style="font-size: 100%;" :id="'option' + bobot">{{ getTitle }}</h5>
+            <img :src="src" :alt="getTitle" style="" class="card-img-top img-fluid">
         </div>
     </div>
 </template>

@@ -2,71 +2,51 @@
   <thead class="bg-soft-green">
     <tr>
       <th>No.</th>
-      <th>Nama Formulir</th>
-      <th>Jumlah Responden</th>
+      <th>ID</th>
+      <th>Judul</th>
+      <th>Pemilik</th>
+      <th>Satker</th>
       <th>Berlaku Sampai</th>
+      <th>Status</th>
       <th>
         AKSI<i class="fas fa-edit ms-2"></i>
       </th>
     </tr>
   </thead>
   <tbody>
-    <tr class="">
-      <td scope="row">1</td>
-      <td>Formulir Life Skill Warga Setempat Bandung Oktober 2023</td>
-      <td>33</td>
-      <td>31 Desember 2023</td>
-      <td class="__action_button">
-        <div class="list-button gx-3 text-uppercase">
-          <div>
-            <a href="javascript:;" class="badge bg-primary text-white text-decoration-none mb-1"><i class="fas fa-print me-2"></i>Buat link</a>
-          </div>
-          <div>
-            <a href="javascript:;" class="badge bg-success text-white text-decoration-none mb-1"><i class="fas fa-pen-to-square me-2"></i>Edit</a>
-          </div>
-          <div>
-            <a href="javascript:;" class="badge bg-danger text-white text-decoration-none mb-1"><i class="fas fa-trash-alt me-2"></i>Hapus</a>
-          </div>
-        </div>
-      </td>
-    </tr>
-    <tr class="">
-      <td scope="row">2</td>
-      <td>Formulir Life Skill Warga Setempat Kalimanatan Mei 2023</td>
-      <td>21</td>
-      <td>13 Agustus 2023</td>
-      <td class="__action_button">
-        <div class="list-button gx-3 text-uppercase">
-          <div>
-            <a href="javascript:;" class="badge bg-primary text-white text-decoration-none mb-1"><i class="fas fa-print me-2"></i>Buat link</a>
-          </div>
-          <div>
-            <a href="javascript:;" class="badge bg-success text-white text-decoration-none mb-1"><i class="fas fa-pen-to-square me-2"></i>Edit</a>
-          </div>
-          <div>
-            <a href="javascript:;" class="badge bg-danger text-white text-decoration-none mb-1"><i class="fas fa-trash-alt me-2"></i>Hapus</a>
-          </div>
-        </div>
-      </td>
-    </tr>
-    <tr class="">
-      <td scope="row">3</td>
-      <td>Formulir Life Skill Warga Setempat Jakarta Februari 2023</td>
-      <td>83</td>
-      <td>20 April 2023</td>
-      <td class="__action_button">
-        <div class="list-button gx-3 text-uppercase">
-          <div>
-            <a href="javascript:;" class="badge bg-primary text-white text-decoration-none mb-1"><i class="fas fa-print me-2"></i>Buat link</a>
-          </div>
-          <div>
-            <a href="javascript:;" class="badge bg-success text-white text-decoration-none mb-1"><i class="fas fa-pen-to-square me-2"></i>Edit</a>
-          </div>
-          <div>
-            <a href="javascript:;" class="badge bg-danger text-white text-decoration-none mb-1"><i class="fas fa-trash-alt me-2"></i>Hapus</a>
-          </div>
-        </div>
-      </td>
-    </tr>
+    {% for survey in list_survey_users %}
+      <tr class="align-td-middle">
+          <td>{{ forloop.counter }}</td>
+          <td>{{ survey.id }}</td>
+          <td>{{ survey.judul }}</td>
+          <td>{{ survey.dibuat_oleh.first_name }} {{ survey.dibuat_oleh.last_name }}</td>
+          <td>{{ survey.satker.nama_satker }}</td>
+          <td>{{ survey.tanggal_awal }} - {{ survey.tanggal_akhir }}</td>
+          <td>
+              {% if survey.status == '1' %}
+                <div class="text-center"><span class="badge bg-warning text-white"><i class="fas fa-edit me-2"></i>DRAFT</span></div>
+              {% elif survey.status == '2' %}
+                <div class="text-center"><span class="badge bg-success text-white"><i class="fas fa-check-double me-2"></i>PUBLISHED</span></div>
+              {% elif survey.status == '3' %}
+                <div class="text-center"><span class="badge bg-danger text-white"><i class="fas fa-box-archive me-2"></i>ARCHIVED</span></div>
+              {% else %}
+                  <span>Unknown</span>
+              {% endif %}
+          </td>
+          <td class="__action_button">
+              <div class="list-button gx-3 text-uppercase">
+                  <div>
+                      <a href="javascript:;"
+                              class="badge bg-warning text-white text-decoration-none mb-1 button_edit">
+                              <i class="fa-solid fa-pen-to-square"></i> Edit </a>
+                      
+                      <a href="javascript:;"
+                          class="badge bg-danger text-white text-decoration-none mb-1 button_delete">
+                          <i class="fa-solid fa-trash"></i> Delete</a>
+                  </div>
+              </div>
+          </td>
+      </tr>
+    {% endfor %}
   </tbody>
 </table>

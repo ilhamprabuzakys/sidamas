@@ -4,11 +4,7 @@
       <th>No.</th>
       <th>Satuan Kerja</th>
       <th>Jumlah Kegiatan</th>
-      <th class="bg-soft-danger">Detail</th>
-      <th>Deskripsi Hasil</th>
-      <th>Simpulan</th>
-      <th>Tidak Lanjut</th>
-      <th>Dokumentasi</th>
+      <th class="bg-soft-danger">Pelaksanaan</th>
       <th>
         AKSI<i class="fas fa-edit ms-2"></i>
       </th>
@@ -17,21 +13,15 @@
   <tbody>
     <tr class="">
       <td scope="row">1</td>
-      <td>BNNK Jawa Barat</td>
+      <td>BNNP Jawa Barat</td>
       <td>3</td>
       <td>
-        <a href="javascript:;" class="badge bg-primary text-decoration-none text-white" data-bs-toggle="modal" data-bs-target="#detailasistensiModal"><i class="fas fa-eye me-2"></i>Lihat Detail</a>
-      </td>
-      <td>Sangat Mandiri</td>
-      <td>1-20</td>
-      <td>Sangat Mandiri - Kurang Mandiri</td>
-      <td>
-        {% comment %} <a href="#" download><img src="https://png.pngtree.com/png-clipart/20220612/original/pngtree-pdf-file-icon-png-png-image_7965915.png" alt="PDF Icon" width="50" height="50" /></a> {% endcomment %}
-        <a href="javascript:;">Lihat dokumentasi</a>
+        <a href="javascript:;" class="badge bg-primary text-decoration-none text-white" data-bs-toggle="modal" data-bs-target="#detailAsistensiKotan"><i class="fas fa-eye me-2"></i>Lihat Detail</a>
       </td>
       <td>
         <div class="list-button">
-          <a href="javascript:;" class="badge bg-success text-white text-decoration-none mb-1"><i class="fas fa-pen-to-square me-2"></i>EDIT</a>
+          <a href="javascript:;" class="badge bg-primary text-white text-decoration-none mb-1" data-bs-toggle="modal" data-bs-target="#tambahDataKegiatan"><i class="fas fa-plus me-2"></i>TAMBAH KEGIATAN</a>
+          <a href="javascript:;" id="buttonEdit" class="badge bg-success text-white text-decoration-none mb-1"><i class="fas fa-pen-to-square me-2"></i>EDIT</a>
           <a href="javascript:;" id="deleteData" class="badge bg-danger text-white text-decoration-none mb-1"><i class="fas fa-trash-alt me-2"></i>HAPUS</a>
         </div>
       </td>

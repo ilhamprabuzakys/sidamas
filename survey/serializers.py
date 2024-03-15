@@ -47,14 +47,18 @@ class survey(serializers.ModelSerializer):
 class survey_create(serializers.ModelSerializer):
     class Meta:
         model = models.survey
-        read_only_fields = ["created"]
         fields = [
+            "id",
             "judul",
             "jsontext",
             "status",
             "pemilik",
             "dibuat_oleh",
+            "satker",
+            "tanggal_awal",
+            "tanggal_akhir",
             "created",
+            "last_updated",
         ]
 class surveyshort(serializers.ModelSerializer):
     class Meta:

@@ -1,0 +1,59 @@
+{% extends "dashboard/dashboard_base.html" %}
+{% load static %}
+
+{% block title %} Literasi {% endblock title %}
+
+{% block modal_tambahan %}
+    {% include "literasi/modals/detail_literasi_modal.html" %}
+    {% include "literasi/modals/create_literasi_modal.html" %}
+    {% include "literasi/modals/edit_literasi_modal.html" %}
+{% endblock modal_tambahan %}
+
+{% block content %}
+<div class="breadcrumb">
+    <div class="row">
+        <h3 class="heading mb-2">
+            Literasi
+        </h3>
+        <span class="mb-0">
+            <span class="text-muted fw-light">Literasi /</span>
+            <span class="ms-1 fw-medium">Daftar Literasi</span>
+        </span>
+    </div>
+</div>
+
+<section id="__data">
+    <div class="card">
+        <div class="card-body">
+
+            <div id="headline" class="mb-3">
+                <h3 class="text-center">PENGELOLAAN DATA LITERASI 2024</h3>
+                <hr>
+            </div>
+
+            <div class="action-button">
+                <div class="d-flex justify-content-end mb-3 gap-2">
+                    {% comment %} <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exportData">
+                        <i class="fas fa-file-export me-2"></i>Ekspor Data
+                    </button> {% endcomment %}
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createModal">
+                        <i class="fas fa-plus me-2"></i>Tambah Data
+                    </button>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                {% include 'literasi/table_literasi.html' %}
+            </div>
+
+        </div>
+    </div>
+</section>
+{% endblock content %}
+
+{% block js_tambahan %}
+<script src="{% static 'literasi/dt.js' %}"></script>
+<script src="{% static 'literasi/actions.js' %}"></script>
+<script src="{% static 'literasi/dt_filters.js' %}"></script>
+
+{% endblock js_tambahan %}

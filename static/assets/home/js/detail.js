@@ -1,3 +1,4 @@
+/* EVENT LISTENER */
 document.addEventListener('DOMContentLoaded', function () {
     const currentURL = window.location.href;
 
@@ -22,6 +23,9 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
+/**
+    LIST OF FUNCTION
+*/
 function shareOnFacebook(url) {
     window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank');
 }

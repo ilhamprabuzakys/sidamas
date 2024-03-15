@@ -7,6 +7,8 @@ app_name = "home"
 urlpatterns = [
     path("", views.BerandaView.as_view(), name="index"),
     path("pengisian-survei/", views.SurveiView.as_view(), name="survei"),
+    path("persiapan-survei-kewirausahaan/", views.SurveiPersiapanKewirausahaan.as_view(), name="survei_persiapan_kewirausahaan"),
+    path("pengisian-survei-kewirausahaan/<int:responden>/<slug:slug>/", views.SurveiKewirausahaanView.as_view(), name="survei_kewirausahaan"),
     path("media-sosial/", views.MediaSosialView.as_view(), name="media_sosial"),
     path("literasi/", views.literasi_view, name="literasi"),
     # path("literasi/", views.LiterasiView.as_view(), name="literasi"),
@@ -17,5 +19,5 @@ urlpatterns = [
     
     # 👇 Redirecting user here
     path("login/", views.redirect_user_to_login, name="redirect_user_to_login"),
-    path("login2/", views.LoginView.as_view(), name="LoginViews")
+    path("testing/", views.testingView.as_view(), name="LoginViews")
 ]

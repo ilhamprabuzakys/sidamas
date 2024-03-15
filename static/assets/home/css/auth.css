@@ -1,6 +1,6 @@
-/*
-    MAIN AUTH
-*/
+/***=======================
+    AUTHENTICATION STYLE
+========================***/
 
 #auth {
     margin-top: 90px;
@@ -21,16 +21,20 @@ input {
 #auth h5,
 #auth h6,
 #auth .form-label {
-    color: #03b3be;
+    color: #2ca8dc;
 }
 
 #auth span,
 #auth a {
-    color: #03b3be !important;
+    color: #2ca8dc !important;
 }
 
 .auth-img {
     display: none;
+}
+
+.eula-text {
+    text-decoration: none;
 }
 
 .card.auth-card {
@@ -40,7 +44,7 @@ input {
 }
 
 .btn-auth {
-    background-color: #03b3be !important;
+    background-color: #2ca8dc !important;
     color: #f4f4f4 !important;
     text-transform: uppercase;
     font-weight: 600;

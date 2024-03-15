@@ -7,8 +7,8 @@ Verifikasi
 
 <div class="breadcrumb">
     <div class="row">
-        <h3 class="heading mb-2">Daftar User</h3>
-        <span class="mb-0"><span class="text-muted fw-light">Daftar User /</span><span
+        <h3 class="heading mb-2">Daftar Pengguna</h3>
+        <span class="mb-0"><span class="text-muted fw-light">Daftar Pengguna /</span><span
                 class="ms-1 fw-medium">Verifikasi</span></span>
     </div>
 </div>
@@ -16,7 +16,7 @@ Verifikasi
     <div class="card">
         <div class="card-body">
             <div id="headline" class="mb-3">
-                <h3 class="text-center">Verifikasi Data User</h3>
+                <h3 class="text-center">Verifikasi Data Pengguna</h3>
                 <hr />
             </div>
             <div class="table-responsive">
@@ -36,7 +36,8 @@ Verifikasi
             columnDefs: [{
                 targets: [1, 2],
                 visible: false,
-            }]
+            }],
+            order: [[1, 'desc']]
         });
 
         $('#__table tbody').on('click', '.button_verifikasi', function () {

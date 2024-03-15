@@ -26,7 +26,8 @@ class BeritaListView(BeritaBaseView, View):
     
     def get(self, request):
         context = {
-            "list_berita" : models.Berita.objects.all()
+            "list_berita" : models.Berita.objects.all(),
+            "list_kategori" : models.Kategori.objects.all(),
         }
         return render(request, self.template_name, context)
 

@@ -55,7 +55,6 @@ class BeritaAdmin(admin.ModelAdmin):
         "kategori",
         "judul",
         "isi_berita",
-        "tanggal",
     ]
     readonly_fields = [
         "created_at",

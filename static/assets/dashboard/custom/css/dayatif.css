@@ -34,6 +34,7 @@ aside#layout-menu.bg-menu-theme .menu-inner .menu-item .menu-link {
 aside#layout-menu.bg-menu-theme {
     background-color: var(--bg-sidebar) !important;
     color: #00a0a9;
+    border-right: 4px solid #d8d2c2;
 }
 
 aside#layout-menu.bg-menu-theme.menu-vertical

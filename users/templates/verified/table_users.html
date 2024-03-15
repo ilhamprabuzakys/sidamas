@@ -4,8 +4,8 @@
             <th>No</th>
             <th>ID Profile</th> <!-- Profile ID -->
             <th>ID User</th> <!-- User ID -->
-            <th>Avatars</th>
-            <th>Users</th>
+            <th>Foto</th>
+            <th>Pengguna</th>
             <th>Direktorat</th>
             <th>Satker</th>
             <th>Status</th>
@@ -20,7 +20,7 @@
             <td>{{ profile.user.id }}</td>
             <td><img src="/media/{{ profile.avatar }}" alt="Users" width="50" height="50"></td>
             <td>{{ profile.user }}</td>
-            <td>{{ profile.role }}</td>
+            <td class="text-center">{{ profile.get_role }}</td>
             <td>{{ profile.satker }}</td>
             <td class="text-center">
                 <span class="badge {% if profile.is_verified %} bg-success {% else %} bg-warning {% endif %}">
@@ -32,10 +32,16 @@
                     <div>
                         <a href="javascript:;"
                             class="badge bg-success text-white text-decoration-none mb-1 button_verifikasi"><i
-                                class="fa-solid fa-check me-2"></i> Verifikasi Sebagai Pegawai</a>
+                            class="fa-solid fa-check me-2"></i> Verifikasi Sebagai Pegawai</a>
+                        <a href="javascript:;"
+                                class="badge bg-warning text-white text-decoration-none mb-1 ">
+                                <i class="fa-solid fa-pen-to-square"></i> Edit </a>
                         <a href="javascript:;"
                             class="badge bg-primary text-white text-decoration-none mb-1 button_verifikasi button_verifikasi_admin"><i
                                 class="fa-solid fa-check me-2"></i> Verifikasi Sebagai Admin</a>
+                        <a href="javascript:;"
+                            class="badge bg-danger text-white text-decoration-none mb-1 ">
+                            <i class="fa-solid fa-trash"></i> Delete</a>
                     </div>
                 </div>
             </td>

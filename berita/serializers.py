@@ -7,16 +7,9 @@ class BeritaSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Berita
-        fields = [
-            "created_at",
-            "updated_at",
-            "kategori",
-            "judul",
-            "isi_berita",
-            "kategori",
-            "tanggal",
-            "file",
-        ]
+        fields = '__all__'
+        datatables_always_serialize = ['slug', 'judul']
+        depth = 1
 
 class KategoriSerializer(serializers.ModelSerializer):
 

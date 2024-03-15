@@ -1,8 +1,11 @@
-<div class="modal fade" id="detailtesurineModal" tabindex="-1" role="dialog">
+<div class="modal fade" id="detailTesUrineDeteksiDini" tabindex="-1" role="dialog">
   <div class="modal-dialog modal-xl modal-dialog-scrollable" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="modalTitleId">Detail Test Urine untuk Satker <b>BNN Provinsi Jawa Barat</b></h5>
+        <h5 class="modal-title" id="modalTitleId">
+          Detail
+          <strong>(No 1)</strong>
+        </h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
@@ -10,48 +13,50 @@
           <table class="table table-bordered">
             <thead class="bg-soft-blue">
               <tr>
-                <th colspan="2" rowspan="1">Pelaksanaan</th>
-                <th colspan="3" rowspan="1">Satker / Lingkungan Yang Dilakukan Supervisi</th>
-                <th rowspan="3">Jumlah Peserta</th>
+                <th class="text-center" colspan="2" rowspan="2">PELAKSANAAN</th>
+                <th class="text-center bg-soft-danger" colspan="3" rowspan="2">LINGKUNGAN</th>
+                <th rowspan="4">JUMLAH PESERTA</th>
+                <th rowspan="4">DAFTAR PESERTA</th>
+                <th rowspan="4">HASIL TES URIN</th>
+                <th rowspan="4">TINDAK LANJUT</th>
+                <th rowspan="4">DOKUMENTASI</th>
+                <th rowspan="4">AKSI</th>
               </tr>
-              <tr>
-                <th scope="col" rowspan="2">No</th>
-                <th scope="col" rowspan="2">Tanggal</th>
-                <th scope="col" rowspan="2">Nama Lingkungan Dan Satker</th>
-                <th colspan="2" rowspan="1" class="text-center">Peserta</th>
+              <tr></tr>
+              <tr class="text-center">
+                <th rowspan="2">NO.</th>
+                <th rowspan="2">TANGGAL</th>
+                <th class="bg-soft-danger" rowspan="2">NAMA LINGKUNGAN</th>
+                <th class="bg-soft-danger" colspan="2">PESERTA</th>
               </tr>
-              <tr>
-                <!-- <th scope="col" rowspan="1">Nama dan Jabatan</th> -->
-                <th scope="col" rowspan="1">Pria</th>
-                <th scope="col" rowspan="1">Wanita</th>
+              <tr class="bg-soft-danger text-center">
+                <th>PRIA</th>
+                <th>WANITA</th>
               </tr>
             </thead>
             <tbody>
-              <tr class="">
-                <td rowspan="1">1</td>
-                <td rowspan="1">28 Agustus s/d 29 September 2022</td>
-                <td rowspan="1">BNN RI Melakukan Supervisi Ke BNNP/BNNK/Lingkungan Di Wilayah BNNP Dan BNNK</td>
-                <td rowspan="1">
-                  <span class="text-primary">8</span>
+              <tr>
+                <td>1</td>
+                <td>28 Agustus s.d. 2 September 2022</td>
+                <td>BNN Kota Surakarta</td>
+                <td class="text-center text-primary">5</td>
+                <td class="text-center text-danger">5</td>
+                <td class="text-center">10</td>
+                <td>
+                  <a href="javascript:;" class="badge bg-primary text-decoration-none text-white" data-bs-toggle="modal" data-bs-target="#detailPesertaTesUrin"><i class="fas fa-eye me-2"></i>Detail Peserta</a>
                 </td>
-                <td rowspan="1">
-                  <span class="text-danger">10</span>
+                <td>Contoh Hasil Tes Urin</td>
+                <td>Contoh Tindak Lanjut</td>
+                <td>
+                  <a href="javascript:void(0);">Lihat Dokumentasi</a>
                 </td>
-                <td rowspan="1">18</td>
+                <td>
+                  <div class="list-button">
+                    <a href="javascript:;" data-bs-toggle="modal" data-bs-target="#editDataKegiatan" class="badge bg-success text-white text-decoration-none mb-1"><i class="fas fa-pen-to-square me-2"></i>EDIT</a>
+                    <a href="javascript:;" class="badge bg-danger text-white text-decoration-none mb-1 deleteKegiatan"><i class="fas fa-trash-alt me-2"></i>HAPUS</a>
+                  </div>
+                </td>
               </tr>
-              <tr class="">
-                <td rowspan="1">2</td>
-                <td rowspan="1">12 November s/d 05 Januari 2023</td>
-                <td rowspan="1">BNN RI Melakukan Supervisi Ke BNNP/BNNK/Lingkungan Di Wilayah BNNP Dan BNNK</td>
-                <td rowspan="1">
-                  <span class="text-primary">12</span>
-                </td>
-                <td rowspan="1">
-                  <span class="text-danger">23</span>
-                </td>
-                <td rowspan="1">35</td>
-              </tr>
-
             </tbody>
           </table>
         </div>
@@ -61,54 +66,6 @@
           <i class="fas fa-xmark me-2"></i>
           Tutup
         </button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="modal fade" id="tambahData" aria-labelledby="modalTambah" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="modalTambah">Tambah Data</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <form>
-          <div class="mb-3">
-            <label for="satker" class="col-form-label">Satuan Kerja:</label>
-            <select name="selectSatker" id="selectSatker" class="form-control">
-              <option value="" selected disabled>Pilih Satuan Kerja</option>
-              {% for item in satker %}
-                <option value="{{ item.nama_satker }}">{{ item.nama_satker }}</option>
-              {% endfor %}
-            </select>
-          </div>
-          <div class="mb-3">
-            <label for="jumlah_kegiatan" class="col-form-label">Jumlah Kegitan:</label>
-            <input type="text" name="jumlah_kegiatan" class="form-control" id="jumlah_kegiatan" />
-          </div>
-          <div class="mb-3">
-            <label for="nomor" class="col-form-label">Deskripsi Hasil:</label>
-            <input type="text" name="nomor" class="form-control" id="nomor" />
-          </div>
-          <div class="mb-3">
-            <label for="tanggal" class="col-form-label">Simpulan:</label>
-            <input type="date" name="tanggal" class="form-control" id="tanggal" />
-          </div>
-          <div class="mb-3">
-            <label for="jumlah_kegiatan" class="col-form-label">Tindak Lanjut:</label>
-            <input type="text" name="jumlah_kegiatan" class="form-control" id="lingkungan" />
-          </div>
-          <div class="mb-3">
-            <label for="hambatan_kendala" class="col-form-label">Dokumentasi:</label>
-            <input type="text" name="jumlah_kegiatan" class="form-control" id="lingkungan" />
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-        <button type="button" class="btn btn-primary">Simpan</button>
       </div>
     </div>
   </div>
