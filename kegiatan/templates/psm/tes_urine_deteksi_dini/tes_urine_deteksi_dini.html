@@ -1,141 +1,378 @@
 {% extends 'dashboard/dashboard_base.html' %}
 {% load static %}
 {% block title %}
-  Tes Urine Deteksi Dini
+Bimbingan Teknis Life Skill
 {% endblock %}
 {% block content %}
-  <div class="breadcrumb">
-    <div class="row">
-      <h3 class="heading mb-2">Tes Urine Deteksi Dini</h3>
-      <span class="mb-0">
-        <span class="text-muted fw-light">Kegiatan /</span>
-        <span class="text-muted fw-light">PSM /</span>
-        <span class="ms-1 fw-medium">Tes Urine Deteksi Dini</span>
-      </span>
-    </div>
+<div class="breadcrumb">
+  <div class="row">
+    <h3 class="heading mb-2">Rapat Kerja Teknis</h3>
+    <span class="mb-0">
+      <span class="text-muted fw-light">Kegiatan /</span>
+      <span class="ms-1 fw-medium">Rapat Kerja Teknis</span>
+    </span>
   </div>
+</div>
 
-  <section id="__data">
+<section id="__data">
     <div class="card">
-      <div class="card-body">
-        <div id="headline" class="mb-3">
-          <h3 class="text-center">
-            KEGIATAN TES URINE DALAM RANGKA DETEKSI DINI<br />
-            <span id="currentYear"></span>
-          </h3>
-          <hr />
-        </div>
-
-        <div class="action-button">
-          <div class="d-flex justify-content-end mb-3 gap-2">
-            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exportData"><i class="fas fa-file-export me-2"></i>Ekspor Data</button>
-            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tambahData"><i class="fas fa-plus me-2"></i>Tambah Data</button>
+        <div class="card-body">
+          <div id="headline" class="mb-3">
+            <h3 class="text-center">
+              KEGIATAN RAPAT KERJA TEKNIS PEMBERDAYAAN MASYARAKAT<br />
+              <span id="currentYear"></span>
+            </h3>
+            <hr />
           </div>
-        </div>
-        <div class="table-responsive">
-          {% include 'psm/tes_urine_deteksi_dini/table.html' %}
-        </div>
-      </div>
-    </div>
-  </section>
-{% endblock %}
 
-{% block css_tambahan %}
-  <link rel="stylesheet" href="{% static 'assets/dashboard/vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}" />
+            <div class="action-button">
+                <div class="d-flex justify-content-end mb-3 gap-2">
+                    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exportData"><i
+                            class="fas fa-file-export me-2"></i>Ekspor Data</button>
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tambahData"><i
+                            class="fas fa-plus me-2"></i>Tambah Data</button>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+              {% include 'psm/tes_urine_deteksi_dini/table.html' %}
+            </div>
+        </div>
+    </div>
+</section>
 {% endblock %}
 
 {% block js_tambahan %}
-  <script src="{% static 'assets/dashboard/vendor/libs/datatables-bs5/datatables-bootstrap5.js' %}"></script>
-  <script>
-    let table = $('#__table').DataTable({
-      language: dt_lang_config()
-    })
-    
-    $('#deleteData').on('click', function () {
-      Swal.fire({
-        title: 'Apakah anda yakin?',
-        html: `Data yang <strong>dihapus</strong> tidak dapat dipulihkan kembali.`,
-        icon: 'warning',
-        showCancelButton: true,
-        cancelButtonText: 'Batalkan',
-        confirmButtonText: 'Ya, hapus data ini!'
-      }).then((result) => {
-        if (result.isConfirmed) {
-          console.log('User clicked the confirm button ...')
-    
-          Swal.fire({
-            title: 'Tunggu sebentar',
-            icon: 'info',
-            html: `Menghapus <b>data</b> yang anda dipilih..`,
-            timer: 2000,
-            didOpen: () => {
-              Swal.showLoading()
-            }
-          }).then((result) => {
-            if (result.dismiss === Swal.DismissReason.timer) {
-              Swal.fire({
-                title: 'Berhasil',
-                html: `Data yang dipilih telah <strong>berhasil</strong> dihapus.`,
-                icon: 'success',
-                confirmButtonText: 'OK',
-                timer: 2000
-              })
-            }
-          })
-        }
-      })
-    })
+<script src="{% static 'assets/dashboard/vendor/libs/jquery-repeater/jquery-repeater.js' %}"></script>
+<script src="{% static 'assets/dashboard/js/bawaan/forms-extras.js' %}"></script>
 
-    $('a#buttonEdit').on('click', function () {
-      $('#editTesUrineDeteksiDini').modal('show') //show modal
-    
-      //START SET CURRENT VALUE
-      $('select[name="edit_satker"]').val('BNNP Jawa Barat').trigger('change')
-      //END
-    })
-    
-    $('.deleteKegiatan').on('click', function () {
-      Swal.fire({
-        title: 'Apakah anda yakin?',
-        html: `Data yang <strong>dihapus</strong> tidak dapat dipulihkan kembali.`,
-        icon: 'warning',
-        showCancelButton: true,
-        cancelButtonText: 'Batalkan',
-        confirmButtonText: 'Ya, hapus data ini!'
-      }).then((result) => {
-        if (result.isConfirmed) {
-          console.log('User clicked the confirm button ...')
-    
-          Swal.fire({
-            title: 'Tunggu sebentar',
-            icon: 'info',
-            html: `Menghapus <b>data</b> yang anda dipilih..`,
-            timer: 2000,
-            didOpen: () => {
-              Swal.showLoading()
+<script>
+  $(document).ready(function() {
+  $('#simpan_data').click(function() {
+      var url = "/kegiatan/api/v1/psm/tes_urine/"
+
+      var formData = new FormData();
+      formData.append('satker', $('#create__satker').val());
+      formData.append('tanggal_awal', $('#create__tanggal_awal').val());
+      formData.append('tanggal_akhir', $('#create__tanggal_akhir').val());
+      formData.append('satker_target', $('#create__satker_target').val());
+      formData.append('nama_lingkungan', $('#create__nama_lingkungan').val());
+      formData.append('tindak_lanjut', $('#create__tindak_lanjut').val());
+      formData.append('dokumentasi', $('#create__dokumentasi')[0].files[0]);
+
+      var pesertaArray = [];
+      $('.form-repeater [data-repeater-item]').each(function(index, element) {
+          pesertaArray.push({
+              nama: $(element).find('[id^="form-repeater"]').eq(0).val(),
+              alamat: $(element).find('[id^="form-repeater"]').eq(1).val(),
+              gender: $(element).find('[id^="form-repeater"]').eq(2).val(),
+              status: $(element).find('[id^="form-repeater"]').eq(3).val()
+          });
+      });
+
+      formData.append('peserta_array', JSON.stringify(pesertaArray));
+
+      axios.post(url, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
             }
-          }).then((result) => {
-            if (result.dismiss === Swal.DismissReason.timer) {
-              Swal.fire({
-                title: 'Berhasil',
-                html: `Data yang dipilih telah <strong>berhasil</strong> dihapus.`,
-                icon: 'success',
-                confirmButtonText: 'OK',
-                timer: 2000
-              })
-            }
-          })
+        })
+        .then(function (response) {
+            swal.fire({
+                title: "Berhasil menyimpan survei !",
+                icon : "success",
+                timer: 1500,
+                timerProgressBar: true,
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+            }).then((result) => {
+            });
+        })
+        .catch(function (error) {
+            console.error(error);
+        });
+    });
+  });
+
+  function handlePost(e) {
+    e.preventDefault(); 
+
+    var formData = {
+        satker: $('#create__satker').val(),
+        tanggal_awal: $('#create__tanggal_awal').val(),
+        tanggal_akhir: $('#create__tanggal_akhir').val(),
+        satker_target: $('#create__satker_target').val(),
+        deskripsi: $('#create__deskripsi').val(),
+        tindak_lanjut: $('#create__tindak_lanjut').val(),
+        dokumentasi: $('#create__dokumentasi')[0].files[0],
+        peserta: []
+      };
+
+      $('.form-repeater [data-repeater-item]').each(function(index, element) {
+          formData.peserta.push({
+              nama: $(element).find('[id^="form-repeater"]').eq(0).val(),
+              alamat: $(element).find('[id^="form-repeater"]').eq(1).val(),
+              gender: $(element).find('[id^="form-repeater"]').eq(2).val(),
+              status: $(element).find('[id^="form-repeater"]').eq(3).val()
+          });
+      });
+  };
+</script>
+
+<!-- manggil data datatabels -->
+<script>
+  let table = $("#__table").DataTable({
+    language: dt_lang_config(),
+    serverSide: false,
+    searching: true,
+    responsive: true,
+    pageLength: 10,
+    order: [[1, 'asc']],
+    ajax: {
+      url: `/kegiatan/api/v1/psm/tes_urine/get_detail_data/?format=datatables`,
+      dataSrc: function (json) {
+        let data = json.data.map((item, index) => {
+          item._group = item.nama_satker;
+          item._group2 = item.nama_satker;
+          return item;
+        });
+        return data;
+      },
+    },
+    columns: [
+      { data: null },
+      {
+        data: 'nama_satker',
+        visible: false
+      },
+      {
+        data: 'tanggal_awal',
+        render: function (data, type, row) {
+          return data
         }
-      })
-    })
-  </script>
+      },
+      { data: 'nama_lingkungan' },
+      { "data": "peserta",
+        "render": function ( data, type, row ) {
+            let maleCount = countMaleParticipants(data);
+            return maleCount; 
+        }
+      },
+      { "data": "peserta",
+        "render": function ( data, type, row ) {
+            let maleCount = countFemaleParticipants(data);
+            return maleCount; 
+        }
+      },
+      { "data": "peserta",
+        "render": function ( data, type, row ) {
+          return data.length;
+        }
+      },
+      { "data": "peserta",
+        "render": function ( data, type, row ) {
+          let formattedData = formatNamaAlamat(data);
+          return formattedData;
+        }
+      },
+      { "data": "peserta",
+        "render": function ( data, type, row ) {
+          let formattedData = countHasilTest(data);
+          return "Positi - "+formattedData.positif+" Negatif - "+formattedData.negatif;
+        }
+      },
+      { data: 'tindak_lanjut' },
+      { data: 'dokumentasi' },
+      {
+        className: 'dt-left',
+        data: "id",
+        orderable: false,
+        render: function (data, type, row) {
+          const options = JSON.stringify({
+            id: data,
+            name: "kegiatan",
+            detail_name: row.nama_satker,
+            apiURL: "/kegiatan/api/v1/psm/tes_urine/",
+          });
+
+          const args = JSON.stringify({ id: row.satker_id, nama: row.nama_satker });
+
+          let userLevel = (row.status == 0 && row.satker_level == 1) || (row.status == 1 && row.satker_level == 0) || (row.status == 2 && row.satker_level == 2);
+
+          let buttonKirim = ``
+          if (row.satker_level < 2) {
+            buttonKirim = `
+              <div>
+                <a href="javascript:void(0);" ${(userLevel) ? `style="background-color:#00A0A9;" onclick='handleKirim(${args});'` : ''} class="badge ${userLevel ? '' : 'bg-secondary'} text-white text-decoration-none mb-1">
+                  <i class="fa-regular fa-paper-plane me-2"></i>Kirim
+                </a>
+              </div>
+            `;
+          }
+
+          let element = `
+            <div class="list-button gx-3 text-uppercase ${userLevel}">
+              <div>
+                <a href="javascript:void(0);" ${(userLevel) ? `onclick="handleEditModal(${data})" class="badge bg-success` : 'class="badge bg-secondary'} text-white text-decoration-none mb-1">
+                  <i class="fas fa-pen-to-square me-2"></i>Edit
+                </a>
+              </div>
+              <div>
+                  <a href="javascript:void(0);" ${(userLevel) ? `onclick='handleDelete(${options})' class="badge bg-danger` : 'class="badge bg-secondary'} text-white text-decoration-none mb-1"'><i class="fas fa-trash-alt me-2"></i>Hapus</a>
+              </div>
+            </div>
+          `;
+
+          return element
+        },
+      },
+    ],
+    rowGroup: {
+      dataSrc: ['_group'],
+      className: 'bg-soft-primary',
+      startRender: function (rows, group) {
+        var satker_id = rows.data()
+        let tr = document.createElement('tr');
+        addCell(tr, group, 10);
+        let buttonKirim = `
+            <td>
+                <div>
+                    <a href="javascript:void(0);" onclick="handleKirim('${satker_id}')" style="background-color:#00A0A9;" class="badge text-white text-decoration-none mb-1">
+                        <i class="fa-regular fa-paper-plane me-2"></i>Kirim Semua
+                    </a>
+                </div>
+            </td>
+        `;
+        let td = document.createElement('td');
+        td.innerHTML = buttonKirim;
+        tr.appendChild(td);
+
+        return tr
+      }
+    },
+    columnDefs: [
+      dt_row_pagination(),
+      {
+        searchPanes: {
+          show: true
+        },
+        targets: [1, 2, 3, 7, 9]
+
+      }
+    ],
+    layout: {
+      top1: {
+        searchPanes: {
+          viewTotal: true,
+          orderable: false,
+          initCollapsed: true
+        }
+      }
+    },
+    initComplete: function () {
+      (settings, json) => console.log("Hasil fetch data : ", json)
+    }
+  });
+
+  function addCell(tr, content, colSpan = 2) {
+    let td = document.createElement('th');
+
+    td.colSpan = colSpan;
+    td.textContent = content;
+
+    tr.appendChild(td);
+  }
+
+  async function handleEditModal(id) {
+    try {
+      const response = await axios.get(`/kegiatan/api/v1/psm/tes_urine/${id}/get_detail_data_detail/`);
+      const data = response.data;
+      console.log(data);
+      // const form = $('#editForm');
+      // $('#edit__info').text(data.detail.satker.nama_satker);
+
+      // $('#edit__id').val(data.id);
+      // $('#edit__tanggal_awal').val(data.tanggal_awal);
+      // $('#edit__tanggal_akhir').val(data.tanggal_akhir);
+      // (data.tanggal_akhir ? $('#edit__tanggal_akhir').attr('disabled', false) : $('#edit__tanggal_akhir').attr('disabled', true))
+      // $('#edit__satker').val(data.satker).trigger('change');
+      // $('#edit__satker_target').val(data.satker_target).trigger('change');
+      // $('#edit__deskripsi').val(data.deskripsi);
+      // $('#edit__kendala').val(data.kendala);
+      // $('#edit__kesimpulan').val(data.kesimpulan);
+      // $('#edit__tindak_lanjut').val(data.tindak_lanjut);
+
+      $('#modalEdit').modal('show');
+    } catch (error) {
+      showSwalGenericError();
+      console.error('Terjadi kesalahan :', error);
+    }
+  }
+
+</script>
+<!--  -->
+
+<!-- helper -->
+<script>
+  async function handleDate(event, target) {
+    const currentDate = moment().format('YYYY-MM-DD');
+    const valueDate = $(event.target).val();
+    (valueDate === currentDate ? $(`#${target}tanggal_akhir`).attr('disabled', true) : $(`#${target}tanggal_akhir`).attr('disabled', false));
+  }
+
+  function countMaleParticipants(data) {
+      let count = 0;
+      data.forEach(function(row) {
+          if (row.jenis_kelamin === "Laki-Laki") {
+              count++;
+          }
+      });
+      return count;
+  }
+
+  function countFemaleParticipants(data) {
+      let count = 0;
+      data.forEach(function(row) {
+          if (row.jenis_kelamin === "Perempuan") {
+              count++;
+          }
+      });
+      return count;
+  }
+
+  function formatNamaAlamat(data) {
+      let formattedData = [];
+      data.forEach(function(row) {
+          let formattedString = row.nama_peserta + " - " + row.alamat;
+          formattedData.push(formattedString);
+      });
+      return formattedData;
+  }
+
+  
+  function countHasilTest(data) {
+    let countPositif = 0;
+    let countNegatif = 0;
+
+    data.forEach(function(row) {
+        if (row.hasil_test === "Positif") {
+            countPositif++;
+        } else if (row.hasil_test === "Negatif") {
+            countNegatif++;
+        }
+    });
+
+    return {
+        positif: countPositif,
+        negatif: countNegatif
+    };
+  }
+</script>
+<!-- helper -->
+
 {% endblock %}
 
 {% block modal_tambahan %}
-  {% include 'psm/tes_urine_deteksi_dini/create.html' %}
-  {% include 'psm/tes_urine_deteksi_dini/create_kegiatan.html' %}
-  {% include 'psm/tes_urine_deteksi_dini/edit.html' %}
-  {% include 'psm/tes_urine_deteksi_dini/edit_kegiatan.html' %}
-  {% include 'psm/tes_urine_deteksi_dini/detail.html' %}
-  {% include 'psm/tes_urine_deteksi_dini/detail_peserta.html' %}
+{% include 'psm/tes_urine_deteksi_dini/modals/create.html' %}
+{% include 'psm/tes_urine_deteksi_dini/modals/edit.html' %}
 {% endblock %}

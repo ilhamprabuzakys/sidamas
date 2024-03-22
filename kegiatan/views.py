@@ -1,10 +1,11 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.views import View, generic
+from django.views import View
+from django.views.generic import TemplateView
 from django.urls import reverse, reverse_lazy
 from django.http import HttpResponseForbidden, HttpResponseRedirect
 from django.shortcuts import render
 from . import models
-from . import forms
+from django.db.models import Q
 from users.models import Satker
 
 class GlobalPermissionMixin:
@@ -160,34 +161,14 @@ class DayatifBaseView(LoginRequiredMixin, GlobalPermissionMixin, DayatifPermissi
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # context['satker'] = Satker.objects.all()
+        context['satker'] = Satker.objects.all()
         return context
     
-class dayatif_bintekView(DayatifBaseView, View):
+class dayatif_bintekView(DayatifBaseView, TemplateView):
     template_name = "dayatif/bintek/bintek.html"
-    
-    def get(self, request):
-        satker = Satker.objects.all()
-        return render(request, self.template_name, {'satker' : satker})
 
-# Contoh layout jika pakai rowspan dan colspan (datatable not supported)
-class dayatif_revisi_bintekView(DayatifBaseView, View):
-    template_name = "dayatif/bintek/bintek2.html"
-
-    def get(self, request):
-        satker = Satker.objects.all()
-        context = {
-            'satker' : satker,
-            'jumlah_item' : range(3)
-        }
-        return render(request, self.template_name, context)
-
-class dayatif_pemetaan_potensiView(DayatifBaseView, View):
+class dayatif_pemetaan_potensiView(DayatifBaseView, TemplateView):
     template_name = "dayatif/pemetaan_potensi/pemetaan_potensi.html"
-    
-    def get(self, request):
-        satker = Satker.objects.all()
-        return render(request, self.template_name, {'satker' : satker})
 
 class dayatif_pemetaan_stakeholderView(DayatifBaseView, View):
     template_name = "dayatif/pemetaan_stakeholder/pemetaan_stakeholder.html"
@@ -406,4 +387,40 @@ class dayatif_dukungan_stakeholderView(DayatifBaseView, View):
         }
         return render(request, self.template_name, context)
     
-# --END Dayatif
+
+class DAYATIF_BINAAN_TEKNIS_OLD_View(DayatifBaseView, TemplateView):
+    template_name = "dayatif/binaan_teknis-old/binaan_teknis-old.html"
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        
+        satker = self.request.user.profile.satker
+        
+        # context['satker'] = Satker.objects.exclude(Q(nama_satker__icontains='BNN Kota') | Q(nama_satker__icontains='BNN Kabupaten'))
+        # context['satker_undang'] = Satker.objects.exclude(pk=213)
+        
+        if satker.level == 0:
+            context['satker'] = Satker.objects.filter(parent=satker.pk)
+        else:
+            context['satker'] = Satker.objects.all()
+        return context
+
+class DAYATIF_BINAAN_TEKNIS_View(DayatifBaseView, TemplateView):
+    template_name = "dayatif/binaan_teknis/binaan_teknis.html"
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        
+        satker = self.request.user.profile.satker
+        
+        # context['satker'] = Satker.objects.exclude(Q(nama_satker__icontains='BNN Kota') | Q(nama_satker__icontains='BNN Kabupaten'))
+        # context['satker_undang'] = Satker.objects.exclude(pk=213)
+        
+        satker_status_pengiriman_semua_kegiatan = satker.dayatif_binaan_teknis_satker.filter(status=2).count() == satker.dayatif_binaan_teknis_satker.count()
+        context['satker_status_pengiriman_semua_kegiatan'] = satker_status_pengiriman_semua_kegiatan
+        
+        if satker.level == 0:
+            context['satker'] = Satker.objects.filter(parent=satker.pk)
+        else:
+            context['satker'] = Satker.objects.all()
+        return context

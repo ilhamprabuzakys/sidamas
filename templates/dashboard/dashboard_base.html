@@ -18,8 +18,8 @@
     <meta name="viewport"
         content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
-    <title>{% block title %}{% endblock title %} -
-        Sistem Informasi Deputi Bidang Pemberdayaan Masyarakat (SIDAMAS)</title>
+    <title>{% block title %} {{ title }} {% endblock title %} - Sistem Informasi Deputi Bidang Pemberdayaan Masyarakat
+        (SIDAMAS)</title>
 
     <meta name="description" content="Sistem Informasi Pemberdayaan Masyarakat" />
     <meta name="keywords" content="Sistem Informasi Pemberdayaan Masyarakat, DAYAMAS, SIDAMAS, DAYATIF, PSM" />
@@ -84,17 +84,21 @@
 
     <!-- Tagify -->
     <link rel="stylesheet" href="{% static 'assets/dashboard/vendor/libs/tagify/tagify.css' %}" />
-    
+
     <!-- Toastr -->
     <link rel="stylesheet" href="{% static 'assets/dashboard/vendor/libs/toastr/toastr.css' %}" />
 
     <!-- Datatable -->
-    <link rel="stylesheet"
-        href="{% static 'assets/dashboard/vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}" />
-    <link rel="stylesheet"
-        href="{% static 'assets/dashboard/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css' %}" />
-    <link rel="stylesheet"
-        href="{% static 'assets/dashboard/vendor/libs/datatables-checkboxes-jquery/datatables.checkboxes.css' %}" />
+    <link rel="stylesheet" href="{% static 'assets/dashboard/vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}" />
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/3.0.1/css/buttons.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/select/2.0.0/css/select.dataTables.min.css">
+
+	<link href="https://cdn.datatables.net/searchpanes/2.3.0/css/searchPanes.dataTables.min.css" rel="stylesheet">
+
+
+	<link rel="stylesheet" href="{% static 'assets/dashboard/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css' %}" />
+    <link rel="stylesheet"href="{% static 'assets/dashboard/vendor/libs/datatables-checkboxes-jquery/datatables.checkboxes.css' %}" />
 
     <!-- Select 2 -->
     <link rel="stylesheet" href="{% static 'assets/dashboard/vendor/libs/select2/select2.css' %}" />
@@ -102,6 +106,9 @@
     <!-- Jquery -->
     <script src="{% static 'assets/dashboard/vendor/libs/jquery/jquery.min.js' %}"></script>
 
+    <!-- Alpine Js -->
+    <script src="//unpkg.com/alpinejs" defer></script>
+    
     <!-- Vue 3 -->
     {% block vue %}
     <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
@@ -205,7 +212,7 @@
 
     <!-- Select2 -->
     <script src="{% static 'assets/dashboard/vendor/libs/select2/select2.js' %}"></script>
-    
+
     <!-- Tagify -->
     <script src="{% static 'assets/dashboard/vendor/libs/tagify/tagify.js' %}"></script>
 
@@ -213,23 +220,40 @@
     <script src="{% static 'assets/dashboard/vendor/libs/toastr/toastr.js' %}"></script>
 
     <!-- Datatable -->
-    <script src="{% static 'assets/dashboard/vendor/libs/datatables-bs5/datatables-bootstrap5.js' %}"></script>
+	<!-- <script src="https://cdn.datatables.net/v/bs5/dt-2.0.2/b-3.0.1/b-colvis-3.0.1/rg-1.5.0/sp-2.3.0/sl-2.0.0/datatables.min.js"></script> -->
+
+    <script src="{% static 'assets/dashboard/vendor/libs/datatables-bs5/datatables-2-bootstrap5.js' %}"></script>
+    <!-- Rows Group Datatables -->
+    <script src="{% static 'assets/dashboard/vendor/libs/datatables-bs5/rowsGroup-datatables-2.js' %}"></script>
+    <script src="{% static 'assets/dashboard/vendor/libs/datatables-bs5/datatables-2-rowsGroup.js' %}"></script>
+    <!-- Search Panes Datatables -->
+    <script src="{% static 'assets/dashboard/vendor/libs/datatables-bs5/dataTables.searchPanes.js' %}"></script>
+    <script src="{% static 'assets/dashboard/vendor/libs/datatables-bs5/searchPanes.dataTables.js' %}"></script>
+    <!-- Select Datatables -->
+    <script src="{% static 'assets/dashboard/vendor/libs/datatables-bs5/dataTables.select.js' %}"></script>
+    <script src="{% static 'assets/dashboard/vendor/libs/datatables-bs5/select.dataTables.js' %}"></script>
+
+	<!-- <script src="{% static 'assets/dashboard/vendor/libs/datatables-bs5/datatables-bootstrap5.js' %}"></script> -->
 
     <!-- Axios -->
     <script src="{% static 'assets/dashboard/vendor/libs/axios/axios.min.js' %}"></script>
 
-    <!-- Clipboard plugin -->
+    <!-- Clipboard Js -->
     <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js"></script>
 
-    <!-- Cleave Input plugin -->
+    <!-- Cleave Js -->
     <script src="{% static 'assets/dashboard/vendor/libs/cleave/dist/cleave.min.js' %}"></script>
     <script src="{% static 'assets/dashboard/vendor/libs/cleave/dist/addons/cleave-phone.id.js' %}"></script>
 
-    <!-- Jquery Input Mask plugin -->
+    <!-- Jquery Form Reapeater Js -->
     <script src="{% static 'assets/plugins/jquery/input-masks/input-masks.min.js' %}"></script>
     <script src="{% static 'assets/plugins/jquery/input-masks/input-masks.binding.js' %}"></script>
 
-    <!-- Bootstrap Max Length plugin -->
+    <!-- Jquery Input Mask Js -->
+    <script src="{% static 'assets/plugins/jquery/input-masks/input-masks.min.js' %}"></script>
+    <script src="{% static 'assets/plugins/jquery/input-masks/input-masks.binding.js' %}"></script>
+
+    <!-- Bootstrap Max Length Js -->
     <script src="{% static 'assets/dashboard/vendor/libs/bootstrap-maxlength/bootstrap-maxlength.js' %}"></script>
 
     <!-- Pure Counter Js -->

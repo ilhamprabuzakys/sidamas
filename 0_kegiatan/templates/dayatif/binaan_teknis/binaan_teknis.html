@@ -1,0 +1,599 @@
+{% extends 'dashboard/dashboard_base.html' %}
+{% load static %}
+
+{% block title %} Pembinaan Teknis {% endblock title %}
+
+{% block content %}
+<div class="breadcrumb">
+    <div class="row">
+        <h3 class="heading mb-2">Pembinaan Teknis</h3>
+        <span class="mb-0"><span class="text-muted fw-light">Kegiatan /</span><span class="ms-1 fw-medium">Pembinaan
+                Teknis</span></span>
+    </div>
+</div>
+
+<section id="__data">
+    <div class="card">
+        <div class="card-body">
+            <div id="headline" class="mb-3">
+                <h3 class="text-center">REKAPITULASI PEMBINAAN TEKNIS BNNP &amp; BNNK</h3>
+                <hr />
+            </div>
+
+            <div class="action-button">
+                <div class="d-flex justify-content-end mb-3 gap-2">
+                    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exportData"><i
+                            class="fas fa-file-export me-2"></i>Ekspor Data</button>
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createKegiatanModal"><i
+                            class="fas fa-plus me-2"></i>Tambah Data</button>
+                </div>
+            </div>
+
+            {% comment %} <div class="table-responsive">
+                {% include 'dayatif/binaan_teknis/table.html' %}
+            </div> {% endcomment %}
+
+			<div class="table-responsive">
+                {% include 'dayatif/binaan_teknis/table_2.html' %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block js_tambahan %}
+<script>
+    const columns = [{
+            data: null,
+        },
+        {
+            data: "detail.satker.nama_satker",
+            render: function (data, type, row) {
+                return `${data}`;
+            },
+        },
+        {
+            data: "total_kegiatan",
+            render: function (data, type, row) {
+                return `<span>${data} kali</span>`;
+            },
+        },
+        {
+            data: "id",
+            render: function (data, type, row) {
+				const el = `<a class="badge bg-primary text-decoration-none text-white" onclick="handleKegiatanDetail(${data}, '${row.detail.satker.nama_satker}')" href="javascript:;">
+					<i class="fas fa-eye me-2"></i>Lihat Detail
+				</a>`;
+
+                return el;
+            },
+        },
+        {
+            data: "id",
+            render: function (data, type, row) {
+				const options = JSON.stringify({ id: data, name: 'kegiatan', detail_name: row.detail.satker.nama_satker, apiURL: '/kegiatan/api/v1/dayatif/binaan_teknis' });
+				
+                return `
+				<div class="list-button gx-3 text-uppercase">
+					<div>
+						<a href="javascript:void(0);" onclick="handleAddKegiatan(${data}, '${row.detail.satker.nama_satker}')" class="badge bg-primary text-white text-decoration-none mb-1"><i
+								class="fas fa-plus me-2"></i>Tambah Kegiatan</a>
+					</div>
+					<div>
+						<a href="javascript:void(0);" onclick="handleEdit(${data})"
+							class="badge bg-success text-white text-decoration-none mb-1"><i
+								class="fas fa-pen-to-square me-2"></i>Edit</a>
+					</div>
+					<div>
+						<a href="javascript:void(0);" class="badge bg-danger text-white text-decoration-none mb-1" onclick='handleDelete(${options})'><i
+								class="fas fa-trash-alt me-2"></i>Hapus</a>
+					</div>
+				</div>`;
+            },
+        },
+    ];
+    
+	const columnsKegiatan = [{
+            data: null,
+        },
+		{
+            data: "detail.satker.nama_satker",
+            render: function (data, type, row) {
+                return `${data}`;
+            },
+        },
+        {
+            data: null,
+            render: function (data, type, row) {
+                return `${row.tanggal_awal} s/d ${row.tanggal_akhir}`;
+            },
+        },
+        {
+            data: "jumlah_hari_pelaksanaan",
+            render: function (data, type, row) {
+                return `${data} hari`;
+            },
+        },
+        {
+            data: "detail.satker_target.nama_satker",
+            render: function (data, type, row) {
+                return `${data}`;
+            },
+        },
+        {
+            data: "jumlah_peserta",
+            render: function (data, type, row) {
+                return `${data} orang`;
+            },
+        },
+        {
+            data: "tujuan",
+            render: function (data, type, row) {
+                return `${data}`;
+            },
+        },
+        {
+            data: "kendala",
+            render: function (data, type, row) {
+                return `${data}`;
+            },
+        },
+        {
+            data: "kesimpulan",
+            render: function (data, type, row) {
+                return `${data}`;
+            },
+        },
+        {
+            data: "tindak_lanjut",
+            render: function (data, type, row) {
+                return `${data}`;
+            },
+        },
+        {
+            data: "dokumentasi",
+            render: function (data, type, row) {
+				const el = `<div class="text-center">
+					<a href="${data}" class="badge bg-primary text-white" target="_blank">
+						<i class="fas fa-eye me-2"></i>
+						Lihat dokumentasi
+					</a>
+				</div>`;
+
+                return el;
+            },
+        },
+        {
+            data: "id",
+            render: function (data, type, row) {
+				const options = JSON.stringify({ id: data, name: 'kegiatan', detail_name: row.detail.satker.nama_satker, apiURL: '/kegiatan/api/v1/dayatif/binaan_teknis' });
+				
+                return `
+				<div class="list-button gx-3 text-uppercase">
+					<div>
+						<a href="javascript:void(0);" onclick="handleKegiatanEdit(${data})"
+							class="badge bg-success text-white text-decoration-none mb-1"><i
+								class="fas fa-pen-to-square me-2"></i>Edit</a>
+					</div>
+					<div>
+						<a href="javascript:void(0);" class="badge bg-danger text-white text-decoration-none mb-1" onclick='handleDelete(${options})'><i
+								class="fas fa-trash-alt me-2"></i>Hapus</a>
+					</div>
+				</div>`;
+            },
+        },
+    ];
+
+    const table = $("#__table").DataTable({
+        language: dt_lang_config(),
+        serverSide: true,
+        searching: true,
+        responsive: true,
+        pageLength: 10,
+        ajax: {
+            url: `/kegiatan/api/v1/dayatif/binaan_teknis/?format=datatables`,
+            dataSrc: "data",
+        },
+        ordering: true,
+        columns: columnsKegiatan,
+        initComplete: (settings, json) => console.log("Hasil fetch data : ", json),
+        columnDefs: [
+            dt_row_pagination(),
+        ],
+    });
+    
+	{% comment %} const tableKegiatan = $("#__table_kegiatan").DataTable({
+        language: dt_lang_config(),
+        serverSide: true,
+        searching: true,
+        responsive: true,
+        pageLength: 10,
+        ajax: {
+            url: `/kegiatan/api/v1/dayatif/kegiatan_binaan_teknis/?format=datatables&parent=0`,
+            dataSrc: "data",
+        },
+        ordering: true,
+        columns: columnsKegiatan,
+        initComplete: (settings, json) => console.log("Hasil fetch data : ", json),
+        columnDefs: [
+            dt_row_pagination(),
+        ],
+    }); {% endcomment %}
+</script>
+<script>
+	async function handlePost(e) {
+		e.preventDefault();
+
+		showSwalLoading();
+
+		const modal = $('#createModal');
+		const form = $('#createForm');
+		const satker = form.find('#create__satker').val();
+
+		const payload = { satker };
+
+		try {
+			const response = await axios.post('/kegiatan/api/v1/dayatif/binaan_teknis/', payload);
+
+			modal.modal('hide');
+			showSwalSuccess('Berhasil!', `Data yang anda isikan telah <b>berhasil</b> ditambahkan!`);
+		} catch (error) {
+			showSwalGenericError();
+			console.error('Terjadi kesalahan :', error);
+		} finally {
+			table.ajax.reload();
+		}
+	}
+
+	async function handleEdit(id) {
+		try {
+			const response = await axios.get(`/kegiatan/api/v1/dayatif/binaan_teknis/${id}/`);
+			const data = response.data;
+
+			const modal = $('#editModal');
+			const form = $('#editForm');
+
+			modal.find('#edit__info').text(data.detail.satker.nama_satker);
+			form.find('#edit__id').val(data.id);
+			form.find('#edit__satker').val(data.satker).trigger('change');
+
+			modal.modal('show');
+		} catch (error) {
+			showSwalGenericError();
+			console.error('Terjadi kesalahan :', error);
+		}
+	}
+
+	async function handleUpdate(e) {
+		e.preventDefault();
+
+		showSwalLoading();
+
+		const modal = $('#editModal');
+		const form = $('#editForm');
+		const id = form.find('#edit__id').val();
+		const satker = form.find('#edit__satker').val();
+
+		const payload = { satker };
+
+		try {
+			const response = await axios.patch(`/kegiatan/api/v1/dayatif/binaan_teknis/${id}/`, payload);
+
+			modal.modal('hide');
+			showSwalSuccess('Berhasil!', `Data kegiatan telah <b>berhasil</b> diperbarui!`);
+		} catch (error) {
+			showSwalGenericError();
+			console.error('Terjadi kesalahan :', error);
+		} finally {
+			table.ajax.reload();
+		}
+	}
+
+	async function handleAddKegiatan(id, namaSatker) {
+		const modal = $('#createKegiatanModal');
+		const form = $('#createKegiatanForm');
+
+		modal.find('#create_kegiatan__info').text(namaSatker);
+		form.find('#create_kegiatan__parent_id').val(id);
+
+		modal.modal('show');
+	}
+
+	async function handlePostKegiatan(e) {
+		e.preventDefault();
+
+		showSwalLoading();
+
+		const modal = $('#createKegiatanModal');
+		const form = $('#createKegiatanForm');
+		// const parent = form.find('#create_kegiatan__parent_id').val();
+
+		const tanggal_awal = form.find('#create_kegiatan__tanggal_awal').val();
+		const tanggal_akhir = form.find('#create_kegiatan__tanggal_akhir').val();
+		const jumlah_hari_pelaksanaan = form.find('#create_kegiatan__jumlah_hari_pelaksanaan').val();
+		const satker = form.find('#create_kegiatan__satker').val();
+		const satker_target = form.find('#create_kegiatan__satker_target').val();
+		const jumlah_peserta = form.find('#create_kegiatan__jumlah_peserta').val();
+		const tujuan = form.find('#create_kegiatan__tujuan').val();
+		const kendala = form.find('#create_kegiatan__kendala').val();
+		const kesimpulan = form.find('#create_kegiatan__kesimpulan').val();
+		const tindak_lanjut = form.find('#create_kegiatan__tindak_lanjut').val();
+		const dokumentasi = form.find('#create_kegiatan__dokumentasi')[0].files[0];
+
+		const payload = { satker, satker_target, tanggal_awal, tanggal_akhir, jumlah_hari_pelaksanaan, jumlah_peserta, tujuan, kendala, kesimpulan, tindak_lanjut, dokumentasi };
+
+		const formData = new FormData();
+
+		formData.append('parent', parseInt(parent));
+		formData.append('tanggal_awal', tanggal_awal);
+		formData.append('tanggal_akhir', tanggal_akhir);
+		formData.append('jumlah_hari_pelaksanaan', jumlah_hari_pelaksanaan);
+		formData.append('satker', parseInt(satker));
+		formData.append('satker_target', parseInt(satker_target));
+		formData.append('jumlah_peserta', jumlah_peserta);
+		formData.append('tujuan', tujuan);
+		formData.append('kendala', kendala);
+		formData.append('kesimpulan', kesimpulan);
+		formData.append('tindak_lanjut', tindak_lanjut);
+		formData.append('dokumentasi', dokumentasi);
+
+		console.log('Payload :', payload);
+
+		try {
+			const response = await axios.post(`/kegiatan/api/v1/dayatif/binaan_teknis/`, formData, {
+				headers: {
+					'Content-Type': 'multipart/form-data',
+				},
+			});
+
+			modal.modal('hide');
+			showSwalSuccess('Berhasil!', `Data kegiatan telah <b>berhasil</b> ditambahkan!`);
+		} catch (error) {
+			showSwalGenericError();
+			console.error('Terjadi kesalahan :', error);
+		} finally {
+			table.ajax.reload();
+		}
+	}
+
+	async function handleKegiatanDetail(id, namaSatker) {
+		const modal = $('#detailKegiatanModal');
+
+		modal.find('#detail_kegiatan__info').text(namaSatker);
+		modal.find('#detail_kegiatan__parent_id').val(id);
+
+		const url = `/kegiatan/api/v1/dayatif/kegiatan_binaan_teknis/?format=datatables&parent=${id}`;
+
+		tableKegiatan.ajax.url(url).load();
+
+		modal.modal('show');
+	}
+
+	async function handleKegiatanEdit(id) {
+		$('.modal').modal('hide');
+
+		try {
+			const response = await axios.get(`/kegiatan/api/v1/dayatif/binaan_teknis/${id}/`);
+			const data = response.data;
+
+			const modal = $('#editKegiatanModal');
+			const form = $('#editKegiatanForm');
+
+			modal.find('#edit_kegiatan__info').text(data.detail.satker.nama_satker);
+			form.find('#edit_kegiatan__id').val(data.id);
+
+			form.find('#edit_kegiatan__tanggal_awal').val(data.tanggal_awal);
+			form.find('#edit_kegiatan__tanggal_akhir').val(data.tanggal_akhir);
+			form.find('#edit_kegiatan__jumlah_hari_pelaksanaan').val(data.jumlah_hari_pelaksanaan);
+			form.find('#edit_kegiatan__satker').val(data.satker).trigger('change');
+			form.find('#edit_kegiatan__satker_target').val(data.satker_target).trigger('change');
+			form.find('#edit_kegiatan__jumlah_peserta').val(data.jumlah_peserta);
+			form.find('#edit_kegiatan__tujuan').val(data.tujuan);
+			form.find('#edit_kegiatan__kendala').val(data.kendala);
+			form.find('#edit_kegiatan__kesimpulan').val(data.kesimpulan);
+			form.find('#edit_kegiatan__tindak_lanjut').val(data.tindak_lanjut);
+			// form.find('#edit_kegiatan__dokumentasi')[0].files[0];
+
+			modal.modal('show');
+		} catch (error) {
+			showSwalGenericError();
+			console.error('Terjadi kesalahan :', error);
+		}
+	}
+
+	async function handleUpdateKegiatan(e) {
+		e.preventDefault();
+
+		showSwalLoading();
+
+		const modal = $('#editKegiatanModal');
+		const form = $('#editKegiatanForm');
+
+		const id = form.find('#edit_kegiatan__id').val();
+
+		const tanggal_awal = form.find('#edit_kegiatan__tanggal_awal').val();
+		const tanggal_akhir = form.find('#edit_kegiatan__tanggal_akhir').val();
+		const jumlah_hari_pelaksanaan = form.find('#edit_kegiatan__jumlah_hari_pelaksanaan').val();
+		const satker = form.find('#edit_kegiatan__satker').val();
+		const satker_target = form.find('#edit_kegiatan__satker_target').val();
+		const jumlah_peserta = form.find('#edit_kegiatan__jumlah_peserta').val();
+		const tujuan = form.find('#edit_kegiatan__tujuan').val();
+		const kendala = form.find('#edit_kegiatan__kendala').val();
+		const kesimpulan = form.find('#edit_kegiatan__kesimpulan').val();
+		const tindak_lanjut = form.find('#edit_kegiatan__tindak_lanjut').val();
+		const dokumentasi = form.find('#edit_kegiatan__dokumentasi')[0].files[0];
+
+		const payload = { satker, satker_target, tanggal_awal, tanggal_akhir, jumlah_hari_pelaksanaan, jumlah_peserta, tujuan, kendala, kesimpulan, tindak_lanjut, dokumentasi };
+
+		const formData = new FormData();
+
+		// formData.append('parent', parseInt(parent));
+		formData.append('tanggal_awal', tanggal_awal);
+		formData.append('tanggal_akhir', tanggal_akhir);
+		formData.append('jumlah_hari_pelaksanaan', jumlah_hari_pelaksanaan);
+		formData.append('satker', parseInt(satker));
+		formData.append('satker_target', parseInt(satker_target));
+		formData.append('jumlah_peserta', jumlah_peserta);
+		formData.append('tujuan', tujuan);
+		formData.append('kendala', kendala);
+		formData.append('kesimpulan', kesimpulan);
+		formData.append('tindak_lanjut', tindak_lanjut);
+
+		if (dokumentasi) { formData.append('dokumentasi', dokumentasi); }
+
+		console.log('Payload :', payload);
+
+		try {
+			const response = await axios.patch(`/kegiatan/api/v1/dayatif/binaan_teknis/${id}/`, formData, {
+				headers: {
+					'Content-Type': 'multipart/form-data',
+				},
+			});
+
+			modal.modal('hide');
+			showSwalSuccess('Berhasil!', `Data kegiatan telah <b>berhasil</b> diperbarui!`);
+		} catch (error) {
+			showSwalGenericError();
+			console.error('Terjadi kesalahan :', error);
+		} finally {
+			table.ajax.reload();
+		}
+	}
+</script>
+<script>
+	$(function() {
+		/*
+			$('#editKegiatanModal').on('hidden.bs.modal', function () {
+				$('#detailKegiatanModal').modal('show');
+			});
+		*/
+	});
+</script>
+
+<script>
+	const columnsKegiatan2 = [{
+            data: null,
+        },
+        {
+            data: null,
+            render: function (data, type, row) {
+                return `${row.tanggal_awal} s/d ${row.tanggal_akhir}`;
+            },
+        },
+        {
+            data: "jumlah_hari_pelaksanaan",
+            render: function (data, type, row) {
+                return `${data} hari`;
+            },
+        },
+        {
+            data: "detail.satker.nama_satker",
+            render: function (data, type, row) {
+                return `${data}`;
+            },
+        },
+        {
+            data: "jumlah_peserta",
+            render: function (data, type, row) {
+                return `${data} orang`;
+            },
+        },
+        {
+            data: "tujuan",
+            render: function (data, type, row) {
+                return `${data}`;
+            },
+        },
+        {
+            data: "kendala",
+            render: function (data, type, row) {
+                return `${data}`;
+            },
+        },
+        {
+            data: "kesimpulan",
+            render: function (data, type, row) {
+                return `${data}`;
+            },
+        },
+        {
+            data: "tindak_lanjut",
+            render: function (data, type, row) {
+                return `${data}`;
+            },
+        },
+        {
+            data: "dokumentasi",
+            render: function (data, type, row) {
+				const el = `<div class="text-center">
+					<a href="${data}" class="badge bg-primary text-white" target="_blank">
+						<i class="fas fa-eye me-2"></i>
+						Download dokumentasi
+					</a>
+				</div>`;
+
+                return el;
+            },
+        },
+        {
+            data: "id",
+            render: function (data, type, row) {
+				const options = JSON.stringify({ id: data, name: 'kegiatan', detail_name: row.detail.satker.nama_satker, apiURL: '/kegiatan/api/v1/dayatif/kegiatan_binaan_teknis' });
+				
+                return `
+				<div class="list-button gx-3 text-uppercase">
+					<div>
+						<a href="javascript:void(0);" onclick="handleKegiatanEdit(${data})"
+							class="badge bg-success text-white text-decoration-none mb-1"><i
+								class="fas fa-pen-to-square me-2"></i>Edit</a>
+					</div>
+					<div>
+						<a href="javascript:void(0);" class="badge bg-danger text-white text-decoration-none mb-1" onclick='handleDelete(${options})'><i
+								class="fas fa-trash-alt me-2"></i>Hapus</a>
+					</div>
+				</div>`;
+            },
+        },
+    ];
+
+	function customDateSort(a, b) {
+		var date1 = a.split(' s/d ')[0].trim();
+		var date2 = b.split(' s/d ')[0].trim();
+		return new Date(date1) - new Date(date2);
+	}
+
+	const __table2 = $("#__table2").DataTable({
+        language: dt_lang_config(),
+        serverSide: true,
+        searching: true,
+        responsive: true,
+        pageLength: 10,
+        ajax: {
+            url: `/kegiatan/api/v1/dayatif/kegiatan_binaan_teknis/?format=datatables`,
+            dataSrc: "data",
+        },
+        ordering: true,
+        columns: columnsKegiatan2,
+        initComplete: (settings, json) => console.log("Hasil fetch data : ", json),
+        columnDefs: [
+            dt_row_pagination(),
+			{
+				"targets": 1, // Assuming your date range column index is 1
+				"type": "date-custom" // Use custom sorting type for this column
+			}
+        ],
+    });
+
+	$.fn.dataTable.ext.type.order['date-custom'] = function(a, b) {
+		return customDateSort(a, b);
+	};
+</script>
+{% endblock %}
+
+{% block modal_tambahan %}
+{% comment %} {% include 'dayatif/binaan_teknis/modals/create_modal.html' %}
+{% include 'dayatif/binaan_teknis/modals/edit_modal.html' %} {% endcomment %}
+{% include 'dayatif/binaan_teknis/modals/kegiatan/create_kegiatan_modal.html' %}
+{% include 'dayatif/binaan_teknis/modals/kegiatan/edit_kegiatan_modal.html' %}
+{% include 'dayatif/binaan_teknis/modals/kegiatan/detail_kegiatan_modal.html' %}
+{% endblock %}

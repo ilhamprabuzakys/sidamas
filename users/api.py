@@ -1,3 +1,4 @@
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, permissions, status
 from rest_framework.response import Response
 from rest_framework.decorators import action
@@ -31,6 +32,8 @@ class SatkerViewSet(viewsets.ModelViewSet):
     queryset = models.Satker.objects.all()
     serializer_class = serializers.SatkerSerializer
     permission_classes = [permissions.IsAuthenticated]
+    filter_backends = [DjangoFilterBackend, ]
+    filterset_fields = ['parent', 'level']
 
 class reg_provincesViewSet(viewsets.ModelViewSet):
     queryset = models.reg_provinces.objects.all()

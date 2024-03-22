@@ -171,6 +171,19 @@ hr {
     -webkit-user-select: none;
 }
 
+
+/* ====================
+    MODAL
+=======================*/
+.modal.modal-literasi .modal-body {
+    padding: 0;
+}
+
+.modal.modal-literasi .modal-body .container-fluid {
+    padding: 5px;
+}
+
+
 /* ======================
    RESPONSIVE BREAKPOINTS
 ========================= */

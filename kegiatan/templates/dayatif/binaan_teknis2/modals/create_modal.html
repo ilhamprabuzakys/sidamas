@@ -1,0 +1,110 @@
+<form id="createForm" onsubmit="handlePost(event)">
+    <div class="modal fade" id="createModal">
+        <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Tambah Data</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+
+					<div class="mb-3">
+                        <label for="create__satker" class="col-form-label required">Satuan Kerja
+                            Pelaksana:</label>
+                        <select class="form-control select2" id="create__satker" required>
+                            <option value="" selected disabled>--Pilih Satuan Kerja Pelaksana--</option>
+                            {% for item in satker %}
+                            <option value="{{ item.pk }}">{{ item.nama_satker }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="mb-3">
+                                <label for="create__tanggal_awal" class="col-form-label required">Tanggal
+                                    Awal:</label>
+                                <input type="date" id="create__tanggal_awal" class="form-control" required />
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="mb-3">
+                                <label for="create__tanggal_akhir" class="col-form-label required">Tanggal
+                                    Akhir:</label>
+                                <input type="date" id="create__tanggal_akhir" class="form-control" required />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="create__jumlah_hari_pelaksanaan" class="col-form-label required">Jumlah
+                            Hari Pelaksanaan Kerja:</label>
+                        <input type="number" class="form-control" id="create__jumlah_hari_pelaksanaan" required />
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="create__satker_target" class="col-form-label required">Satuan Kerja
+                            Target:</label>
+                        <select class="form-control select2" id="create__satker_target" required>
+                            <option value="" selected disabled>--Pilih Satuan Kerja Target--</option>
+                            {% for item in satker %}
+                            <option value="{{ item.pk }}">{{ item.nama_satker }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="create__jumlah_peserta" class="col-form-label required">Jumlah
+                            Peserta:</label>
+                        <input type="number" class="form-control" id="create__jumlah_peserta" required />
+                    </div>
+
+                    <hr class="mx-n4">
+
+                    <!-- Rincian Hasil -->
+                    <div class="mb-3">
+                        <label for="pelaksanaan" class="col-form-label required text-light">Rincian Hasil Pelaksanaan
+                            Program Pemberdayaan Alternatif Pada Satker Target:</label>
+
+                        <div class="mb-3">
+                            <label for="create__tujuan" class="col-form-label required">Tujuan:</label>
+                            <textarea class="form-control" id="create__tujuan" required></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="create__kendala" class="col-form-label required">Hambatan
+                                Kendala:</label>
+                            <textarea class="form-control" id="create__kendala" required></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="create__kesimpulan" class="col-form-label required">Kesimpulan:</label>
+                            <textarea class="form-control" id="create__kesimpulan" required></textarea>
+                        </div>
+
+                    </div>
+
+                    <hr class="mx-n4">
+
+                    <div class="mb-3">
+                        <label for="create__tindak_lanjut" class="col-form-label required">Tindak
+                            Lanjut:</label>
+                        <textarea class="form-control" id="create__tindak_lanjut" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="create__dokumentasi" class="col-form-label required">Dokumentasi:</label>
+                        <input type="file" class="form-control" id="create__dokumentasi" required accept=".csv, .xlsx, .pdf, docx."></input>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">
+                        <i class="fas fa-xmark me-2"></i>Tutup</button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save me-2"></i>
+                        Simpan</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

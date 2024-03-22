@@ -8,5 +8,5 @@ class LiterasiSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Literasi
         fields = '__all__'
-        datatables_always_serialize = ['slug', 'judul']
+        datatables_always_serialize = ['created_by', 'judul']
         depth = 1

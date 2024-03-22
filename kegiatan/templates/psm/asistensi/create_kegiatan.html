@@ -7,19 +7,30 @@
         </div>
         <div class="modal-body">
           <form>
+            <div class="mb-3">
+              <label for="create_satker" class="col-form-label required">Satuan Kerja:</label>
+              <select class="form-control select2" name="create_satker" id="create_satker">
+                <option value="" selected disabled>Pilih Satuan Kerja</option>
+                {% for item in satker %}
+                  <option value="{{ item.nama_satker }}">{{ item.nama_satker }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="jumlah_kegiatan" class="col-form-label required">Jumlah Kegiatan:</label>
+              <input type="number" name="jumlah_kegiatan" class="form-control" id="jumlah_kegiatan" />
+            </div>
             <div class="row mb-3">
-              <div class="col-6">
                 <div class="mb-3">
-                  <label for="tanggal_awal" class="col-form-label required">Tanggal Awal:</label>
+                  <label for="tanggal_awal" class="col-form-label required">Tanggal:</label>
                   <input type="date" id="tanggal_awal" class="form-control" />
                 </div>
-              </div>
-              <div class="col-6">
+              <!-- <div class="col-6">
                 <div class="mb-3">
                   <label for="tanggal_akhir" class="col-form-label">Tanggal Akhir:</label>
                   <input type="date" id="tanggal_akhir" class="form-control" />
                 </div>
-              </div>
+              </div> -->
               <label for="pelaksanaan" class="col-form-label text-light">Jika pelaksanaan hanya berlangsung selama satu hari, tanggal akhir tidak perlu diisi.</label>
             </div>
             <div class="row mb-3">

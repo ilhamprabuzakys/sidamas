@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from PIL import Image
+from django.core.exceptions import ObjectDoesNotExist
 
 
 class Satker(models.Model):
@@ -25,7 +26,7 @@ class Profile(models.Model):
     )
     
     satker = models.ForeignKey(Satker, on_delete=models.CASCADE, null=True, blank=True,)
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE,)
     role = models.CharField(null=True, blank=True, max_length=12, choices=DIREKTOAT_CHOICES)
     is_verified = models.BooleanField(default=False)
     is_admin = models.BooleanField(default=False)
@@ -45,7 +46,30 @@ class Profile(models.Model):
     def get_role(self):
         role = 'PSM' if self.role == 'psm' else 'Dayatif'
         return role
+    
+    def get_data_user_profil(self):
+        print(self.id)
+        profile_instance = Profile.objects.get(id=self.id)  # Assuming there is only one user with this ID
+        user_instance = User.objects.get(id=profile_instance.user_id)  # Assuming there is only one user with this ID
+        user_data = {
+            'id': user_instance.id,
+            'username': user_instance.username,
+        }
+        return user_data
+    
+    def get_data_user_satker(self):
+        try:
+            satker_instance = Satker.objects.get(id=self.satker_id)
+            satker_data = {
+                'id': satker_instance.id,
+                'satker': satker_instance.nama_satker,
+            }
+        except ObjectDoesNotExist:
+            satker_data = {
+                'message': "Satker Kosong",
+            }
         
+        return satker_data
 
     def save(self, *args, **kwargs):
         # save the profile first

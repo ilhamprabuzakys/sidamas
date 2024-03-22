@@ -1,158 +1,393 @@
 {% extends 'dashboard/dashboard_base.html' %}
 {% load static %}
-{% block title %}
-Rakernis
-{% endblock %}
+{% block title %} Rapat Kerja Teknis {% endblock %}
 {% block content %}
 <div class="breadcrumb">
-    <div class="row">
-        <h3 class="heading mb-2">Rakernis</h3>
-        <span class="mb-0">
-            <span class="text-muted fw-light">Kegiatan /</span>
-            <span class="ms-1 fw-medium">Rakernis</span>
-        </span>
-    </div>
+  <div class="row">
+    <h3 class="heading mb-2">Rapat Kerja Teknis</h3>
+    <span class="mb-0">
+      <span class="text-muted fw-light">Kegiatan /</span>
+      <span class="ms-1 fw-medium">Rapat Kerja Teknis</span>
+    </span>
+  </div>
 </div>
 
 <section id="__data">
-    <div class="card">
-        <div class="card-body">
-            <div id="headline" class="mb-3">
-                <h3 class="text-center">KEGIATAN RAKERNIS PEMBERDAYAAN MASYARAKAT<br /> <span id="currentYear"></span>
-                </h3>
-                <hr />
-            </div>
+  <div class="card">
+    <div class="card-body">
+      <div id="headline" class="mb-3">
+        <h3 class="text-center">
+          KEGIATAN RAPAT KERJA TEKNIS PEMBERDAYAAN MASYARAKAT<br />
+          <span id="currentYear"></span>
+        </h3>
+        <hr />
+      </div>
 
-            <div class="action-button">
-                <div class="d-flex justify-content-end mb-3 gap-2">
-                    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exportData"><i
-                            class="fas fa-file-export me-2"></i>Ekspor Data</button>
-                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tambahData"><i
-                            class="fas fa-plus me-2"></i>Tambah Data</button>
-                </div>
-            </div>
-
-            <div class="table-responsive">
-                {% include 'psm/rakernis/table.html' %}
-            </div>
+      <div class="action-button">
+        <div class="d-flex justify-content-end mb-3 gap-2">
+          <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exportData">
+            <i class="fas fa-file-export me-2"></i>Ekspor Data
+          </button>
+          <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createModal">
+            <i class="fas fa-plus me-2"></i>Tambah Data
+          </button>
         </div>
+      </div>
+
+      <div class="table-responsive">
+        {% include 'psm/rakernis/table.html' %}
+      </div>
     </div>
+  </div>
 </section>
 {% endblock %}
-
-{% block css_tambahan %}
-<link rel="stylesheet" href="{% static 'assets/dashboard/vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}" />
-{% endblock %}
-
 {% block js_tambahan %}
-<script src="{% static 'assets/dashboard/vendor/libs/datatables-bs5/datatables-bootstrap5.js' %}"></script>
 <script>
-    let table = $('#__table').DataTable({
-        language: dt_lang_config()
-    })
+  let table = $("#__table").DataTable({
+    language: dt_lang_config(),
+    serverSide: false,
+    searching: true,
+    responsive: true,
+    pageLength: 1,
+    order: [[1, 'asc']],
+    ajax: {
+      url: `/kegiatan/api/v1/psm/rakernis/get_detail_data/?format=datatables`,
+      dataSrc: function (json) {
+        let data = json.data.map((item, index) => {
+          item._group = item.nama_satker;
+          item._group2 = item.nama_satker;
+          return item;
+        });
+        return data;
+      },
+    },
+    columns: [
+      { data: null },
+      {
+        data: 'nama_satker',
+        visible: false
+      },
+      {
+        data: 'tanggal_awal',
+        render: function (data, type, row) {
+          return data
+        }
+      },
+      { data: 'nama_satker_target' },
+      { data: 'deskripsi' },
+      { data: 'kendala' },
+      { data: 'kesimpulan' },
+      { data: 'tindak_lanjut' },
+      { data: 'dokumentasi' },
+      {
+        className: 'dt-left',
+        data: "id",
+        orderable: false,
+        render: function (data, type, row) {
+          const options = JSON.stringify({
+            id: data,
+            name: "kegiatan",
+            detail_name: row.nama_satker,
+            apiURL: "/kegiatan/api/v1/psm/rakernis",
+          });
 
-    $('#deleteData').on('click', function () {
-        Swal.fire({
-            title: 'Apakah anda yakin?',
-            html: `Data yang <strong>dihapus</strong> tidak dapat dipulihkan kembali.`,
-            icon: 'warning',
-            showCancelButton: true,
-            cancelButtonText: 'Batalkan',
-            confirmButtonText: 'Ya, hapus data ini!'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                console.log('User clicked the confirm button ...')
+          const args = JSON.stringify({ id: row.satker_id, nama: row.nama_satker });
 
-                Swal.fire({
-                    title: 'Tunggu sebentar',
-                    icon: 'info',
-                    html: `Menghapus <b>data</b> yang anda dipilih..`,
-                    timer: 2000,
-                    didOpen: () => {
-                        Swal.showLoading()
-                    }
-                }).then((result) => {
-                    if (result.dismiss === Swal.DismissReason.timer) {
-                        Swal.fire({
-                            title: 'Berhasil',
-                            html: `Data yang dipilih telah <strong>berhasil</strong> dihapus.`,
-                            icon: 'success',
-                            confirmButtonText: 'OK',
-                            timer: 2000
-                        })
-                    }
-                })
-            }
-        })
-    })
+          let userLevel = (row.status == 0 && row.satker_level == 1) || (row.status == 1 && row.satker_level == 0) || (row.status == 2 && row.satker_level == 2);
 
-    $('a#buttonEdit').on('click', function () {
-        $('#modalEdit').modal('show') //show modal
+          let buttonKirim = ``
+          if (row.satker_level < 2) {
+            buttonKirim = `
+              <div>
+                <a href="javascript:void(0);" ${(userLevel) ? `style="background-color:#00A0A9;" onclick='handleKirim(${args});'` : ''} class="badge ${userLevel ? '' : 'bg-secondary'} text-white text-decoration-none mb-1">
+                  <i class="fa-regular fa-paper-plane me-2"></i>Kirim
+                </a>
+              </div>
+            `;
+          }
 
-        //START SET CURRENT VALUE
-        $('select[name="edit_satker"]').val('BNNP Jawa Barat').trigger('change')
-        $('select[name="edit_satkerDiundang"]').val('BNN Kota Surakarta').trigger('change')
-        //END
-    })
-</script>
+          let element = `
+            <div class="list-button gx-3 text-uppercase ${userLevel}">
+              <div>
+                <a href="javascript:void(0);" ${(userLevel) ? `onclick="handleEditModal(${data})" class="badge bg-success` : 'class="badge bg-secondary'} text-white text-decoration-none mb-1">
+                  <i class="fas fa-pen-to-square me-2"></i>Edit
+                </a>
+              </div>
+              <div>
+                  <a href="javascript:void(0);" ${(userLevel) ? `onclick='handleDelete(${options})' class="badge bg-danger` : 'class="badge bg-secondary'} text-white text-decoration-none mb-1"'><i class="fas fa-trash-alt me-2"></i>Hapus</a>
+              </div>
+            </div>
+          `;
 
-<script>
-    $('.deleteKegiatan').on('click', function () {
-        Swal.fire({
-            title: 'Apakah anda yakin?',
-            html: `Data yang <strong>dihapus</strong> tidak dapat dipulihkan kembali.`,
-            icon: 'warning',
-            showCancelButton: true,
-            cancelButtonText: 'Batalkan',
-            confirmButtonText: 'Ya, hapus data ini!'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                console.log('User clicked the confirm button ...')
+          return element
+        },
+      },
+    ],
+    rowGroup: {
+      dataSrc: ['_group'],
+      className: 'bg-soft-primary',
+      startRender: function (rows, group) {
+        let rowData = rows.eq(0).data();
+        let satker_id = group;
+        console.log("Hasil fetch data : ", rowData)
+		console.log(satker_id)
 
-                Swal.fire({
-                    title: 'Tunggu sebentar',
-                    icon: 'info',
-                    html: `Menghapus <b>data</b> yang anda dipilih..`,
-                    timer: 2000,
-                    didOpen: () => {
-                        Swal.showLoading()
-                    }
-                }).then((result) => {
-                    if (result.dismiss === Swal.DismissReason.timer) {
-                        Swal.fire({
-                            title: 'Berhasil',
-                            html: `Data yang dipilih telah <strong>berhasil</strong> dihapus.`,
-                            icon: 'success',
-                            confirmButtonText: 'OK',
-                            timer: 2000
-                        })
-                    }
-                })
-            }
-        })
-    })
+        let tr = document.createElement('tr');
+        addCell(tr, group, 8);
+        let buttonKirim = `
+            <td>
+                <div>
+                    <a href="javascript:void(0);" onclick="handleKirim('${satker_id}')" style="background-color:#00A0A9;" class="badge text-white text-decoration-none mb-1">
+                        <i class="fa-regular fa-paper-plane me-2"></i>Kirim Semua
+                    </a>
+                </div>
+            </td>
+        `;
+        let td = document.createElement('td');
+        td.innerHTML = buttonKirim;
+        tr.appendChild(td);
 
-    $('.editKegiatan').on('click', function () {
-        $('#detailKegiatanRakernis').modal('hide')
-        $('#editDataKegiatan').modal('show')
-
-        $('select[name="edit_satker"]').val('BNN Kota Surakarta').trigger('change')
-    })
-
-    {% comment %} function updateClock() {
-        var now = moment()
-        var formattedTime = now.format('HH:mm')
-        document.getElementById('currentClock').innerText = formattedTime
+        return tr
+      }
+    },
+    columnDefs: [
+      dt_row_pagination(),
+      {
+        searchPanes: {
+          show: true
+        },
+        targets: [1, 2, 3, 4, 5, 6]
+      }
+    ],
+    layout: {
+      top1: {
+        searchPanes: {
+          viewTotal: true,
+          orderable: false,
+          initCollapsed: true
+        }
+      }
+    },
+    initComplete: function () {
+      (settings, json) => console.log("Hasil fetch data : ", json)
     }
-    setInterval(updateClock, 1000)
-    updateClock() {% endcomment %}
-</script>
-{% endblock %}
+  });
 
+  function addCell(tr, content, colSpan = 2) {
+    let td = document.createElement('th');
+
+    td.colSpan = colSpan;
+    td.textContent = content;
+
+    tr.appendChild(td);
+  }
+</script>
+
+<script>
+  async function handleDate(event, target) {
+    const currentDate = moment().format('YYYY-MM-DD');
+    const valueDate = $(event.target).val();
+    (valueDate === currentDate ? $(`#${target}tanggal_akhir`).attr('disabled', true) : $(`#${target}tanggal_akhir`).attr('disabled', false));
+  }
+
+  async function handlePost(e) {
+    e.preventDefault();
+    showSwalLoading();
+
+    const tanggal_awal = $("#create__tanggal_awal").val();
+    const tanggal_akhir = $("#create__tanggal_akhir").val();
+    const satker = $("#create__satker").val();
+    const satker_target = $("#create__satker_target").val();
+    const deskripsi = $("#create__deskripsi").val();
+    const kendala = $("#create__kendala").val();
+    const kesimpulan = $("#create__kesimpulan").val();
+    const tindak_lanjut = $("#create__tindak_lanjut").val();
+    const dokumentasi = $("#create__dokumentasi")[0].files[0];
+
+    const data = {
+      satker,
+      satker_target,
+      tanggal_awal,
+      tanggal_akhir,
+      deskripsi,
+      kendala,
+      kesimpulan,
+      tindak_lanjut,
+      dokumentasi,
+    };
+    console.log(data);
+
+    const formData = new FormData();
+
+    formData.append("tanggal_awal", tanggal_awal);
+    formData.append("tanggal_akhir", tanggal_akhir);
+    formData.append("satker", parseInt(satker));
+    formData.append("satker_target", parseInt(satker_target));
+    formData.append("deskripsi", deskripsi);
+    formData.append("kendala", kendala);
+    formData.append("kesimpulan", kesimpulan);
+    formData.append("tindak_lanjut", tindak_lanjut);
+    formData.append("dokumentasi", dokumentasi);
+
+    try {
+      const response = await axios.post(
+        `/kegiatan/api/v1/psm/rakernis/`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      $("div#modalTambah").modal("hide");
+      showSwalSuccess(
+        "Berhasil!",
+        `Data kegiatan telah <b>berhasil</b> ditambahkan!`
+      );
+    } catch (error) {
+      showSwalGenericError();
+      console.error("Terjadi kesalahan :", error);
+    } finally {
+      table.ajax.reload();
+    }
+  }
+
+  async function handleEdit(e) {
+    e.preventDefault();
+    showSwalLoading();
+
+    const form = $("editForm");
+    const id = $('#edit__id').val();
+    const tanggal_awal = $("#edit__tanggal_awal").val();
+    const tanggal_akhir = $("#edit__tanggal_akhir").val();
+    const satker = $("#edit__satker").val();
+    const satker_target = $("#edit__satker_target").val();
+    const deskripsi = $("#edit__deskripsi").val();
+    const kendala = $("#edit__kendala").val();
+    const kesimpulan = $("#edit__kesimpulan").val();
+    const tindak_lanjut = $("#edit__tindak_lanjut").val();
+    const dokumentasi = $("#edit__dokumentasi")[0].files[0];
+
+    const data = {
+      id,
+      satker,
+      satker_target,
+      tanggal_awal,
+      tanggal_akhir,
+      deskripsi,
+      kendala,
+      kesimpulan,
+      tindak_lanjut,
+      dokumentasi,
+    };
+    console.log(data);
+
+    const formData = new FormData();
+
+    formData.append("tanggal_awal", tanggal_awal);
+    formData.append("tanggal_akhir", tanggal_akhir);
+    formData.append("satker", parseInt(satker));
+    formData.append("satker_target", parseInt(satker_target));
+    formData.append("deskripsi", deskripsi);
+    formData.append("kendala", kendala);
+    formData.append("kesimpulan", kesimpulan);
+    formData.append("tindak_lanjut", tindak_lanjut);
+    if (dokumentasi) { formData.append('dokumentasi', dokumentasi); }
+
+    try {
+      const response = await axios.patch(
+        `/kegiatan/api/v1/psm/rakernis/${id}/`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+      );
+
+      $("div#modalEdit").modal("hide");
+      showSwalSuccess('Berhasil!', `Data kegiatan telah <b>berhasil</b> diperbarui!`);
+
+    } catch (error) {
+      showSwalGenericError();
+      console.error("Terjadi kesalahan :", error);
+    } finally {
+      table.ajax.reload();
+    }
+  }
+
+  async function handleEditModal(id) {
+    try {
+      const response = await axios.get(`/kegiatan/api/v1/psm/rakernis/${id}/`);
+      const data = response.data;
+      const form = $('#editForm');
+      $('#edit__info').text(data.detail.satker.nama_satker);
+
+      $('#edit__id').val(data.id);
+      $('#edit__tanggal_awal').val(data.tanggal_awal);
+      $('#edit__tanggal_akhir').val(data.tanggal_akhir);
+      (data.tanggal_akhir ? $('#edit__tanggal_akhir').attr('disabled', false) : $('#edit__tanggal_akhir').attr('disabled', true))
+      $('#edit__satker').val(data.satker).trigger('change');
+      $('#edit__satker_target').val(data.satker_target).trigger('change');
+      $('#edit__deskripsi').val(data.deskripsi);
+      $('#edit__kendala').val(data.kendala);
+      $('#edit__kesimpulan').val(data.kesimpulan);
+      $('#edit__tindak_lanjut').val(data.tindak_lanjut);
+
+      $('#modalEdit').modal('show');
+    } catch (error) {
+      showSwalGenericError();
+      console.error('Terjadi kesalahan :', error);
+    }
+  }
+
+  async function handleKirim(satker) {
+    const confirmResult = await showSwalConfirm(`Apakah anda yakin untuk mengirim semua kegiatan dari Satuan Kerja <b>${satker.nama}</b>`, 'Ya, hapus data');
+    if (!confirmResult.isConfirmed) return;
+    showSwalLoading();
+    await sleep(1000);
+    try {
+      const response = await axios.post('/kegiatan/api/v1/psm/rakernis/kirim_kegiatan/', { satker_id: satker.id });
+      console.log('Respose :', response);
+      const sendedToParent = response.data.parent.keterangan;
+      showSwalSuccess('Berhasil', `Data <b>kegiatan</b> untuk <b>${satker.nama}</b> telah berhasil <b>dikirimkan ke <b>${sendedToParent}</b></b>`);
+      reloadAllDataTables();
+    } catch (error) {
+      showSwalGenericError();
+      console.error('Terjadi kesalahan :', error);
+    }
+  }
+
+  async function handleExport() {
+    showSwalLoading();
+    await sleep(1000);
+    try {
+      const response = await axios.post('/kegiatan/api/v1/dayatif/binaan_teknis/export_data/');
+      const data = response.data;
+      window.location.href = data.file_path;
+      const confirmation = await Swal.fire({
+        title: "Berhasil",
+        html: `Data <b>Kegiatan Binaan Teknis</b> telah <b>berhasil</b> diexport! <br>Klik tombol unduh ulang apabila <b>gagal</b>!`,
+        icon: "success",
+        confirmButtonText: "Unduh ulang.",
+        showCancelButton: true,
+        cancelButtonText: 'Batalkan',
+        showCloseButton: true,
+        allowOutsideClick: false,
+      });
+
+      if (confirmation.isConfirmed) {
+        console.log('Blud is downloading again!');
+        window.location.href = data.file;
+      }
+    } catch (error) {
+      showSwalGenericError();
+      console.error('Terjadi kesalahan :', error);
+    }
+  }
+</script>
+
+{% endblock %}
 {% block modal_tambahan %}
-{% include 'psm/rakernis/create.html' %}
-{% include 'psm/rakernis/create_kegiatan.html' %}
-{% include 'psm/rakernis/detail.html' %}
-{% include 'psm/rakernis/edit.html' %}
-{% include 'psm/rakernis/edit_kegiatan.html' %}
+{% include 'psm/rakernis/modals/create.html'%}
+{% include 'psm/rakernis/modals/edit.html' %}
 {% endblock %}

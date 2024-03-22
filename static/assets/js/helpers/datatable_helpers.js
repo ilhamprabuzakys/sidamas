@@ -33,12 +33,18 @@ function reloadTable(table) {
 }
 
 function reloadAllDataTables() {
-    var tables = $.fn.dataTable.fnTables(true);
+    if (typeof table !== 'undefined') {
+        table.ajax.reload();
+    }
+    if (typeof childTable !== 'undefined') {
+        childTable.ajax.reload();
+    }
+    // const tables = $.fn.dataTable.tables(true);
 
-    $(tables).each(function() {
-        var dataTable = $(this).dataTable().api();
-        dataTable.ajax.reload(null, false);
-    });
+    // $(tables).each(function() {
+    //     const dataTable = $(this).dataTable().api();
+    //     dataTable.ajax.reload(null, false);
+    // });
 }
 
 function dt_row_pagination() {
@@ -50,7 +56,7 @@ function dt_row_pagination() {
             var index = (page * length) + meta.row + 1;
             return index;
         }
-    }
+    };
 }
 
 function convertToTitleCaseAndReplaceSpace(input) {
@@ -63,7 +69,7 @@ function convertToTitleCaseAndReplaceSpace(input) {
 
 $(document).on('processing.dt', function (e, settings, processing) {
     if (!processing) {
-        unblock( $(settings.nTable).parent() );
+        unblock($(settings.nTable).parent());
     } else {
         blockWithSpinner($(settings.nTable).parent());
     }
@@ -84,7 +90,7 @@ function createDT(el, url, columns, options) {
         columnDefs: null,
         ...options // Menggabungkan options yang diberikan dengan default
     };
-    
+
     return $(el).DataTable({
         language: dt_lang_config(),
         serverSide: options.serverSide,

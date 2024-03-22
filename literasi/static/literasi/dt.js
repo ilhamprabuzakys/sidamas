@@ -14,7 +14,7 @@ const columns = [
             if (data) {
                 return `
             <div class="text-center">
-                <a href="${data}" class="badge bg-primary" target="_blank">
+                <a href="${data}" class="badge bg-primary text-white" target="_blank">
                     <i class="fas fa-download me-2"></i>
                     Unduh dokumen
                 </a>
@@ -98,7 +98,7 @@ const columns = [
                             class="fas fa-pen-to-square me-2"></i>Edit</a>
                 </div>
                 <div>
-                    <a href="javascript:void(0);" class="badge bg-danger text-white text-decoration-none mb-1" onclick='handleDestroy(${options})'><i
+                    <a href="javascript:void(0);" class="badge bg-danger text-white text-decoration-none mb-1" onclick='handleDelete(${options})'><i
                             class="fas fa-trash-alt me-2"></i>Hapus</a>
                 </div>
             </div>`;

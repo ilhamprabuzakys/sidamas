@@ -4,7 +4,16 @@ from . import api
 from . import views
 
 router = routers.DefaultRouter()
-router.register("rakernis_psm", api.Rakernis_psmViewSet)
+
+# PSM
+router.register("psm/rakernis", api.PSM_RAKERNIS_ViewSet)
+router.register("psm/binaan_teknis", api.PSM_BINAAN_TEKNIS_ViewSet)
+router.register("psm/asistensi", api.PSM_ASISTENSI_ViewSet)
+router.register("psm/tes_urine", api.PSM_TES_URINE_DETEKSI_DINI_ViewSet)
+
+# DAYATIF
+router.register("dayatif/binaan_teknis", api.DAYATIF_BINAAN_TEKNIS_ViewSet)
+router.register("dayatif/pemetaan_potensi", api.DAYATIF_PEMETAAN_POTENSI_ViewSet)
 
 urlpatterns = (
     #API
@@ -28,9 +37,9 @@ urlpatterns = (
     path("psm/dukungan_stakeholder/",views.psm_dukungan_stakeholderView.as_view(),name="psm_dukungan_stakeholder",),
     path("psm/kegiatan_lainnya/",views.psm_kegiatan_lainnyaView.as_view(),name="psm_kegiatan_lainnya",),
 
-    #VIEW HALAMAN DAYATIF
-    path("dayatif/bintek/",views.dayatif_bintekView.as_view(),name="dayatif_bintek",),
-    path("dayatif/bintek2/",views.dayatif_revisi_bintekView.as_view(),name="dayatif_bintek2",),
+    # VIEW HALAMAN DAYATIF
+    path("dayatif/binaan_teknis_old/",views.DAYATIF_BINAAN_TEKNIS_OLD_View.as_view(),name="dayatif_binaan_teknis_old",),
+    path("dayatif/binaan_teknis/",views.DAYATIF_BINAAN_TEKNIS_View.as_view(),name="dayatif_binaan_teknis",),
     path("dayatif/pemetaan_potensi/",views.dayatif_pemetaan_potensiView.as_view(),name="dayatif_pemetaan_potensi",),
     path("dayatif/pemetaan_stakeholder/",views.dayatif_pemetaan_stakeholderView.as_view(),name="dayatif_pemetaan_stakeholder",),
     path("dayatif/rapat_sinergi_stakeholder/",views.dayatif_rapat_sinergi_stakeholderView.as_view(),name="dayatif_rapat_sinergi_stakeholder",),

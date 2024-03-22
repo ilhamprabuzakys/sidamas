@@ -2,6 +2,10 @@
    CUSTOM DASHBOARD SETTINGS
 ============================== */
 
+:root {
+    --text-important: #00a0a9;
+}
+
 /* ===SCROLLBAR===  */
 ::-webkit-scrollbar {
     width: 15px;
@@ -81,6 +85,10 @@
     margin-left: 0.15rem;
 }
 
+.text-important {
+    color: var(--text-important) !important;
+}
+
 
 /* ==========================
  * TABLE
@@ -119,6 +127,10 @@ table ul li span.label {
 table ul li span.value {
     padding-left: 10px;
     font-weight: bold;
+}
+
+table td div.list-button {
+    text-align: left !important;
 }
 
 /* ===TOPBAR BUTTON ROLE INFORMATION */

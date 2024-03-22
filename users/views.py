@@ -34,15 +34,27 @@ class UserVerificationListView(UsersBaseView, View):
     def get(self, request):
         user = request.user
         role = user.profile.role
+        satker_id = user.profile.satker_id
 
         list_profile_users = models.Profile.objects.order_by('-id')
+        satker = models.Satker.objects.get(id=satker_id)
 
         if role == "psm":
             list_profile_users = list_profile_users.filter(role="psm")
         elif role == "dayatif":
             list_profile_users = list_profile_users.filter(role="dayatif")
 
-        context = {"list_profile_users": list_profile_users}
+        if satker.level == 0:
+            satker_list = models.Satker.filter(provinsi_id=satker.provinsi_id)
+        elif satker.level == 1:
+            satker_list = models.Satker.filter(id=satker.id)
+        elif satker.level == 2:
+            satker_list = models.Satker.objects.all()
+
+        context =   {
+                        "list_profile_users": list_profile_users, 
+                        "daftar_satker":satker_list
+                    }
         return render(request, self.template_name, context)
 
 class MyProfile(LoginRequiredMixin,View):

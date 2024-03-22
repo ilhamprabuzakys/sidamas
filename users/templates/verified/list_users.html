@@ -27,14 +27,63 @@ Verifikasi
 </section>
 {% endblock %}
 
+{% block modal_tambahan %}
+{% include "verified/modal_users.html" %}
+{% endblock modal_tambahan %}
+
 {% block js_tambahan %}
 <script>
+    // persiapan variable
+    var g_id_profil;
+    var id_pengguna;
+
     $(document).ready(function () {
+        const CSRF_TOKEN = getCookie('csrftoken');
+
+        $("#formEdit").submit(function(event){
+            event.preventDefault();
+
+            status = $("#status").val();
+
+            if (status == 1) {
+                status = true;
+            } else {
+                status = false;
+            }
+
+            var formData = {
+                satker: $("#satker").val(),
+                is_verified: status
+            };
+
+            axios.put('/users/api/v1/profile/'+g_id_profil+'/', formData)
+                .then(function (response) {
+                    Swal.fire({
+                        icon: "success",
+                        title: "Update data berhasil !",
+                        text: "Data tersimpan !",
+                        showConfirmButton: false,
+                        timer: 1000
+                    }).then((result) => {
+                        if (result.dismiss === Swal.DismissReason.timer) {
+                            location.reload();
+                        }
+                    });
+                    
+                })
+                .catch(function (error) {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Terjadi kesalahan !",
+                        text: "API bermasalah !",
+                    });
+            }); 
+        });
 
         let dataTable = $('#__table').DataTable({
             language: dt_lang_config(),
             columnDefs: [{
-                targets: [1, 2],
+                targets: [1, 2, 5],
                 visible: false,
             }],
             order: [[1, 'desc']]
@@ -109,31 +158,85 @@ Verifikasi
                 }
             });
         });
-    });
 
-    /* $.ajax({
-        url: url,
-        method: 'PUT',
-        data: {
-            user: id_user,
-            is_verified: true
-        },
-        headers: {
-            'X-CSRFToken': CSRF_TOKEN
-        },
-        success: function (response) {
-            Swal.close();
+        $('#__table tbody').on('click', '.button_edit', function () {
+            let rowData = dataTable.row($(this).closest('tr')).data();
+            let id = rowData[1];
+
+            axios.get('/users/api/v1/profile/' + id + '/', {
+                    headers: {
+                        'X-CSRFToken': CSRF_TOKEN,
+                        'Content-Type': 'application/json',
+                    }
+                })
+                .then((response) => {
+                    data_mentah = response.data;
+                    g_id_profil = data_mentah.id 
+                    id_pengguna = data_mentah.get_data_user_profil.id;
+                    satker = data_mentah.get_data_user_satker.id;
+                    status = data_mentah.is_verified;
+
+                    console.log(status);
+
+                    if (status == true) {
+                        status = 1;
+                    } else {
+                        status = 2;
+                    }
+
+                    $("#satker").val(satker);
+                    $("#status").val(status);
+
+                    $("#satker").change();
+                    $("#status").change();
+
+                    $("#editDataUserModal").modal('show');
+                })
+                .catch((error) => {
+                    console.error('Error performing Axios request:', error);
+                });
+
+        });
+
+        $('#__table tbody').on('click', '.button_delete', function () {
+            let rowData = dataTable.row($(this).closest('tr')).data();
+            let id = rowData[1];
+
             Swal.fire({
-                title: 'Success!',
-                text: 'Data berhasil diupdate !',
-                icon: 'success',
-            }).then(function () {
-                window.location.reload();
+                title: "Peringatan !",
+                text: "Hapus data pengguna ?",
+                icon: "warning",
+                showDenyButton: true,
+                confirmButtonText: "Hapus !",
+                denyButtonText: "Batal" 
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    axios.delete('/users/api/v1/profile/'+id+'/')
+                        .then(function (response) {
+                            Swal.fire({
+                                icon: "success",
+                                title: "Delete data berhasil !",
+                                text: "Data terhapus !",
+                                showConfirmButton: false,
+                                timer: 1000
+                            }).then((result) => {
+                                if (result.dismiss === Swal.DismissReason.timer) {
+                                    location.reload();
+                                }
+                            });
+                        })
+                        .catch(function (error) {
+                            Swal.fire({
+                                icon: "error",
+                                title: "Terjadi kesalahan !",
+                                text: "API bermasalah !",
+                            });
+                    });
+
+                } else if (result.isDenied) {
+                }
             });
-        },
-        error: function (error) {
-            console.error('Error performing AJAX request:', error);
-        },
-    }); */
+        });
+    });
 </script>
 {% endblock %}

@@ -47,7 +47,7 @@ axios.defaults.headers.post['Content-Type'] = 'application/json';
  * SHORTCUT HTTP REQUEST
 ============================= */
 
-async function handleDestroy(config) {
+async function handleDelete(config) {
     const id = config?.id;
     const detailName = config?.detail_name || '';
     const name = config?.name;
@@ -70,11 +70,13 @@ async function handleDestroy(config) {
     try {
         const response = await axios.delete(`${apiURL}/${id}/`);
 
-        reloadTable(table);
-
         showSwalSuccess('Berhasil', `Data ${name} ${additionalResultInfo} berhasil <b>dihapus</b>`, 3000);
     } catch (error) {
         console.log('Terjadi kesalahan : ', error);
         showSwalGenericError();
+    } finally {
+        $('.modal').modal('hide');
+        reloadAllDataTables();
     }
 }
+

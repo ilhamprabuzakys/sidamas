@@ -30,12 +30,11 @@ class DashboardView(DashboardBaseView, View):
         if not self.request.user.profile.role or not self.request.user.profile.satker or not self.request.user.profile.is_verified:
             return HttpResponseRedirect(reverse("dashboard:profile"))
         
-        
         if self.request.user.profile.role == "psm":
             template_name = "dashboard/dashboard_index_psm.html"
         else:
             template_name = "dashboard/dashboard_index_dayatif.html"
-        
+
         return render(request, template_name)
     
 class ProfilView(LoginRequiredMixin, View):

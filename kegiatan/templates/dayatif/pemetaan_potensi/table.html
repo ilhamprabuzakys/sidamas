@@ -1,35 +1,31 @@
-<table class="table table-bordered" id="__table">
-    <thead class="bg-soft-green">
+<table id="__table" class="table table-bordered">
+    <thead class="bg-soft-blue">
         <tr>
-            <th>No.</th>
-            <th>Satuan Kerja</th>
-            <th>Jumlah Kegiatan</th>
-            <th class="bg-soft-danger">Pelaksanaan</th>
-            <th>AKSI<i class="fas fa-edit ms-2"></i></th>
+            <th class="bg-soft-primary text-center"><i class="fas fa-arrow-down"></i></th>
+            <th class="bg-soft-success">Satuan Kerja Pelaksana</th>
+            <th class="bg-soft-success">Jumlah Kegiatan</th>
+            <th class="bg-soft-success" style="max-width: 150px">Aksi <i class="fas fa-edit ms-2"></i></th>
         </tr>
     </thead>
-    <tbody>
-        <tr class="">
-            <td scope="row">1</td>
-            <td>{{ user.profile.satker }}</td>
-            <td>3 Kali</td>
-            <td>
-                <a href="javascript:;" class="badge bg-primary text-decoration-none text-white" data-bs-toggle="modal"
-                    data-bs-target="#detailPelaksanaanModal">
-                    <i class="fas fa-eye me-2"></i>Lihat Detail
-                </a>
-            </td>
-            <td>
-                <div class="list-button">
-                    <a href="javascript:;" class="badge bg-primary text-white text-decoration-none mb-1" data-bs-toggle="modal"
-                    data-bs-target="#tambahDataKegiatan">
-                        <i class="fas fa-plus me-2"></i>TAMBAH KEGIATAN</a>
-                    <a href="javascript:;" class="badge bg-success text-white text-decoration-none mb-1">
-                        <i class="fas fa-pen-to-square me-2"></i>EDIT</a>
-                    <a href="javascript:;" class="badge bg-danger text-white text-decoration-none mb-1" id="deleteData">
-                        <i class="fas fa-trash-alt me-2"></i>HAPUS</a>
-                </div>
-            </td>
-        </tr>
-    </tbody>
+	<tbody class="align-tr-middle">
+	</tbody>
 </table>
+
+{% comment %} <table id="__table" class="table table-bordered">
+    <thead class="bg-soft-blue">
+        <tr>
+            <th class="bg-soft-success">No</th>
+            <th class="bg-soft-success">Satker Pelaksana</th>
+            <th class="bg-soft-success">Tanggal</th>
+            <th class="bg-soft-success" style="max-width: 300px">Lokasi</th>
+            <th class="bg-soft-success">Deskripsi Hasil</th>
+            <th class="bg-soft-success">Hambatan/Kendala</th>
+            <th class="bg-soft-success">Kesimpulan</th>
+            <th class="bg-soft-success">Tindak Lanjut</th>
+            <th class="bg-soft-success">Dokumentasi</th>
+            <th class="bg-soft-success">Aksi <i class="fas fa-edit ms-2"></i></th>
+        </tr>
+    </thead>
+    <tbody class="align-tr-middle">
+    </tbody>
+</table> {% endcomment %}

@@ -89,7 +89,7 @@ Pengaturan Profil
                                 <label for="email" class="form-label">Alamat Email</label>
                                 <input class="form-control" type="text" id="email" name="email" v-model="email" placeholder="Isikan alamat email anda" />
                             </div>
-                            <div class="mb-3 col-md-6" id="form-satker">
+                            <div class="mb-3 col-md-12" id="form-satker">
                                 <label class="form-label required" for="satker">Satuan Kerja</label>
                                 <select id="satker" class="select2 form-select" v-model="satker" ref="satker">
                                     <option value="" selected disabled>Pilih Satuan Kerja</option>
@@ -102,7 +102,8 @@ Pengaturan Profil
                                 <small class="text-danger">Tolong pilih satuan kerja anda</small>
                                 {% endif %}
                             </div>
-                            <div class="mb-3 col-md-6">
+
+                            <!-- <div class="mb-3 col-md-6">
                                 <label class="form-label required" for="direktorat">Direktorat</label>
                                 <select id="direktorat" class="form-select" v-model="direktorat" ref="direktorat">
                                     <option value="" selected disabled>--Pilih direktorat --</option>
@@ -114,7 +115,8 @@ Pengaturan Profil
                                 {% if user.profile.role is None %}
                                 <small class="text-danger">Tolong pilih direktorat anda</small>
                                 {% endif %}
-                            </div>
+                            </div> -->
+
                         </div>
 
                         <div class="d-flex justify-content-end gap-2 mt-3">

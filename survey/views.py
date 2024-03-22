@@ -149,6 +149,22 @@ class FormulirElektronikEditView(SurveyBaseView, View):
         }
 
         return render(request, self.template_name, context)
+    
+class FormulirElektronikViewView(SurveyBaseView, View):
+    template_name = "formulir_elektronik/view.html"
+
+    def get(self, request, slug, *args, **kwargs):
+        user_id = request.user.id
+        survey = models.survey.objects.get(kode=slug)
+
+        context = {
+            "id":survey.id,
+            "survey_source": json.dumps(survey.jsontext), 
+            "survey":survey,
+            "user_id":user_id
+        }
+
+        return render(request, self.template_name, context)
 
 # PSM
 class SKMTesUrineView(SurveyBaseView, View):

@@ -1,5 +1,6 @@
 from rest_framework import viewsets, permissions, status
 from rest_framework.response import Response
+from django_filters import rest_framework as filters
 
 from . import serializers
 from . import models
@@ -10,13 +11,15 @@ class surveyViewSet(viewsets.ModelViewSet):
     queryset = models.survey.objects.all()
     serializer_class = serializers.survey
     #permission_classes = [permissions.IsAuthenticated]
+
 class surveycreateViewSet(viewsets.ModelViewSet):
     """ViewSet for the kategori class"""
 
     queryset = models.survey.objects.all()
     serializer_class = serializers.survey_create
+    filter_backends = [filters.DjangoFilterBackend,]
+    filterset_fields = ('kode',)
     #permission_classes = [permissions.IsAuthenticated]
-
 
 class surveyshortViewSet(viewsets.ModelViewSet):
     """ViewSet for the berita class"""
@@ -24,7 +27,6 @@ class surveyshortViewSet(viewsets.ModelViewSet):
     queryset = models.surveyshort.objects.all()
     serializer_class = serializers.surveyshort
     #permission_classes = [permissions.IsAuthenticated]
-
 
 class survey_resultViewSet(viewsets.ModelViewSet):
     """ViewSet for the berita class"""

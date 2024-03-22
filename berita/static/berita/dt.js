@@ -69,7 +69,7 @@ const columns = [
                             class="fas fa-pen-to-square me-2"></i>Edit</a>
                 </div>
                 <div>
-                    <a href="javascript:void(0);" class="badge bg-danger text-white text-decoration-none mb-1" onclick='handleDestroy(${options})'><i
+                    <a href="javascript:void(0);" class="badge bg-danger text-white text-decoration-none mb-1" onclick='handleDelete(${options})'><i
                             class="fas fa-trash-alt me-2"></i>Hapus</a>
                 </div>
             </div>

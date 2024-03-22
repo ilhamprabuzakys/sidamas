@@ -5,6 +5,10 @@ from django.contrib.auth.models import User
 from . import models
 
 class ProfileSerializer(serializers.ModelSerializer):
+
+    get_data_user_profil = serializers.SerializerMethodField()
+    get_data_user_satker = serializers.SerializerMethodField()
+
     class Meta:
         model = models.Profile
         fields = [
@@ -14,7 +18,16 @@ class ProfileSerializer(serializers.ModelSerializer):
             "role",
             "satker",
             "is_verified",
+            "get_data_user_profil",
+            "get_data_user_satker",
         ]
+        extra_kwargs = {'user': {'required': False}}
+
+    def get_data_user_profil(self, obj):
+        return obj.get_data_user_profil()
+    
+    def get_data_user_satker(self, obj):
+        return obj.get_data_user_satker()
 
 class UpdateUserProfileSerializer(serializers.ModelSerializer):
     class Meta:

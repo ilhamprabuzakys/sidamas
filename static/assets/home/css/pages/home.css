@@ -33,7 +33,7 @@ h6 {
 
 #daftar-berita .card .card-author {
    margin-bottom: 5px;
-   color:#6e6e6e;
+   color: #6e6e6e;
    font-size: 11px;
 }
 
@@ -80,17 +80,28 @@ h6 {
    font-size: 12px;
 }
 
+/* ====================
+    MODAL
+=======================*/
+.modal.modal-literasi .modal-body {
+   padding: 0;
+}
+
+.modal.modal-literasi .modal-body .container-fluid {
+   padding: 5px;
+}
+
 /**=== VUE JS STYLING ===**/
 [v-cloak] {
-    display: none;
+   display: none;
 }
 
 .v-enter-active,
 .v-leave-active {
-    transition: opacity 0.5s ease;
+   transition: opacity 0.5s ease;
 }
 
 .v-enter-from,
 .v-leave-to {
-    opacity: 0;
+   opacity: 0;
 }

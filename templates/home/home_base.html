@@ -57,8 +57,8 @@
     <!-- Bootstrap CSS v5 -->
     <link href="{% static 'assets/home/plugins/bootstrap/bootstrap.min.css' %}" rel="stylesheet" />
 
-    <!-- Jquery (Slim version exclude ajax and global effect function) -->
-    <script src="{% static 'assets/home/plugins/jquery/jquery.slim.min.js' %}"></script>
+    <!-- Jquery  -->
+    <script src="{% static 'assets/home/plugins/jquery/jquery.min.js' %}"></script>
 
     <!-- Vue 3 Global -->
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
@@ -89,8 +89,8 @@
     <link rel="stylesheet" href="{% static 'assets/home/css/main.css' %}">
 
     <!-- Page loader -->
-    <link rel="stylesheet" href="{% static 'assets/home/css/libs/pace-theme-default.min.css' %}">
-    <link rel="stylesheet" href="{% static 'assets/home/css/libs/flash.css' %}">
+    {% comment %} <link rel="stylesheet" href="{% static 'assets/home/css/libs/pace-theme-default.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/home/css/libs/flash.css' %}"> {% endcomment %}
 
     <!-- Page CSS -->
     {% block css_tambahan %} {% endblock css_tambahan %}
@@ -111,7 +111,6 @@
         </div>
       </main>
 
-      {% block modal %} {% endblock %}
       {% block modal_tambahan %} {% endblock %}
 
       {% block footer %}
@@ -123,22 +122,33 @@
     <script src="{% static 'assets/home/plugins/bootstrap/popper.min.js' %}"></script>
     <script src="{% static 'assets/home/plugins/bootstrap/bootstrap.min.js' %}"></script>
 
+	<!-- Toastr -->
+    <script src="{% static 'assets/dashboard/vendor/libs/toastr/toastr.js' %}"></script>
+	
+    <!-- Block UI -->
+    <script src="{% static 'assets/dashboard/vendor/libs/block-ui/block-ui.js' %}"></script>
+
+	<!-- Axios -->
+    <script src="{% static 'assets/home/plugins/axios/axios.min.js' %}"></script>
+
     <!-- Custom Js -->
     <!-- Main Js (Website functionality) -->
     <script src="{% static 'assets/home/js/main_home.js' %}"></script>
     <!-- Helper Js (Website helper) -->
-    <script src="{% static 'assets/home/js/home_helpers.js' %}"></script>
+    <script src="{% static 'assets/home/js/vue-helpers.js' %}"></script>
+	<script src="{% static 'assets/js/helpers/datatable_helpers.js' %}"></script>
+    <script src="{% static 'assets/js/helpers/utils_helpers.js' %}"></script>
+    <script src="{% static 'assets/js/helpers/ajax_helpers.js' %}"></script>
+    <script src="{% static 'assets/js/helpers/alert_helpers.js' %}"></script>
+    <script src="{% static 'assets/js/helpers/datatable_helpers.js' %}"></script>
+    <script src="{% static 'assets/js/helpers/form_helpers.js' %}"></script>
 
     <!-- Page Loader -->
-    <script src="{% static 'assets/home/js/libs/pace.min.js' %}"></script>
+    {% comment %} <script src="{% static 'assets/home/js/libs/pace.min.js' %}"></script> {% endcomment %}
 
     <!-- Moment Js -->
     <script src="{% static 'assets/dashboard/vendor/libs/moment/moment.js' %}"></script>
     <script src="{% static 'assets/dashboard/vendor/libs/moment/moment-with-locales.js' %}"></script>
-
-    <!-- Axios -->
-    <script src="{% static 'assets/home/plugins/axios/axios.min.js' %}"></script>
-    <script src="{% static 'assets/home/js/vue-helpers.js' %}"></script>
 
     <!-- Page JS -->
     {% block js_tambahan %}

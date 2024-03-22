@@ -1,0 +1,137 @@
+{% extends 'dashboard/dashboard_base.html' %}
+{% load static %}
+{% block title %}
+  Pengumpulan Data Ikotan
+{% endblock %}
+{% block content %}
+  <div class="breadcrumb">
+    <div class="row">
+      <h3 class="heading mb-2">Pengumpulan Data Ikotan</h3>
+      <span class="mb-0">
+        <span class="text-muted fw-light">Kegiatan /</span>
+        <span class="ms-1 fw-medium">Pengumpulan Data Ikotan</span>
+      </span>
+    </div>
+  </div>
+
+  <section id="__data">
+    <div class="card">
+      <div class="card-body">
+        <div id="headline" class="mb-3">
+          <h3 class="text-center">Pengumpulan Data Ikotan<br /> <span id="currentYear"></span></h3>
+          <hr />
+        </div>
+
+        <div class="action-button">
+          <div class="d-flex justify-content-end mb-3 gap-2">
+            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exportData"><i class="fas fa-file-export me-2"></i>Ekspor Data</button>
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tambahData"><i class="fas fa-plus me-2"></i>Tambah Data</button>
+          </div>
+        </div>
+
+        <div class="table-responsive">
+          {% include 'psm/pengumpulan_data_ikotan/table.html' %}
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}
+
+{% block css_tambahan %}
+  <link rel="stylesheet" href="{% static 'assets/dashboard/vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}" />
+{% endblock %}
+
+{% block js_tambahan %}
+  <script src="{% static 'assets/dashboard/vendor/libs/datatables-bs5/datatables-bootstrap5.js' %}"></script>
+  <script>
+    let table = $('#__table').DataTable({
+      language: dt_lang_config()
+    })
+    
+    $('#deleteData').on('click', function () {
+      Swal.fire({
+        title: 'Apakah anda yakin?',
+        html: `Data yang <strong>dihapus</strong> tidak dapat dipulihkan kembali.`,
+        icon: 'warning',
+        showCancelButton: true,
+        cancelButtonText: 'Batalkan',
+        confirmButtonText: 'Ya, hapus data ini!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          console.log('User clicked the confirm button ...')
+    
+          Swal.fire({
+            title: 'Tunggu sebentar',
+            icon: 'info',
+            html: `Menghapus <b>data</b> yang anda dipilih..`,
+            timer: 2000,
+            didOpen: () => {
+              Swal.showLoading()
+            }
+          }).then((result) => {
+            if (result.dismiss === Swal.DismissReason.timer) {
+              Swal.fire({
+                title: 'Berhasil',
+                html: `Data yang dipilih telah <strong>berhasil</strong> dihapus.`,
+                icon: 'success',
+                confirmButtonText: 'OK',
+                timer: 2000
+              })
+            }
+          })
+        }
+      })
+    })
+    
+    $('.deleteKegiatan').on('click', function () {
+      Swal.fire({
+        title: 'Apakah anda yakin?',
+        html: `Data yang <strong>dihapus</strong> tidak dapat dipulihkan kembali.`,
+        icon: 'warning',
+        showCancelButton: true,
+        cancelButtonText: 'Batalkan',
+        confirmButtonText: 'Ya, hapus data ini!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          console.log('User clicked the confirm button ...')
+    
+          Swal.fire({
+            title: 'Tunggu sebentar',
+            icon: 'info',
+            html: `Menghapus <b>data</b> yang anda dipilih..`,
+            timer: 2000,
+            didOpen: () => {
+              Swal.showLoading()
+            }
+          }).then((result) => {
+            if (result.dismiss === Swal.DismissReason.timer) {
+              Swal.fire({
+                title: 'Berhasil',
+                html: `Data yang dipilih telah <strong>berhasil</strong> dihapus.`,
+                icon: 'success',
+                confirmButtonText: 'OK',
+                timer: 2000
+              })
+            }
+          })
+        }
+      })
+    })
+    
+    $('a#buttonEdit').on('click', function () {
+      $('#editPengumpulanDataIkotan').modal('show') //show modal
+    
+      //START SET CURRENT VALUE
+      $('select[name="edit_satker"]').val('BNNP Jawa Barat').trigger('change')
+      //END
+    })
+  </script>
+{% endblock %}
+
+{% block modal_tambahan %}
+  {% include 'psm/pengumpulan_data_ikotan/create.html' %}
+  {% include 'psm/pengumpulan_data_ikotan/create_kegiatan.html' %}
+  {% include 'psm/pengumpulan_data_ikotan/edit.html' %}
+  {% include 'psm/pengumpulan_data_ikotan/edit_kegiatan.html' %}
+  {% include 'psm/pengumpulan_data_ikotan/detail.html' %}
+{% endblock %}

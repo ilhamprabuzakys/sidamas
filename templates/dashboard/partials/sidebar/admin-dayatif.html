@@ -1,3 +1,4 @@
+{% if user.profile.is_admin%}
 <li class="menu-item {% if '/kegiatan/' in request.path %}open{% endif %}">
     <a href="javascript:void(0);" class="menu-link menu-toggle">
        <i class="menu-icon tf-icons ti ti-report"></i>
@@ -5,6 +6,7 @@
     </a>
     {% include "dashboard/partials/sidebar/kegiatan/dayatif.html" %}
  </li>
+{% endif %}
 
  {% comment %} <li class="menu-item  {% if '/lk/dayatif/' in request.path %}active{% endif %}">
     <a href="{% url 'dayatif_laporan_kegiatan' %}" class="menu-link">
@@ -80,9 +82,11 @@
     </a>
  </li>
 
+ {% if user.profile.satker.level == 2 and user.profile.is_admin %}
  <li class="menu-item {% if request.resolver_match.url_name == 'list_verified' %} active {% endif %}">
-    <a href="{% url 'users:list_verified' %}" class="menu-link">
-       <i class="menu-icon tf-icons ti ti-users-group"></i>
-       <div data-i18n="Verifikasi Pengguna">Verifikasi Pengguna</div>
-    </a>
+     <a href="{% url 'users:list_verified' %}" class="menu-link">
+         <i class="menu-icon tf-icons ti ti-users-group"></i>
+         <div data-i18n="Verifikasi Pengguna">Verifikasi Pengguna</div>
+     </a>
  </li>
+{% endif %}

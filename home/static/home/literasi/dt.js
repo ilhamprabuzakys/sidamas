@@ -2,8 +2,7 @@ const columns = [
     {
         data: 'judul',
         render: function (data, type, row) {
-            console.log(row)
-            let output = `<div class="detail_literasi">
+            const output = `<div class="detail_literasi">
                 <h5>
                     ${data}
                 </h5>
@@ -36,7 +35,7 @@ const columns = [
         }
     }];
 
-var table = $('#list_literasi').DataTable({
+const table = $('#__table').DataTable({
     language: dt_lang_config(),
     serverSide: true,
     searching: true,
@@ -57,11 +56,3 @@ var table = $('#list_literasi').DataTable({
         targets: [0, 1, 2]
     }]
 });
-
-// var table = createDT('#list_literasi', '/dashboard/literasi/api/?format=datatables', columns, {
-//     enableNumbering: false,
-//     columnDefs: [{
-//         orderable: false,
-//         targets: [1, 2]
-//     }]
-// });

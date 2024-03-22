@@ -457,14 +457,14 @@
                                 return false;
                             }
 
-                            let surveiAvailable = this.checkSurveiAvailability();
-
-                            console.log(`Status Ketersediaan : ${surveiAvailable}`);
-
-                            if (!surveiAvailable) {
-                                return false;
+                            if (Array.isArray(checkCode)) {
+                            }else{
+                                let surveiAvailable = this.checkSurveiAvailability();
+                                console.log(`Status Ketersediaan : ${surveiAvailable}`);
+                                if (!surveiAvailable) {
+                                    return false;
+                                }
                             }
-
                             /*
                                 let daftarPertanyaanAvailable = await this.fetchDataTipeSurvei();
     
@@ -475,9 +475,11 @@
                                     return false;
                                 }
                             */
+
+                            // logika survei kewirausahaan dan formulir elektronik    
                             if (Array.isArray(checkCode)) {
-                                // window.location.href = "https://www.google.com";
-                                // Show the SweetAlert
+                                console.log(checkCode[1]);
+                                if (checkCode[1] == "kewirausahaan") {
                                     Swal.fire({
                                         title: 'Berhasil',
                                         icon: "success",
@@ -488,8 +490,23 @@
                                             Swal.showLoading()
                                         }
                                         }).then(() => {
-                                            window.location.href = window.location.origin + "/pengisian-survei2/?kode=" + this.kode;
+                                            window.location.href = window.location.origin + "/persiapan-survei-kewirausahaan/?kode=" + this.kode;
                                     });
+                                } else {
+                                    Swal.fire({
+                                        title: 'Berhasil',
+                                        icon: "success",
+                                        html: 'Mengarahkan ke Formulir Elektronik',
+                                        timer: 2000,
+                                        timerProgressBar: true,
+                                        didOpen: () => {
+                                            Swal.showLoading()
+                                        }
+                                        }).then(() => {
+                                            window.location.href = window.location.origin + "/survey/formulir_elektronik/view/" + this.kode + "/";
+                                    });
+                                }
+                                //
                             }else{
                                 Swal.fire({
                                     title: "Berhasil",
@@ -574,18 +591,22 @@
                         }
 
                     } else {
-                        Swal.fire({
-                            title: "Terjadi Kesalahan",
-                            html: `Survei dengan kode <b>${this.kode}</b> tidak ditemukan.`,
-                            icon: "error",
-                            confirmButtonText: "OK",
-                        });
-                        
-                        console.error('Error fetching data: Response data is undefined or empty.', response.data);
-
-                        return false;
+                        const axiosResponse = await axios.get("/survey/api/v1/survey_create/?kode=" + this.kode);
+                        console.log(axiosResponse);
+                        if (axiosResponse.data.length > 0) {
+                            return [true, 'formulir_elektronik'];
+                        } else {
+                            Swal.fire({
+                                title: "Terjadi Kesalahan",
+                                html: `Survei dengan kode <b>${this.kode}</b> tidak ditemukan.`,
+                                icon: "error",
+                                confirmButtonText: "OK",
+                            });
+                            return false;
+                        }
                     }
                 } catch (error) {
+                    console.log(3);
                     console.error('Error msg: ', error);
 
                     return false;
@@ -637,6 +658,9 @@
                         confirmButtonText: "OK",
                     });
                 }
+            },
+            async fetchFormulirElektronik(){
+                
             },
             checkSurveiAvailability() {
                 console.log('Tanggal saat ini kurang dari tanggal awal survei ? : ', this.tanggal_saat_ini <= this.tanggal_awal_survei)

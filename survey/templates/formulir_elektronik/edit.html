@@ -48,6 +48,12 @@
                     <label for="end_date" class="form-label">Tanggal Akhir :</label>
                     <input type="date" class="form-control" id="end_date" name="end_date">
                 </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <label for="batasan" class="form-label">Batasan Responden :</label>
+                    <input type="number" class="form-control" id="batasan" name="batasan" placeholder="isi jumlah responden">
+                </div>
                 <div class="col">
                     <label for="status" class="form-label">Status Survei :</label>
                     <select id="status" class="form-select">
@@ -71,9 +77,7 @@
     let survey_awal = "{{ survey.tanggal_awal }}";
     let survey_akhir = "{{ survey.tanggal_akhir }}";
     let survey_status = "{{ survey.status }}";
-
-    console.log(typeof survey_source);
-    console.log(survey_source);
+    let survey_limit = "{{ survey.batasan }}";
 
     if (survey_awal) {
         var parsedDate = moment(survey_awal, "MMMM D, YYYY");
@@ -89,7 +93,10 @@
         $('#end_date').val(formattedDate);
     }
 
+    console.log(survey_limit);
+
     $('#status').val(survey_status);
+    $('#batasan').val(survey_limit);
 
     var creator = new SurveyCreator.SurveyCreator("surveyCreatorContainer");
     SurveyCreator.StylesManager.applyTheme("default");
@@ -116,6 +123,7 @@
     function validation(json){
         var awal = $('#start_date').val();
         var akhir = $('#end_date').val();
+        var batasan = $('#batasan').val();
         var status = $('#status').val();
 
         if (status == null) {
@@ -151,19 +159,28 @@
                         icon: "error"
                     });
                 } else {
-                    saveSurveyJson(
-                        "/survey/api/v1/survey_create/"+id+"/",
-                        json,
-                        awal,
-                        akhir,
-                        status
-                    );
+                    if (isValidNumber(batasan)) {
+                        saveSurveyJson(
+                            "/survey/api/v1/survey_create/"+id+"/",
+                            json,
+                            awal,
+                            akhir,
+                            status,
+                            batasan
+                        );
+                    } else {
+                        Swal.fire({
+                            title: "Terjadi Kesalahan !",
+                            text: "Batasan responden tidak valid !",
+                            icon: "error"
+                        });
+                    }
                 }
             } 
         }
     }
 
-    function saveSurveyJson(url, json, awal, akhir, status) {
+    function saveSurveyJson(url, json, awal, akhir, status, batasan) {
 
         let judul = json.pages[0].title
 
@@ -177,6 +194,7 @@
             judul: judul,
             jsontext: json,
             status: status,
+            batasan: batasan,
             tanggal_awal: awal,
             tanggal_akhir: akhir
         }
@@ -200,11 +218,16 @@
         });
     }
 
-    creator.JSON = {
-        "pages": [
-            survey_source
-        ]
-    };
+    creator.JSON = 
+        survey_source
+    ;
     creator.render("surveyCreatorContainer");
+</script>
+
+<script>
+    // helper
+    function isValidNumber(str) {
+        return /^[1-9]/.test(str);
+    }
 </script>
 {% endblock js_tambahan %}

@@ -55,14 +55,14 @@ $(function () {
 
 
     $('.modal').on('hidden.bs.modal', function () {
-        const form = $(this).find('form');
+        const form = $(this).closest('form');
         // console.log('Form awal :', form);
-
+    
         if (form) {
-            // console.log('Form direset dengan form:', form);
             resetForm(form);
         }
     });
+    
 
     $('[type="reset"]').on('click', function () {
         let form = $(this).closest('form')[0];
@@ -95,8 +95,8 @@ if (window.Cleave) {
 }
 
 // ******** MAX MIN LENGTH ********
-if ($('.input-maxlength').attr("maxlength")) {
-    $('.input-maxlength').each(function () {
+if ($('input[type="number"]').attr("maxlength")) {
+    $('input[type="number"]').each(function () {
         $(this).maxlength({
             validate: !0,
             threshold: $(this).attr("maxlength"),

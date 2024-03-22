@@ -27,6 +27,9 @@ class CurrentUserSerializer(serializers.ModelSerializer):
         fields = ('username', 'email', 'id')
 
 class survey(serializers.ModelSerializer):
+
+    get_jumlah_responden = serializers.SerializerMethodField()
+
     pemilik = ChoiceField(choices=models.survey.PEMILIK_CHOICES)
     status = ChoiceField(choices=models.survey.STATUS_CHOICES)
     dibuat_oleh = CurrentUserSerializer(many=False)
@@ -36,13 +39,22 @@ class survey(serializers.ModelSerializer):
         model = models.survey
         read_only_fields = ["created"]
         fields = [
+            "id",
             "judul",
             "jsontext",
             "status",
+            "kode",
+            "batasan",
             "pemilik",
             "dibuat_oleh",
             "created",
+            "get_jumlah_responden",
+            "tanggal_awal",
+            "tanggal_akhir",
         ]
+
+    def get_jumlah_responden(self, obj):
+        return obj.get_jumlah_responden()
 
 class survey_create(serializers.ModelSerializer):
     class Meta:
@@ -53,6 +65,8 @@ class survey_create(serializers.ModelSerializer):
             "jsontext",
             "status",
             "pemilik",
+            "kode",
+            "batasan",
             "dibuat_oleh",
             "satker",
             "tanggal_awal",
@@ -60,6 +74,7 @@ class survey_create(serializers.ModelSerializer):
             "created",
             "last_updated",
         ]
+
 class surveyshort(serializers.ModelSerializer):
     class Meta:
         model = models.surveyshort
@@ -76,10 +91,11 @@ class survey_result(serializers.ModelSerializer):
     class Meta:
         model = models.survey_result
         fields = [
+            "id",
             "survey",
-            "shortcode",
+            "survey",
+            "user",
             "hasil",
-            "dibuat_oleh",
-            "created",
+            # "created",
         ]
 

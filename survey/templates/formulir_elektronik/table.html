@@ -3,10 +3,13 @@
     <tr>
       <th>No.</th>
       <th>ID</th>
+      <th>kode</th>
       <th>Judul</th>
       <th>Pemilik</th>
       <th>Satker</th>
       <th>Berlaku Sampai</th>
+      <th>Batas Responden</th>
+      <th>Jumlah Responden</th>
       <th>Status</th>
       <th>
         AKSI<i class="fas fa-edit ms-2"></i>
@@ -18,10 +21,13 @@
       <tr class="align-td-middle">
           <td>{{ forloop.counter }}</td>
           <td>{{ survey.id }}</td>
+          <td>{{ survey.kode }}</td>
           <td>{{ survey.judul }}</td>
           <td>{{ survey.dibuat_oleh.first_name }} {{ survey.dibuat_oleh.last_name }}</td>
           <td>{{ survey.satker.nama_satker }}</td>
-          <td>{{ survey.tanggal_awal }} - {{ survey.tanggal_akhir }}</td>
+          <td>{{ survey.tanggal_awal|date:"d F Y" }} s.d. {{ survey.tanggal_akhir|date:"d F Y" }}</td>
+          <td>{{ survey.batasan }} Orang</td>
+          <td>0 Orang</td>
           <td>
               {% if survey.status == '1' %}
                 <div class="text-center"><span class="badge bg-warning text-white"><i class="fas fa-edit me-2"></i>DRAFT</span></div>
@@ -36,13 +42,18 @@
           <td class="__action_button">
               <div class="list-button gx-3 text-uppercase">
                   <div>
+
+                      <a href="javascript:;" 
+                            class="badge bg-primary text-white text-decoration-none mb-1 button_cetak">
+                            <i class="fas fa-print me-2"></i>Cetak Link</a>
+
                       <a href="javascript:;"
-                              class="badge bg-warning text-white text-decoration-none mb-1 button_edit">
-                              <i class="fa-solid fa-pen-to-square"></i> Edit </a>
-                      
+                            class="badge bg-warning text-white text-decoration-none mb-1 button_edit">
+                            <i class="fa-solid fa-pen-to-square"></i> Edit </a>
+
                       <a href="javascript:;"
-                          class="badge bg-danger text-white text-decoration-none mb-1 button_delete">
-                          <i class="fa-solid fa-trash"></i> Delete</a>
+                            class="badge bg-danger text-white text-decoration-none mb-1 button_delete">
+                            <i class="fa-solid fa-trash"></i> Delete</a>
                   </div>
               </div>
           </td>

@@ -1,0 +1,458 @@
+{% extends 'dashboard/dashboard_base.html' %}
+{% load static %}
+
+{% block title %} Pembinaan Teknis {% endblock title %}
+
+{% block content %}
+<div class="breadcrumb">
+    <div class="row">
+        <h3 class="heading mb-2">Pembinaan Teknis</h3>
+        <span class="mb-0"><span class="text-muted fw-light">Kegiatan /</span><span class="ms-1 fw-medium">Pembinaan
+                Teknis</span></span>
+    </div>
+</div>
+
+<section id="__data">
+    <div class="card">
+        <div class="card-body">
+            <div id="headline" class="mb-3">
+                <h3 class="text-center">REKAPITULASI PEMBINAAN TEKNIS BNNP &amp; BNNK</h3>
+                <hr />
+            </div>
+
+            <div class="action-button">
+                <div class="d-flex justify-content-end mb-3 gap-2">
+                    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exportData"><i
+                            class="fas fa-file-export me-2"></i>Ekspor Data</button>
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createModal"><i
+                            class="fas fa-plus me-2"></i>Tambah Data</button>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                {% include 'dayatif/binaan_teknis2/table.html' %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block js_tambahan %}
+<script>
+    const columns = [{
+            className: 'dt-control',
+            orderable: false,
+            data: null,
+            defaultContent: ``,
+            // defaultContent: `<i class="fas fa-eye text-primary"></i>`,
+            width: '10%'
+        },
+        {
+            data: "detail.satker.nama_satker",
+            render: function (data, type, row) {
+                return `${data}`;
+            },
+        },
+        {
+            data: null,
+            render: function (data, type, row) {
+                return `2`;
+            },
+        },
+        {
+            data: "id",
+            render: function (data, type, row) {
+                const options = JSON.stringify({
+                    id: data,
+                    name: 'kegiatan',
+                    detail_name: row.detail.satker.nama_satker,
+                    apiURL: '/kegiatan/api/v1/dayatif/binaan_teknis2'
+                });
+
+                return `
+				<div class="list-button gx-3 text-uppercase">
+					<div>
+						<a href="javascript:void(0);" onclick="handleEdit(${data})"
+							class="badge bg-success text-white text-decoration-none mb-1"><i
+								class="fas fa-pen-to-square me-2"></i>Edit</a>
+					</div>
+					<div>
+						<a href="javascript:void(0);" class="badge bg-danger text-white text-decoration-none mb-1" onclick='handleDelete(${options})'><i
+								class="fas fa-trash-alt me-2"></i>Hapus</a>
+					</div>
+				</div>`;
+            },
+        },
+    ];
+
+    const table = $("#__table").DataTable({
+        language: dt_lang_config(),
+        serverSide: true,
+        searching: true,
+        responsive: true,
+        pageLength: 10,
+        ajax: {
+            url: `/kegiatan/api/v1/dayatif/binaan_teknis2/?format=datatables`,
+            dataSrc: "data",
+        },
+        ordering: true,
+        columns: columns,
+        initComplete: (settings, json) => console.log("Hasil fetch data : ", json),
+    });
+
+    $('#__table tbody').on('click', 'td.dt-control', function () {
+        const tr = $(this).closest('tr');
+        const row = table.row(tr);
+
+        if (row.child.isShown()) {
+            // This row is already open - close it
+            destroyChild(row);
+            tr.removeClass('shown');
+        } else {
+            // Open this row
+            createChild(row);
+            tr.addClass('shown');
+        }
+    });
+
+    function createChild(row) {
+        // This is the table we'll convert into a DataTable
+        const tableEl = $(`
+		<table id="__table" class="table table-bordered">
+			<thead class="bg-soft-blue">
+				<tr>
+					<th rowspan="2" class="bg-soft-success">No</th>
+					<th rowspan="2" class="bg-soft-success">Tanggal</th>
+					<th rowspan="2" class="bg-soft-success">Jumlah Hari Pelaksanaan Kerja</th>
+					<th rowspan="2" class="bg-soft-success">Satker Target</th>
+					<th rowspan="2" class="bg-soft-success">Jumlah Peserta</th>
+					<th rowspan="1" colspan="3" class="bg-soft-primary">Rincian Hasil Pelaksanaan Program
+						Pemberdayaan Alternatif Pada Satker
+						Target</th>
+					<th rowspan="2" class="bg-soft-success">Tindak Lanjut</th>
+					<th rowspan="2" class="bg-soft-success">Dokumentasi</th>
+					<th rowspan="2" class="bg-soft-success">Aksi <i class="fas fa-edit ms-2"></i></th>
+				</tr>
+				<tr>
+					<th rowspan="1" class="bg-soft-primary">Tujuan</th>
+					<th rowspan="1" class="bg-soft-primary">Hambatan/Kendala</th>
+					<th rowspan="1" class="bg-soft-primary">Kesimpulan</th>
+				</tr>
+			</thead>
+			<tbody class="align-tr-middle">
+			</tbody>
+		</table>`);
+
+        // Display it the child row
+        row.child(tableEl).show();
+
+        // Child columns
+        const childColumns = [
+			{
+				data: null
+			},
+            {
+                data: null,
+                render: function (data, type, row) {
+                    return `${row.tanggal_awal} s/d ${row.tanggal_akhir}`;
+                },
+            },
+            {
+                data: "jumlah_hari_pelaksanaan",
+                render: function (data, type, row) {
+                    return `${data} hari`;
+                },
+            },
+            {
+                data: "detail.satker.nama_satker",
+                render: function (data, type, row) {
+                    return `${data}`;
+                },
+            },
+            {
+                data: "jumlah_peserta",
+                render: function (data, type, row) {
+                    return `${data} orang`;
+                },
+            },
+            {
+                data: "tujuan",
+                render: function (data, type, row) {
+                    return `${data}`;
+                },
+            },
+            {
+                data: "kendala",
+                render: function (data, type, row) {
+                    return `${data}`;
+                },
+            },
+            {
+                data: "kesimpulan",
+                render: function (data, type, row) {
+                    return `${data}`;
+                },
+            },
+            {
+                data: "tindak_lanjut",
+                render: function (data, type, row) {
+                    return `${data}`;
+                },
+            },
+            {
+                data: "dokumentasi",
+                render: function (data, type, row) {
+                    const el = `<div class="text-center">
+					<a href="${data}" class="badge bg-primary text-white" target="_blank">
+						<i class="fas fa-eye me-2"></i>
+						Lihat dokumentasi
+					</a>
+				</div>`;
+
+                    return el;
+                },
+            },
+            {
+                data: "id",
+                render: function (data, type, row) {
+                    const options = JSON.stringify({
+                        id: data,
+                        name: 'kegiatan',
+                        detail_name: row.detail.satker.nama_satker,
+                        apiURL: '/kegiatan/api/v1/dayatif/binaan_teknis2_kegiatan'
+                    });
+
+                    return `
+				<div class="list-button gx-3 text-uppercase">
+					<div>
+						<a href="javascript:void(0);" onclick="handleEdit(${data})"
+							class="badge bg-success text-white text-decoration-none mb-1"><i
+								class="fas fa-pen-to-square me-2"></i>Edit</a>
+					</div>
+					<div>
+						<a href="javascript:void(0);" class="badge bg-danger text-white text-decoration-none mb-1" onclick='handleDelete(${options})'><i
+								class="fas fa-trash-alt me-2"></i>Hapus</a>
+					</div>
+				</div>`;
+                },
+            },
+        ];
+
+        // Initialise as a DataTable
+        const childTable = tableEl.DataTable({
+            language: dt_lang_config(),
+            serverSide: true,
+            searching: true,
+            responsive: true,
+            pageLength: 10,
+            ajax: {
+                url: `/kegiatan/api/v1/dayatif/binaan_teknis2_kegiatan/?format=datatables`,
+                dataSrc: "data",
+            },
+            ordering: true,
+            columns: childColumns,
+            initComplete: (settings, json) => console.log("Hasil fetch data : ", json),
+            columnDefs: [
+                dt_row_pagination(),
+            ],
+        });
+    }
+
+    function destroyChild(row) {
+        const childTable = $("table", row.child());
+        childTable.detach();
+        childTable.DataTable().destroy();
+
+        // And then hide the row
+        row.child.hide();
+    }
+</script>
+
+<script>
+    async function handlePost(e) {
+        e.preventDefault();
+
+        showSwalLoading();
+
+        const modal = $('#createModal');
+        const form = $('#createForm');
+
+        const tanggal_awal = form.find('#create__tanggal_awal').val();
+        const tanggal_akhir = form.find('#create__tanggal_akhir').val();
+        const jumlah_hari_pelaksanaan = form.find('#create__jumlah_hari_pelaksanaan').val();
+        const satker = form.find('#create__satker').val();
+        const satker_target = form.find('#create__satker_target').val();
+        const jumlah_peserta = form.find('#create__jumlah_peserta').val();
+        const tujuan = form.find('#create__tujuan').val();
+        const kendala = form.find('#create__kendala').val();
+        const kesimpulan = form.find('#create__kesimpulan').val();
+        const tindak_lanjut = form.find('#create__tindak_lanjut').val();
+        const dokumentasi = form.find('#create__dokumentasi')[0].files[0];
+
+        const payload = {
+            satker,
+            satker_target,
+            tanggal_awal,
+            tanggal_akhir,
+            jumlah_hari_pelaksanaan,
+            jumlah_peserta,
+            tujuan,
+            kendala,
+            kesimpulan,
+            tindak_lanjut,
+            dokumentasi
+        };
+
+        const formData = new FormData();
+
+        formData.append('parent', parseInt(parent));
+        formData.append('tanggal_awal', tanggal_awal);
+        formData.append('tanggal_akhir', tanggal_akhir);
+        formData.append('jumlah_hari_pelaksanaan', jumlah_hari_pelaksanaan);
+        formData.append('satker', parseInt(satker));
+        formData.append('satker_target', parseInt(satker_target));
+        formData.append('jumlah_peserta', jumlah_peserta);
+        formData.append('tujuan', tujuan);
+        formData.append('kendala', kendala);
+        formData.append('kesimpulan', kesimpulan);
+        formData.append('tindak_lanjut', tindak_lanjut);
+        formData.append('dokumentasi', dokumentasi);
+
+        console.log('Payload :', payload);
+
+        try {
+            const response = await axios.post(`/kegiatan/api/v1/dayatif/binaan_teknis/`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+
+            modal.modal('hide');
+            showSwalSuccess('Berhasil!', `Data kegiatan telah <b>berhasil</b> ditambahkan!`);
+        } catch (error) {
+            showSwalGenericError();
+            console.error('Terjadi kesalahan :', error);
+        } finally {
+            table.ajax.reload();
+        }
+    }
+
+    async function handleEdit(id) {
+        $('.modal').modal('hide');
+
+        try {
+            const response = await axios.get(`/kegiatan/api/v1/dayatif/binaan_teknis/${id}/`);
+            const data = response.data;
+
+            const modal = $('#editModal');
+            const form = $('#editForm');
+
+            modal.find('#edit__info').text(data.detail.satker.nama_satker);
+            form.find('#edit__id').val(data.id);
+
+            form.find('#edit__tanggal_awal').val(data.tanggal_awal);
+            form.find('#edit__tanggal_akhir').val(data.tanggal_akhir);
+            form.find('#edit__jumlah_hari_pelaksanaan').val(data.jumlah_hari_pelaksanaan);
+            form.find('#edit__satker').val(data.satker).trigger('change');
+            form.find('#edit__satker_target').val(data.satker_target).trigger('change');
+            form.find('#edit__jumlah_peserta').val(data.jumlah_peserta);
+            form.find('#edit__tujuan').val(data.tujuan);
+            form.find('#edit__kendala').val(data.kendala);
+            form.find('#edit__kesimpulan').val(data.kesimpulan);
+            form.find('#edit__tindak_lanjut').val(data.tindak_lanjut);
+            // form.find('#edit__dokumentasi')[0].files[0];
+
+            modal.modal('show');
+        } catch (error) {
+            showSwalGenericError();
+            console.error('Terjadi kesalahan :', error);
+        }
+    }
+
+    async function handleUpdate(e) {
+        e.preventDefault();
+
+        showSwalLoading();
+
+        const modal = $('#editModal');
+        const form = $('#editForm');
+
+        const id = form.find('#edit__id').val();
+
+        const tanggal_awal = form.find('#edit__tanggal_awal').val();
+        const tanggal_akhir = form.find('#edit__tanggal_akhir').val();
+        const jumlah_hari_pelaksanaan = form.find('#edit__jumlah_hari_pelaksanaan').val();
+        const satker = form.find('#edit__satker').val();
+        const satker_target = form.find('#edit__satker_target').val();
+        const jumlah_peserta = form.find('#edit__jumlah_peserta').val();
+        const tujuan = form.find('#edit__tujuan').val();
+        const kendala = form.find('#edit__kendala').val();
+        const kesimpulan = form.find('#edit__kesimpulan').val();
+        const tindak_lanjut = form.find('#edit__tindak_lanjut').val();
+        const dokumentasi = form.find('#edit__dokumentasi')[0].files[0];
+
+        const payload = {
+            satker,
+            satker_target,
+            tanggal_awal,
+            tanggal_akhir,
+            jumlah_hari_pelaksanaan,
+            jumlah_peserta,
+            tujuan,
+            kendala,
+            kesimpulan,
+            tindak_lanjut,
+            dokumentasi
+        };
+
+        const formData = new FormData();
+
+        formData.append('tanggal_awal', tanggal_awal);
+        formData.append('tanggal_akhir', tanggal_akhir);
+        formData.append('jumlah_hari_pelaksanaan', jumlah_hari_pelaksanaan);
+        formData.append('satker', parseInt(satker));
+        formData.append('satker_target', parseInt(satker_target));
+        formData.append('jumlah_peserta', jumlah_peserta);
+        formData.append('tujuan', tujuan);
+        formData.append('kendala', kendala);
+        formData.append('kesimpulan', kesimpulan);
+        formData.append('tindak_lanjut', tindak_lanjut);
+
+        if (dokumentasi) {
+            formData.append('dokumentasi', dokumentasi);
+        }
+
+        console.log('Payload :', payload);
+
+        try {
+            const response = await axios.patch(`/kegiatan/api/v1/dayatif/binaan_teknis/${id}/`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+
+            modal.modal('hide');
+            showSwalSuccess('Berhasil!', `Data kegiatan telah <b>berhasil</b> diperbarui!`);
+        } catch (error) {
+            showSwalGenericError();
+            console.error('Terjadi kesalahan :', error);
+        } finally {
+            table.ajax.reload();
+        }
+    }
+</script>
+<script>
+    $(function () {
+        /*
+        	$('#editKegiatanModal').on('hidden.bs.modal', function () {
+        		$('#detailKegiatanModal').modal('show');
+        	});
+        */
+    });
+</script>
+{% endblock %}
+
+{% block modal_tambahan %}
+{% include 'dayatif/binaan_teknis/modals/create_modal.html' %}
+{% include 'dayatif/binaan_teknis/modals/edit_modal.html' %}
+{% endblock %}

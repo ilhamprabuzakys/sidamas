@@ -26,6 +26,7 @@ urlpatterns = (
     path("formulir_elektronik/", views.FormulirElektronikView.as_view(), name="formulir_elektronik"),
     path("formulir_elektronik/create/", views.FormulirElektronikCreateView.as_view(), name="formulir_elektronik_create"),
     path("formulir_elektronik/edit/<int:id>/", views.FormulirElektronikEditView.as_view(), name="formulir_elektronik_edit"),
+    path("formulir_elektronik/view/<slug:slug>/", views.FormulirElektronikViewView.as_view(), name="formulir_elektronik_view"),
     # PSM
     path("psm/skm_tes_urine/", views.SKMTesUrineView.as_view(), name="psm_skm_tes_urine"),
     # Dayatif
