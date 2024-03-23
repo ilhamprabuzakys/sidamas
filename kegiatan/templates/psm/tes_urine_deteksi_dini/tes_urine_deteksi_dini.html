@@ -47,7 +47,14 @@ Bimbingan Teknis Life Skill
 <script src="{% static 'assets/dashboard/js/bawaan/forms-extras.js' %}"></script>
 
 <script>
+  var id_edit_global;
+
   $(document).ready(function() {
+    // remove peserta
+    $('[data-repeater-list="peserta-group-lama"]').on('click', '.gundam', function() {
+      $(this).closest('[data-repeater-item-lama]').remove();
+    });
+
   $('#simpan_data').click(function() {
       var url = "/kegiatan/api/v1/psm/tes_urine/"
 
@@ -94,6 +101,61 @@ Bimbingan Teknis Life Skill
     });
   });
 
+  $('#editButton').click(function() {
+      var url = "/kegiatan/api/v1/psm/tes_urine/"+id_edit_global+"/"
+
+      var formData = new FormData();
+      formData.append('satker', $('#edit__satker').val());
+      formData.append('tanggal_awal', $('#edit__tanggal_awal').val());
+      formData.append('tanggal_akhir', $('#edit__tanggal_akhir').val());
+      formData.append('satker_target', $('#edit__satker_target').val());
+      formData.append('nama_lingkungan', $('#edit__nama_lingkungan').val());
+      formData.append('tindak_lanjut', $('#edit__tindak_lanjut').val());
+      formData.append('dokumentasi', $('#edit__dokumentasi')[0].files[0]);
+
+      var pesertaArray = [];
+      $('.form-repeater [data-repeater-item]').each(function(index, element) {
+        pesertaArray.push({
+              nama: $(element).find('[id^="form-repeater"]').eq(0).val(),
+              alamat: $(element).find('[id^="form-repeater"]').eq(1).val(),
+              gender: $(element).find('[id^="form-repeater"]').eq(2).val(),
+              status: $(element).find('[id^="form-repeater"]').eq(3).val()
+          });
+      });
+      formData.append('pesertaArray', JSON.stringify(removeEmptyObjects(pesertaArray)));
+
+      var peserta_lamaArray = [];
+      $('.form-repeater-lama [data-repeater-item-lama]').each(function(index, element) {
+        peserta_lamaArray.push({
+              nama: $(element).find('[id^="form-repeater-edit-lama"]').eq(0).val(),
+              alamat: $(element).find('[id^="form-repeater-edit-lama"]').eq(1).val(),
+              gender: $(element).find('[id^="form-repeater-edit-lama"]').eq(2).val(),
+              status: $(element).find('[id^="form-repeater-edit-lama"]').eq(3).val()
+          });
+      });
+      formData.append('peserta_lamaArray', JSON.stringify(peserta_lamaArray));
+      
+      axios.put(url, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        })
+        .then(function (response) {
+            swal.fire({
+                title: "Berhasil menyimpan survei !",
+                icon : "success",
+                timer: 1500,
+                timerProgressBar: true,
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+            }).then((result) => {
+            });
+        })
+        .catch(function (error) {
+            console.error(error);
+        });
+  });
+
   function handlePost(e) {
     e.preventDefault(); 
 
@@ -117,10 +179,7 @@ Bimbingan Teknis Life Skill
           });
       });
   };
-</script>
 
-<!-- manggil data datatabels -->
-<script>
   let table = $("#__table").DataTable({
     language: dt_lang_config(),
     serverSide: false,
@@ -284,31 +343,71 @@ Bimbingan Teknis Life Skill
   }
 
   async function handleEditModal(id) {
+
+    console.log(id);
+
     try {
       const response = await axios.get(`/kegiatan/api/v1/psm/tes_urine/${id}/get_detail_data_detail/`);
-      const data = response.data;
-      console.log(data);
-      // const form = $('#editForm');
-      // $('#edit__info').text(data.detail.satker.nama_satker);
+      const data = response.data[0];
+      id_edit_global = data.id
 
-      // $('#edit__id').val(data.id);
-      // $('#edit__tanggal_awal').val(data.tanggal_awal);
-      // $('#edit__tanggal_akhir').val(data.tanggal_akhir);
-      // (data.tanggal_akhir ? $('#edit__tanggal_akhir').attr('disabled', false) : $('#edit__tanggal_akhir').attr('disabled', true))
-      // $('#edit__satker').val(data.satker).trigger('change');
-      // $('#edit__satker_target').val(data.satker_target).trigger('change');
-      // $('#edit__deskripsi').val(data.deskripsi);
-      // $('#edit__kendala').val(data.kendala);
-      // $('#edit__kesimpulan').val(data.kesimpulan);
-      // $('#edit__tindak_lanjut').val(data.tindak_lanjut);
+      $('#edit__satker').val(data.satker_id).trigger('change'); // Assuming 'satker' is a property in data
+      $('#edit__tanggal_awal').val(data.tanggal_awal);
+      $('#edit__tanggal_akhir').val(data.tanggal_akhir);
+      $('#edit__satker_target').val(data.satker_target).trigger('change');
+      $('#edit__nama_lingkungan').val(data.nama_lingkungan);
+      $('#edit__tindak_lanjut').val(data.tindak_lanjut);
 
-      $('#modalEdit').modal('show');
+      $('[data-repeater-list="peserta-group-lama"]').children().remove();
+
+      populateFormRepeater(data.peserta);
+
+      $('#editData').modal('show');
     } catch (error) {
       showSwalGenericError();
       console.error('Terjadi kesalahan :', error);
     }
   }
 
+    // Function to retrieve data from the modal
+    function getDataFromModal() {
+    var data = {
+        'satker': $('#edit__satker').val(),
+        'tanggal_awal': $('#edit__tanggal_awal').val(),
+        'tanggal_akhir': $('#edit__tanggal_akhir').val(),
+        'satker_target': $('#edit__satker_target').val(),
+        'nama_lingkungan': $('#edit__nama_lingkungan').val(),
+        'peserta_lama': [],
+        'peserta': [],
+        'tindak_lanjut': $('#edit__tindak_lanjut').val(),
+        'dokumentasi': $('#edit__dokumentasi').val()
+    };
+
+    // Retrieving peserta data from form-repeater
+    $('.form-repeater [data-repeater-item]').each(function(index, element) {
+        data.peserta.push({
+              nama: $(element).find('[id^="form-repeater"]').eq(0).val(),
+              alamat: $(element).find('[id^="form-repeater"]').eq(1).val(),
+              gender: $(element).find('[id^="form-repeater"]').eq(2).val(),
+              status: $(element).find('[id^="form-repeater"]').eq(3).val()
+          });
+      });
+
+      data.peserta = removeEmptyObjects(data.peserta);
+
+      $('.form-repeater-lama [data-repeater-item-lama]').each(function(index, element) {
+        data.peserta_lama.push({
+              nama: $(element).find('[id^="form-repeater-edit-lama"]').eq(0).val(),
+              alamat: $(element).find('[id^="form-repeater-edit-lama"]').eq(1).val(),
+              gender: $(element).find('[id^="form-repeater-edit-lama"]').eq(2).val(),
+              status: $(element).find('[id^="form-repeater-edit-lama"]').eq(3).val()
+          });
+      });
+
+      return data;
+}
+    // Example of how to use the retrieved data
+    
 </script>
 <!--  -->
 
@@ -349,7 +448,6 @@ Bimbingan Teknis Life Skill
       return formattedData;
   }
 
-  
   function countHasilTest(data) {
     let countPositif = 0;
     let countNegatif = 0;
@@ -366,6 +464,54 @@ Bimbingan Teknis Life Skill
         positif: countPositif,
         negatif: countNegatif
     };
+  }
+
+  function populateFormRepeater(data) {
+      data.forEach(function(item) {
+          var $repeaterItem = $('<div data-repeater-item-lama></div>');
+
+          $repeaterItem.append('<div class="row">' +
+              '<div class="mb-3 col-lg-5 col-sm-10 mb-0">' +
+              '<label class="form-label" for="form-repeater-edit-lama-1-1">Nama </label>' +
+              '<input type="text" class="form-control" id="form-repeater-edit-lama-1-1" placeholder="Nama Peserta" value="' + item.nama_peserta + '"/>' +
+              '</div>' +
+              '<div class="mb-3 col-lg-5 col-sm-10 mb-0">' +
+              '<label class="form-label" for="form-repeater-edit-lama-1-2">Alamat</label>' +
+              '<input type="text" class="form-control" id="form-repeater-edit-lama-1-2" placeholder="Alamat Peserta" value="' + item.alamat + '"/>' +
+              '</div>' +
+              '<div class="mb-3 col-lg-5 col-sm-10 mb-0">' +
+              '<label class="form-label mb-3 d-block" for="form-repeater-edit-lama-1-4">Status</label>' +
+              '<select class="form-select" id="form-repeater-edit-lama-1-4" name="status">' +
+              '<option value="" disabled>Pilih Status</option>' +
+              '<option value="P"' + (item.hasil_test === 'Positif' ? ' selected' : '') + '>Positif</option>' +
+              '<option value="N"' + (item.hasil_test === 'Negatif' ? ' selected' : '') + '>Negatif</option>' +
+              '</select>' +
+              '</div>' +
+              '<div class="mb-3 col-lg-5 col-sm-10 mb-0">' +
+              '<label class="form-label mb-3 d-block" for="form-repeater-edit-lama-1-3">Jenis Kelamin</label>' +
+              '<select class="form-select" id="form-repeater-edit-lama-1-3" name="jenis_kelamin">' +
+              '<option value="" disabled>Pilih Jenis Kelamin</option>' +
+              '<option value="L"' + (item.jenis_kelamin === 'Laki-Laki' ? ' selected' : '') + '>Laki-laki</option>' +
+              '<option value="P"' + (item.jenis_kelamin === 'Perempuan' ? ' selected' : '') + '>Perempuan</option>' +
+              '</select>' +
+              '</div>' +
+              '<div class="mb-3 col-lg-12 col-xl-2 col-12 d-flex align-items-center mb-0">' +
+              '<button class="btn btn-label-danger mt-4 gundam" data-repeater-delete type="button" value="Delete">' +
+              '<i class="ti ti-x ti-xs me-1"></i>' +
+              '<span class="align-middle">Hapus</span>' +
+              '</button>' +
+              '</div>' +
+              '</div>' +
+              '<hr class="mx-n4">');
+
+          $('[data-repeater-list="peserta-group-lama"]').append($repeaterItem);
+      });
+  }
+
+  function removeEmptyObjects(array) {
+      return array.filter(function(obj) {
+          return obj.nama !== "" || obj.alamat !== "" || obj.gender !== null || obj.status !== null;
+      });
   }
 </script>
 <!-- helper -->

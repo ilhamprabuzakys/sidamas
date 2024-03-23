@@ -25,7 +25,7 @@
 
       <div class="action-button">
         <div class="d-flex justify-content-end mb-3 gap-2">
-          <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exportData">
+          <button class="btn btn-success" data-bs-toggle="modal" onclick="handleExport()">
             <i class="fas fa-file-export me-2"></i>Ekspor Data
           </button>
           <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createModal">
@@ -48,14 +48,18 @@
     serverSide: false,
     searching: true,
     responsive: true,
-    pageLength: 1,
+    pageLength: 5,
     order: [[1, 'asc']],
     ajax: {
       url: `/kegiatan/api/v1/psm/rakernis/get_detail_data/?format=datatables`,
       dataSrc: function (json) {
         let data = json.data.map((item, index) => {
-          item._group = item.nama_satker;
-          item._group2 = item.nama_satker;
+          item._group = [
+            item.nama_satker,
+            item.satker_id,
+            item.status,
+            item.satker_level
+          ];
           return item;
         });
         return data;
@@ -124,30 +128,34 @@
       },
     ],
     rowGroup: {
-      dataSrc: ['_group'],
+      dataSrc: ['_group.0','_group.2'],
       className: 'bg-soft-primary',
       startRender: function (rows, group) {
-        let rowData = rows.eq(0).data();
-        let satker_id = group;
-        console.log("Hasil fetch data : ", rowData)
-		console.log(satker_id)
-
+        let raw_data = rows.data()[0]._group;
         let tr = document.createElement('tr');
-        addCell(tr, group, 8);
+        const Arg = JSON.stringify({
+          id: raw_data[1],
+          nama: raw_data[0]
+        });
+
+        let userLevel = (raw_data[2] == 0 && raw_data[3] == 1) || (raw_data[2] == 1 && raw_data[3] == 0) || (raw_data[2] == 2 && raw_data[3] == 2);
+        
         let buttonKirim = `
-            <td>
-                <div>
-                    <a href="javascript:void(0);" onclick="handleKirim('${satker_id}')" style="background-color:#00A0A9;" class="badge text-white text-decoration-none mb-1">
-                        <i class="fa-regular fa-paper-plane me-2"></i>Kirim Semua
-                    </a>
-                </div>
-            </td>
+        <td>
+          <div>
+            <a href="javascript:void(0);" ${(userLevel ? `onclick='handleKirim(${Arg})' style="background-color:#00A0A9;" class="badge` : 'class="badge bg-secondary')} text-white text-decoration-none mb-1">
+                <i class="fa-regular fa-paper-plane me-2"></i>Kirim Semua
+              </a>
+            </div>
+          </td>
         `;
+        
+        addCell(tr, group, 8);
         let td = document.createElement('td');
-        td.innerHTML = buttonKirim;
+        td.innerHTML = (raw_data[3] == 2 ? "" : buttonKirim);
         tr.appendChild(td);
 
-        return tr
+        return tr;
       }
     },
     columnDefs: [
@@ -240,7 +248,7 @@
         }
       );
 
-      $("div#modalTambah").modal("hide");
+      $("div#createModal").modal("hide");
       showSwalSuccess(
         "Berhasil!",
         `Data kegiatan telah <b>berhasil</b> ditambahkan!`
@@ -340,16 +348,16 @@
     }
   }
 
-  async function handleKirim(satker) {
-    const confirmResult = await showSwalConfirm(`Apakah anda yakin untuk mengirim semua kegiatan dari Satuan Kerja <b>${satker.nama}</b>`, 'Ya, hapus data');
+  async function handleKirim(data) {
+    const confirmResult = await showSwalConfirm(`Apakah anda yakin untuk mengirim semua kegiatan dari Satuan Kerja <b>${data.nama}</b>`, 'Ya, kirim data');
     if (!confirmResult.isConfirmed) return;
     showSwalLoading();
     await sleep(1000);
     try {
-      const response = await axios.post('/kegiatan/api/v1/psm/rakernis/kirim_kegiatan/', { satker_id: satker.id });
+      const response = await axios.post('/kegiatan/api/v1/psm/rakernis/kirim_kegiatan/', { satker_id: data.id });
       console.log('Respose :', response);
       const sendedToParent = response.data.parent.keterangan;
-      showSwalSuccess('Berhasil', `Data <b>kegiatan</b> untuk <b>${satker.nama}</b> telah berhasil <b>dikirimkan ke <b>${sendedToParent}</b></b>`);
+      showSwalSuccess('Berhasil', `Data <b>kegiatan</b> untuk <b>${data.nama}</b> telah berhasil <b>dikirimkan ke <b>${sendedToParent}</b></b>`);
       reloadAllDataTables();
     } catch (error) {
       showSwalGenericError();
@@ -361,12 +369,12 @@
     showSwalLoading();
     await sleep(1000);
     try {
-      const response = await axios.post('/kegiatan/api/v1/dayatif/binaan_teknis/export_data/');
+      const response = await axios.post('/kegiatan/api/v1/psm/rakernis/export_data/');
       const data = response.data;
       window.location.href = data.file_path;
       const confirmation = await Swal.fire({
         title: "Berhasil",
-        html: `Data <b>Kegiatan Binaan Teknis</b> telah <b>berhasil</b> diexport! <br>Klik tombol unduh ulang apabila <b>gagal</b>!`,
+        html: `Data <b>Kegiatan Rapat Kerja Teknis</b> telah <b>berhasil</b> diexport! <br>Klik tombol unduh ulang apabila <b>gagal</b>!`,
         icon: "success",
         confirmButtonText: "Unduh ulang.",
         showCancelButton: true,

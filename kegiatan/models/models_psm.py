@@ -49,6 +49,7 @@ class PSM_BINAAN_TEKNIS(models.Model):
     kesimpulan = models.TextField(blank=True, null=True, max_length=2000, verbose_name='Kesimpulan')
     tindak_lanjut = models.TextField(blank=True, null=True, max_length=2000, verbose_name='Tindak Lanjut')
     dokumentasi = models.FileField(upload_to="uploads/kegiatan/psm/bintek/")
+    status = models.IntegerField(default=0, verbose_name="Status Pengiriman Kegiatan")
     
     class Meta:
         ordering = ['-updated_at']

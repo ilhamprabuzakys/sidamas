@@ -99,6 +99,7 @@ if ($('input[type="number"]').attr("maxlength")) {
     $('input[type="number"]').each(function () {
         $(this).maxlength({
             validate: !0,
+            alwaysShow: false,
             threshold: $(this).attr("maxlength"),
         });
     });

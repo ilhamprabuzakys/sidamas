@@ -30,7 +30,9 @@
           </div>
         </div>
         <div class="table-responsive">
-          {% include 'psm/monev_supervisi_kegiatan_kotan/table.html' %}
+          <!-- {% include 'psm/monev_supervisi_kegiatan_kotan/table.html' %} -->
+            <div id="example" class='container'></div>
+
         </div>
       </div>
     </div>
@@ -38,11 +40,8 @@
 {% endblock %}
 
 {% block css_tambahan %}
-  <link rel="stylesheet" href="{% static 'assets/dashboard/vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}" />
-{% endblock %}
-
-{% block js_tambahan %}
-  <script src="{% static 'assets/dashboard/vendor/libs/datatables-bs5/datatables-bootstrap5.js' %}"></script>
+  <!-- <link rel="stylesheet" href="{% static 'assets/dashboard/vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}" /> -->
+  <!-- <script src="{% static 'assets/dashboard/vendor/libs/datatables-bs5/datatables-bootstrap5.js' %}"></script>
   <script src="{% static 'assets/dashboard/vendor/libs/jquery-repeater/jquery-repeater.js' %}"></script>
   <script src="{% static 'assets/dashboard/vendor/libs/bootstrap-select/bootstrap-select.js' %}"></script>
   <script src="{% static 'assets/dashboard/js/bawaan/forms-extras.js' %}"></script>
@@ -85,6 +84,91 @@
         }
       })
     })
+  </script> -->
+
+  <script src="{% static 'assets/dashboard/vendor/libs/nested-datatables/nested.tables.js' %}"></script>
+
+  <script>
+window.addEventListener('load', function() {
+  const dataInJson = [
+    {
+        "id": "15",
+        "nama_satker": "BNNP Jawa Barat",
+        "tanggal_awal": "2024-03-01",
+        "tanggal_akhir": "2024-03-22",
+        "deskripsi": "TEST",
+        "level": "0",
+        "bnnk": [
+            {
+                "bnnk": "BNN Kabupaten Cianjur",
+                "data": [
+                    {
+                        "tanggal_awal": "2024-03-21",
+                        "tanggal_akhir": null,
+                        "deskripsi": "asd"
+                    },
+                    {
+                        "tanggal_awal": "2024-03-21",
+                        "tanggal_akhir": null,
+                        "deskripsi": "asd"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "id": "213",
+        "nama_satker": "BNN Pusat",
+        "tanggal_awal": "2024-03-23",
+        "tanggal_akhir": "2024-03-23",
+        "deskripsi": "Mom",
+        "level": "2",
+        "bnnk": [
+            {
+                "tanggal_awal": "2024-03-21",
+                "tanggal_akhir": null,
+                "deskripsi": "asd"
+            }
+        ]
+    },
+    {
+        "id": "16",
+        "nama_satker": "BNNP Jawa Tengah",
+        "tanggal_awal": "2024-03-23",
+        "tanggal_akhir": "2024-09-12",
+        "deskripsi": "Proident iusto adip",
+        "level": "0",
+        "bnnk": [
+            {
+                "bnnk": "BNN Kota Tegal",
+                "data": [
+                    {
+                        "tanggal_awal": "2024-03-23",
+                        "tanggal_akhir": "2024-04-30",
+                        "deskripsi": "Officia ad qui quibu"
+                    }
+                ]
+            }
+        ]
+    }
+];
+
+      const settings = {
+        iDisplayLength: 20,
+        bLengthChange: false,
+        bFilter: false,
+        bSort: false,
+        bInfo: false,
+      };
+
+      const tableCoba = new nestedTables.TableHierarchy(
+        "example",
+        dataInJson,
+        settings
+      );
+
+      tableCoba.initializeTableHierarchy();
+})
   </script>
 {% endblock %}
 

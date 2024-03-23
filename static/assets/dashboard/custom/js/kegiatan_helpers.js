@@ -43,7 +43,60 @@ document.addEventListener("DOMContentLoaded", function () {
         inputDate.setAttribute("min", currentYear + "-01-01");
         inputDate.setAttribute("max", currentYear + "-12-31");
     });
+
+    
+    
 });
+
+/***=======================================================
+* KEGIATAN MAX MIN INPUT DATE
+=======================================================***/
+// Tambahkan event listener untuk saat modal ditampilkan
+document.addEventListener('show.bs.modal', function(event) {
+    // Temukan modal yang ditampilkan
+    const modal = event.target;
+
+    // Temukan elemen parent dengan class range_date di dalam modal
+    const rangeDateParent = modal.querySelector('.range_date');
+
+    if (!rangeDateParent) return;
+    // Ambil semua input date di dalam parent
+    const dateInputs = rangeDateParent.querySelectorAll('input[type="date"]');
+
+    // Pastikan terdapat minimal dua input date
+    if (!dateInputs.length >= 2) return
+
+    // Ambil input pertama (start_date)
+    const startDateInput = dateInputs[0];
+
+    // Ambil input kedua (end_date)
+    const endDateInput = dateInputs[1];
+
+    // Tambahkan event listener untuk input end_date
+    endDateInput.addEventListener('input', function() {
+        // Ambil value dari end_date input
+        const endDateValue = endDateInput.value;
+
+        // Jika end_date sudah diset
+        if (endDateValue) {
+            // Batasi start_date agar tidak melebihi end_date
+            startDateInput.max = endDateValue;
+        }
+    });
+
+    // Tambahkan event listener untuk input start_date
+    startDateInput.addEventListener('input', function() {
+        // Ambil value dari start_date input
+        const startDateValue = startDateInput.value;
+
+        // Jika start_date sudah diset
+        if (startDateValue) {
+            // Batasi end_date agar tidak kurang dari start_date
+            endDateInput.min = startDateValue;
+        }
+    });
+});
+
 
 function getTanggalKegiatan(tanggal_awal, tanggal_akhir) {
     const start = moment(tanggal_awal);

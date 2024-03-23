@@ -396,9 +396,6 @@ class DAYATIF_BINAAN_TEKNIS_OLD_View(DayatifBaseView, TemplateView):
         
         satker = self.request.user.profile.satker
         
-        # context['satker'] = Satker.objects.exclude(Q(nama_satker__icontains='BNN Kota') | Q(nama_satker__icontains='BNN Kabupaten'))
-        # context['satker_undang'] = Satker.objects.exclude(pk=213)
-        
         if satker.level == 0:
             context['satker'] = Satker.objects.filter(parent=satker.pk)
         else:
@@ -410,12 +407,7 @@ class DAYATIF_BINAAN_TEKNIS_View(DayatifBaseView, TemplateView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        
         satker = self.request.user.profile.satker
-        
-        # context['satker'] = Satker.objects.exclude(Q(nama_satker__icontains='BNN Kota') | Q(nama_satker__icontains='BNN Kabupaten'))
-        # context['satker_undang'] = Satker.objects.exclude(pk=213)
-        
         satker_status_pengiriman_semua_kegiatan = satker.dayatif_binaan_teknis_satker.filter(status=2).count() == satker.dayatif_binaan_teknis_satker.count()
         context['satker_status_pengiriman_semua_kegiatan'] = satker_status_pengiriman_semua_kegiatan
         

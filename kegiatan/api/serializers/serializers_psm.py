@@ -16,7 +16,7 @@ class PSM_RAKERNIS_Serializer(serializers.ModelSerializer):
         model = models.PSM_RAKERNIS
         exclude = []
         datatables_always_serialize = ['id', 'satker_id', 'satker_target', 'nama_satker_target', 'nama_satker', 'tanggal_awal', 'tanggal_akhir',
-            'deskripsi', 'kendala', 'kesimpulan', 'tindak_lanjut', 'dokumentasi', 'status', 'satker_level', 'pelaksanaan']
+            'deskripsi', 'kendala', 'kesimpulan', 'tindak_lanjut', 'dokumentasi', 'status', 'satker_level']
         
 
 class PSM_BINAAN_TEKNIS_DETAIL_Serializer(serializers.Serializer):
@@ -32,7 +32,7 @@ class PSM_BINAAN_TEKNIS_Serializer(serializers.ModelSerializer):
         model = models.PSM_BINAAN_TEKNIS
         exclude = []
         datatables_always_serialize = ['id', 'satker_id', 'satker_target', 'nama_satker_target', 'nama_satker', 'tanggal_awal', 'tanggal_akhir',
-            'deskripsi', 'kendala', 'kesimpulan', 'tindak_lanjut', 'dokumentasi']
+            'deskripsi', 'kendala', 'kesimpulan', 'tindak_lanjut', 'dokumentasi', 'status', 'satker_level']
 
 class PSM_ASISTENSI_DETAIL_Serializer(serializers.Serializer):
     satker = SatkerSerializer(many=False, read_only=True)

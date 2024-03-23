@@ -158,6 +158,13 @@
 				dt_row_pagination(),
 			],
 		*/
+		responsive: {
+			details: {
+				display: DataTable.Responsive.display.childRowImmediate,
+				target: '',
+				type: 'none'
+			}
+		}
     });
 
 	$('#__table').on('draw.dt', function() {
@@ -788,8 +795,8 @@
 {% endblock %}
 
 {% block modal_tambahan %}
-{% include 'dayatif/binaan_teknis/modals/create_modal.html' %}
-{% include 'dayatif/binaan_teknis/modals/edit_modal.html' %}
+{% include 'dayatif/binaan_teknis-old/modals/create_modal.html' %}
+{% include 'dayatif/binaan_teknis-old/modals/edit_modal.html' %}
 {% endblock %}
 
 {% block css_tambahan %}

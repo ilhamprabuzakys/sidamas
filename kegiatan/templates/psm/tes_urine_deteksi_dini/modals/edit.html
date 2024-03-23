@@ -1,75 +1,131 @@
-<form id="editForm" onsubmit="handleEdit(event)">
-  <div class="modal fade" id="modalEdit" aria-labelledby="modalEdit" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
+<div class="modal fade" id="editData" aria-labelledby="modalEdit" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
       <div class="modal-content">
+
         <div class="modal-header">
-          <h5 class="modal-title" id="modalEdit">Edit Data</h5>
+          <h5 class="modal-title" id="createModal">Update Data</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <div class="modal-body">
-          <div class="mb-3">
-            <label for="edit__satker" class="col-form-label required">Satuan Kerja Pelaksana:</label>
-            <select class="form-control select2" disabled id="edit__satker">
-              <option value="{{user.profile.satker_id}}" selected>{{ user.profile.satker }}</option>
-            </select>
+
+          <div class="modal-body">
+              <section id="formEdit">
+                <div class="mb-3">
+                  <label for="edit__satker" class="col-form-label required">Satuan Kerja Pelaksana:</label>
+                  <select class="form-control select2" disabled id="edit__satker">
+                      <option value="{{user.profile.satker_id}}" selected>{{ user.profile.satker }}</option>
+                  </select>
+                </div>
+
+                <div class="row mb-3">
+                  <div class="col-6">
+                    <div class="mb-3">
+                      <label for="edit__tanggal_awal" class="col-form-label required">Tanggal Awal:</label>
+                      <input type="date" id="edit__tanggal_awal" class="form-control" required onchange="handleDate(event, 'edit__');" />
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="mb-3">
+                      <label for="edit__tanggal_akhir" class="col-form-label">Tanggal Akhir:</label>
+                      <input type="date" id="edit__tanggal_akhir" class="form-control" />
+                    </div>
+                  </div>
+                  <label for="pelaksanaan" class="col-form-label" style="color: #00A0A9;">Jika pelaksanaan hanya berlangsung selama satu hari, tanggal akhir tidak perlu diisi.</label>
+                </div>
+
+                <div class="mb-3">
+                  <label for="edit__satker_target" class="col-form-label required">Satuan Kerja Yang Diundang:</label>
+                  <select class="form-control select2" id="edit__satker_target">
+                    <option value="" selected disabled>Pilih Satuan Kerja</option>
+                    {% for item in satker %}
+                      <option value="{{ item.pk }}">{{ item.nama_satker }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+
+                <div class="mb-3">
+                  <label for="edit__nama_lingkungan" class="col-form-label required">Nama Lingkungan</label>
+                  <textarea class="form-control" id="edit__nama_lingkungan" required placeholder="Nama Lingkungan"></textarea>
+                </div>
+
+                  <!-- Form Repeater : Peserta -->
+                  <div class="mb-3">
+                      <label for="kesimpulan" class="col-form-label required text-muted">Peserta:</label>
+                      <form class="form-repeater-lama">
+                        <div data-repeater-list="peserta-group-lama">
+                        </div>
+                    </form>
+
+                      <form class="form-repeater">
+                          <div data-repeater-list="peserta-group">
+                              <div data-repeater-item>
+                                  <div class="row">
+                                      <div class="mb-3 col-lg-5 col-sm-10 mb-0">
+                                          <label class="form-label" for="form-repeater-1-1">Nama </label>
+                                          <input type="text" id="form-repeater-1-1" class="form-control" placeholder="Nama Peserta"/>
+                                      </div>
+
+                                      <div class="mb-3 col-lg-5 col-sm-10 mb-0">
+                                          <label class="form-label" for="form-repeater-1-2">Alamat</label>
+                                          <input type="text" id="form-repeater-1-2" class="form-control" placeholder="Alamat Peserta"/>
+                                      </div>
+
+                                      <div class="mb-3 col-lg-5 col-sm-10 mb-0">
+                                          <label class="form-label mb-3 d-block" for="form-repeater-1-4">Status</label>
+                                          <select class="form-select" id="form-repeater-1-4" name="status">
+                                              <option value="" selected disabled>Pilh Status</option>
+                                              <option value="P">Positif</option>
+                                              <option value="N">Negatif</option>
+                                          </select>
+                                      </div>
+
+                                      <div class="mb-3 col-lg-5 col-sm-10 mb-0">
+                                          <label class="form-label mb-3 d-block" for="form-repeater-1-3">Jenis Kelamin</label>
+                                          <select class="form-select" id="form-repeater-1-3" name="jenis_kelamin">
+                                              <option value="" selected disabled>Pilh Jenis Kelamin</option>
+                                              <option value="L">Laki-laki</option>
+                                              <option value="P">Perempuan</option>
+                                          </select>
+                                      </div>
+                                  
+
+                                      <div class="mb-3 col-lg-12 col-xl-2 col-12 d-flex align-items-center mb-0">
+                                          <button class="btn btn-label-danger mt-4" data-repeater-delete type="button"
+                                              value="Delete">
+                                              <i class="ti ti-x ti-xs me-1"></i>
+                                              <span class="align-middle">Hapus</span>
+                                          </button>
+                                      </div>
+                                  </div>
+                                  <hr class="mx-n4">
+                              </div>
+                          </div>
+                          <div class="mb-0">
+                              <button class="btn btn-primary" data-repeater-create type="button" value="Add">
+                                  <i class="ti ti-plus me-1"></i>
+                                  <span class="align-middle">Tambah peserta</span>
+                              </button>
+                          </div>
+                      </form>
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="edit__tindak_lanjut" class="col-form-label required">Tindak Lanjut:</label>
+                    <textarea class="form-control" id="edit__tindak_lanjut" required placeholder="Tindak Lanjut"></textarea>
+                  </div>
+                  <div class="mb-3">
+                    <label for="edit__dokumentasi" class="col-form-label required">Dokumentasi</label>
+                    <input type="file" class="form-control" id="edit__dokumentasi" required accept=".csv, .xlsx, .pdf, docx." />
+                  </div>
+              </section>
           </div>
-          <div class="row mb-3">
-            <div class="col-6">
-              <div class="mb-3">
-                <label for="create__tanggal_awal" class="col-form-label required">Tanggal Awal:</label>
-                <input type="date" id="edit__tanggal_awal" class="form-control"
-                  onchange="handleDate(event, 'edit__');" />
-              </div>
-            </div>
-            <div class="col-6">
-              <div class="mb-3">
-                <label for="edit__tanggal_akhir" class="col-form-label">Tanggal Akhir:</label>
-                <input type="date" id="edit__tanggal_akhir" class="form-control" />
-              </div>
-            </div>
-            <label for="pelaksanaan" class="col-form-label text-light">Jika pelaksanaan hanya berlangsung selama satu
-              hari, tanggal akhir tidak perlu diisi.</label>
+
+          <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                  <i class="fas fa-xmark me-2"></i>Tutup</button>
+              <button type="button" class="btn btn-primary" id="editButton">
+                  <i class="fas fa-save me-2"></i>
+                  Simpan</button>
           </div>
-          <div class="mb-3">
-            <label for="edit__satker_target" class="col-form-label required">Satuan Kerja Yang Diundang:</label>
-            <select class="form-control select2" id="edit__satker_target">
-              <option value="" selected disabled>Pilih Satuan Kerja</option>
-              {% for item in satker %}
-              <option value="{{ item.pk }}">{{ item.nama_satker }}</option>
-              {% endfor %}
-            </select>
-          </div>
-          <div class="mb-3">
-            <label for="edit__deskripsi" class="col-form-label required">Deskripsi Hasil</label>
-            <textarea class="form-control" id="edit__deskripsi"></textarea>
-          </div>
-          <div class="mb-3">
-            <label for="edit__kendala" class="col-form-label required">Kendala:</label>
-            <textarea class="form-control" id="edit__kendala"></textarea>
-          </div>
-          <div class="mb-3">
-            <label for="edit__kesimpulan" class="col-form-label required">Kesimpulan:</label>
-            <textarea class="form-control" id="edit__kesimpulan"></textarea>
-          </div>
-          <div class="mb-3">
-            <label for="edit__tindak_lanjut" class="col-form-label required">Tindak Lanjut:</label>
-            <textarea class="form-control" id="edit__tindak_lanjut"></textarea>
-          </div>
-          <div class="mb-3">
-            <label for="edit__dokumentasi" class="col-form-label required">Dokumentasi</label>
-            <input type="file" class="form-control" id="edit__dokumentasi" accept=".csv, .xlsx, .pdf, docx." />
-          </div>
-        </div>
-        <div class="modal-footer">
-          <input type="hidden" id="edit__id">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i
-              class="fas fa-xmark me-2"></i>Tutup</button>
-          <button type="submit" class="btn btn-primary">
-            <i class="fas fa-save me-2"></i>
-            Simpan
-          </button>
-        </div>
       </div>
-    </div>
   </div>
-</form>
+</div>

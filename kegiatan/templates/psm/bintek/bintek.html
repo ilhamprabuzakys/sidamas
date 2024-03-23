@@ -40,227 +40,23 @@ Bintek
 </section>
 {% endblock %}
 
-{% block css_tambahan %}
-<link rel="stylesheet" href="{% static 'assets/dashboard/vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}" />
-{% endblock %}
-
 {% block js_tambahan %}
-<script src="{% static 'assets/dashboard/vendor/libs/datatables-bs5/datatables-bootstrap5.js' %}"></script>
 <script>
   let table = $("#__table").DataTable({
     language: dt_lang_config(),
-    serverSide: true,
+    serverSide: false,
     searching: true,
     responsive: true,
-    pageLength: 10,
+    pageLength: 5,
     order: [[1, 'asc']],
-    ajax: {
+    /* ajax: {
       url: `/kegiatan/api/v1/psm/binaan_teknis/get_all_data/?format=datatables`,
       dataSrc: "data",
-    },
-    columns: [
-      {
-        className: 'dt-control',
-        orderable: false,
-        data: "satker_id",
-        defaultContent: '',
-        render: function (data, type, row) {
-          return `<span class="d-none" data-satker_id="${data}"></span>`;
-        }
-      },
-      {
-        data: "nama_satker",
-        render: function (data, type, row) {
-          return `${data}`;
-        },
-      },
-      {
-        data: 'jumlah_kegiatan',
-        render: function (data, type, row) {
-          return data;
-        },
-      },
-      {
-        className: 'dt-left',
-        data: "id",
-        orderable: false,
-        render: function (data, type, row) {
-          const options = JSON.stringify({
-            satker_id: row.satker_id,
-            name: "kegiatan",
-            detail_name: row.nama_satker,
-            apiURL: "/kegiatan/api/v1/psm/binaan_teknis",
-          });
-
-          return `
-          <div class="list-button gx-3 text-uppercase">
-                <div>
-                    <a href="javascript:void(0);" onclick="handleEditModal(${data})" style="background-color:#00A0A9;" class="badge text-white text-decoration-none mb-1">
-                      <i class="fa-regular fa-paper-plane me-2"></i>Kirim
-                    </a>
-                </div>
-                <div>
-                  <a href="javascript:void(0);" class="badge bg-danger text-white text-decoration-none mb-1" onclick='handleDeleteAllKegiatan(${row.satker_id})'><i class="fas fa-trash-alt me-2"></i>Hapus</a>
-                </div>
-            </div>
-          `;
-        },
-      },
-    ],
+    }, */
     initComplete: (settings, json) => console.log("Hasil fetch data : ", json),
   });
 
-  $('#__table tbody').on('click', 'td.dt-control', function () {
-    let tr = $(this).closest('tr'),
-      row = table.row(tr),
-      satker_id = $(this).find('span').data('satker_id');
 
-    console.log(satker_id);
-
-
-    if (row.child.isShown()) {
-      destroyChild(row, satker_id);
-      tr.removeClass('shown');
-    }
-    else {
-      createChild(row, satker_id);
-      tr.addClass('shown');
-    }
-  });
-
-  function createChild(row, satker_id) {
-    let rowData = row.data();
-
-    let table = $(`
-		<table class="table table-bordered">
-			<thead class="bg-soft-primary">
-				<tr>
-					<th class="">NO</th>
-					<th class="">TANGGAL</th>
-					<th class="">SATKER YANG DIBINTEK</th>
-					<th class="">DESKRIPSI</th>
-					<th class="">KENDALA</th>
-					<th class="">TINDAK LANJUT</th>
-					<th class="">KESIMPULAN</th>
-					<th class="">DOKUMENTASI</th>
-					<th class="">AKSI <i class="fas fa-edit ms-2"></i></th>
-				</tr>
-			</thead>
-			<tbody class="align-tr-middle">
-			</tbody>
-		</table>`);
-
-    row.child(table).show();
-
-    let usersTable = table.DataTable({
-      language: dt_lang_config(),
-      serverSide: true,
-      searching: true,
-      responsive: true,
-      pageLength: 5,
-      order: [[0, 'asc']],
-      ajax: {
-        url: `/kegiatan/api/v1/psm/binaan_teknis/get_detail_data/?format=datatables&satker_id=${satker_id}`,
-        dataSrc: "data",
-      },
-      searching: false,
-      paging: false,
-      columns: [
-        {
-          className: 'dt-left',
-          data: null
-        },
-        {
-          class: 'dt-left',
-          render: function (data, typer, row) {
-            let output = (row.tanggal_akhir ? `${row.tanggal_awal} s/d ${row.tanggal_akhir}` : row.tanggal_awal)
-            return output
-          }
-        },
-        {
-          className: 'dt-left',
-          data: "nama_satker_target"
-        },
-        {
-          className: 'dt-left',
-          data: "deskripsi"
-        },
-        {
-          className: 'dt-left',
-          data: "kendala"
-        },
-        {
-          className: 'dt-left',
-          data: "kesimpulan"
-        },
-        {
-          className: 'dt-left',
-          data: "tindak_lanjut"
-        },
-        {
-          className: 'dt-left',
-          data: "dokumentasi",
-          orderable: false,
-          render: function (data, type, row) {
-            let output = `
-              <div class="text-center">
-                <a href="/media/${data}" class="badge bg-primary text-white" target="_blank">
-                  <i class="fas fa-eye me-2"></i>
-                  Lihat dokumentasi
-                </a>
-              </div>
-            `;
-            return output
-          }
-        },
-        {
-          className: 'dt-left',
-          data: "id",
-          orderable: false,
-          render: function (data, type, row) {
-            const options = JSON.stringify({
-              id: data,
-              name: "kegiatan",
-              detail_name: row.nama_satker,
-              apiURL: "/kegiatan/api/v1/psm/binaan_teknis",
-            });
-
-            return `
-              <div>
-                  <a href="javascript:void(0);" onclick="handleEditModal(${data})" style="background-color:#00A0A9;" class="badge text-white text-decoration-none mb-1">
-                    <i class="fa-regular fa-paper-plane me-2"></i>Kirim
-                  </a>
-              </div>
-              <div class="list-button gx-3 text-uppercase">                 
-                  <div>
-                      <a href="javascript:void(0);" onclick="handleEditModal(${data})" class="badge bg-success text-white text-decoration-none mb-1">
-                        <i class="fas fa-pen-to-square me-2"></i>Edit
-                      </a>
-                  </div>
-                  <div>
-                      <a href="javascript:void(0);" class="badge bg-danger text-white text-decoration-none mb-1" onclick='handleDelete(${options})'><i
-                              class="fas fa-trash-alt me-2"></i>Hapus</a>
-                  </div>
-              </div>
-          `;
-          },
-        }
-      ],
-      select: true,
-      columnDefs: [
-        dt_row_pagination(),
-      ],
-      initComplete: (settings, json) => console.log("Hasil fetch data : ", json),
-    });
-  }
-
-  function destroyChild(row) {
-    let table = $("table", row.child());
-    table.detach();
-    table.DataTable().destroy();
-
-    row.child.hide();
-  }
 </script>
 <script>
   async function handleDate(event, target) {

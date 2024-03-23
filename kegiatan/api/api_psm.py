@@ -13,6 +13,9 @@ import shutil
 import codecs
 import datetime
 import openpyxl
+from openpyxl.styles import Alignment
+from openpyxl.utils import get_column_letter
+from openpyxl.worksheet.table import Table, TableStyleInfo
 import json
 
 from sidamas import pagination
@@ -40,11 +43,7 @@ class PSM_RAKERNIS_ViewSet(viewsets.ModelViewSet):
         data = models.PSM_RAKERNIS.objects.values(
             'id', 'satker_id', 'satker_target', 'satker_target__nama_satker', 'satker__nama_satker', 'tanggal_awal', 'tanggal_akhir',
             'deskripsi', 'kendala', 'kesimpulan', 'tindak_lanjut', 'dokumentasi', 'status'
-        ).order_by(
-            'satker__nama_satker'
-        )
-
-        print(satker_provinsi)
+        ).order_by('satker__nama_satker')
 
         if satker_level == 1:
             data = data.filter(satker_id=satker)
@@ -141,11 +140,11 @@ class PSM_RAKERNIS_ViewSet(viewsets.ModelViewSet):
                 'error': f'{str(e)}'
             }, status=status.HTTP_400_BAD_REQUEST)
 
-    @action(detail=False)
+    @action(detail=False, methods=['post'])
     def export_data(self, request):
         tahun = datetime.datetime.now().year
-        file_name = f'REKAPITULASI PEMBINAAN TEKNIS BNNP & BNNK TAHUN {tahun}'
-        base_path = 'media/kegiatan/binaan_teknis/exported'
+        file_name = f'REKAPITULASI RAPAT KERJA TEKNIS{tahun}'
+        base_path = 'media/kegiatan/psm/rakernis/exported'
         file_path = f'{base_path}/{file_name}.xlsx'
         
         workbook = openpyxl.Workbook()
@@ -158,72 +157,118 @@ class PSM_RAKERNIS_ViewSet(viewsets.ModelViewSet):
             satker_provinsi = Satker.objects.values_list('provinsi_id', flat=True).get(id=satker)
             satker_level = Satker.objects.values_list('level', flat=True).get(id=satker)
 
-            queryset = None
-            
-            if satker_level == 1:
-                # BNNK
-                queryset = models.PSM_RAKERNIS.objects.filter(
-                    satker_id=satker,
-                ).values(
-                    'satker_id', 'satker__nama_satker', 'status'
-                ).annotate(
-                    jumlah_kegiatan=Count('id')
-                ).order_by(
-                    '-created_at'
-                )
-            elif satker_level == 0:
-                # BNNP
-                queryset = models.PSM_RAKERNIS.objects.filter(
-                    satker__provinsi_id=satker_provinsi, status__gt=0
-                ).values(
-                    'satker_id', 'satker__nama_satker', 'status'
-                ).annotate(
-                    jumlah_kegiatan=Count('id')
-                ).order_by(
-                    '-created_at'
-                )
-            elif satker_level == 2:
-                # Pusat
-                queryset = models.PSM_RAKERNIS.objects.filter(
-                    status = 2
-                ).values(
-                    'satker_id', 'satker__nama_satker', 'status'
-                ).annotate(
-                    jumlah_kegiatan=Count('id')
-                ).order_by(
-                    '-created_at'
-                )
-            else:
-                raise ValueError(f"Invalid satker level: {satker_level}")
-            
-            serialized_data = []
-            for index, item in enumerate(queryset, start=1):
-                data = models.PSM_RAKERNIS.objects.filter(satker_id=item['satker_id']).values(
-                    'id', 'satker_id', 'satker_target', 'satker_target__nama_satker', 'satker__nama_satker', 'tanggal_awal', 'tanggal_akhir',
-                    'deskripsi', 'kendala', 'kesimpulan', 'tindak_lanjut', 'dokumentasi', 'status'
-                ).order_by('satker__nama_satker')
+            data = models.PSM_RAKERNIS.objects.values(
+                'id', 'satker_id', 'satker_target', 'satker_target__nama_satker', 'satker__nama_satker', 'tanggal_awal', 'tanggal_akhir',
+                'deskripsi', 'kendala', 'kesimpulan', 'tindak_lanjut', 'dokumentasi', 'status'
+            ).order_by(
+                'satker__nama_satker'
+            )
 
-                detail_data = data
+            if satker_level == 1:
+                data = data.filter(satker_id=satker)
+            elif satker_level == 0:
+                data = data.filter(satker__provinsi_id=satker_provinsi, status__gt=0)
+            elif satker_level == 2:
+                data = data.filter(status=2)
+        
+            serialized_data = []
+            for item in data:
                 serialized_item = {
-                    'nomor': index,
-                    'status': item['status'],
+                    'id': item['id'],
                     'satker_id': item['satker_id'],
+                    'satker_target': item['satker_target'],
                     'nama_satker': item['satker__nama_satker'],
-                    'jumlah_kegiatan': item['jumlah_kegiatan'],
-                    'detail_kegiatan': detail_data
+                    'nama_satker_target': item['satker_target__nama_satker'],
+                    'tanggal_awal': item['tanggal_awal'],
+                    'tanggal_akhir': item['tanggal_akhir'],
+                    'deskripsi': item['deskripsi'],
+                    'kendala': item['kendala'],
+                    'kesimpulan': item['kesimpulan'],
+                    'tindak_lanjut': item['tindak_lanjut'],
+                    'dokumentasi': item['dokumentasi'],
+                    'status': item['status'],
+                    'satker_level': satker_level
                 }
                 serialized_data.append(serialized_item)
 
             # tb_header
-            headers = ['No', 'Satuan Kerja Pelaksana', 'Jumlah Kegiatan', 'Status']
-            for item, header in enumerate(headers, start=1):
+            headers = [
+                'NO.', 
+                'SATUAN KERJA PELAKSANA', 
+                'NO. KEGIATAN',  # Menyesuaikan headers dengan penambahan kolom 'SATKER ID'
+                'TANGGAL', 
+                'SATUAN KERJA YANG DIUNDANG',
+                'DESKRIPSI',
+                'KENDALA',
+                'KESIMPULAN',
+                'REKOMENDASI TINDAK LANJUT'
+            ]
+
+            for item, header in enumerate(headers[:9], start=1):
                 cell = sheet.cell(row=1, column=item, value=header)
                 cell.fill = openpyxl.styles.PatternFill(start_color='D9EAD3', end_color='D9EAD3', fill_type='solid')
-                cell.font = openpyxl.styles.Font(bold=True)  # Membuat teks tebal
+                cell.font = openpyxl.styles.Font(bold=True)  
                 cell.alignment = openpyxl.styles.Alignment(horizontal='center')
 
+            current_row = 2
+            numering = 0
+            group_count = 0
+            current_group = None
+
+            for row in serialized_data:
+                if row['nama_satker'] != current_group:
+                    if current_group is not None:
+                        end_merge_row = current_row - 1
+                        sheet.merge_cells(f'A{start_merge_row}:A{end_merge_row}')
+                        sheet.merge_cells(f'B{start_merge_row}:B{end_merge_row}')  # Gabungkan sel grup
+                    current_group = row['nama_satker']
+                    start_merge_row = current_row
+                    numering = 1  # Atur ulang nomor ketika grup berubah
+                    group_count += 1
+
+                group_cell = sheet.cell(row=current_row, column=2, value=current_group)
+                group_cell.font = openpyxl.styles.Font(bold=True)  
+                group_cell.alignment = Alignment(horizontal='center')
+
+                data_row = [
+                    group_count,
+                    row['nama_satker'],
+                    numering,
+                    row['tanggal_awal'],
+                    row['nama_satker_target'],
+                    row['deskripsi'],
+                    row['kendala'],
+                    row['kesimpulan'],
+                    row['tindak_lanjut']
+                ]
+
+                for item, value in enumerate(data_row[:9], start=1):
+                    cell = sheet.cell(row=current_row, column=item, value=value)
+                    cell.border = openpyxl.styles.Border(
+                        left=openpyxl.styles.Side(style='thin'),
+                        right=openpyxl.styles.Side(style='thin'),
+                        top=openpyxl.styles.Side(style='thin'),
+                        bottom=openpyxl.styles.Side(style='thin')
+                    )
+
+                current_row += 1
+                numering += 1
+
+            # Merge cell untuk grup terakhir
+            end_merge_row = current_row - 1
+            sheet.merge_cells(f'A{start_merge_row}:A{end_merge_row}')
+            sheet.merge_cells(f'B{start_merge_row}:B{end_merge_row}')
+
+            # Autofit kolom
+            for column in sheet.columns:
+                max_length = 0
+                for cell in column:
+                    if cell.value:
+                        max_length = max(max_length, len(str(cell.value)))
+                adjusted_width = (max_length + 2) * 1.2
+                sheet.column_dimensions[openpyxl.utils.get_column_letter(column[0].column)].width = adjusted_width
+
             # save file
-            shutil.rmtree(base_path)
             os.makedirs(base_path, exist_ok=True)
             workbook.save(file_path)
             
@@ -238,8 +283,7 @@ class PSM_RAKERNIS_ViewSet(viewsets.ModelViewSet):
                 'message': f'Gagal mengexport kegiatan dari Satuan Kerja',
                 'error': f'{str(e)}'
             }, status=status.HTTP_400_BAD_REQUEST)
-            
-    
+        
     def get(self, request):
         return self.get_all_data(request)
     
@@ -268,46 +312,24 @@ class PSM_BINAAN_TEKNIS_ViewSet(viewsets.ModelViewSet):
     filterset_class = filters.PSM_BINAAN_TEKNIS_Filters
 
     @action(detail=False)
-    def get_all_data(self, request):
-        search_value = request.GET.get('search[value]', None)
-        
-        queryset = models.PSM_BINAAN_TEKNIS.objects.values(
-            'satker_id', 'satker__nama_satker'
-        ).annotate(
-            jumlah_kegiatan=Count('id')
-        ).order_by(
-            'satker_id'
-        )
-
-        if search_value:
-            queryset = queryset.filter(
-                Q(satker__nama_satker__icontains=search_value)
-            )
-
-        # Mengambil 50 data teratas setelah filter diterapkan
-        queryset = queryset[:50]
-
-        serialized_data = [
-            {
-                'id': idx + 1,
-                'nama_satker': row['satker__nama_satker'],
-                'satker_id': row['satker_id'],
-                'jumlah_kegiatan': row['jumlah_kegiatan'],
-            }
-            for idx, row in enumerate(queryset)
-        ]
-
-        return Response(serialized_data, status=status.HTTP_200_OK)
-
-
-    @action(detail=False)
     def get_detail_data(self, request):
-        satker_id = request.GET["satker_id"]
-        data = models.PSM_BINAAN_TEKNIS.objects.filter(satker_id=satker_id).values(
+        user_id = request.user.id
+        satker = Profile.objects.values_list('satker', flat=True).get(user_id=user_id)
+        satker_provinsi = Satker.objects.values_list('provinsi_id', flat=True).get(id=satker)
+        satker_level = Satker.objects.values_list('level', flat=True).get(id=satker)
+
+        data = models.PSM_BINAAN_TEKNIS.objects.values(
             'id', 'satker_id', 'satker_target', 'satker_target__nama_satker', 'satker__nama_satker', 'tanggal_awal', 'tanggal_akhir',
             'deskripsi', 'kendala', 'kesimpulan', 'tindak_lanjut', 'dokumentasi'
         ).order_by('satker__nama_satker')
-    
+        
+        if satker_level == 1:
+            data = data.filter(satker_id=satker)
+        elif satker_level == 0:
+            data = data.filter(satker__provinsi_id=satker_provinsi, status__gt=0)
+        elif satker_level == 2:
+            data = data.filter(status=2)
+
         serialized_data = []
         for item in data:
             serialized_item = {
@@ -497,7 +519,7 @@ class PSM_TES_URINE_DETEKSI_DINI_ViewSet(viewsets.ModelViewSet):
         satker_provinsi = Satker.objects.values_list('provinsi_id', flat=True).get(id=satker)
         satker_level = Satker.objects.values_list('level', flat=True).get(id=satker)
 
-        data = models.PSM_TES_URINE_DETEKSI_DINI.objects.values(
+        data = models.PSM_TES_URINE_DETEKSI_DINI.objects.filter(pk=pk).values(
             'id', 'satker_id', 'satker_target', 'satker_target__nama_satker', 'satker__nama_satker', 'tanggal_awal', 'tanggal_akhir',
             'nama_lingkungan', 'tindak_lanjut', 'dokumentasi', 'status'
         ).order_by(
@@ -730,6 +752,58 @@ class PSM_TES_URINE_DETEKSI_DINI_ViewSet(viewsets.ModelViewSet):
                 )
 
     def perform_update(self, serializer):
+        current_record_id = serializer.instance.pk
+
+        models.PSM_TES_URINE_DETEKSI_DINI_PESERTA.objects.filter(parent_id=current_record_id).delete()
+
+        peserta_array_lama_json = self.request.data.get('peserta_lamaArray', None)
+        if peserta_array_lama_json:
+            data = json.loads(peserta_array_lama_json)
+            if len(data) > 0:
+                print("ini json lama")
+                print(peserta_array_lama_json)
+
+                for entry in data:
+                    gender_mapping = {'N': 'Laki-Laki', 'P': 'Perempuan'}
+                    status_mapping = {'P': 'Positif', 'L': 'Negatif'}
+                    
+                    jenis_kelamin = gender_mapping.get(entry['gender'], 'Laki-Laki')
+                    hasil_test = status_mapping.get(entry['status'], 'Negatif')
+
+                    parent_instance = models.PSM_TES_URINE_DETEKSI_DINI.objects.get(pk=current_record_id)
+                    
+                    peserta = models.PSM_TES_URINE_DETEKSI_DINI_PESERTA.objects.create(
+                        parent=parent_instance,
+                        nama_peserta=entry['nama'],
+                        jenis_kelamin=jenis_kelamin,
+                        hasil_test=hasil_test,
+                        alamat=entry['alamat']
+                    )
+
+        peserta_array_json = self.request.data.get('pesertaArray', None)
+        if peserta_array_json:
+            data = json.loads(peserta_array_json)
+            if len(data) > 0:
+                print("ini json baru")
+                print(peserta_array_json)
+
+                for entry in data:
+                    gender_mapping = {'N': 'Laki-Laki', 'P': 'Perempuan'}
+                    status_mapping = {'P': 'Positif', 'L': 'Negatif'}
+                    
+                    jenis_kelamin = gender_mapping.get(entry['gender'], 'Laki-Laki')
+                    hasil_test = status_mapping.get(entry['status'], 'Negatif')
+
+                    parent_instance = models.PSM_TES_URINE_DETEKSI_DINI.objects.get(pk=current_record_id)
+                    
+                    peserta = models.PSM_TES_URINE_DETEKSI_DINI_PESERTA.objects.create(
+                        parent=parent_instance,
+                        nama_peserta=entry['nama'],
+                        jenis_kelamin=jenis_kelamin,
+                        hasil_test=hasil_test,
+                        alamat=entry['alamat']
+                    )
+
         serializer.save(updated_by=self.request.user)
 
     def get_view_name(self):
@@ -752,3 +826,26 @@ class PSM_TES_URINE_DETEKSI_DINI_ViewSet(viewsets.ModelViewSet):
             serialized_data.append(serialized_item)
 
         return serialized_data
+    
+    def process_peserta_array(array_json, current_record_id):
+        if array_json is not None:
+            data = json.loads(array_json)
+            gender_mapping = {'N': 'Laki-Laki', 'P': 'Perempuan'}
+            status_mapping = {'P': 'Positif', 'L': 'Negatif'}
+            parent_instance = models.PSM_TES_URINE_DETEKSI_DINI.objects.get(pk=current_record_id)
+
+            for entry in data:
+                try:
+                    jenis_kelamin = gender_mapping.get(entry['gender'], 'Laki-Laki')
+                    hasil_test = status_mapping.get(entry['status'], 'Negatif')
+
+                    peserta = models.PSM_TES_URINE_DETEKSI_DINI_PESERTA.objects.create(
+                        parent=parent_instance,
+                        nama_peserta=entry['nama'],
+                        jenis_kelamin=jenis_kelamin,
+                        hasil_test=hasil_test,
+                        alamat=entry['alamat']
+                    )
+                except KeyError:
+                    # Handle missing keys in entry
+                    pass  # Or log the error
