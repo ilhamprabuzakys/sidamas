@@ -5,8 +5,11 @@ from rest_framework.decorators import action
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
 
+from sidamas import pagination
+
 from . import serializers
 from . import models
+from . import filters
 
 class ProfileViewSet(viewsets.ModelViewSet):
     queryset = models.Profile.objects.all()
@@ -28,6 +31,14 @@ class ProfileViewSet(viewsets.ModelViewSet):
         except models.Profile.DoesNotExist:
             return Response({'detail': 'Profile not found.'}, status=status.HTTP_404_NOT_FOUND)
         
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.select_related('profile').all()
+    serializer_class = serializers.UserSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    pagination_class = pagination.Page10NumberPagination
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = filters.UsersFilter
+
 class SatkerViewSet(viewsets.ModelViewSet):
     queryset = models.Satker.objects.all()
     serializer_class = serializers.SatkerSerializer

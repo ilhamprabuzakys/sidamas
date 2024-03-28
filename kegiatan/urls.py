@@ -5,22 +5,34 @@ from . import views
 
 router = routers.DefaultRouter()
 
-# PSM
-router.register("psm/rakernis", api.PSM_RAKERNIS_ViewSet)
-router.register("psm/binaan_teknis", api.PSM_BINAAN_TEKNIS_ViewSet)
-router.register("psm/asistensi", api.PSM_ASISTENSI_ViewSet)
-router.register("psm/tes_urine", api.PSM_TES_URINE_DETEKSI_DINI_ViewSet)
+# ==== PSM ====
+psm = routers.DefaultRouter()
+psm.register("rakernis", api.PSM_RAKERNIS_ViewSet)
+psm.register("binaan_teknis", api.PSM_BINAAN_TEKNIS_ViewSet)
+psm.register("asistensi", api.PSM_ASISTENSI_ViewSet)
+psm.register("tes_urine", api.PSM_TES_URINE_DETEKSI_DINI_ViewSet)
+psm.register("tes_urine_crud", api.PSM_TES_URNIE_CURD_ViewSet) #crud;
 
-# DAYATIF
-router.register("dayatif/binaan_teknis", api.DAYATIF_BINAAN_TEKNIS_ViewSet)
-router.register("dayatif/pemetaan_potensi", api.DAYATIF_PEMETAAN_POTENSI_ViewSet)
+# ==== DAYATIF ====
+dayatif = routers.DefaultRouter()
+dayatif.register("binaan_teknis", api.DAYATIF_BINAAN_TEKNIS_ViewSet, basename='binaan_teknis')
+dayatif.register("pemetaan_potensi/list", api.DAYATIF_PEMETAAN_POTENSI_LIST_ViewSet, basename='pemetaan_potensi_list')
+dayatif.register("pemetaan_potensi", api.DAYATIF_PEMETAAN_POTENSI_ViewSet, basename='pemetaan_potensi')
+
+router.registry.extend(psm.registry)
+router.registry.extend(dayatif.registry)
 
 urlpatterns = (
-    #API
-    path("api/v1/", include(router.urls)),
+    path("api/v1/psm/", include(psm.urls), name='psm-list'),
+    path("api/v1/dayatif/", include(dayatif.urls), name='dayatif-list'),
+    
+    # API Root
+    path("api/v1/", api.api_root, name="Daftar Direktorat"),
 
     # VIEW HALAMAN PSM
     path("psm/rakernis/",views.psm_rakernisView.as_view(),name="psm_rakernis",),
+    path("psm/rakernis2/",views.psm_rakernis2View.as_view(),name="psm_rakernis2",),
+    path("psm/rakernis3/",views.psm_rakernis3View.as_view(),name="psm_rakernis2",),
     path("psm/bintek/",views.psm_bintekView.as_view(),name="psm_bintek",),
     path("psm/rakor_pemetaan/",views.psm_rakor_pemetaanView.as_view(),name="psm_rakor_pemetaan",),
     path("psm/rakor_pemetaan2/",views.psm_rakor_pemetaanView_2.as_view(),name="psm_rakor_pemetaan2",),
@@ -38,9 +50,10 @@ urlpatterns = (
     path("psm/kegiatan_lainnya/",views.psm_kegiatan_lainnyaView.as_view(),name="psm_kegiatan_lainnya",),
 
     # VIEW HALAMAN DAYATIF
-    path("dayatif/binaan_teknis_old/",views.DAYATIF_BINAAN_TEKNIS_OLD_View.as_view(),name="dayatif_binaan_teknis_old",),
+    path("dayatif/binaan_teknis2/",views.DAYATIF_BINAAN_TEKNIS2_View.as_view(),name="dayatif_binaan_teknis2",),
     path("dayatif/binaan_teknis/",views.DAYATIF_BINAAN_TEKNIS_View.as_view(),name="dayatif_binaan_teknis",),
-    path("dayatif/pemetaan_potensi/",views.dayatif_pemetaan_potensiView.as_view(),name="dayatif_pemetaan_potensi",),
+    
+    path("dayatif/pemetaan_potensi/",views.DAYATIF_PEMETAAN_POTENSI_View.as_view(),name="dayatif_pemetaan_potensi",),
     path("dayatif/pemetaan_stakeholder/",views.dayatif_pemetaan_stakeholderView.as_view(),name="dayatif_pemetaan_stakeholder",),
     path("dayatif/rapat_sinergi_stakeholder/",views.dayatif_rapat_sinergi_stakeholderView.as_view(),name="dayatif_rapat_sinergi_stakeholder",),
     path("dayatif/bimtek_stakeholder/",views.dayatif_bimtek_stakeholderView.as_view(),name="dayatif_bimtek_stakeholder",),

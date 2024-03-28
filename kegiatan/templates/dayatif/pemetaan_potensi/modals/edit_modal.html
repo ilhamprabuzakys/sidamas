@@ -1,46 +1,40 @@
-<form id="editForm" onsubmit="handleUpdate(event)">
+<form id="editForm" @submit.prevent="handleUpdate(edit.id)">
     <div class="modal fade" id="editModal">
         <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Tambah Data <b>Kegiatan</b> untuk Satuan Kerja <b id="edit__info"></b></h5>
+                    <h5 class="modal-title">Edit Data <b>Kegiatan</b> untuk Satuan Kerja <b id="edit__info"></b></h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
 
-                <div class="modal-body" x-data="{ startDate: '', endDate: '', firstTime: false }">
-                    <input type="hidden" id="edit__id" />
-
+                <div class="modal-body">
                     <div class="mb-3">
                         <label for="edit__satker" class="col-form-label required">Satuan Kerja
                             Pelaksana:</label>
-                        <select class="form-control select2" id="edit__satker" required>
-                            <option value="" selected disabled>--Pilih Satuan Kerja Pelaksana--</option>
-                            {% for item in satker %}
-                            <option value="{{ item.pk }}">{{ item.nama_satker }}</option>
-                            {% endfor %}
+                        <select class="form-control select2" id="edit__satker" disabled>
+                            <option value="{{ user.profile.satker.pk }}" selected>{{ user.profile.satker.nama_satker }}</option>
                         </select>
                     </div>
 
-                    <div class="row">
+                    <div class="row range_date edit">
                         <div class="col-6">
                             <div class="mb-3">
-                                <label for="edit__tanggal_awal" class="col-form-label required">Tanggal
-                                    Awal:</label>
-                                <input type="date" id="edit__tanggal_awal" class="form-control" x-model="startDate" @input="calculateDays" x-ref="startDate" required />
+                                <label for="edit__tanggal_awal" class="col-form-label required">Tanggal Awal:</label>
+                                <input type="date" id="edit__tanggal_awal" class="form-control" v-model="edit.tanggal_awal" required />
                             </div>
                         </div>
                         <div class="col-6">
                             <div class="mb-3">
                                 <label for="edit__tanggal_akhir" class="col-form-label optional">Tanggal
                                     Akhir:</label>
-                                <input type="date" id="edit__tanggal_akhir" class="form-control" x-model="endDate" @input="calculateDays" :disabled="!startDate && !firstTime" :min="startDate" x-ref="endDate" />
+                                <input type="date" id="edit__tanggal_akhir" class="form-control" v-model="edit.tanggal_akhir"  />
                             </div>
                         </div>
                     </div>
 
                     <div class="mb-3">
-                        <label for="edit__selected_lokasi" class="col-form-label required">Lokasi:</label>
 
+                        <label for="edit__selected_lokasi" class="col-form-label required">Lokasi:</label>
 
 						<ul id="edit__selected_lokasi">
 							<li><b class="edit__selected_lokasi_label">Provinsi</b>:<span id="edit__selected_provinsi"></span></li>
@@ -55,25 +49,25 @@
 
                         <div class="row" id="edit__lokasi">
                             <div class="col-6 mb-3">
-                                <select class="form-select select2" id="edit__provinsi">
+                                <select class="form-select select2" id="edit__provinsi" v-model="edit.provinsi">
                                     <option value="" selected disabled>--Pilih provinsi--</option>
                                 </select>
                             </div>
 
                             <div class="col-6 mb-3">
-                                <select class="form-select select2" id="edit__kabupaten" disabled>
+                                <select class="form-select select2" id="edit__kabupaten" v-model="edit.kabupaten" disabled>
                                     <option value="" selected disabled>--Pilih kota/kabupaten--</option>
                                 </select>
                             </div>
 
                             <div class="col-6 mb-3">
-                                <select class="form-select select2" id="edit__kecamatan" disabled>
+                                <select class="form-select select2" id="edit__kecamatan" v-model="edit.kecamatan" disabled>
                                     <option value="" selected disabled>--Pilih kecamatan--</option>
                                 </select>
                             </div>
 
                             <div class="col-6 mb-3">
-                                <select class="form-select select2" id="edit__desa" disabled>
+                                <select class="form-select select2" id="edit__desa" v-model="edit.desa" disabled>
                                     <option value="" selected disabled>--Pilih desa/kelurahan--</option>
                                 </select>
                             </div>
@@ -81,30 +75,107 @@
                     </div>
 
                     <hr class="mx-n4">
-
+                    
                     <div class="mb-3">
                         <label for="edit__deskripsi" class="col-form-label required">Deskripsi Hasil:</label>
-                        <textarea class="form-control" id="edit__deskripsi" required></textarea>
-                    </div>
 
+                        <div class="ps-0">
+                            
+                            <div class="potensi__sda">
+                                <label for="edit__deskripsi_sda" class="col-form-label required">1. Potensi SDA:</label>
+                            
+                                <textarea class="form-control my-3" id="edit__deskripsi_sda" v-model="store.edit.deskripsi.potensiSDA"
+                                @change="edit.deskripsi = store.edit.getDeskripsi" required></textarea>
+                            </div>
+                            
+                            <div class="potensi__sdm mt-2">
+                                <label for="edit__deskripsi_sdm" class="col-form-label required">2. Potensi SDM:</label>
+                            
+                                <textarea class="form-control my-3" id="edit__deskripsi_sdm" v-model="store.edit.deskripsi.potensiSDM" @change="edit.deskripsi = store.edit.getDeskripsi" required></textarea>
+                            </div>
+
+                        </div>
+                    </div>
+                    
+                    <hr class="mx-n4">
+                    
                     <div class="mb-3">
                         <label for="edit__kendala" class="col-form-label required">Hambatan/Kendala:</label>
-                        <textarea class="form-control" id="edit__kendala" required></textarea>
+
+                        <div class="form-check mt-3">
+                            <input class="form-check-input" type="radio" name="edit__kendala_ketersediaan" id="edit__kendala_yes"
+                            :checked="store.edit.kendala.showKeterangan"
+                            @click="store.edit.kendala.showKeterangan = true; edit.kendala = ''" />
+                            <label class="form-check-label" for="edit__kendala_yes">Ada, sebutkan ...</label>
+                        </div>
+                    
+                        <div class="ps-4">
+                            <textarea class="form-control my-3" id="edit__kendala_yes_keterangan" v-if="store.edit.kendala.showKeterangan"
+                            @change="edit.kendala = $event.target.value.includes('Ada') ? $event.target.value : `Ada, ${$event.target.value}`"
+                            :required="store.edit.kendala.showKeterangan"
+                            :value="edit.kendala"
+                            ></textarea>
+                        </div>
+                    
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" id="edit__kendala_no" name="edit__kendala_ketersediaan"
+                                @click="store.edit.kendala.showKeterangan = false; edit.kendala = 'Tidak ada'" :checked="edit.kendala == 'Tidak ada'" />
+                            <label class="form-check-label" for="edit__kendala_no">Tidak ada</label>
+                        </div>
                     </div>
 
+                    <hr class="mx-n4">
+                    
                     <div class="mb-3">
                         <label for="edit__kesimpulan" class="col-form-label required">Kesimpulan:</label>
-                        <textarea class="form-control" id="edit__kesimpulan" required></textarea>
-                    </div>
 
+                        <div class="mb-3 row align-items-center">
+                            <label for="edit__kesimpulan_analisis_swot" class="col-md-3 col-form-label required">Analisis SWOT</label>
+                            <div class="col-md-9">
+                                <input type="text" id="edit__kesimpulan_analisis_swot" class="form-control form-control-sm" v-model="store.edit.kesimpulan.analisis.text" @change="post.kesimpulan = store.edit.getKesimpulan" />
+                            </div>
+                        </div>
+
+                        <div class="ps-0">
+                            <div class="swot__kekuatan">
+                                <label for="edit__kesimpulan_analisis_swot_kekuatan" class="col-form-label required">1. Kekuatan :</label>
+                            
+                                <textarea class="form-control my-3" id="edit__kesimpulan_analisis_swot_kekuatan" v-model="store.edit.kesimpulan.analisis.swot.kekuatan" @change="post.kesimpulan = store.edit.getKesimpulan" required></textarea>
+                            </div>
+                            
+                            <div class="swot__kelemahan mt-2">
+                                <label for="edit__kesimpulan_analisis_swot_kelemahan" class="col-form-label required">2. Kelemahan :</label>
+                            
+                                <textarea class="form-control my-3" id="edit__kesimpulan_analisis_swot_kelemahan" v-model="store.edit.kesimpulan.analisis.swot.kelemahan" @change="post.kesimpulan = store.edit.getKesimpulan" required></textarea>
+                            </div>
+                            
+                            <div class="swot__peluang mt-2">
+                                <label for="edit__kesimpulan_analisis_swot_peluang" class="col-form-label required">3. Peluang :</label>
+                            
+                                <textarea class="form-control my-3" id="edit__kesimpulan_analisis_swot_peluang" v-model="store.edit.kesimpulan.analisis.swot.peluang" @change="post.kesimpulan = store.edit.getKesimpulan" required></textarea>
+                            </div>
+                            
+                            <div class="swot__tantangan mt-2">
+                                <label for="edit__kesimpulan_analisis_swot_tantangan" class="col-form-label required">4. Tantangan :</label>
+                            
+                                <textarea class="form-control my-3" id="edit__kesimpulan_analisis_swot_tantangan" v-model="store.edit.kesimpulan.analisis.swot.tantangan" @change="post.kesimpulan = store.edit.getKesimpulan" required></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <hr class="mx-n4">
+                    
                     <div class="mb-3">
                         <label for="edit__tindak_lanjut" class="col-form-label required">Tindak
                             Lanjut:</label>
-                        <textarea class="form-control" id="edit__tindak_lanjut" required></textarea>
+                        <textarea class="form-control" id="edit__tindak_lanjut" v-model="edit.tindak_lanjut" required></textarea>
                     </div>
+
+                    <hr class="mx-n4">
+
                     <div class="mb-3">
                         <label for="edit__dokumentasi" class="col-form-label optional">Dokumentasi:</label>
-                        <input type="file" class="form-control" id="edit__dokumentasi" accept=".csv, .xlsx, .pdf, docx."></input>
+                        <input type="file" class="form-control" id="edit__dokumentasi" @change="edit.dokumentasi = $event.target.files[0]" accept=".csv, .xlsx, .pdf, docx."></input>
 
                         <div class="mt-2">
                             <span class="text-muted">Kosongkan <b>bagian</b> ini jika tidak ingin mengganti file

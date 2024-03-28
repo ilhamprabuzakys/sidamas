@@ -12,7 +12,7 @@ from django.views.generic import TemplateView
 
 class CustomLoginView(LoginView):
     # MIX using a vue component
-    template_name = "auth/login_mix.html"
+    template_name = "auth/login_vue.html"
     redirect_authenticated_user = True
 
     def form_invalid(self, form):

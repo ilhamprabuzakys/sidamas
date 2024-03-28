@@ -1,0 +1,67 @@
+<div class="modal fade" id="lihatData" aria-labelledby="modallihat" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <h5 class="modal-title" id="createModal">Update Data <b>Tes Urine Deteksi Dini</b></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+          <div class="modal-body">
+              <section id="formlihat">
+                <div class="mb-3">
+                  <label for="lihat__satker" class="col-form-label required">Satuan Kerja Pelaksana:</label>
+                  <select class="form-control select2" disabled id="lihat__satker">
+                      <option value="{{user.profile.satker_id}}" selected>{{ user.profile.satker }}</option>
+                  </select>
+                </div>
+
+                <div class="row mb-3">
+                  <div class="col-6">
+                    <div class="mb-3">
+                      <label for="lihat__tanggal_awal" class="col-form-label required">Tanggal Awal:</label>
+                      <input type="date" id="lihat__tanggal_awal" class="form-control" required onchange="handleDate(event, 'lihat__');" />
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="mb-3">
+                      <label for="lihat__tanggal_akhir" class="col-form-label">Tanggal Akhir:</label>
+                      <input type="date" id="lihat__tanggal_akhir" class="form-control" />
+                    </div>
+                  </div>
+                  <label for="pelaksanaan" class="col-form-label" style="color: #00A0A9;">Jika pelaksanaan hanya berlangsung selama satu hari, tanggal akhir tidak perlu diisi.</label>
+                </div>
+
+                <div class="mb-3">
+                  <label for="lihat__satker_target" class="col-form-label required">Satuan Kerja Yang Diundang:</label>
+                  <select class="form-control select2" id="lihat__satker_target">
+                    <option value="" selected disabled>Pilih Satuan Kerja</option>
+                    {% for item in satker %}
+                      <option value="{{ item.pk }}">{{ item.nama_satker }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+
+                <div class="mb-3">
+                  <label for="lihat__nama_lingkungan" class="col-form-label required">Nama Lingkungan</label>
+                  <textarea class="form-control" id="lihat__nama_lingkungan" required placeholder="Nama Lingkungan"></textarea>
+                </div>
+
+                  <!-- Form Repeater : Peserta -->
+                  <div class="mb-3">
+                      <label for="kesimpulan" class="col-form-label required text-muted">Peserta:</label>
+                      <form class="form-repeater-lihat">
+                        <div data-repeater-list="peserta-group-lihat">
+                        </div>
+                    </form>
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="lihat__tindak_lanjut" class="col-form-label required">Tindak Lanjut:</label>
+                    <textarea class="form-control" id="lihat__tindak_lanjut" required placeholder="Tindak Lanjut"></textarea>
+                  </div>
+              </section>
+          </div>
+      </div>
+  </div>
+</div>

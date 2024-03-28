@@ -43,6 +43,14 @@ class SatkerSerializer(serializers.ModelSerializer):
             "parent",
             "level",
         ]
+        
+class UserSerializer(serializers.ModelSerializer):
+    satker = SatkerSerializer(source='profile.satker', read_only=True)
+    
+    class Meta:
+        model = User
+        depth = 1
+        fields = ['id', 'username', 'first_name', 'last_name', 'email', 'is_staff', 'is_superuser', 'profile', 'satker']
 
 class reg_provincesSerializer(serializers.ModelSerializer):
     class Meta:

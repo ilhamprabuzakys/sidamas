@@ -96,12 +96,15 @@
 
 	<link href="https://cdn.datatables.net/searchpanes/2.3.0/css/searchPanes.dataTables.min.css" rel="stylesheet">
 
-
 	<link rel="stylesheet" href="{% static 'assets/dashboard/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css' %}" />
     <link rel="stylesheet"href="{% static 'assets/dashboard/vendor/libs/datatables-checkboxes-jquery/datatables.checkboxes.css' %}" />
 
     <!-- Select 2 -->
     <link rel="stylesheet" href="{% static 'assets/dashboard/vendor/libs/select2/select2.css' %}" />
+    
+    <!-- Picker -->
+    <link rel="stylesheet" href="{% static 'assets/dashboard/vendor/libs/select2/select2.css' %}" />
+    <link rel="stylesheet" href="{% static 'assets/dashboard/vendor/libs/bootstrap-daterangepicker/bootstrap-daterangepicker.css' %}" />
 
     <!-- Jquery -->
     <script src="{% static 'assets/dashboard/vendor/libs/jquery/jquery.min.js' %}"></script>
@@ -111,7 +114,10 @@
     
     <!-- Vue 3 -->
     {% block vue %}
-    <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://unpkg.com/vue-demi"></script>
+    <script src="https://unpkg.com/pinia"></script>
+    
     <!-- Petite Vue: not being used because unsupported reactivity -->
     {% comment %} <script src="https://unpkg.com/petite-vue" defer init></script> {% endcomment %}
     {% endblock vue %}
@@ -170,6 +176,14 @@
                         <div class="content-backdrop fade"></div>
                     </div>
                     <!--/ Content wrapper -->
+
+                    <!-- Modal -->
+                    <section id="additional_modal">
+                        {% include 'dashboard/partials/modal.html' %}
+                        {% block modal_tambahan %}
+                        {% endblock %}
+                    </section>
+                    <!--/ Modal -->
                 </div>
             </div>
             <!--/ Layout page -->
@@ -182,14 +196,6 @@
         <div class="drag-target"></div>
     </div>
     <!--/ Layout wrapper -->
-
-    <!-- Modal -->
-    <section id="additional_modal">
-        {% include 'dashboard/partials/modal.html' %}
-        {% block modal_tambahan %}
-        {% endblock %}
-    </section>
-    <!--/ Modal -->
 
     <!-- Core JS -->
     <!-- build:js assets/dashboard/vendor/js/core.js -->
@@ -209,7 +215,7 @@
 
     <!-- Block UI -->
     <script src="{% static 'assets/dashboard/vendor/libs/block-ui/block-ui.js' %}"></script>
-
+    
     <!-- Select2 -->
     <script src="{% static 'assets/dashboard/vendor/libs/select2/select2.js' %}"></script>
 
@@ -220,30 +226,20 @@
     <script src="{% static 'assets/dashboard/vendor/libs/toastr/toastr.js' %}"></script>
 
     <!-- Datatable -->
-	<!-- <script src="https://cdn.datatables.net/v/bs5/dt-2.0.2/b-3.0.1/b-colvis-3.0.1/rg-1.5.0/sp-2.3.0/sl-2.0.0/datatables.min.js"></script> -->
-
     <script src="{% static 'assets/dashboard/vendor/libs/datatables-bs5/datatables-2-bootstrap5.js' %}"></script>
-    <script src="{% static 'assets/dashboard/vendor/libs/nested-datatables/nested.tables.js' %}"></script>
-
-    <!-- DT Resposnive -->
-	<script src="https://cdn.datatables.net/responsive/3.0.0/js/dataTables.responsive.js"></script>
-	
-	<script src="https://cdn.datatables.net/responsive/3.0.0/js/responsive.dataTables.js"></script>
+    {% comment %} <script src="{% static 'assets/dashboard/vendor/libs/nested-datatables/nested.tables.js' %}"></script> {% endcomment %}
 
     <!-- Rows Group Datatables -->
-    <script src="{% static 'assets/dashboard/vendor/libs/datatables-bs5/rowsGroup-datatables-2.js' %}"></script>
-    <script src="{% static 'assets/dashboard/vendor/libs/datatables-bs5/datatables-2-rowsGroup.js' %}"></script>
+    {% comment %} <script src="{% static 'assets/dashboard/vendor/libs/datatables-bs5/rowsGroup-datatables-2.js' %}"></script>
+    <script src="{% static 'assets/dashboard/vendor/libs/datatables-bs5/datatables-2-rowsGroup.js' %}"></script> {% endcomment %}
 
     <!-- Search Panes Datatables -->
     <script src="{% static 'assets/dashboard/vendor/libs/datatables-bs5/dataTables.searchPanes.js' %}"></script>
-
     <script src="{% static 'assets/dashboard/vendor/libs/datatables-bs5/searchPanes.dataTables.js' %}"></script>
 
     <!-- Select Datatables -->
     <script src="{% static 'assets/dashboard/vendor/libs/datatables-bs5/dataTables.select.js' %}"></script>
     <script src="{% static 'assets/dashboard/vendor/libs/datatables-bs5/select.dataTables.js' %}"></script>
-
-	<!-- <script src="{% static 'assets/dashboard/vendor/libs/datatables-bs5/datatables-bootstrap5.js' %}"></script> -->
 
     <!-- Axios -->
     <script src="{% static 'assets/dashboard/vendor/libs/axios/axios.min.js' %}"></script>
@@ -273,16 +269,14 @@
     <script src="{% static 'assets/dashboard/vendor/libs/moment/moment.js' %}"></script>
     <script src="{% static 'assets/dashboard/vendor/libs/moment/moment-with-locales.js' %}"></script>
 
+    <!-- Picker -->
+    <script src="{% static 'assets/dashboard/vendor/libs/bootstrap-daterangepicker/bootstrap-daterangepicker.js' %}"></script>
+
     <!-- Main JS (Bawaan Tema) -->
     <script src="{% static 'assets/dashboard/js/bawaan/main.js' %}"></script>
 
     <!-- Custom JS (Override default theme behavior) -->
     <script src="{% static 'assets/dashboard/custom/js/main.js' %}"></script>
-
-    <!-- Helper JS (Helper like datatable config etc.) -->
-    {% comment %} <script src="{% static 'assets/dashboard/custom/js/dashboard_helpers.js' %}"></script>
-    {% endcomment %}
-    {% comment %} <script src="{% static 'assets/dashboard/custom/js/fix_select2.js' %}"></script> {% endcomment %}
 
     <!-- Helpers -->
     <script src="{% static 'assets/js/initialize/select2_dashboard.js' %}"></script>

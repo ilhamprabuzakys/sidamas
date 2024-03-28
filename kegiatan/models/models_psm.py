@@ -5,6 +5,7 @@ from datetime import date
 
 from users.models import Satker
 
+# ======= PSM RAKERNIS MODEL =======
 class PSM_RAKERNIS(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, editable=False)
     updated_at = models.DateTimeField(auto_now=True, editable=False)
@@ -31,6 +32,7 @@ class PSM_RAKERNIS(models.Model):
         verbose_name_plural = f'DAFTAR {verbose_name}'
         db_table = 'kegiatan_psm_rakernis'
 
+# ======= PSM BINAAN TEKNIS MODEL =======
 class PSM_BINAAN_TEKNIS(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, editable=False)
     updated_at = models.DateTimeField(auto_now=True, editable=False)
@@ -57,6 +59,7 @@ class PSM_BINAAN_TEKNIS(models.Model):
         verbose_name_plural = f'DAFTAR {verbose_name}'
         db_table = 'kegiatan_psm_binaan_teknis'
 
+# ======= PSM ASISTENSI MODEL =======
 class PSM_ASISTENSI(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, editable=False)
     updated_at = models.DateTimeField(auto_now=True, editable=False)
@@ -67,7 +70,10 @@ class PSM_ASISTENSI(models.Model):
     satker = models.ForeignKey(Satker, on_delete=models.DO_NOTHING, blank=True, null=True, related_name="psm_asistensi_satker", verbose_name="SATUAN KERJA")
     jumlah_kegiatan = models.IntegerField(blank=True, null=True, verbose_name='Jumlah Kegiatan')
     
+    tanggal_awal = models.DateField(verbose_name='Tanggal Awal Kegiatan', blank=True, null=True, default=date.today)
+    tanggal_akhir = models.DateField(verbose_name='Tanggal Akhir Kegiatan', blank=True, null=True, default=date.today)
     tanggal = models.DateField(verbose_name='Tanggal', blank=True, null=True, default=date.today)
+    
     jumlah_peserta = models.IntegerField(blank=True, null=True, verbose_name='Jumlah Peserta')
     stakeholder = models.TextField(blank=True, null=True, max_length=2000, verbose_name='Stakeholder Yang Diasistensi Dalam Rangka Kotan')
 
@@ -76,6 +82,7 @@ class PSM_ASISTENSI(models.Model):
     kesimpulan = models.TextField(blank=True, null=True, max_length=2000, verbose_name='Kesimpulan')
     tindak_lanjut = models.TextField(blank=True, null=True, max_length=2000, verbose_name='Tindak Lanjut')
     dokumentasi = models.FileField(upload_to="uploads/kegiatan/psm/asistensi/")
+    status = models.IntegerField(default=0, verbose_name="Status Pengiriman Kegiatan")
     
     class Meta:
         ordering = ['-updated_at']
@@ -86,7 +93,7 @@ class PSM_ASISTENSI(models.Model):
     def __str__(self):
         return f'{self.satker.nama_satker} PSM ASISTENSI - {self.tanggal}'
     
-# test urine
+# ======= PSM TES URINE DETEKSI DINI MODEL =======
 class PSM_TES_URINE_DETEKSI_DINI(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, editable=False)
     updated_at = models.DateTimeField(auto_now=True, editable=False)
@@ -103,7 +110,7 @@ class PSM_TES_URINE_DETEKSI_DINI(models.Model):
     nama_lingkungan = models.TextField(blank=True, null=True, max_length=2000, verbose_name='Nama Lingkungan')
     hasil_tes_urine = models.TextField(blank=True, null=True, max_length=2000, verbose_name='Hasil Tes Urine')
     tindak_lanjut = models.TextField(blank=True, null=True, max_length=2000, verbose_name='Tindak Lanjut')
-    dokumentasi = models.FileField(upload_to="uploads/kegiatan/psm/asistensi/")
+    dokumentasi = models.FileField(upload_to="uploads/kegiatan/psm/tes_urine_deteksi_dini/", blank=True)
     status = models.IntegerField(default=0, verbose_name="Status Pengiriman Kegiatan")
     
     class Meta:
@@ -133,4 +140,27 @@ class PSM_TES_URINE_DETEKSI_DINI_PESERTA(models.Model):
     jenis_kelamin = models.CharField(max_length=15, choices=JENIS_KELAMIN_CHOICES)
     hasil_test = models.CharField(max_length=15, choices=HASIL_TEST_CHOICES)
     alamat = models.TextField(blank=True, null=True,)
-# test urine
+
+# ======= PSM RAKOR PEMETAAN MODEL =======
+class PSM_RAKOR_PEMETAAN(models.Model):
+    created_at = models.DateTimeField(auto_now_add=True, editable=False)
+    updated_at = models.DateTimeField(auto_now=True, editable=False)
+    created_by = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, related_name="psm_rakor_pemetaan_created_by")
+    updated_by = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, related_name="psm_rakor_pemetaan_updated_by")
+    satker = models.ForeignKey(Satker, on_delete=models.DO_NOTHING, blank=True, null=True, related_name="psm_rakor_pemetaan_satker", verbose_name="SATUAN KERJA PELAKSANA")
+    tanggal_awal = models.DateField(verbose_name='Tanggal Awal Kegiatan', blank=True, null=True, default=date.today)
+    tanggal_akhir = models.DateField(verbose_name='Tanggal Akhir Kegiatan', blank=True, null=True, default=date.today)
+    nama_lingkungan = models.TextField(blank=True, null=True, max_length=2000, verbose_name='Nama Lingkungan')  
+    peserta = models.JSONField(blank=True, null=True, verbose_name='Data Peserta')
+    deskripsi = models.TextField(blank=True, null=True, max_length=2000, verbose_name='Deskripsi Hasil')
+    kendala = models.TextField(blank=True, null=True, max_length=2000, verbose_name='Kendala')
+    kesimpulan = models.TextField(blank=True, null=True, max_length=2000, verbose_name='Kesimpulan')
+    tindak_lanjut = models.TextField(blank=True, null=True, max_length=2000, verbose_name='Tindak Lanjut')
+    dokumentasi = models.FileField(upload_to="uploads/kegiatan/psm/rakor_pemetaan/")
+    status = models.IntegerField(default=0, verbose_name="Status Pengiriman Kegiatan")
+        
+    class Meta:
+        ordering = ['-updated_at']
+        verbose_name = 'PSM RAKOR PEMETAAN'
+        verbose_name_plural = f'DAFTAR {verbose_name}'
+        db_table = 'kegiatan_psm_rakor_pemetaan'

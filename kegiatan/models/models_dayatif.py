@@ -16,13 +16,7 @@ from users.models import Satker
 """
 
 class DAYATIF_BINAAN_TEKNIS(models.Model):
-    class STATUS_PENGIRIMAN_CHOICES(models.IntegerChoices):
-        BELUM = 0
-        BNNP = 1
-        BNN_PUSAT = 2
-        
     status = models.IntegerField(default=0, verbose_name='Status Pengiriman Kegiatan')
-    # status = models.IntegerField(choices=STATUS_PENGIRIMAN_CHOICES, default=0, verbose_name='Status Pengiriman Kegiatan')
     
     created_at = models.DateTimeField(auto_now_add=True, editable=False)
     updated_at = models.DateTimeField(auto_now=True, editable=False)
@@ -70,8 +64,6 @@ class DAYATIF_PEMETAAN_POTENSI(models.Model):
     
     tanggal_awal = models.DateField(verbose_name='Tanggal Awal Kegiatan')
     tanggal_akhir = models.DateField(verbose_name='Tanggal Akhir Kegiatan', blank=True, null=True)
-    
-    jumlah_hari_pelaksanaan = models.IntegerField(default=2, verbose_name='Jumlah Hari Pelaksanaan Kegiatan')
     
     desa = models.CharField(max_length=258, blank=True, null=True)
     kecamatan = models.CharField(max_length=258, blank=True, null=True)

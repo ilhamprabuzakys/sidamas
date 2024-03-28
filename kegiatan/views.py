@@ -39,6 +39,20 @@ class psm_rakernisView(PSMBaseView, View):
     def get(self, request):
         satker = Satker.objects.all()
         return render(request, self.template_name, {'satker' : satker})
+
+class psm_rakernis2View(PSMBaseView, View):
+    template_name = "psm/rakernis/rakernis2.html"
+    
+    def get(self, request):
+        satker = Satker.objects.all()
+        return render(request, self.template_name, {'satker' : satker})
+
+class psm_rakernis3View(PSMBaseView, View):
+    template_name = "psm/rakernis/rakernis3.html"
+    
+    def get(self, request):
+        satker = Satker.objects.all()
+        return render(request, self.template_name, {'satker' : satker})
     
 class psm_bintekView(PSMBaseView, View):
     template_name = "psm/bintek/bintek.html"
@@ -116,6 +130,7 @@ class psm_tes_urine_deteksi_diniView(PSMBaseView, View):
     
     def get(self, request):
             satker = Satker.objects.all()
+            print(satker)
             return render(request, self.template_name, {'satker' : satker})
 
 class psm_monev_supervisi_kegiatan_kotanView(PSMBaseView, View):
@@ -388,13 +403,15 @@ class dayatif_dukungan_stakeholderView(DayatifBaseView, View):
         return render(request, self.template_name, context)
     
 
-class DAYATIF_BINAAN_TEKNIS_OLD_View(DayatifBaseView, TemplateView):
-    template_name = "dayatif/binaan_teknis-old/binaan_teknis-old.html"
+# ======= BINAAN TEKNIS =======
+class DAYATIF_BINAAN_TEKNIS2_View(DayatifBaseView, TemplateView):
+    template_name = "dayatif/binaan_teknis2/binaan_teknis2.html"
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        
         satker = self.request.user.profile.satker
+        satker_status_pengiriman_semua_kegiatan = satker.dayatif_binaan_teknis_satker.filter(status=2).count() == satker.dayatif_binaan_teknis_satker.count()
+        context['satker_status_pengiriman_semua_kegiatan'] = satker_status_pengiriman_semua_kegiatan
         
         if satker.level == 0:
             context['satker'] = Satker.objects.filter(parent=satker.pk)
@@ -409,6 +426,22 @@ class DAYATIF_BINAAN_TEKNIS_View(DayatifBaseView, TemplateView):
         context = super().get_context_data(**kwargs)
         satker = self.request.user.profile.satker
         satker_status_pengiriman_semua_kegiatan = satker.dayatif_binaan_teknis_satker.filter(status=2).count() == satker.dayatif_binaan_teknis_satker.count()
+        context['satker_status_pengiriman_semua_kegiatan'] = satker_status_pengiriman_semua_kegiatan
+        
+        if satker.level == 0:
+            context['satker'] = Satker.objects.filter(parent=satker.pk)
+        else:
+            context['satker'] = Satker.objects.all()
+        return context
+
+# ======= PEMETAAN POTENSI =======
+class DAYATIF_PEMETAAN_POTENSI_View(DayatifBaseView, TemplateView):
+    template_name = "dayatif/pemetaan_potensi/pemetaan_potensi.html"
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        satker = self.request.user.profile.satker
+        satker_status_pengiriman_semua_kegiatan = satker.dayatif_pemetaan_potensi_satker.filter(status__gt=1).count() == satker.dayatif_pemetaan_potensi_satker.count()
         context['satker_status_pengiriman_semua_kegiatan'] = satker_status_pengiriman_semua_kegiatan
         
         if satker.level == 0:

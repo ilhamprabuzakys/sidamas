@@ -10,6 +10,8 @@ class Satker(models.Model):
     level = models.IntegerField(default=1)
     kabupaten = models.ForeignKey('reg_regencies', on_delete=models.SET_NULL, null=True, blank=True, related_name='satker')
     provinsi = models.ForeignKey('reg_provinces', on_delete=models.SET_NULL, null=True, blank=True, related_name='satker')
+    order = models.IntegerField(null=True, blank=True)
+    satker_order = models.IntegerField(null=True, blank=True)
     
     class Meta:
         ordering = ['nama_satker', ]
@@ -20,14 +22,15 @@ class Satker(models.Model):
         return str(self.nama_satker)
         
 class Profile(models.Model):
-    DIREKTOAT_CHOICES = (
+    
+    DIREKTORAT_CHOICES = (
         ('psm', 'PSM'),
         ('dayatif', 'Dayatif'),
     )
     
     satker = models.ForeignKey(Satker, on_delete=models.CASCADE, null=True, blank=True,)
     user = models.OneToOneField(User, on_delete=models.CASCADE,)
-    role = models.CharField(null=True, blank=True, max_length=12, choices=DIREKTOAT_CHOICES)
+    role = models.CharField(null=True, blank=True, max_length=12, choices=DIREKTORAT_CHOICES)
     is_verified = models.BooleanField(default=False)
     is_admin = models.BooleanField(default=False)
     avatar = models.ImageField(

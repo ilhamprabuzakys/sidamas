@@ -3,7 +3,7 @@ from django_filters.filters import Q
 
 from kegiatan import models
 
-# BINAAN TEKNIS OLD
+# ======= BINAAN TEKNIS =======
 class DAYATIF_BINAAN_TEKNIS_Filters(filters.FilterSet):
     s = filters.CharFilter(method='filter_global_search', label='Global search')
     nama_satker = filters.CharFilter(method='nama_satker', label='Nama Satker')
@@ -18,6 +18,7 @@ class DAYATIF_BINAAN_TEKNIS_Filters(filters.FilterSet):
             Q(nama_satker__icontains=value)
         )
 
+# ======= PEMETAAN POTENSI =======
 class DAYATIF_PEMETAAN_POTENSI_Filters(filters.FilterSet):
     s = filters.CharFilter(method='filter_global_search', label='Global search')
     satker = filters.NumberFilter(field_name='satker', label='Satker Pelaksana ID')
@@ -31,3 +32,5 @@ class DAYATIF_PEMETAAN_POTENSI_Filters(filters.FilterSet):
         return queryset.filter(
             Q(satker__nama_satker__icontains=value)
         )
+
+# ======= PEMETAAN POTENSI LIST =======

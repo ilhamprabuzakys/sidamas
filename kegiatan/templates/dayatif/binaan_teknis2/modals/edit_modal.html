@@ -3,22 +3,24 @@
         <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Tambah Data <b>Kegiatan</b> untuk Satuan Kerja <b
-                            id="edit__info"></b></h5>
+                    <h5 class="modal-title">Edit Data <b>Kegiatan</b> untuk Satuan Kerja Pelaksana <b id="edit__info"></b></h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
 
-                <div class="modal-body">
+                <div class="modal-body" x-data="{ startDate: '', endDate: '', jumlahHari: '0 hari', kendalaYesShowKeterangan: false, kendalaValue: '', tindakLanjutYesShowKeterangan: false, tindakLanjutNoShowContainer: false, tindakLanjutNoShowContainerLaninya: false, tindakLanjutValue: '' }">
                     <input type="hidden" id="edit__id" />
 
-					<div class="mb-3">
+                    <div class="mb-3">
                         <label for="edit__satker" class="col-form-label required">Satuan Kerja
                             Pelaksana:</label>
-                        <select class="form-control select2" id="edit__satker" required>
+                        {% comment %} <select class="form-control select2" id="edit__satker" required>
                             <option value="" selected disabled>--Pilih Satuan Kerja Pelaksana--</option>
                             {% for item in satker %}
                             <option value="{{ item.pk }}">{{ item.nama_satker }}</option>
                             {% endfor %}
+                        </select> {% endcomment %}
+                        <select class="form-control select2" id="edit__satker" disabled>
+                            <option value="{{ user.profile.satker.pk }}" selected>{{ user.profile.satker.nama_satker }}</option>
                         </select>
                     </div>
 
@@ -27,27 +29,33 @@
                             <div class="mb-3">
                                 <label for="edit__tanggal_awal" class="col-form-label required">Tanggal
                                     Awal:</label>
-                                <input type="date" id="edit__tanggal_awal" class="form-control" required />
+                                <input type="date" id="edit__tanggal_awal" class="form-control" x-model="startDate" x-on:change="calculateDays" data-type="edit" :max="endDate" x-ref="editStartDate" required />
                             </div>
                         </div>
                         <div class="col-6">
                             <div class="mb-3">
                                 <label for="edit__tanggal_akhir" class="col-form-label required">Tanggal
                                     Akhir:</label>
-                                <input type="date" id="edit__tanggal_akhir" class="form-control" required />
+                                <input type="date" id="edit__tanggal_akhir" class="form-control" x-model="endDate" x-on:change="calculateDays" data-type="edit" x-ref="editEndDate" :min="startDate" />
                             </div>
                         </div>
                     </div>
 
+                    <label for="edit__tanggal_helpers" class="col-form-label text-important">Jumlah Hari Pelaksanaan Kerja akan digenerate secara <b>otomatis</b> oleh sistem berdasarkan inputan dari <b>Tanggal Awal</b> dan <b>Tanggal Akhir</b>.</label>
+
                     <div class="mb-3">
                         <label for="edit__jumlah_hari_pelaksanaan" class="col-form-label required">Jumlah
                             Hari Pelaksanaan Kerja:</label>
-                        <input type="number" class="form-control" id="edit__jumlah_hari_pelaksanaan" required />
+                        <input type="text" class="form-control" id="edit__jumlah_hari_pelaksanaan" x-model="jumlahHari" disabled readonly />
                     </div>
 
                     <div class="mb-3">
                         <label for="edit__satker_target" class="col-form-label required">Satuan Kerja
                             Target:</label>
+                        {% comment %} <select class="form-control select2" id="edit__satker_target" required disabled>
+                            <option value="" selected disabled>--Pilih Satuan Kerja Target--</option>
+                        </select> {% endcomment %}
+
                         <select class="form-control select2" id="edit__satker_target" required>
                             <option value="" selected disabled>--Pilih Satuan Kerja Target--</option>
                             {% for item in satker %}
@@ -59,8 +67,8 @@
                     <div class="mb-3">
                         <label for="edit__jumlah_peserta" class="col-form-label required">Jumlah
                             Peserta:</label>
-                        <input type="number" name="edit__jumlah_peserta" class="form-control"
-                            id="edit__jumlah_peserta" required />
+                        <input type="number" name="edit__jumlah_peserta" class="form-control" id="edit__jumlah_peserta"
+                            required />
                     </div>
 
                     <hr class="mx-n4">
@@ -78,7 +86,26 @@
                         <div class="mb-3">
                             <label for="edit__kendala" class="col-form-label required">Hambatan
                                 Kendala:</label>
-                            <textarea class="form-control" id="edit__kendala" required></textarea>
+
+                                {% comment %} <div class="form-check mt-3">
+                                    <input class="form-check-input" type="radio" name="edit__kendala_ketersediaan" id="edit__kendala_ketersediaan_yes"
+                                        x-on:click="kendalaYesShowKeterangan = true" />
+                                    <label class="form-check-label" for="edit__kendala_ketersediaan_yes">Ada, sebutkan ...</label>
+                                </div>
+                            
+                                <div class="ps-4">
+                                    <textarea class="form-control my-3" id="edit__kendala_yes_keterangan" name="edit__kendala_yes_keterangan" x-show="kendalaYesShowKeterangan" x-on:change="kendalaValue = 'Ada, ' + $event.target.value;"  x-bind:required="kendalaYesShowKeterangan"></textarea>
+                                </div>
+                            
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="edit__kendala_ketersediaan" id="edit__kendala_ketersediaan_no"
+                                        x-on:click="kendalaYesShowKeterangan = false; kendalaValue = 'Tidak'" />
+                                    <label class="form-check-label" for="edit__kendala_ketersediaan_no">Tidak</label>
+                                </div>
+    
+                                <input type="hidden" id="edit__kendala" x-bind:value="kendalaValue" /> {% endcomment %}
+
+                                <textarea class="form-control" id="edit__kendala" required></textarea>
                         </div>
 
                         <div class="mb-3">
@@ -96,12 +123,14 @@
                         <textarea class="form-control" id="edit__tindak_lanjut" required></textarea>
                     </div>
                     <div class="mb-3">
-                        <label for="edit__dokumentasi" class="col-form-label required">Dokumentasi:</label>
-                        <input type="file" class="form-control" id="edit__dokumentasi" accept=".csv, .xlsx, .pdf, docx."></input>
+                        <label for="edit__dokumentasi" class="col-form-label optional">Dokumentasi:</label>
+                        <input type="file" class="form-control" id="edit__dokumentasi"
+                            accept=".csv, .xlsx, .pdf, docx."></input>
 
-						<div class="mt-2">
-							<span class="text-muted">Kosongkan <b>bagian</b> ini jika tidak ingin mengganti file dokumentasi.</span>
-						</div>
+                        <div class="mt-2">
+                            <span class="text-important">Kosongkan <b>bagian</b> ini jika tidak ingin mengganti file
+                                dokumentasi.</span>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">

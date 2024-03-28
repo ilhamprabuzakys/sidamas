@@ -7,6 +7,7 @@ from . import views
 app_name = "users"
 
 router = routers.DefaultRouter()
+router.register("users", api.UserViewSet)
 router.register("profile", api.ProfileViewSet)
 router.register("satker", api.SatkerViewSet)
 router.register("reg_provinces", api.reg_provincesViewSet)

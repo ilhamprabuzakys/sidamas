@@ -1,0 +1,1063 @@
+{% extends 'dashboard/dashboard_base.html' %}
+{% load static %}
+
+{% block title %} Pemetaan Potensi SDM dan SDA Kawasan Rawan Narkoba {% endblock %}
+
+{% block content %}
+<div class="breadcrumb">
+    <div class="row">
+        <h3 class="heading mb-2">Pemetaan Potensi</h3>
+        <span class="mb-0">
+            <span class="text-muted fw-light">Kegiatan /</span>
+            <span class="ms-1 fw-medium">Pemetaan Potensi</span>
+        </span>
+    </div>
+</div>
+
+<section id="__data">
+    <div class="card">
+        <div class="card-body">
+            <div id="headline" class="mb-3">
+                <h3 class="text-center">PEMETAAN POTENSI SDM DAN SDA KAWASAN RAWAN NARKOBA</h3>
+                <hr />
+            </div>
+
+            <div class="action-button">
+                <div class="d-flex justify-content-end mb-3 gap-2">
+                    <button class="btn btn-success" onclick="handleExport()"><i
+                            class="fas fa-file-export me-2"></i>Ekspor Data</button>
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createModal"><i
+                            class="fas fa-plus me-2"></i>Tambah Data</button>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                {% include 'dayatif/pemetaan_potensi/table.html' %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block js_tambahan %}
+<!-- ==== DT CONFIGURATION ===== -->
+<script>
+	const satkerLevel = parseInt('{{ user.profile.satker.level }}');
+
+    let statusPengirimanSemua = '{{ satker_status_pengiriman_semua_kegiatan }}' == 'True' ? true : false;
+    console.log('Satker level :', satkerLevel)
+    console.log('Status pengiriman semua :', statusPengirimanSemua)
+    
+    let hasilFetch = null;
+    let search = '';
+
+    const table = $("#__table").DataTable({
+        language: dt_lang_config(),
+        serverSide: true,
+        searching: true,
+        responsive: true,
+        pageLength: 10,
+        ajax: {
+            url: `/kegiatan/api/v1/dayatif/pemetaan_potensi/get_all_data/?format=datatables`,
+            dataSrc: "data",
+        },
+        ordering: true,
+        columns: [
+            /*
+                {
+                    className: 'row_numbering',
+                    data: null,
+                },
+            */
+            {
+                className: 'dt-control',
+                orderable: false,
+                data: null,
+                width: '8%',
+                render: function(data, type, row) {
+                    return `<span class="d-none" data-satker-id="${row.satker_id}"></span>`;
+                }
+            },
+            {
+                data: "nama_satker",
+                render: function (data, type, row) {
+                    return `${data}`;
+                },
+            },
+            {
+                data: "jumlah_kegiatan",
+                render: function (data, type, row) {
+                    return `${data}`;
+                },
+            },
+            {
+                data: "id",
+                width: '10%',
+                render: function (data, type, row) {
+
+                    const BTN = {};
+
+                    BTN.batal_kirim = `<a href="javascript:void(0);" onclick="handleSemua(${row.satker_id}, 'batalkan')" id="batalKirimSemuaBTN" class="badge bg-warning text-white text-decoration-none text-uppercase mb-1">
+                        <i class="fas fa-ban me-2"></i>Batalkan Semua Pengiriman
+                    </a>`
+
+                    BTN.kirim = !statusPengirimanSemua ? `<div>
+                    	<a href="javascript:void(0);" onclick="handleSemua(${row.satker_id}, 'kirim')"
+                        	class="badge bg-primary text-white text-decoration-none mb-1">
+							<i class="fas fa-paper-plane me-2"></i>Kirim Semua</a>
+						</div>` : `<div>
+						<a href="javascript:void(0);" class="badge bg-secondary text-white text-decoration-none mb-1"><i
+							class="fas fa-paper-plane me-2"></i>Kirim Semua</a>
+						</div>`;
+
+					BTN.delete = (!statusPengirimanSemua || satkerLevel == 2) ? `<div>
+						<a href="javascript:void(0);" class="badge bg-danger text-white text-decoration-none mb-1" onclick='handleDeleteAllKegiatan(${row.satker_id})'><i
+							class="fas fa-trash-alt me-2"></i>Hapus Semua</a>
+						</div>` : `<div>
+						<a href="javascript:void(0);" class="badge bg-secondary text-white text-decoration-none mb-1"><i
+							class="fas fa-trash-alt me-2"></i>Hapus Semua</a>
+						</div>`;
+                    
+                    const el = `
+                    <div class="list-button gx-3 text-uppercase">
+                        ${satkerLevel < 2 ? BTN.kirim : ''}
+                        ${satkerLevel < 2 ? BTN.batal_kirim : ''}
+                        ${BTN.delete}
+                    </div>`;
+
+                    return el;
+                },
+            },
+            {
+                data: "daftar_kegiatan",
+                visible: false
+            },
+            {
+                data: "satker_id",
+                visible: false
+            },
+            {
+                data: "nama_satker",
+                visible: false
+            },
+            {
+                data: "status",
+                visible: false
+            },
+        ],
+        initComplete: (settings, json) => {
+			hasilFetch = json.data.map(item => ({
+				satker_id: item.satker_id,
+				daftar_kegiatan: item.daftar_kegiatan
+			}));
+			return console.log("Hasil fetch data : ", json.data);
+		},
+        columnDefs: [
+            dt_row_pagination(),
+        ],
+    });
+
+	$('#__table').on('draw.dt', function() {
+		const newData = table.rows().data().toArray();
+		hasilFetch = newData.map(item => ({
+			satker_id: item.satker_id,
+			daftar_kegiatan: item.daftar_kegiatan
+		}));
+	});
+
+	$('#__table tbody').on('click', 'td.dt-control', function () {
+        const tr = $(this).closest('tr');
+        const row = table.row(tr);
+		const satkerId = $(this).find('span').data('satker-id');
+
+		console.log('Satker ID :', satkerId);
+
+        if (row.child.isShown()) {
+            // This row is already open - close it
+            destroyChild(row, satkerId);
+            tr.removeClass('shown');
+        } else {
+            // Open this row
+            createChild(row, satkerId);
+            tr.addClass('shown');
+        }
+    });
+
+	const destroyChild = (row) => {
+        const childTable = $("#__table_child", row.child());
+        childTable.detach();
+        childTable.DataTable().destroy();
+
+        row.child.hide();
+    }
+
+	const createChild = (row, satkerId) => {
+        const tableEl = $(`
+		<table id="__table_child" class="table table-bordered">
+			<thead class="bg-soft-blue">
+				<tr>
+					<th rowspan="1" colspan="3" class="bg-soft-primary">Pelaksanaan</th>
+					<th rowspan="2" class="bg-soft-danger">Deskripsi Hasil</th>
+					<th rowspan="2" class="bg-soft-danger">Hambatan/Kendala</th>
+					<th rowspan="2" class="bg-soft-danger">Kesimpulan</th>
+					<th rowspan="2" class="bg-soft-danger">Tindak Lanjut</th>
+					<th rowspan="2" class="bg-soft-danger">Dokumentasi</th>
+					<th rowspan="2" class="bg-soft-danger">Aksi <i class="fas fa-edit ms-2"></i></th>
+				</tr>
+				<tr>
+					<th rowspan="1" class="bg-soft-danger">No</th>
+					<th rowspan="1" class="bg-soft-danger">Tanggal</th>
+					<th rowspan="1" class="bg-soft-danger">Lokasi</th>
+				</tr>
+			</thead>
+			<tbody class="align-tr-middle">
+			</tbody>
+		</table>`);
+
+        // Display it the child row
+		// tableEl.find('tr').slideDown("slow");
+		row.child(tableEl).show();
+
+		// const childTableData = hasilFetch.filter(item => item.satker_id === satkerId)[0].daftar_kegiatan;
+		const childTableData = hasilFetch.find(item => item.satker_id === satkerId)?.daftar_kegiatan || [];
+
+        console.log('Rendering child data:', childTableData);
+
+        // Child table
+        const childTable = tableEl.DataTable({
+            language: dt_lang_config(),
+            serverSide: false,
+            searching: true,
+            responsive: false,
+			pagination: false,
+			lengthMenu: [5, 10, 15],
+            pageLength: 5,
+			data: childTableData,
+            ordering: true,
+            columns: [
+                {
+                    data: 'status',
+                },
+                {
+                    data: null,
+                    render: function (data, type, row) {
+                        if (row.tanggal_akhir) {
+                            const start = moment(row.tanggal_awal);
+                            const end = moment(row.tanggal_akhir);
+                            
+                            const startDate = start.format('D');
+                            const startMonth = start.format('MMMM');
+                            const startYear = start.format('YYYY');
+                            const endDate = end.format('D');
+                            const endMonth = end.format('MMMM');
+                            const endYear = end.format('YYYY');
+                            
+                            if (startMonth === endMonth && startYear === endYear) {
+                                return `${startDate} - ${endDate} ${startMonth} ${startYear}`;
+                            } else if (startYear !== endYear) {
+                                return `${start.format('D MMMM YYYY')} - ${end.format('D MMMM YYYY')}`;
+                            } else {
+                                return `${start.format('D MMMM')} - ${end.format('D MMMM YYYY')}`;
+                            }
+                        } else {
+                            return moment(row.tanggal_awal).format('D MMMM YYYY');
+                        }
+                    },
+                },
+                {
+                    data: null,
+                    render: function (data, type, row) {
+                        const el = `<ul class="location__list">
+                            <li><span class="location__label">Provinsi</span>:<span class="location__value">${row.nama_provinsi}</span></li>
+                            <li><span class="location__label">Kabupaten/Kota</span>:<span class="location__value">${row.nama_kabupaten}</span></li>
+                            <li><span class="location__label">Kecamatan</span>:<span class="location__value">${row.nama_kecamatan}</span></li>
+                            <li><span class="location__label">Desa/Kelurahan</span>:<span class="location__value">${row.nama_desa}</span></li>
+                        </ul>`;
+
+                        return el;
+                    },
+                },
+                {
+                    data: "deskripsi",
+                },
+                {
+                    data: "kendala",
+                },
+                {
+                    data: "kesimpulan",
+                },
+                {
+                    data: "tindak_lanjut",
+                },
+                {
+                    data: "dokumentasi",
+                    width: "7%",
+                    render: function (data, type, row) {
+                        const el = `
+                        <div class="text-center">
+                            <a href="${data}" class="badge bg-primary text-white" target="_blank">
+                            <i class="fas fa-eye me-2"></i>
+                            Lihat dokumentasi
+                            </a>
+                        </div>`;
+
+                        return el;
+                    },
+                },
+                {
+                    data: "id",
+                    render: function (data, type, row) {
+                        const deleteArgs = JSON.stringify({
+                            id: data,
+                            name: 'kegiatan',
+                            detail_name: row.nama_satker,
+                            apiURL: '/kegiatan/api/v1/dayatif/pemetaan_potensi'
+                        });
+
+                        const keteraganStatusList = {
+                            0: 'BNNP',
+                            1: 'Pusat'
+                        };
+
+                        const keteranganKirim = keteraganStatusList[row.status] || '?';
+
+                        const kirimArgs = JSON.stringify({
+                            id: data,
+                            nama_satker: row.nama_satker,
+                            keterangan: keteranganKirim
+                        });
+
+                        const isKirimable = satkerLevel != 2 && (satkerLevel == 0 && row.status < 2) || (satkerLevel == 1 && row.status < 1);;
+                        const isEditable = satkerLevel == 2 || (satkerLevel == 0 && row.status < 2) || (satkerLevel == 1 && row.status < 1);;
+                        
+                        /*
+                        const isKirimable = satkerLevel != 2 && row.status < 2;
+                        const isEditable = satkerLevel == 2 || row.status < 2;
+                        */
+
+                        const BTN = {};
+
+                        BTN.kirim = isKirimable ? `<div>
+                            <a href="javascript:void(0);" onclick='handleKirim(${kirimArgs}, ${data})'
+                                class="badge bg-primary text-white text-decoration-none mb-1"><i
+                                    class="fas fa-paper-plane me-2"></i>Kirim</a>
+                        </div>` : `<div>
+                            <a href="javascript:void(0);" class="badge bg-secondary text-white text-decoration-none mb-1"><i
+                                    class="fas fa-paper-plane me-2"></i>Kirim</a>
+                        </div>`;
+
+                        BTN.edit = isEditable ? `<div>
+                            <a href="javascript:void(0);" onclick="handleEdit(${data})"
+                                class="badge bg-success text-white text-decoration-none mb-1">
+                                <i class="fas fa-pen-to-square me-2"></i>Edit</a>
+                        </div>` : `<div>
+                            <a href="javascript:void(0);" class="badge bg-secondary text-white text-decoration-none mb-1">
+                                <i class="fas fa-pen-to-square me-2"></i>Edit</a>
+                        </div>`;
+
+                        BTN.delete = isEditable ? `<div>
+                            <a href="javascript:void(0);" onclick="handleDelete(${deleteArgs})"
+                                class="badge bg-danger text-white text-decoration-none mb-1">
+                                <i class="fas fa-trash-alt me-2"></i>Hapus</a>
+                        </div>` : `<div>
+                            <a href="javascript:void(0);" class="badge bg-secondary text-white text-decoration-none mb-1">
+                                <i class="fas fa-trash-alt me-2"></i>Hapus</a>
+                        </div>`;
+
+                        const el = `
+                            <div class="list-button gx-3 text-uppercase">
+							    ${satkerLevel < 2 ? BTN.kirim : ''}
+                                ${BTN.edit}
+                                ${BTN.delete}
+                            </div>`;
+
+                        return el;
+                    },
+                },
+                // Trigger DT Rows
+                /*
+                {
+                    data: "nama_provinsi",
+                    visible: false,
+                },
+                {
+                    data: "nama_kabupaten",
+                    visible: false,
+                },
+                {
+                    data: "nama_kecamatan",
+                    visible: false,
+                },
+                {
+                    data: "nama_desa",
+                    visible: false,
+                },
+                */
+            ],
+            columnDefs: [
+                dt_row_pagination(),
+            ],
+			layout: {
+				topStart: null,
+				topEnd: null,
+				topCenter: function () {
+					const el = `<div class="col-md-8 mx-auto mt-3 mb-2">
+						
+                        <div class="row">
+                            <label for="__table_child__search_input" class="col-md-2 col-form-label">Pencarian</label>
+                            <div class="col-md-10">
+                                <input class="form-control form-control-sm" type="text" id="__table_child__search_input" />
+                            </div>
+                        </div>
+
+					</div>`;
+
+					return el;
+				},
+				bottomStart: null,
+				bottomEnd: null,
+			}
+        });
+        
+        $('#__table_child__search_input').on('keyup', function () {
+            childTable.search($(this).val()).draw();
+        });
+    }
+</script>
+
+<!-- ==== FORM ACTIONS ===== -->
+<script>
+	async function handlePost(e) {
+		e.preventDefault();
+
+		showSwalLoading();
+
+		const modal = $('#createModal');
+		const form = $('#createForm');
+
+		const satker = form.find('#create__satker').val();
+		const tanggal_awal = form.find('#create__tanggal_awal').val();
+		const tanggal_akhir = form.find('#create__tanggal_akhir').val();
+
+		const provinsi = form.find('#create__provinsi').val();
+		const kabupaten = form.find('#create__kabupaten').val();
+		const kecamatan = form.find('#create__kecamatan').val();
+		const desa = form.find('#create__desa').val();
+		
+		const nama_provinsi = form.find('#create__provinsi option:selected').text();
+		const nama_kabupaten = form.find('#create__kabupaten option:selected').text();
+		const nama_kecamatan = form.find('#create__kecamatan option:selected').text();
+		const nama_desa = form.find('#create__desa option:selected').text();
+
+		const deskripsi = form.find('#create__deskripsi').val();
+		const kendala = form.find('#create__kendala').val();
+		const kesimpulan = form.find('#create__kesimpulan').val();
+		const tindak_lanjut = form.find('#create__tindak_lanjut').val();
+		const dokumentasi = form.find('#create__dokumentasi')[0].files[0];
+
+		const payload = { satker, tanggal_awal, tanggal_akhir, provinsi, nama_provinsi, kabupaten, nama_kabupaten, kecamatan, nama_kecamatan, desa, nama_desa, deskripsi, kendala, kesimpulan, tindak_lanjut, dokumentasi };
+
+		const formData = new FormData();
+
+		formData.append('satker', parseInt(satker));
+		formData.append('tanggal_awal', tanggal_awal);
+		formData.append('tanggal_akhir', tanggal_akhir);
+		formData.append('provinsi', provinsi);
+		formData.append('nama_provinsi', nama_provinsi);
+		formData.append('kabupaten', kabupaten);
+		formData.append('nama_kabupaten', nama_kabupaten);
+		formData.append('kecamatan', kecamatan);
+		formData.append('nama_kecamatan', nama_kecamatan);
+		formData.append('desa', desa);
+		formData.append('nama_desa', nama_desa);
+		formData.append('deskripsi', deskripsi);
+		formData.append('kendala', kendala);
+		formData.append('kesimpulan', kesimpulan);
+		formData.append('tindak_lanjut', tindak_lanjut);
+		formData.append('dokumentasi', dokumentasi);
+
+		console.log('Payload :', payload);
+
+		try {
+			const response = await axios.post(`/kegiatan/api/v1/dayatif/pemetaan_potensi/`, formData, {
+				headers: {
+					'Content-Type': 'multipart/form-data',
+				},
+			});
+
+			modal.modal('hide');
+			showSwalSuccess('Berhasil!', `Data kegiatan telah <b>berhasil</b> ditambahkan!`);
+		} catch (error) {
+			showSwalGenericError();
+			console.error('Terjadi kesalahan :', error);
+		} finally {
+			table.ajax.reload();
+		}
+	}
+
+	async function handleEdit(id) {
+		const modal = $('#editModal');
+		const form = $('#editForm');
+		
+		block(form);
+		
+		try {
+
+			const response = await axios.get(`/kegiatan/api/v1/dayatif/pemetaan_potensi/${id}/`);
+
+			modal.modal('show');
+
+			const data = response.data;
+
+			modal.find('#edit__info').text(data.detail.satker.nama_satker);
+			form.find('#edit__id').val(data.id);
+
+			form.find('#edit__satker').val(data.satker).trigger('change');
+			
+			form.find('#edit__tanggal_awal').val(data.tanggal_awal);
+			form.find('#edit__tanggal_akhir').val(data.tanggal_akhir);
+
+			await sleep(1000);
+
+			form.find('#edit__deskripsi').val(data.deskripsi);
+			form.find('#edit__kendala').val(data.kendala);
+			form.find('#edit__kesimpulan').val(data.kesimpulan);
+			form.find('#edit__tindak_lanjut').val(data.tindak_lanjut);
+			
+			form.find('#edit__selected_provinsi').text(data.nama_provinsi);
+			form.find('#edit__selected_kabupaten').text(data.nama_kabupaten);
+			form.find('#edit__selected_kecamatan').text(data.nama_kecamatan);
+			form.find('#edit__selected_desa').text(data.nama_desa);
+			
+			/*
+            form.find('#edit__provinsi').val(data.provinsi).trigger('change');
+            console.log('ID Provinsi :', data.provinsi);
+            
+            form.find('#edit__kabupaten').val(data.kabupaten).trigger('change');
+            console.log('ID Kabupaten :', data.provinsi);
+            
+            form.find('#edit__kecamatan').val(data.kecamatan).trigger('change');
+            console.log('ID Kecamatan :', data.provinsi);
+            
+            form.find('#edit__desa').val(data.desa).trigger('change');
+            console.log('ID Desa :', data.provinsi);
+			*/
+		} catch (error) {
+			showSwalGenericError();
+			console.error('Terjadi kesalahan :', error);
+		} finally {
+			unblock(form);
+
+		}
+	}
+
+	async function handleUpdate(e) {
+		e.preventDefault();
+
+		showSwalLoading();
+
+		const modal = $('#editModal');
+		const form = $('#editForm');
+
+		const id = form.find('#edit__id').val();
+		const satker = form.find('#edit__satker').val();
+		const tanggal_awal = form.find('#edit__tanggal_awal').val();
+		const tanggal_akhir = form.find('#edit__tanggal_akhir').val();
+
+		const deskripsi = form.find('#edit__deskripsi').val();
+		const kendala = form.find('#edit__kendala').val();
+		const kesimpulan = form.find('#edit__kesimpulan').val();
+		const tindak_lanjut = form.find('#edit__tindak_lanjut').val();
+		const dokumentasi = form.find('#edit__dokumentasi')[0].files[0];
+
+		const formData = new FormData();
+
+		formData.append('satker', parseInt(satker));
+		formData.append('tanggal_awal', tanggal_awal);
+		formData.append('tanggal_akhir', tanggal_akhir);
+
+		const provinsi = form.find('#edit__provinsi').val();
+		const kabupaten = form.find('#edit__kabupaten').val();
+		const kecamatan = form.find('#edit__kecamatan').val();
+		const desa = form.find('#edit__desa').val();
+
+		const nama_provinsi = form.find('#edit__provinsi option:selected').text();
+		const nama_kabupaten = form.find('#edit__kabupaten option:selected').text();
+		const nama_kecamatan = form.find('#edit__kecamatan option:selected').text();
+		const nama_desa = form.find('#edit__desa option:selected').text();
+
+		// console.log({ provinsi, kabupaten, kecamatan, desa });
+
+		if (provinsi || kabupaten || kecamatan || desa) {
+			console.log('Pergantian lokasi ...');
+			formData.append('provinsi', provinsi);
+			formData.append('nama_provinsi', nama_provinsi);
+			formData.append('kabupaten', kabupaten);
+			formData.append('nama_kabupaten', nama_kabupaten);
+			formData.append('kecamatan', kecamatan);
+			formData.append('nama_kecamatan', nama_kecamatan);
+			formData.append('desa', desa);
+			formData.append('nama_desa', nama_desa);
+		}
+
+		formData.append('deskripsi', deskripsi);
+		formData.append('kendala', kendala);
+		formData.append('kesimpulan', kesimpulan);
+		formData.append('tindak_lanjut', tindak_lanjut);
+
+		if (dokumentasi) formData.append('dokumentasi', dokumentasi);
+
+		const payload = { satker, tanggal_awal, tanggal_akhir, provinsi, nama_provinsi, kabupaten, nama_kabupaten, kecamatan, nama_kecamatan, desa, nama_desa, deskripsi, kendala, kesimpulan, tindak_lanjut, dokumentasi };
+
+		console.log('Payload :', payload);
+
+		try {
+			const response = await axios.patch(`/kegiatan/api/v1/dayatif/pemetaan_potensi/${id}/`, formData, {
+				headers: {
+					'Content-Type': 'multipart/form-data',
+				},
+			});
+
+			modal.modal('hide');
+			showSwalSuccess('Berhasil!', `Data kegiatan telah <b>berhasil</b> ditambahkan!`);
+		} catch (error) {
+			showSwalGenericError();
+			console.error('Terjadi kesalahan :', error);
+		} finally {
+			table.ajax.reload();
+		}
+	}
+
+    async function handleDeleteAllKegiatan(satkerId) {
+		const confirmResult = await showSwalConfirm(`Untuk menghapus data <b>kegiatan</b>? <br> Data yang dihapus tidak dapat <b>dipulihkan</b> kembali`, 'Ya, hapus data');
+
+		if (!confirmResult.isConfirmed) return;
+
+		showSwalLoading();
+
+		await sleep(1000);
+
+		try {
+			const response = await axios.delete(`/kegiatan/api/v1/dayatif/pemetaan_potensi/${satkerId}/delete_all_kegiatan/`);
+			// const response = await axios.delete('/kegiatan/api/v1/dayatif/pemetaan_potensi/delete_all_kegiatan/?satker_id=' + satkerId);
+
+			console.log('Respose :', response);
+
+			showSwalSuccess('Berhasil', `Data <b>kegiatan</b> telah berhasil <b>dihapus</b>`, 3000);
+
+			reloadAllDataTables();
+		} catch (error) {
+			showSwalGenericError();
+			console.error('Terjadi kesalahan :', error);
+		}
+	}
+
+	async function handleKirim(args) {
+        console.log({args});
+		const confirmResult = await showSwalConfirm(`Apakah anda yakin untuk mengirim kegiatan ID ${args.id} dari Satuan Kerja <b>${args.nama_satker}</b> ke <b>${args.keterangan}</b>`, 'Ya, kirim data');
+
+		if (!confirmResult.isConfirmed) return;
+
+		showSwalLoading();
+
+		await sleep(1000);
+
+		try {
+			const response = await axios.post('/kegiatan/api/v1/dayatif/pemetaan_potensi/kirim_kegiatan/', { kegiatan_id : args.id });
+
+			console.log('Respose :', response);
+
+			const sendedToParent = response.data.parent.keterangan;
+
+			showSwalSuccess('Berhasil', `Data <b>kegiatan</b> dari <b>${args.nama_satker}</b> telah berhasil <b>dikirimkan ke <b>${sendedToParent}</b></b>`);
+
+			reloadAllDataTables();
+		} catch (error) {
+			showSwalGenericError();
+			console.error('Terjadi kesalahan :', error);
+		}
+	}
+
+    async function handleSemua(satker, tipe) {
+        let satker_id = null;
+        let nama_satker = '';
+        let payload = { tipe };
+
+        const isNumeric = !isNaN(satker);
+
+        if (isNumeric) {
+            satker_id = satker;
+            payload['satker_id'] = satker_id;
+        } else {
+            nama_satker = satker;
+            payload['nama_satker'] = nama_satker;
+        }
+
+        tipe = tipe == 'kirim' ? 'kirim' : 'batalkan';
+
+        const satkerInfo = nama_satker == '' ? 'Satuan Kerja' : nama_satker;
+
+        const confirmMessage = tipe == 'kirim' ? `Apakah anda yakin untuk mengirim semua kegiatan dari <b>${satkerInfo}</b>` : `Apakah anda yakin untuk membatalkan semua pengiriman kegiatan dari <b>${satkerInfo}</b>`;
+
+        const confirmMessageButton = tipe == 'kirim' ? 'Ya, kirim data' : 'Ya, batalkan';
+
+        const confirmResult = await showSwalConfirm(`${confirmMessage}?`, confirmMessageButton);
+
+		if (!confirmResult.isConfirmed) return;
+
+        showSwalLoading();
+
+		await sleep(1000);
+
+        try {
+			const response = await axios.post('/kegiatan/api/v1/dayatif/pemetaan_potensi/semua_kegiatan/', payload);
+
+			console.log('Respose :', response);
+
+			const sendedToParent = response.data.parent.keterangan;
+
+            const successMessage = tipe == 'kirim' ? `Data <b>kegiatan</b> dari <b>${satkerInfo}</b> telah berhasil <b>dikirimkan ke <b>${sendedToParent}</b></b>` : `Data pengiriman <b>kegiatan</b> ke <b>${sendedToParent}</b> dari <b>${satkerInfo}</b> telah berhasil <b>dibatalkan</b>`
+
+			showSwalSuccess('Berhasil', successMessage);
+
+			reloadAllDataTables();
+
+			statusPengirimanSemua = tipe == 'kirim';
+            
+            tipe == 'kirim' ?? $('#kirimSemuaBTN').addClass('disabled bg-secondary').removeClass('bg-primary');
+		} catch (error) {
+			showSwalGenericError();
+			console.error('Terjadi kesalahan :', error);
+		}
+    }
+	
+    async function handleExport() {
+		showSwalLoading();
+
+		await sleep(1000);
+
+		try {
+			const response = await axios.post('/kegiatan/api/v1/dayatif/pemetaan_potensi/export_data/');
+
+            const data = response.data;
+
+            // console.log(data); Swal.close(); return
+
+            window.location.href = data.file_path;
+
+            const confirmation = await Swal.fire({
+                title: "Berhasil",
+                html: `Data <b>Kegiatan Binaan Teknis</b> telah <b>berhasil</b> diexport! <br>Klik tombol unduh ulang apabila <b>gagal</b>!`,
+                icon: "success",
+                confirmButtonText: "Unduh ulang.",
+                showCancelButton: true,
+                cancelButtonText: 'Batalkan',
+                showCloseButton: true,
+                allowOutsideClick: false,
+            });
+    
+            if (confirmation.isConfirmed) {
+                console.log('Blud is downloading again!');
+                window.location.href = data.file;
+            }
+		} catch (error) {
+			showSwalGenericError();
+			console.error('Terjadi kesalahan :', error);
+		}
+	}
+</script>
+
+<script>
+	const API_LOKASI_URL = 'http://103.210.54.17:8003';
+	let listProvinces = null;
+
+	async function loadKabupaten(provinsiId, kabupatenDropdown) {
+		if (!provinsiId) return;
+	
+		resetKabupaten();
+		resetKecamatan();
+		resetDesa();
+	
+		try {
+			const response = await axios.get(`${API_LOKASI_URL}/dashboard/masters/api/v1/list_regencies/?provinsi=${provinsiId}`);
+	
+			response.data.forEach(value => {
+				kabupatenDropdown.append($('<option>', {
+					value: value.id,
+					text: `${value.nama_kabupaten} - ${value.id}`
+				}));
+			});
+	
+			kabupatenDropdown.removeAttr('disabled');
+		} catch (error) {
+			console.error('Error:', error);
+		}
+	}
+	
+	async function loadKecamatan(kabupatenId, kecamatanDropdown) {
+		if (!kabupatenId) return;
+	
+		resetKecamatan();
+		resetDesa();
+	
+		try {
+			const response = await axios.get(`${API_LOKASI_URL}/dashboard/masters/api/v1/list_districts/?kabupaten=${kabupatenId}`);
+	
+			response.data.forEach(value => {
+				kecamatanDropdown.append($('<option>', {
+					value: value.id,
+					text: `${value.nama_kecamatan} - ${value.id}`
+				}));
+			});
+	
+			kecamatanDropdown.removeAttr('disabled');
+		} catch (error) {
+			console.error('Error:', error);
+		}
+	}
+	
+	async function loadDesa(kecamatanId, desaDropdown) {
+		if (!kecamatanId) return;
+	
+		resetDesa();
+	
+		try {
+			const response = await axios.get(`${API_LOKASI_URL}/dashboard/masters/api/v1/list_villages/?kecamatan=${kecamatanId}`);
+	
+			response.data.forEach(value => {
+				desaDropdown.append($('<option>', {
+					value: value.id,
+					text: `${value.nama_desa} - ${value.id}`
+				}));
+			});
+	
+			desaDropdown.removeAttr('disabled');
+		} catch (error) {
+			console.error('Error:', error);
+		}
+	}
+
+	const semua_option = `<option value="">Semua</option>`;
+
+	function resetKabupaten(type) {
+		$(`#${type}__kabupaten`).empty();
+		$(`#${type}__kabupaten`).append($(`<option>`, {
+			value: '',
+			text: '--Pilih kabupaten/kota--',
+			disabled: true,
+		}));
+		$(`#${type}__kabupaten`).prop(`disabled`, true);
+		$(`#${type}__kecamatan`).prop(`disabled`, true);
+	
+		$(`#${type}__kabupaten`).append(semua_option);
+	}
+	
+	function resetKecamatan(type) {
+		$(`#${type}__kecamatan`).empty();
+		$(`#${type}__kecamatan`).append($('<option>', {
+			value: '',
+			text: '--Pilih kecamatan--',
+			disabled: true
+		}));
+		$(`#${type}__kecamatan`).prop('disabled', true);
+		$(`#${type}__kecamatan`).append(semua_option);
+	}
+	
+	function resetDesa(type) {
+		$(`#${type}__desa`).empty();
+		$(`#${type}__desa`).append($('<option>', {
+			value: '',
+			text: '--Pilih desa/kelurahan--',
+			disabled: true
+		}));
+		$(`#${type}__desa`).prop('disabled', true);
+		$(`#${type}__desa`).append(semua_option);
+	}
+
+	$('#create__provinsi').on('change', async function() {
+		const value = $(this).val();
+
+		if (value && value != '') {
+			await loadKabupaten(value, $('#create__kabupaten'));
+		} else {
+			resetKabupaten('create');
+			resetKecamatan('create');
+			resetDesa('create');
+		}
+	});
+	
+	$('#create__kabupaten').on('change', async function() {
+		const value = $(this).val();
+
+		if (value && value != '') {
+			await loadKecamatan(value, $('#create__kecamatan'));
+		} else {
+			resetKecamatan('create');
+			resetDesa('create');
+		}
+	});
+	
+	$('#create__kecamatan').on('change', async function() {
+		const value = $(this).val();
+
+		if (value && value != '') {
+			await loadDesa(value, $('#create__desa'));
+		} else {
+			resetDesa('create');
+		}
+	});
+	
+	$('#edit__provinsi').on('change', async function() {
+		const value = $(this).val();
+
+		if (value && value != '') {
+			await loadKabupaten(value, $('#edit__kabupaten'));
+
+			console.log('Terpanggil dan meload kabupaten ...');
+		} else {
+			resetKabupaten('edit');
+			resetKecamatan('edit');
+			resetDesa('edit');
+		}
+	});
+	
+	$('#edit__kabupaten').on('change', async function() {
+		const value = $(this).val();
+
+		if (value && value != '') {
+			await loadKecamatan(value, $('#edit__kecamatan'));
+			console.log('Terpanggil dan meload kecamatan ...');
+		} else {
+			resetKecamatan('edit');
+			resetDesa('edit');
+		}
+	});
+	
+	$('#edit__kecamatan').on('change', async function() {
+		const value = $(this).val();
+
+		if (value && value != '') {
+			await loadDesa(value, $('#edit__desa'));
+			console.log('Terpanggil dan meload desa ...');
+		} else {
+			resetDesa('edit');
+		}
+	});
+
+	async function fetchProvinsi() {
+		try {
+			const response = await axios.get(`${API_LOKASI_URL}/dashboard/masters/api/v1/provinces/`);
+			
+			listProvinces = response.data.results;
+		} catch (error) {
+			console.error('Error:', error);
+		}
+	}
+
+	async function assignProvinsi(type) {
+		const provinsiDropdown = $(`#${type}__provinsi`)
+		
+		listProvinces.forEach(value => {
+			provinsiDropdown.append($('<option>', {
+				value: value.id,
+				text: `${value.nama_provinsi} - ${value.id}`
+			}));
+		});
+
+		provinsiDropdown.removeAttr('disabled');
+	}
+
+	$(function () {
+		(async () => {
+			try {
+				await fetchProvinsi();
+				await assignProvinsi('create');
+				await assignProvinsi('edit')
+
+			} catch (error) {
+				console.error('Terjadi kesalahan saat memuat data statistik :', error);
+			}
+		})();
+	});
+
+    function formatDate(dateString) {
+        const [year, month, day] = dateString.split('-');
+        return new Date(year, month - 1, day);
+    }
+    
+    function calculateDays() {
+
+        this.startDate = this.startDate == '' ? (this.$refs.startDate.value) : this.startDate;
+        this.endDate = this.endDate == '' ? (this.$refs.endDate.value) : this.endDate;
+
+        // console.log('Start Date :', this.$refs.startDate.value);
+        // console.log('End Date :', this.$refs.endDate.value);
+
+        const startDate = formatDate(this.startDate);
+        const endDate = formatDate(this.endDate);
+
+        this.firstTime = true;
+    
+        // Clear end date if start date is cleared
+        if (!this.startDate) {
+            this.endDate = '';
+            return;
+        }
+    
+        // Prevent choosing end date less than current date
+        const currentDate = new Date();
+        if (startDate > endDate) {
+            this.endDate = '';
+            return;
+        }
+        
+        if (endDate < currentDate) {
+            alert('Tanggal akhir tidak boleh kurang dari tanggal saat ini!');
+            this.endDate = '';
+            return;
+        }
+    }
+</script>
+{% endblock %}
+
+{% block modal_tambahan %}
+{% include 'dayatif/pemetaan_potensi/modals/create_modal.html' %}
+{% include 'dayatif/pemetaan_potensi/modals/edit_modal.html' %}
+{% endblock %}
+
+{% block css_tambahan %}
+
+<style>
+	#detail__lokasi {
+		width: 250px
+	}
+	
+	#detail__lokasi .detail__value {
+		padding-left: 10px;
+	}
+
+	#edit__selected_lokasi li span {
+		padding-left: 10px;
+	}
+
+	#edit__selected_lokasi .edit__selected_lokasi_label {
+		width: 150px;
+        display: inline-block;
+	}
+
+    ul.location__list {
+        text-align: left;
+    }
+    
+    ul.location__list .location__label {
+        width: 150px;
+        display: inline-block;
+        font-weight: bold;
+    }
+    
+    ul.location__list .location__value {
+        display: inline-block;
+    }
+</style>
+
+{% endblock css_tambahan %}

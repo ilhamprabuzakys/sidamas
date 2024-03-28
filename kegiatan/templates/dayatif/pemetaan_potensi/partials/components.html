@@ -1,0 +1,424 @@
+<script>
+
+    const Pagination = {
+        name: 'Pagination',
+        props: ['item'],
+        delimiters: ['{', '}'],
+        data() {
+            return {
+                currentPage: this.item.currentPage // Inisialisasi currentPage dengan nilai dari props item
+            };
+        },
+        mounted() {
+            // console.log(`Pagination mounted with totalPage: ${this.item.totalPage} and currentPage: ${this.currentPage}`);
+        },
+        computed: {
+            totalPage() {
+                return this.item.totalPage;
+            }
+        },
+        template: `
+                <nav id="__table_pagination" class="mt-3">
+                    <ul class="pagination justify-content-end">
+                        <li class="page-item prev">
+                            <button :disabled='currentPage <= 1' class="page-link" @click="currentPage--">
+                                <i class="ti ti-chevron-left ti-xs"></i>
+                            </button>
+                        </li>
+                        <template v-for="page in totalPage" :key="page">
+                            <li :class="{ 'page-item': true, 'active': currentPage === page }">
+                                <button class="page-link" @click="currentPage=page">{ page }</button>
+                            </li>
+                        </template>
+                        <li class="page-item">
+                            <button :disabled='currentPage => totalPage' class="page-link" @click="currentPage++">
+                                <i class="ti ti-chevron-right ti-xs"></i>
+                            </button>
+                        </li>
+                    </ul>
+                </nav>
+            `
+    };
+    
+    const ItemText = {
+        name: 'ItemText',
+        delimiters: ['{', '}'],
+        props: {
+            text: {
+                type: String,
+                required: true,
+            },
+            length: {
+                type: Number,
+                required: false,
+                default: 30,
+            }
+        },
+        setup(props) {
+            const isExpanded = ref(false);
+            const tooFew = ref(false);
+
+            const truncatedText = computed(() => {
+                if (props.text.length <= props.length) {
+                    tooFew.value = true;
+                    return props.text;
+                } else {
+                    return props.text.slice(0, props.length) + '...';
+                }
+            });
+    
+            return { truncatedText, isExpanded, tooFew };
+        },
+        template: `
+            <div>
+                <span v-text="isExpanded ? (text + '...') : truncatedText"></span>
+                <br v-if="isExpanded">
+                <a href="javascript:void(0);" class="mt-1" v-if="!tooFew" @click="isExpanded = !isExpanded" v-text="isExpanded ? 'Show less' : 'Show more'"></a>
+            </div>
+        `
+    };
+
+
+    const ActionBTN = {
+        name: 'ActionBTN',
+        props: ['id', 'status', 'nama', 'level', 'itemlevel'],
+        delimiters: ['{', '}'],
+        mounted() {
+            // console.log('Mounted ...', this.id, this.status, this.level, this.itemlevel);
+        },
+        template: `
+            <div class="list-button gx-3 text-uppercase">
+                <div v-if="level != 2">
+                    <a href="javascript:void(0);" @click='handleKirim'
+                        :class="isKirimable ? 'bg-primary' : 'bg-secondary'"
+                        class="badge text-white text-decoration-none mb-1">
+                        <i class="fas fa-paper-plane me-2"></i>Kirim
+                    </a>
+                </div>
+                
+                <div v-if="itemlevel == level || level == 2">
+                    <a href="javascript:void(0);" @click='handleEdit'
+                        :class="isEditable ? 'bg-success' : 'bg-secondary'"
+                        class="badge text-white text-decoration-none mb-1">
+                        <i class="fas fa-edit me-2"></i>Edit
+                    </a>
+                    
+                    <a href="javascript:void(0);" @click='handleDestroy'
+                        :class="isEditable ? 'bg-danger' : 'bg-secondary'"
+                        class="badge text-white text-decoration-none mb-1">
+                        <i class="fas fa-trash-alt me-2"></i>Hapus
+                    </a>
+                </div>
+            </div>
+        `,
+        computed: {
+            kirimArgs() {
+                const keteranganStatus = {
+                    0: 'BNNP',
+                    1: 'Pusat'
+                };
+
+                return {
+                    id: this.id,
+                    nama: this.nama,
+                    keterangan: keteranganStatus[this.status] || '?'
+                }
+            },
+            isKirimable() {
+                return this.level !== 2 && ((this.level === 0 && this.status < 2) || (this.level === 1 && this.status === 0));
+            },
+            isEditable() {
+                return this.level == 2 || (this.level == 0 && this.status == 1) || (this.level == 1 && this.status == 0)
+            },
+            buttonKirim() {
+                return `<div v-if="statusPengiriman">
+                    <a href="javascript:void(0);" @click='handleKirim'
+                        class="badge bg-primary text-white text-decoration-none mb-1">
+                        <i class="fas fa-paper-plane me-2"></i>Kirim
+                    </a>
+                </div>
+                <div v-else>
+                    <a href="javascript:void(0);" class="badge bg-secondary text-white text-decoration-none mb-1">
+                        <i class="fas fa-paper-plane me-2"></i>Kirim
+                    </a>
+                </div>`;
+            }
+        },
+        methods: {
+            async handleKirim() {
+                if (!this.isKirimable) return
+
+                const args = this.kirimArgs;
+
+                const confirmResult = await showSwalConfirm(`Apakah anda yakin untuk mengirim kegiatan ID ${args.id} dari Satuan Kerja <b>${args.nama}</b> ke <b>${args.keterangan}</b>`, 'Ya, kirim data');
+
+                if (!confirmResult.isConfirmed) return;
+
+                showSwalLoading();
+
+                await sleep(1000);
+
+                try {
+                    const response = await axios.post('/kegiatan/api/v1/dayatif/pemetaan_potensi/kirim_kegiatan/', { kegiatan_id : args.id });
+
+                    console.log('Respose :', response);
+
+                    const sendedToParent = response.data.parent.keterangan;
+
+                    showSwalSuccess('Berhasil', `Data <b>kegiatan</b> dari <b>${this.nama}</b> telah berhasil <b>dikirimkan ke <b>${sendedToParent}</b></b>`);
+
+                    this.$emit('update');
+
+                } catch (error) {
+                    showSwalGenericError();
+                    console.error('Terjadi kesalahan :', error);
+                }
+            },
+            handleEdit() {
+                this.$emit('edit', this.id);
+            },
+            async handleDestroy() {
+                const deleteArgs = {
+                    id: this.id,
+                    name: 'kegiatan',
+                    detail_name: this.nama,
+                    apiURL: '/kegiatan/api/v1/dayatif/pemetaan_potensi',
+                    usingDT: false,
+                };
+
+                const res = await handleDelete(deleteArgs);
+
+                if (res) this.$emit('update');
+            }
+        }
+    };
+    
+    
+    const Lokasi = {
+        name: 'Lokasi',
+        props: ['provinsi', 'kabupaten', 'kecamatan', 'desa'],
+        delimiters: ['{', '}'],
+        template: `
+            <ul class="location__list">
+                <li><span class="location__label">Provinsi</span>:<span class="location__value">{ provinsi }</span></li>
+                <li><span class="location__label">Kabupaten/Kota</span>:<span class="location__value">{ kabupaten }</span></li>
+                <li><span class="location__label">Kecamatan</span>:<span class="location__value">{ kecamatan }</span></li>
+                <li><span class="location__label">Desa/Kelurahan</span>:<span class="location__value">{ desa }</span></li>
+            </ul>
+        `
+    };
+    
+    const SectionHeader = {
+        name: 'SectionHeader',
+        props: ['satker', 'jumlah'],
+        delimiters: ['{', '}'],
+        template: `
+            <span class="text-center"><span class="fw-bold me-2">{ satker }</span> ({ jumlah } kegiatan)</span>
+        `
+    };
+    
+    const ItemTanggal = {
+        name: 'ItemTanggal',
+        props: ['awal', 'akhir'],
+        delimiters: ['{', '}'],
+        computed: {
+            formattedDate() {
+                return getTanggalKegiatan(this.awal, this.akhir);
+            }
+        },
+        template: `
+            <span>{ formattedDate }</span>
+        `
+    };
+
+    const ParentActionBTN = {
+        name: 'ParentActionBTN',
+        props: ['satker', 'satkerlevel', 'status'],
+        template: ``,
+        /*
+        template: `
+            <div class="list-button gx-3 text-uppercase">
+                <a href="javascript:;" @click="handleSemua('kirim')"
+                    :class="{ 'badge bg-primary text-white text-decoration-none mb-1': !status, 'badge bg-secondary text-white text-decoration-none mb-1': status }">
+                    <i class="fas fa-paper-plane me-2"></i>Kirim Semua
+                </a>
+            </div>
+        `,
+        */
+        methods: {
+            isDeletable() {
+                return (this.satkerlevel == 0 || this.satkerLevel == 2);
+            },
+            async handleSemua(tipe) {
+                let satker_id = null;
+                let nama_satker = '';
+                let payload = {
+                    tipe
+                };
+
+                const isNumeric = !isNaN(this.satker);
+
+                if (isNumeric) {
+                    satker_id = this.satker;
+                    payload['satker_id'] = satker_id;
+                } else {
+                    nama_satker = this.satker;
+                    payload['nama_satker'] = nama_satker;
+                }
+
+                const satkerInfo = nama_satker == '' ? 'Satuan Kerja' : nama_satker;
+
+                const confirmMessage = tipe == 'kirim' ?
+                    `Apakah anda yakin untuk mengirim semua kegiatan dari <b>${satkerInfo}</b>` :
+                    `Apakah anda yakin untuk membatalkan semua pengiriman kegiatan dari <b>${satkerInfo}</b>`;
+
+                const confirmMessageButton = tipe == 'kirim' ? 'Ya, kirim data' : 'Ya, batalkan';
+
+                const confirmResult = await showSwalConfirm(`${confirmMessage}?`, confirmMessageButton);
+
+                if (!confirmResult.isConfirmed) return;
+
+                showSwalLoading();
+
+                await sleep(1000);
+
+                try {
+                    const response = await axios.post(
+                        '/kegiatan/api/v1/dayatif/pemetaan_potensi/semua_kegiatan/', payload);
+
+                    console.log('Respose :', response);
+
+                    const sendedToParent = response.data.parent.keterangan;
+
+                    const successMessage = tipe == 'kirim' ?
+                        `Data <b>kegiatan</b> dari <b>${satkerInfo}</b> telah berhasil <b>dikirimkan ke <b>${sendedToParent}</b></b>` :
+                        `Data pengiriman <b>kegiatan</b> ke <b>${sendedToParent}</b> dari <b>${satkerInfo}</b> telah berhasil <b>dibatalkan</b>`
+
+                    showSwalSuccess('Berhasil', successMessage);
+
+                    this.$emit('refresh');
+
+                    const value = tipe == 'kirim';
+
+                    this.$emit('update', value);
+
+                    tipe == 'kirim' ?? $('#kirimSemuaBTN').addClass('disabled bg-secondary').removeClass(
+                        'bg-primary');
+                } catch (error) {
+                    showSwalGenericError();
+                    console.error('Terjadi kesalahan :', error);
+                }
+            },
+            async handleDeleteAllKegiatan() {
+                const confirmResult = await showSwalConfirm(
+                    `Untuk menghapus data <b>kegiatan</b>? <br> Data yang dihapus tidak dapat <b>dipulihkan</b> kembali`,
+                    'Ya, hapus data');
+
+                if (!confirmResult.isConfirmed) return;
+
+                showSwalLoading();
+
+                await sleep(1000);
+
+                try {
+                    const response = await axios.delete(
+                        `/kegiatan/api/v1/dayatif/pemetaan_potensi/${this.satker}/delete_all_kegiatan/`);
+                    console.log('Respose :', response);
+
+                    showSwalSuccess('Berhasil', `Data <b>kegiatan</b> telah berhasil <b>dihapus</b>`, 3000);
+
+                    this.$emit('refresh');
+                } catch (error) {
+                    showSwalGenericError();
+                    console.error('Terjadi kesalahan :', error);
+                }
+            }
+        }
+    };
+
+    const ChildActionBTN = {
+        name: 'ChildActionBTN',
+        props: ['id', 'status', 'satkerlevel'],
+        computed: {
+            kirimArgs() {
+                return this.getKirimArgs();
+            },
+            deleteArgs() {
+                return this.getDeleteArgs();
+            },
+            editBTN() {
+                return 'sasa'
+                return this.getEditBTN();
+            },
+            kirimBTN() {
+                return this.getKirimBTN();
+            },
+            deleteBTN() {
+                return this.getDeleteBTN();
+            },
+        },
+        template: `
+            <div class="list-button gx-3 text-uppercase">
+                ${this.satkerlevel < 2 ? this.kirimBTN : ''}
+                ${this.editBTN}
+                ${this.deleteBTN}
+            </div>
+        `,
+        methods: {
+            getDeleteArgs() {
+                return JSON.stringify({
+                    id: this.id,
+                    name: 'kegiatan',
+                    apiURL: '/kegiatan/api/v1/dayatif/pemetaan_potensi'
+                });
+            },
+            getKeterangan() {
+                const keteranganStatusList = {
+                    0: 'BNNP',
+                    1: 'Pusat'
+                };
+                return keteranganStatusList[this.status] || '?';
+            },
+            getKirimArgs() {
+                return JSON.stringify({
+                    id: this.id,
+                    nama_satker: '',
+                    keterangan: this.getKeterangan()
+                });
+            },
+            isKirimable() {
+                return this.satkerlevel != 2 && ((this.satkerlevel == 0 && this.status < 2) || (this.satkerlevel ==
+                    1 && this.status < 1));
+            },
+            isEditable() {
+                return this.satkerlevel == 2 || ((this.satkerlevel == 0 && this.status < 2) || (this.satkerlevel ==
+                    1 && this.status < 1));
+            },
+            getKirimBTN() {
+                return this.isKirimable() ? `<div>
+                    <a href="javascript:void(0);" onclick='handleKirim(${this.kirimArgs}, ${this.id})' class="badge bg-primary text-white text-decoration-none mb-1"><i class="fas fa-paper-plane me-2"></i>Kirim</a>
+                </div>` : `<div>
+                    <a href="javascript:void(0);" class="badge bg-secondary text-white text-decoration-none mb-1"><i class="fas fa-paper-plane me-2"></i>Kirim</a>
+                </div>`;
+            },
+            getEditBTN() {
+                return this.isEditable() ? `<div>
+                    <a href="javascript:void(0);" onclick="handleEdit(${this.id})" class="badge bg-success text-white text-decoration-none mb-1">
+                        <i class="fas fa-pen-to-square me-2"></i>Edit</a>
+                </div>` : `<div>
+                    <a href="javascript:void(0);" class="badge bg-secondary text-white text-decoration-none mb-1">
+                        <i class="fas fa-pen-to-square me-2"></i>Edit</a>
+                </div>`;
+            },
+            getDeleteBTN() {
+                return this.isEditable() ? `<div>
+                    <a href="javascript:void(0);" @click='handleDelete(${this.deleteArgs})' class="badge bg-danger text-white text-decoration-none mb-1">
+                        <i class="fas fa-trash-alt me-2"></i>Hapuss</a>
+                </div>` : `<div>
+                    <a href="javascript:void(0);" class="badge bg-secondary text-white text-decoration-none mb-1">
+                        <i class="fas fa-trash-alt me-2"></i>Hapus</a>
+                </div>`;
+            }
+        }
+    };
+</script>

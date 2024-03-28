@@ -45,170 +45,6 @@
 <!-- ==== DT CONFIGURATION ===== -->
 <script>
 
-	const dataInJson = [
-        {
-          data: {
-            name: "b1",
-            street: "s1",
-            city: "c1",
-            departments: 10,
-            offices: 15,
-          },
-          kids: [
-            {
-              data: {
-                department: "HR",
-                supervisor: "Isidor Bristol",
-                floor: 1,
-                employees: 15,
-              },
-              kids: [
-                {
-                  data: {
-                    name: "Klement Nikodemos",
-                    phone: "+938462",
-                    hire_date: "January 1, 2010",
-                    id: 3456,
-                  },
-                  kids: [],
-                },
-                {
-                  data: {
-                    name: "Madhava Helmuth",
-                    phone: "+348902",
-                    hire_date: "May 23, 2002",
-                    id: 1234,
-                  },
-                  kids: [],
-                },
-                {
-                  data: {
-                    name: "Andria Jesse",
-                    phone: "456123",
-                    hire_date: "October 23, 2011",
-                    id: 9821,
-                  },
-                  kids: [],
-                },
-              ],
-            },
-            {
-              data: {
-                department: "development",
-                supervisor: "Jim Linwood",
-                floor: 2,
-                employees: 18,
-              },
-              kids: [
-                {
-                  data: {
-                    name: "Origenes Maxwell",
-                    phone: "345892",
-                    hire_date: "February 1, 2004",
-                    id: 6234,
-                  },
-                  kids: [],
-                },
-              ],
-            },
-            {
-              data: {
-                department: "testing",
-                supervisor: "Zekeriya Seok",
-                floor: 4,
-                employees: 11,
-              },
-              kids: [],
-            },
-          ],
-        },
-        {
-          data: {
-            name: "b2",
-            street: "s10",
-            city: "c2",
-            departments: 3,
-            offices: 10,
-          },
-          kids: [
-            {
-              data: {
-                department: "development",
-                supervisor: "Gallagher Howie",
-                floor: 8,
-                employees: 24,
-              },
-              kids: [
-                {
-                  data: {
-                    name: "Wat Dakota",
-                  },
-                  kids: [],
-                },
-              ],
-            },
-            {
-              data: {
-                department: "testing",
-                supervisor: "Shirley Gayle",
-                floor: 4,
-                employees: 11,
-              },
-              kids: [],
-            },
-          ],
-        },
-        {
-          data: {
-            name: "b3",
-            street: "s3",
-            city: "c3",
-            departments: 2,
-            offices: 1,
-          },
-          kids: [
-            {
-              data: {
-                department: "development",
-              },
-              kids: [
-                {
-                  data: {
-                    name: "Wat Dakota",
-                  },
-                  kids: [],
-                },
-              ],
-            },
-            {},
-          ],
-        },
-
-        {
-          data: {
-            name: "b4",
-            city: "c4",
-          },
-          kids: [],
-        },
-      ];
-
-      const settings = {
-        iDisplayLength: 20,
-        bLengthChange: false,
-        bFilter: false,
-        bSort: false,
-        bInfo: false,
-      };
-
-      const tableCoba = new nestedTables.TableHierarchy(
-        "example",
-        dataInJson,
-        settings
-      );
-
-      tableCoba.initializeTableHierarchy();
-
     const satkerLevel = parseInt('{{ user.profile.satker.level }}');
 	let statusPengirimanSemua = '{{ satker_status_pengiriman_semua_kegiatan }}' == 'True' ? true : false;
 
@@ -367,12 +203,12 @@
 				const tr = document.createElement('tr');
 				addCell(tr, group, 10)
 
-                const buttonBatalKirim = `<a href="javascript:void(0);" onclick="handleBatalKirimSemua('${group}')" id="batalKirimSemuaBTN" class="badge bg-warning text-white text-decoration-none text-uppercase mb-1">
+                const buttonBatalKirim = `<a href="javascript:void(0);" onclick="handleSemua('${group}', 'batalkan')" id="batalKirimSemuaBTN" class="badge bg-warning text-white text-decoration-none text-uppercase mb-1">
 					<i class="fas fa-ban me-2"></i>Batalkan Semua Pengiriman
 				</a>`
 
 				const buttonKirim = !statusPengirimanSemua ? `
-				<a href="javascript:void(0);" onclick="handleKirimSemua('${group}')" id="kirimSemuaBTN" class="badge bg-primary text-white text-decoration-none text-uppercase mb-1">
+				<a href="javascript:void(0);" onclick="handleSemua('${group}', 'kirim')" id="kirimSemuaBTN" class="badge bg-primary text-white text-decoration-none text-uppercase mb-1">
 					<i class="fas fa-paper-plane me-2"></i>Kirim Semua
 				</a>
 				` : `<a href="javascript:void(0);" class="badge bg-secondary text-white text-decoration-none text-uppercase mb-1">
@@ -473,7 +309,6 @@
 
 <!-- ==== DOM ===== -->
 <script>
-
     document.addEventListener('alpine:init', function() {
         Alpine.data("create", () => ({
             id: 0,
@@ -551,7 +386,7 @@
 		const dropdownEl = $(`#${type}__satker_target`);
 
 		try {
-			const params = parentId >= 213 ? `?parent=${parentId}` : ''
+			const params = parentId < 213 ? `?parent=${parentId}` : ''
 			const response = await axios.get(`/users/api/v1/satker/${params}`);
 	
 			response.data.forEach(value => {
@@ -593,6 +428,7 @@
 
 <!-- ==== HELPERS ===== -->
 <script>
+    // ******** JUMLAH HARI PELAKSANAAN KERJA ********
 	function formatDate(dateString) {
         const [year, month, day] = dateString.split('-');
         return new Date(year, month - 1, day);
@@ -716,8 +552,6 @@
     }
 
     async function handleEdit(id) {
-        $('.modal').modal('hide');
-
         try {
             const response = await axios.get(`/kegiatan/api/v1/dayatif/binaan_teknis/${id}/`);
             const data = response.data;
@@ -885,71 +719,47 @@
 			showSwalSuccess('Berhasil', `Data <b>kegiatan</b> dari <b>${args.nama_satker}</b> telah berhasil <b>dikirimkan ke <b>${sendedToParent}</b></b>`);
 
 			reloadAllDataTables();
-
-            // disableAddButton();
 		} catch (error) {
 			showSwalGenericError();
 			console.error('Terjadi kesalahan :', error);
 		}
 	}
-	
-	async function handleKirimSemua(nama_satker) {
-		const confirmResult = await showSwalConfirm(`Apakah anda yakin untuk mengirim semua kegiatan dari Satuan Kerja <b>${nama_satker}</b>`, 'Ya, kirim data');
+
+    async function handleSemua(nama_satker, tipe) {
+        tipe = tipe == 'kirim' ? 'kirim' : 'batalkan';
+
+        const confirmMessage = tipe == 'kirim' ? `Apakah anda yakin untuk mengirim semua kegiatan dari <b>${nama_satker}</b>` : `Apakah anda yakin untuk membatalkan semua pengiriman kegiatan dari Satuan Kerja <b>${nama_satker}</b>`;
+
+        const confirmMessageButton = tipe == 'kirim' ? 'Ya, kirim data' : 'Ya, batalkan';
+
+        const confirmResult = await showSwalConfirm(confirmMessage, confirmMessageButton);
 
 		if (!confirmResult.isConfirmed) return;
 
-		showSwalLoading();
+        showSwalLoading();
 
 		await sleep(1000);
 
-		try {
-			const response = await axios.post('/kegiatan/api/v1/dayatif/binaan_teknis/semua_kegiatan/', { nama_satker : nama_satker, tipe: 'kirim' });
+        try {
+			const response = await axios.post('/kegiatan/api/v1/dayatif/binaan_teknis/semua_kegiatan/', { nama_satker : nama_satker, tipe: tipe });
 
 			console.log('Respose :', response);
 
 			const sendedToParent = response.data.parent.keterangan;
 
-			showSwalSuccess('Berhasil', `Data <b>kegiatan</b> dari <b>${nama_satker}</b> telah berhasil <b>dikirimkan ke <b>${sendedToParent}</b></b>`);
+            const successMessage = tipe == 'kirim' ? `Data <b>kegiatan</b> dari <b>${nama_satker}</b> telah berhasil <b>dikirimkan ke <b>${sendedToParent}</b></b>` : `Data pengiriman <b>kegiatan</b> ke <b>${sendedToParent}</b> dari <b>${nama_satker}</b> telah berhasil <b>dibatalkan</b>`
+
+			showSwalSuccess('Berhasil', successMessage);
 
 			reloadAllDataTables();
 
-			statusPengirimanSemua = true;
-            $('#kirimSemuaBTN').addClass('disabled bg-secondary').removeClass('bg-primary');
+			statusPengirimanSemua = tipe == 'kirim';
+            
+            tipe == 'kirim' ?? $('#kirimSemuaBTN').addClass('disabled bg-secondary').removeClass('bg-primary');
 		} catch (error) {
 			showSwalGenericError();
 			console.error('Terjadi kesalahan :', error);
 		}
-	}
-	
-    async function handleBatalKirimSemua(nama_satker) {
-		const confirmResult = await showSwalConfirm(`Apakah anda yakin untuk membatalkan semua pengiriman kegiatan dari Satuan Kerja <b>${nama_satker}</b>`, 'Ya, batalkan');
-
-		if (!confirmResult.isConfirmed) return;
-
-		showSwalLoading();
-
-		await sleep(1000);
-
-		try {
-			const response = await axios.post('/kegiatan/api/v1/dayatif/binaan_teknis/semua_kegiatan/', { nama_satker : nama_satker, tipe: 'batalkan' });
-
-			console.log('Respose :', response);
-
-			const sendedToParent = response.data.parent.keterangan;
-
-			showSwalSuccess('Berhasil', `Data pengiriman <b>kegiatan</b> ke <b>${sendedToParent}</b> dari <b>${nama_satker}</b> telah berhasil <b>dibatalkan</b>`);
-
-			reloadAllDataTables();
-
-			statusPengirimanSemua = true;
-		} catch (error) {
-			showSwalGenericError();
-			console.error('Terjadi kesalahan :', error);
-		}
-	}
-
-    function disableAddButton() {
-        $('#createBTN').addClass('disabled btn-secondary').removeClass('btn-primary').removeAttr('onclick');
     }
 	
     async function handleExport() {
@@ -958,7 +768,7 @@
 		await sleep(1000);
 
 		try {
-			const response = await axios.post('/kegiatan/api/v1/dayatif/binaan_teknis/export_data2/');
+			const response = await axios.post('/kegiatan/api/v1/dayatif/binaan_teknis/export_data/');
 
             const data = response.data;
 

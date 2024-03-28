@@ -1,56 +1,60 @@
-<div class="modal fade" id="tambahData" aria-labelledby="modalTambah" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
-      <div class="modal-content">
+<form id="createForm" onsubmit="handlePost(event)">
+  <div class="modal fade" id="createModal">
+      <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h5 class="modal-title">Tambah Data <b>Tes Urine Deteksi Dini</b></h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
 
-        <div class="modal-header">
-          <h5 class="modal-title" id="createModal">Tambah Data</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
+              <div class="modal-body" x-data="create">
 
-          <div class="modal-body">
-              <section id="formTambah">
-                <div class="mb-3">
-                  <label for="create__satker" class="col-form-label required">Satuan Kerja Pelaksana:</label>
-                  <select class="form-control select2" disabled id="create__satker">
-                      <option value="{{user.profile.satker_id}}" selected>{{ user.profile.satker }}</option>
-                  </select>
-                </div>
-
-                <div class="row mb-3">
-                  <div class="col-6">
-                    <div class="mb-3">
-                      <label for="create__tanggal_awal" class="col-form-label required">Tanggal Awal:</label>
-                      <input type="date" id="create__tanggal_awal" class="form-control" required onchange="handleDate(event, 'create__');" />
-                    </div>
+                  <!-- satuan kerja -->
+                  <div class="mb-3">
+                      <label for="create__satker" class="col-form-label required">Satuan Kerja Pelaksana:</label>
+                      <select class="form-control select2" id="create__satker" disabled>
+                          <option value="{{ user.profile.satker.pk }}" selected>{{ user.profile.satker.nama_satker }}</option>
+                      </select>
                   </div>
-                  <div class="col-6">
-                    <div class="mb-3">
-                      <label for="create__tanggal_akhir" class="col-form-label">Tanggal Akhir:</label>
-                      <input type="date" id="create__tanggal_akhir" class="form-control" />
+
+                  <!-- tanggal -->
+                  <div class="row mb-3 range_date">
+                    <div class="col-6">
+                      <div class="mb-3">
+                        <label for="create__tanggal_awal" class="col-form-label required">Tanggal Awal:</label>
+                        <input type="date" id="create__tanggal_awal" class="form-control" required onchange="handleDate(event, 'create__');" />
+                      </div>
                     </div>
+                    <div class="col-6">
+                      <div class="mb-3">
+                        <label for="create__tanggal_akhir" class="col-form-label">Tanggal Akhir:</label>
+                        <input type="date" id="create__tanggal_akhir" class="form-control" />
+                      </div>
+                    </div>
+                    <label for="pelaksanaan" class="col-form-label" style="color: #00A0A9;">Jika pelaksanaan hanya berlangsung selama satu hari, tanggal akhir tidak perlu diisi.</label>
                   </div>
-                  <label for="pelaksanaan" class="col-form-label" style="color: #00A0A9;">Jika pelaksanaan hanya berlangsung selama satu hari, tanggal akhir tidak perlu diisi.</label>
-                </div>
 
-                <div class="mb-3">
-                  <label for="create__satker_target" class="col-form-label required">Satuan Kerja Yang Diundang:</label>
-                  <select class="form-control select2" id="create__satker_target">
-                    <option value="" selected disabled>Pilih Satuan Kerja</option>
-                    {% for item in satker %}
-                      <option value="{{ item.pk }}">{{ item.nama_satker }}</option>
-                    {% endfor %}
-                  </select>
-                </div>
+                  <!-- santuan kerja yg di undang -->
+                  <div class="mb-3">
+                    <label for="create__satker_target" class="col-form-label required">Satuan Kerja Yang Diundang:</label>
+                    <select class="form-control select2" id="create__satker_target">
+                      <option value="" selected disabled>Pilih Satuan Kerja</option>
+                      {% for item in satker %}
+                        <option value="{{ item.pk }}">{{ item.nama_satker }}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
 
-                <div class="mb-3">
-                  <label for="create__nama_lingkungan" class="col-form-label required">Nama Lingkungan</label>
-                  <textarea class="form-control" id="create__nama_lingkungan" required placeholder="Nama Lingkungan"></textarea>
-                </div>
+                  <!-- nama lingkungan -->
+                  <div class="mb-3">
+                    <label for="create__nama_lingkungan" class="col-form-label required">Nama Lingkungan</label>
+                    <textarea class="form-control" id="create__nama_lingkungan" required placeholder="Nama Lingkungan"></textarea>
+                  </div>
 
                   <!-- Form Repeater : Peserta -->
                   <div class="mb-3">
                       <label for="kesimpulan" class="col-form-label required text-muted">Peserta:</label>
-                      <form class="form-repeater">
+                      <div class="form-repeater create">
                           <div data-repeater-list="peserta-group">
                               <div data-repeater-item>
                                   <div class="row">
@@ -100,27 +104,30 @@
                                   <span class="align-middle">Tambah peserta</span>
                               </button>
                           </div>
-                      </form>
+                      </div>
                   </div>
 
+                  <!-- tindak lanjur -->
                   <div class="mb-3">
                     <label for="create__tindak_lanjut" class="col-form-label required">Tindak Lanjut:</label>
                     <textarea class="form-control" id="create__tindak_lanjut" required placeholder="Tindak Lanjut"></textarea>
                   </div>
+                  
+                  <!-- file yang di lampirkan -->
                   <div class="mb-3">
                     <label for="create__dokumentasi" class="col-form-label required">Dokumentasi</label>
                     <input type="file" class="form-control" id="create__dokumentasi" required accept=".csv, .xlsx, .pdf, docx." />
                   </div>
-              </section>
-          </div>
-
-          <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                  <i class="fas fa-xmark me-2"></i>Tutup</button>
-              <button type="button" class="btn btn-primary" id="simpan_data">
-                  <i class="fas fa-save me-2"></i>
-                  Simpan</button>
+              </div>
+              
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">
+                      <i class="fas fa-xmark me-2"></i>Tutup</button>
+                  <button type="submit" class="btn btn-primary">
+                      <i class="fas fa-save me-2"></i>
+                      Simpan</button>
+              </div>
           </div>
       </div>
   </div>
-</div>
+</form>

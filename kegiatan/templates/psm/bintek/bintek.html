@@ -1,15 +1,15 @@
 {% extends 'dashboard/dashboard_base.html' %}
 {% load static %}
 {% block title %}
-Bintek
+Binaan Teknis
 {% endblock %}
 {% block content %}
 <div class="breadcrumb">
   <div class="row">
-    <h3 class="heading mb-2">Bintek</h3>
+    <h3 class="heading mb-2">Binaan Teknis</h3>
     <span class="mb-0">
       <span class="text-muted fw-light">Kegiatan /</span>
-      <span class="ms-1 fw-medium">Bintek</span>
+      <span class="ms-1 fw-medium">Binaan Teknis</span>
     </span>
   </div>
 </div>
@@ -25,15 +25,97 @@ Bintek
 
       <div class="action-button">
         <div class="d-flex justify-content-end mb-3 gap-2">
-          <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exportData"><i
-              class="fas fa-file-export me-2"></i>Ekspor Data</button>
+          <button class="btn btn-success" onclick="handleExport()"><i class="fas fa-file-export me-2"></i>Ekspor
+            Data</button>
           <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createModal"><i
               class="fas fa-plus me-2"></i>Tambah Data</button>
         </div>
       </div>
 
       <div class="table-responsive">
-        {% include 'psm/bintek/table.html' %}
+        <div class="form-outline mb-4">
+          <input type="text" class="form-control" v-model="searchField" @input="searchData($event)"
+            @blur="searchData($event)" />
+          <label class="form-label" for="datatable-search-input">Cari</label>
+        </div>
+        <table class="table table-bordered" id="__table">
+          <thead class="" style="background-color: #2ca8dc;">
+            <tr>
+              <th style="color: white;">NO</th>
+              <th style="color: white;">SATKER PELAKSANA</th>
+              <th style="color: white;">TANGGAL</th>
+              <th style="color: white;">SATUAN KERJA YANG DIBINTEK</th>
+              <th style="color: white;">DESKRIPSI</th>
+              <th style="color: white;">KENDALA</th>
+              <th style="color: white;">KESIMPULAN</th>
+              <th style="color: white;">TINDAK LANJUT</th>
+              <th style="color: white;">DOKUMENTASI</th>
+              <th style="color: white;">AKSI</th>
+            </tr>
+          </thead>
+          <tbody class="align-tr-middle text-white">
+            <template v-for="(topLevel, index) in pagedData">
+              <tr :class="topLevel.class">
+                <td style="text-align: right;">${topLevel.index}</td>
+                <td>
+                  <template v-if="topLevel.hide_satker"></template>
+                  <template v-else>${topLevel.satker}</template>
+                </td>
+                <td>${topLevel.tanggal}</td>
+                <td>${topLevel.target}</td>
+                <td>${topLevel.deskripsi}</td>
+                <td>${topLevel.kendala}</td>
+                <td>${topLevel.kesimpulan}</td>
+                <td>${topLevel.tindak_lanjut}</td>
+                <td class="text-center">
+                  <template v-if="topLevel.type == 'child'">
+                    <a :href='topLevel.dokumentasi'><i class="fa-solid fa-download"></i></a>
+                  </template>
+                </td>
+                <td>
+                  <template v-if="topLevel.type == 'child'">
+                    <div class="list-button gx-3 text-uppercase">
+                      <template v-if="topLevel.kirim">
+                        <div>
+                          <a href="javascript:void(0);" style="background-color:#00A0A9;"
+                            @click="handleKirim(topLevel.satker, topLevel.id)"
+                            class="badge text-white text-decoration-none mb-1">
+                            <i class="fa-regular fa-paper-plane me-2"></i>Kirim
+                          </a>
+                        </div>
+                      </template>
+                      <template v-if="topLevel.edit">
+                        <div>
+                          <a href="javascript:void(0);" @click="handleEditModal(topLevel.id)"
+                            class="badge bg-success text-white text-decoration-none mb-1">
+                            <i class="fas fa-pen-to-square me-2"></i>Edit
+                          </a>
+                        </div>
+                        <div>
+                          <a href="javascript:void(0);" @click="handleDelete(topLevel.id)"
+                            class="badge bg-danger text-white text-decoration-none mb-1"><i
+                              class="fas fa-trash-alt me-2"></i>Hapus</a>
+                        </div>
+                      </template>
+                      <template v-else>
+                        <div>
+                          <a href="javascript:void(0);" class="badge bg-secondary text-white text-decoration-none mb-1">
+                            <i class="fas fa-pen-to-square me-2"></i>Edit
+                          </a>
+                        </div>
+                        <div>
+                          <a href="javascript:void(0);"
+                            class="badge bg-secondary text-white text-decoration-none mb-1"><i
+                              class="fas fa-trash-alt me-2"></i>Hapus</a>
+                        </div>
+                      </template>
+                    </div>
+                  </template>
+                </td>
+              </tr>
+            </template>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
@@ -42,23 +124,320 @@ Bintek
 
 {% block js_tambahan %}
 <script>
-  let table = $("#__table").DataTable({
-    language: dt_lang_config(),
-    serverSide: false,
-    searching: true,
-    responsive: true,
-    pageLength: 5,
-    order: [[1, 'asc']],
-    /* ajax: {
-      url: `/kegiatan/api/v1/psm/binaan_teknis/get_all_data/?format=datatables`,
-      dataSrc: "data",
-    }, */
-    initComplete: (settings, json) => console.log("Hasil fetch data : ", json),
-  });
+  const { createApp, ref, onMounted, computed } = Vue;
+  createApp({
+    setup() {
+      let bintekData = ref(null);
+      let satkerLevel = parseInt('{{ user.profile.satker.level }}');
+      let perPage = ref(10);
+      let currentPage = ref(1);
+      let searchField = ref(null);
+      let filteredPage = ref(null);
 
+      const totalPage = computed(() => {
+        if (bintekData.value) {
+          return Math.ceil(bintekData.value.length / perPage.value);
+        }
+        else return 0;
+      });
 
+      const pagedData = computed(() => {
+        if (filteredPage.value) {
+          d = filteredPage.value.slice((currentPage.value - 1) * perPage.value, (currentPage.value) * perPage.value);
+          return d;
+        }
+        else return [];
+      });
+
+      function searchData(e) {
+        filteredPage.value = bintekData.value.filter((data) => {
+          idx = String(data.satker.toUpperCase());
+          target = String(data.target.toUpperCase());
+          deskripsi = String(data.deskripsi.toUpperCase());
+          kendala = String(data.kendala.toUpperCase());
+          kesimpulan = String(data.kesimpulan.toUpperCase());
+          tindak_lanjut = String(data.tindak_lanjut.toUpperCase());
+
+          bool1 = idx.indexOf(searchField.value.toUpperCase()) > -1;
+          bool2 = target.indexOf(searchField.value.toUpperCase()) > -1;
+          bool3 = deskripsi.indexOf(searchField.value.toUpperCase()) > -1;
+          bool4 = kendala.indexOf(searchField.value.toUpperCase()) > -1;
+          bool5 = kesimpulan.indexOf(searchField.value.toUpperCase()) > -1;
+          bool6 = tindak_lanjut.indexOf(searchField.value.toUpperCase()) > -1;
+          return bool1 || bool2 || bool3 || bool4 || bool5 || bool6;
+        });
+      };
+
+      function hideableButton(status, satkerLevel, type) {
+        if (type == 'kirim') {
+          return satkerLevel != 2 && ((satkerLevel == 0 && status < 2) || (satkerLevel == 1 && status < 1));
+        } else if (type == 'edit') {
+          return satkerLevel == 2 || ((satkerLevel == 0 && status < 2) || (satkerLevel == 1 && status < 1));
+        }
+      }
+
+      const apiURL = (satkerLevel == 1 ? '/kegiatan/api/v1/psm/binaan_teknis/get_data_bnnk/?format=datatables' : '/kegiatan/api/v1/psm/binaan_teknis/?format=datatables')
+
+      function loadData() {
+        tableContent = [];
+
+        axios.get(apiURL).then(function (response) {
+          data = response.data.data;
+          for ([key, value] of Object.entries(data)) {
+            if (value.data && value.data.length > 0) {
+              baris = {
+                'class': 'table-primary',
+                'hide_satker': false,
+                'index': parseInt(key) + 1,
+                'satker': value.satker.nama_satker + '(' + value.data.length + ' kegiatan)',
+                'tanggal': '',
+                'target': '',
+                'deskripsi': '',
+                'kendala': '',
+                'kesimpulan': '',
+                'tindak_lanjut': '',
+                'status': '',
+                'type': 'parent'
+              };
+              tableContent.push(baris);
+              for ([key2, value2] of Object.entries(value.data)) {
+                baris = {
+                  'class': 'table-light',
+                  'hide_satker': true,
+                  'index': (parseInt(key) + 1) + '.' + (parseInt(key2) + 1),
+                  'id': value2.id,
+                  'satker': value2.satker.nama_satker,
+                  'tanggal': (value2.tanggal_akhir) ? value2.tanggal_awal + '-' + value2.tanggal_akhir : value2.tanggal_awal,
+                  'target': value2.satker_target.nama_satker,
+                  'deskripsi': value2.deskripsi,
+                  'kendala': value2.kendala,
+                  'kesimpulan': value2.kesimpulan,
+                  'tindak_lanjut': value2.tindak_lanjut,
+                  'dokumentasi': value2.dokumentasi,
+                  'status': value2.status,
+                  'level': value2.satker.level,
+                  'type': 'child',
+                  'kirim': hideableButton(value2.status, satkerLevel, 'kirim'),
+                  'edit': hideableButton(value2.status, satkerLevel, 'edit'),
+                };
+                tableContent.push(baris);
+              }
+            }
+            if (value.detail !== undefined && value.detail.length > 0) {
+              for ([key3, value3] of Object.entries(value.detail)) {
+                baris = {
+                  'class': 'table-secondary',
+                  'hide_satker': false, 'index': (parseInt(key) + 1) + '.' + (parseInt(key2) + 1) + '.' + (parseInt(key3) + 1),
+                  'satker': value3.satker.nama_satker + '(' + value3.data.length + ' kegiatan)',
+                  'tanggal': '',
+                  'target': '',
+                  'deskripsi': '',
+                  'kendala': '',
+                  'kesimpulan': '',
+                  'tindak_lanjut': '',
+                  'status': '',
+                  'type': 'parent'
+                };
+                tableContent.push(baris);
+                for ([key4, value4] of Object.entries(value3.data)) {
+                  baris = {
+                    'class': 'table-light',
+                    'hide_satker': true,
+                    'index': (parseInt(key) + 1) + '.' + (parseInt(key2) + 1) + '.' + (parseInt(key3) + 1) + '.' + (parseInt(key4) + 1),
+                    'id': value4.id,
+                    'satker': value4.satker.nama_satker,
+                    'tanggal': (value4.tanggal_akhir) ? value4.tanggal_awal + '-' + value4.tanggal_akhir : value4.tanggal_awal,
+                    'target': value4.satker_target.nama_satker,
+                    'deskripsi': value4.deskripsi,
+                    'kendala': value4.kendala,
+                    'kesimpulan': value4.kesimpulan,
+                    'tindak_lanjut': value4.tindak_lanjut,
+                    'dokumentasi': value2.dokumentasi,
+                    'level': value4.satker.level,
+                    'status': value4.status,
+                    'type': 'child',
+                    'kirim': hideableButton(value4.status, satkerLevel, 'kirim'),
+                    'edit': hideableButton(value4.status, satkerLevel, 'edit'),
+                  };
+                  tableContent.push(baris);
+                }
+              }
+            }
+          }
+          bintekData.value = tableContent;
+          filteredPage.value = bintekData.value;
+        });
+      };
+
+      async function handleEditModal(id) {
+        try {
+          const response = await axios.get(`/kegiatan/api/v1/psm/binaan_teknis/get_detail_data/?id=${id}`);
+          const data = response.data;
+
+          $('#edit__id').val(data[0].id);
+          $('#edit__tanggal_awal').val(data[0].tanggal_awal);
+          $('#edit__tanggal_akhir').val(data[0].tanggal_akhir);
+          (data[0].tanggal_akhir ? $('#edit__tanggal_akhir').attr('disabled', false) : $('#edit__tanggal_akhir').attr('disabled', true))
+          $('#edit__satker').val(data[0].satker_id).trigger('change');
+          $('#edit__satker_target').val(data[0].satker_target).trigger('change');
+          $('#edit__deskripsi').val(data[0].deskripsi);
+          $('#edit__kendala').val(data[0].kendala);
+          $('#edit__kesimpulan').val(data[0].kesimpulan);
+          $('#edit__tindak_lanjut').val(data[0].tindak_lanjut);
+
+          console.log(data[0].id)
+
+          $('#modalEdit').modal('show');
+        } catch (error) {
+          showSwalGenericError();
+          console.error('Terjadi kesalahan :', error);
+        }
+      }
+
+      async function handleDelete(id) {
+        const confirmationText = `Untuk menghapus data tersebut ${id}? <br> Data yang dihapus tidak dapat <b>dipulihkan</b> kembali`;
+        const confirmResult = await showSwalConfirm(confirmationText, 'Ya, hapus data');
+        if (!confirmResult.isConfirmed) return;
+        showSwalLoading();
+        await sleep(1000);
+        try {
+          const response = await axios.delete(`/kegiatan/api/v1/psm/binaan_teknis/perform_delete/?id=${id}`);
+          showSwalSuccess('Berhasil', `Data kegiatan berhasil <b>dihapus</b>`, 3000);
+          location.reload()
+        } catch (error) {
+          console.log('Terjadi kesalahan : ', error);
+          showSwalGenericError();
+        }
+      }
+
+      async function handleKirim(satker, id) {
+        const confirmResult = await showSwalConfirm(`Apakah anda yakin untuk mengirim semua kegiatan dari Satuan Kerja <b>${satker}</b>`, 'Ya, kirim data');
+        if (!confirmResult.isConfirmed) return;
+        showSwalLoading();
+        await sleep(1000);
+        try {
+          const response = await axios.post(`/kegiatan/api/v1/psm/binaan_teknis/kirim_kegiatan/`, { id: id });
+          console.log('Respose :', response);
+          const sendedToParent = response.data.parent.keterangan;
+          showSwalSuccess('Berhasil', `Data <b>kegiatan</b> untuk <b>${satker}</b> telah berhasil <b>dikirimkan ke <b>${sendedToParent}</b></b>`);
+          reloadAllDataTables();
+        } catch (error) {
+          showSwalGenericError();
+          console.error('Terjadi kesalahan :', error);
+        }
+      }
+
+      onMounted(() => {
+        loadData();
+      });
+      return {
+        bintekData,
+        satkerLevel,
+        loadData,
+        handleEditModal,
+        handleDelete,
+        handleKirim,
+        totalPage,
+        perPage,
+        currentPage,
+        pagedData,
+        searchData,
+        searchField
+      }
+    },
+    delimiters: ['${', '}']
+  }).mount('#app');
 </script>
+
 <script>
+  async function handleExport() {
+    showSwalLoading();
+
+    await sleep(1000);
+
+    try {
+      const response = await axios.post('/kegiatan/api/v1/psm/binaan_teknis/export_data/');
+
+      const data = response.data;
+      window.location.href = data.file_path;
+      const confirmation = await Swal.fire({
+        title: "Berhasil",
+        html: `Data <b>Kegiatan Binaan Teknis</b> telah <b>berhasil</b> diexport! <br>Klik tombol unduh ulang apabila <b>gagal</b>!`,
+        icon: "success",
+        confirmButtonText: "Unduh ulang.",
+        showCancelButton: true,
+        cancelButtonText: 'Batalkan',
+        showCloseButton: true,
+        allowOutsideClick: false,
+      });
+      if (confirmation.isConfirmed) {
+        console.log('Blud is downloading again!');
+        window.location.href = data.file;
+      }
+    } catch (error) {
+      showSwalGenericError();
+      console.error('Terjadi kesalahan :', error);
+    }
+  }
+  async function handleEdit(e) {
+    e.preventDefault();
+    showSwalLoading();
+
+    const id = $('#edit__id').val();
+    const tanggal_awal = $("#edit__tanggal_awal").val();
+    const tanggal_akhir = $("#edit__tanggal_akhir").val();
+    const satker = $("#edit__satker").val();
+    const satker_target = $("#edit__satker_target").val();
+    const deskripsi = $("#edit__deskripsi").val();
+    const kendala = $("#edit__kendala").val();
+    const kesimpulan = $("#edit__kesimpulan").val();
+    const tindak_lanjut = $("#edit__tindak_lanjut").val();
+    const dokumentasi = $("#edit__dokumentasi")[0].files[0];
+
+    const data = {
+      id,
+      satker,
+      satker_target,
+      tanggal_awal,
+      tanggal_akhir,
+      deskripsi,
+      kendala,
+      kesimpulan,
+      tindak_lanjut,
+      dokumentasi,
+    };
+    console.log(data);
+
+    const formData = new FormData();
+
+    formData.append("id", id);
+    formData.append("tanggal_awal", tanggal_awal);
+    formData.append("tanggal_akhir", tanggal_akhir);
+    formData.append("satker", parseInt(satker));
+    formData.append("satker_target", parseInt(satker_target));
+    formData.append("deskripsi", deskripsi);
+    formData.append("kendala", kendala);
+    formData.append("kesimpulan", kesimpulan);
+    formData.append("tindak_lanjut", tindak_lanjut);
+    if (dokumentasi) { formData.append('dokumentasi', dokumentasi); }
+
+    try {
+      const response = await axios.patch(
+        `/kegiatan/api/v1/psm/binaan_teknis/perform_update/`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+      );
+
+      $("div#modalEdit").modal("hide");
+      showSwalSuccess('Berhasil!', `Data kegiatan telah <b>berhasil</b> diperbarui!`);
+      location.reload();
+    } catch (error) {
+      showSwalGenericError();
+      console.error("Terjadi kesalahan :", error);
+    }
+  }
   async function handleDate(event, target) {
     const currentDate = moment().format('YYYY-MM-DD');
     const valueDate = $(event.target).val();
@@ -70,8 +449,8 @@ Bintek
 
     const tanggal_awal = $("#create__tanggal_awal").val();
     const tanggal_akhir = $("#create__tanggal_akhir").val();
-    const satker = $("#create__satker").val();
-    const satker_target = $("#create__satker_target").val();
+    const satker = parseInt($("#create__satker").val());
+    const satker_target = parseInt($("#create__satker_target").val());
     const deskripsi = $("#create__deskripsi").val();
     const kendala = $("#create__kendala").val();
     const kesimpulan = $("#create__kesimpulan").val();
@@ -105,7 +484,7 @@ Bintek
 
     try {
       const response = await axios.post(
-        `/kegiatan/api/v1/psm/binaan_teknis/`,
+        `/kegiatan/api/v1/psm/binaan_teknis/perform_create/`,
         formData,
         {
           headers: {
@@ -119,6 +498,7 @@ Bintek
         "Berhasil!",
         `Data kegiatan telah <b>berhasil</b> ditambahkan!`
       );
+      location.reload();
     } catch (error) {
       showSwalGenericError();
       console.error("Terjadi kesalahan :", error);
@@ -126,105 +506,6 @@ Bintek
       table.ajax.reload();
     }
   }
-  async function handleEditModal(id) {
-    try {
-      const response = await axios.get(`/kegiatan/api/v1/psm/binaan_teknis/${id}/`);
-      const data = response.data;
-      const form = $('#editForm');
-      $('#edit__info').text(data.detail.satker.nama_satker);
-      $('#edit__id').val(data.id);
-      $('#edit__tanggal_awal').val(data.tanggal_awal);
-      $('#edit__tanggal_akhir').val(data.tanggal_akhir);
-      (data.tanggal_akhir ? $('#edit__tanggal_akhir').attr('disabled', false) : $('#edit__tanggal_akhir').attr('disabled', true))
-      $('#edit__satker').val(data.satker).trigger('change');
-      $('#edit__satker_target').val(data.satker_target).trigger('change');
-      $('#edit__deskripsi').val(data.deskripsi);
-      $('#edit__kendala').val(data.kendala);
-      $('#edit__kesimpulan').val(data.kesimpulan);
-      $('#edit__tindak_lanjut').val(data.tindak_lanjut);
-
-      $('#modalEdit').modal('show');
-    } catch (error) {
-      showSwalGenericError();
-      console.error('Terjadi kesalahan :', error);
-    }
-  }
-  async function handleEdit(e) {
-    e.preventDefault();
-    showSwalLoading();
-
-    const form = $("editForm");
-    const id = $('#edit__id').val();
-    const tanggal_awal = $("#edit__tanggal_awal").val();
-    const tanggal_akhir = $("#edit__tanggal_akhir").val();
-    const satker = $("#edit__satker").val();
-    const satker_target = $("#edit__satker_target").val();
-    const deskripsi = $("#edit__deskripsi").val();
-    const kendala = $("#edit__kendala").val();
-    const kesimpulan = $("#edit__kesimpulan").val();
-    const tindak_lanjut = $("#edit__tindak_lanjut").val();
-    const dokumentasi = $("#edit__dokumentasi")[0].files[0];
-
-    const data = {
-      id,
-      satker,
-      satker_target,
-      tanggal_awal,
-      tanggal_akhir,
-      deskripsi,
-      kendala,
-      kesimpulan,
-      tindak_lanjut,
-      dokumentasi,
-    };
-    console.log(data);
-
-    const formData = new FormData();
-
-    formData.append("tanggal_awal", tanggal_awal);
-    formData.append("tanggal_akhir", tanggal_akhir);
-    formData.append("satker", parseInt(satker));
-    formData.append("satker_target", parseInt(satker_target));
-    formData.append("deskripsi", deskripsi);
-    formData.append("kendala", kendala);
-    formData.append("kesimpulan", kesimpulan);
-    formData.append("tindak_lanjut", tindak_lanjut);
-    if (dokumentasi) { formData.append('dokumentasi', dokumentasi); }
-
-    try {
-      const response = await axios.patch(
-        `/kegiatan/api/v1/psm/binaan_teknis/${id}/`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      }
-      );
-
-      $("div#modalEdit").modal("hide");
-      showSwalSuccess('Berhasil!', `Data kegiatan telah <b>berhasil</b> diperbarui!`);
-
-    } catch (error) {
-      showSwalGenericError();
-      console.error("Terjadi kesalahan :", error);
-    } finally {
-      table.ajax.reload();
-    }
-  }
-  async function handleDeleteAllKegiatan(satker_id) {
-		const confirmResult = await showSwalConfirm(`Untuk menghapus data <b>kegiatan</b>? <br> Data yang dihapus tidak dapat <b>dipulihkan</b> kembali`, 'Ya, hapus data');
-		if (!confirmResult.isConfirmed) return;
-		showSwalLoading();
-		await sleep(1000);
-		try {
-			const response = await axios.delete(`/kegiatan/api/v1/psm/binaan_teknis/${satker_id}/delete_all_kegiatan/`);
-			console.log('Respose :', response);
-			showSwalSuccess('Berhasil', `Data <b>kegiatan</b> telah berhasil <b>dihapus</b>`, 3000);
-			reloadAllDataTables();
-		} catch (error) {
-			showSwalGenericError();
-			console.error('Terjadi kesalahan :', error);
-		}
-	}
 </script>
 {% endblock %}
 

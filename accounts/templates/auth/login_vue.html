@@ -23,7 +23,7 @@
     <p class="card-text text-center p-2">Masukan nama pengguna anda untuk masuk kedalam aplikasi Sistem Informasi
         DAYAMAS
     </p>
-    <form method="POST" id="__form_login" @submit.prevent="login()">
+    <form method="POST" id="__form_login" @submit.prevent="authenticate()">
         <v-input-group label="Nama Pengguna" placeholder="Nama Pengguna Anda" type="text" icon="fas fa-user"
             name="username" v-model="username" required></v-input-group>
         <v-input-group label="Kata Sandi" placeholder="Kata Sandi Anda" type="password" icon="fas fa-lock" name="password"
@@ -54,12 +54,12 @@
             }
         },
         methods: {
-            async login() {
-                const trimmedUsername = this.username.trim();
-                const trimmedPassword = this.password.trim();
+            async authenticate() {
+                this.username = this.username.trim();
+                this.password = this.password.trim();
 
-                console.log('Username : ', this.username.trim())
-                console.log('Password : ', this.password.trim())
+                console.log('Username : ', this.username)
+                console.log('Password : ', this.password)
 
                 function resetValue() {
                     this.username = '';
@@ -93,11 +93,11 @@
                         method: "POST",
                         headers: {
                             "Content-Type": "application/x-www-form-urlencoded",
-                            "X-CSRFToken": getXCSRFToken(),
+                            "X-CSRFToken": getCSRFToken(),
                         },
                         body: new URLSearchParams({
-                            username: trimmedUsername,
-                            password: trimmedPassword,
+                            username: this.username,
+                            password: this.password,
                         }),
                     });
 
@@ -115,11 +115,12 @@
                             html: `Anda <strong>berhasil</strong> login, akan segera dialihkan.`,
                             icon: "success",
                             confirmButtonText: "OK",
-                        }).then(function() {
-                            console.log('Memvalidasi akun anda ...');
-                            window.location.href = "/accounts/check-login/" + (nextParam ?
-                                `?next=${nextParam}` : '');;
+                            timer: 3000,
                         });
+
+                        console.log('Memvalidasi akun anda ...');
+                        window.location.href = "/accounts/check-login/" + (nextParam ?
+                            `?next=${nextParam}` : '');;
 
                     } else {
                         console.warn('Response: ', response);
