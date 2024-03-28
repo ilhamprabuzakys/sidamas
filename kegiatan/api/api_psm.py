@@ -1670,3 +1670,15 @@ class PSM_TES_URNIE_CURD_ViewSet(viewsets.ModelViewSet):
 
         return serialized_data
 # ======= PSM TES URIN DETEKSI DINI API =======
+
+
+# ======= PSM RAKOR PEMETAAN API =======
+class PSM_RAKOR_PEMETAAN_ViewSet(viewsets.ModelViewSet):
+    # queryset = models.PSM_RAKOR_PEMETAAN.objects.all().filter(satker__parent__isnull=True).order_by('satker__id','-tanggal_awal', 'satker__order').distinct('satker__id')
+    queryset = models.PSM_RAKOR_PEMETAAN.objects.all().order_by('satker__id','-tanggal_awal', 'satker__order')
+    # serializer_class = serializers.PSM_RAKOR_PEMETAAN_Serializer
+    serializer_class = serializers.PSM_BINAAN_TEKNIS_CRUD_Serializer
+    permission_classes = [permissions.IsAuthenticated]
+    pagination_class = pagination.Page10NumberPagination
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = filters.PSM_RAKOR_PEMETAAN_Filters

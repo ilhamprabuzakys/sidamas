@@ -143,6 +143,16 @@ table td div.list-button {
     margin-left: 0.15rem;
 }
 
+sup.ms-0-15r.text-danger {
+    user-select: none;
+}
+
+sup.required {
+    color: red;
+    margin-left: 0.15rem;
+    user-select: none;
+}
+
 /* ===SELECT 2=== */
 .select2-container {
     width: auto !important;

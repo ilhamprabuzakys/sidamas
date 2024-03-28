@@ -403,3 +403,11 @@ class PSM_TES_URINE_DETEKSI_DINI_CREATE_UPDATE_Serializer(serializers.ModelSeria
     class Meta:
         model = models.PSM_TES_URINE_DETEKSI_DINI
         fields = ['id', 'satker', 'satker_target', 'tanggal_awal', 'tanggal_akhir', 'nama_lingkungan', 'tindak_lanjut', 'dokumentasi']
+
+
+# ======= PSM RAKOR PEMETAAN SERIALIZER =======
+class PSM_BINAAN_TEKNIS_CRUD_Serializer(serializers.ModelSerializer):
+    satker = serializers.PrimaryKeyRelatedField(queryset=Satker.objects.all())
+    class Meta:
+        model = models.PSM_RAKOR_PEMETAAN
+        fields = '__all__'

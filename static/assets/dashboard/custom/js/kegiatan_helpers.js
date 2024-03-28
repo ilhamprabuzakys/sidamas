@@ -44,58 +44,70 @@ document.addEventListener("DOMContentLoaded", function () {
         inputDate.setAttribute("max", currentYear + "-12-31");
     });
 
-    
-    
 });
 
 /***=======================================================
 * KEGIATAN MAX MIN INPUT DATE
 =======================================================***/
-// Tambahkan event listener untuk saat modal ditampilkan
-document.addEventListener('show.bs.modal', function(event) {
-    // Temukan modal yang ditampilkan
+document.addEventListener('show.bs.modal', function (event) {
     const modal = event.target;
 
-    // Temukan elemen parent dengan class range_date di dalam modal
     const rangeDateParent = modal.querySelector('.range_date');
 
     if (!rangeDateParent) return;
-    // Ambil semua input date di dalam parent
     const dateInputs = rangeDateParent.querySelectorAll('input[type="date"]');
 
-    // Pastikan terdapat minimal dua input date
-    if (!dateInputs.length >= 2) return
+    if (!dateInputs.length >= 2) return;
 
-    // Ambil input pertama (start_date)
     const startDateInput = dateInputs[0];
-
-    // Ambil input kedua (end_date)
     const endDateInput = dateInputs[1];
 
-    // Tambahkan event listener untuk input end_date
-    endDateInput.addEventListener('input', function() {
-        // Ambil value dari end_date input
+    const currentDate = new Date().toISOString().split('T')[0];
+
+    startDateInput.max = currentDate;
+    endDateInput.max = currentDate;
+
+    const isEditable = !rangeDateParent.classList.contains('edit');
+
+    endDateInput.disabled = isEditable;
+
+    endDateInput.addEventListener('input', function () {
         const endDateValue = endDateInput.value;
 
-        // Jika end_date sudah diset
         if (endDateValue) {
-            // Batasi start_date agar tidak melebihi end_date
             startDateInput.max = endDateValue;
         }
     });
 
-    // Tambahkan event listener untuk input start_date
-    startDateInput.addEventListener('input', function() {
-        // Ambil value dari start_date input
+    startDateInput.addEventListener('input', function () {
         const startDateValue = startDateInput.value;
 
-        // Jika start_date sudah diset
-        if (startDateValue) {
-            // Batasi end_date agar tidak kurang dari start_date
+        if (startDateValue === currentDate) {
+            endDateInput.disabled = true;
+            endDateInput.value = '';
+        } else {
+            endDateInput.disabled = false;
             endDateInput.min = startDateValue;
         }
     });
+
+    startDateInput.addEventListener('change', function () {
+        if (startDateInput.value === '') {
+            endDateInput.value = '';
+            endDateInput.disabled = true;
+        }
+    });
+
+    endDateInput.addEventListener('change', function () {
+        const startDateValue = startDateInput.value;
+        const endDateValue = endDateInput.value;
+
+        if (endDateValue === startDateValue) {
+            endDateInput.value = '';
+        }
+    });
 });
+
 
 
 function getTanggalKegiatan(tanggal_awal, tanggal_akhir) {

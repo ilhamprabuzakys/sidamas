@@ -78,3 +78,20 @@ class PSM_TES_URINE_DETEKSI_DINI_Filters(filters.FilterSet):
         satker_level = Satker.objects.values_list('level', flat=True).get(id=satker)
 
         return queryset.filter(satker=satker)
+    
+
+# ======= PSM RAKOR PEMETAAN FILTER =======
+class PSM_RAKOR_PEMETAAN_Filters(filters.FilterSet):
+    s = filters.CharFilter(method='filter_global_search', label='Global search')
+    satker = filters.NumberFilter(field_name='satker', label='Satker Pelaksana ID')
+
+    class Meta:
+        model = models.PSM_RAKOR_PEMETAAN
+        fields = ['s', 'satker']
+        order_by = ['-satker__nama_satker']
+
+    def filter_global_search(self, queryset, name, value):
+        return queryset.filter(
+            Q(s__deskripsi__icontains=value) |
+            Q(satker__nama_satker__icontains=value)
+        )
