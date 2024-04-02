@@ -1,182 +1,820 @@
 {% extends 'dashboard/dashboard_base.html' %}
 {% load static %}
 {% block title %}
-  Monev Supervisi Kegiatan Kotan
+Monitoring dan Evaluasi Supervisi Kegiatan Kotan
 {% endblock %}
 {% block content %}
-  <div class="breadcrumb">
-    <div class="row">
-      <h3 class="heading mb-2">Monev Supervisi Kegiatan Kotan</h3>
-      <span class="mb-0">
-        <span class="text-muted fw-light">Kegiatan /</span>
-        <span class="text-muted fw-light">PSM /</span>
-        <span class="ms-1 fw-medium">Monev Supervisi Kegiatan Kotan</span>
-      </span>
-    </div>
+<div class="breadcrumb">
+  <div class="row">
+    <h3 class="heading mb-2">Monitoring dan Evaluasi Supervisi Kegiatan Kotan</h3>
+    <span class="mb-0">
+      <span class="text-muted fw-light">Kegiatan /</span>
+      <span class="ms-1 fw-medium">Monitoring dan Evaluasi Supervisi Kegiatan Kotan</span>
+    </span>
   </div>
+</div>
 
-  <section id="__data">
+<section id="__data">
     <div class="card">
-      <div class="card-body">
-        <div id="headline" class="mb-3">
-          <h3 class="text-center">MONEV SUPERVISI KEGIATAN KOTAN</h3>
-          <hr />
-        </div>
-
-        <div class="action-button">
-          <div class="d-flex justify-content-end mb-3 gap-2">
-            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exportData"><i class="fas fa-file-export me-2"></i>Ekspor Data</button>
-            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tambahData"><i class="fas fa-plus me-2"></i>Tambah Data</button>
+        <div class="card-body">
+          <div id="headline" class="mb-3">
+            <h3 class="text-center">
+              KEGIATAN MONITORING DAN EVALUASI SUPERVISI KEGIATAN KOTAN<br />
+              <span id="currentYear"></span>
+            </h3>
+            <hr />
           </div>
-        </div>
-        <div class="table-responsive">
-          <!-- {% include 'psm/monev_supervisi_kegiatan_kotan/table.html' %} -->
-            <div id="example" class='container'></div>
 
+            <div class="action-button">
+                <div class="d-flex justify-content-end mb-3 gap-2">
+                    <button class="btn btn-success" onclick="handleExport()"><i
+                            class="fas fa-file-export me-2"></i>Ekspor Data</button>
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createModal"><i
+                            class="fas fa-plus me-2"></i>Tambah Data</button>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+              {% include 'psm/monev_supervisi_kegiatan_kotan/part/table.html' %}
+            </div>
         </div>
-      </div>
     </div>
-  </section>
+</section>
 {% endblock %}
 
-{% block css_tambahan %}
-  <!-- <link rel="stylesheet" href="{% static 'assets/dashboard/vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}" /> -->
-  <!-- <script src="{% static 'assets/dashboard/vendor/libs/datatables-bs5/datatables-bootstrap5.js' %}"></script>
-  <script src="{% static 'assets/dashboard/vendor/libs/jquery-repeater/jquery-repeater.js' %}"></script>
-  <script src="{% static 'assets/dashboard/vendor/libs/bootstrap-select/bootstrap-select.js' %}"></script>
-  <script src="{% static 'assets/dashboard/js/bawaan/forms-extras.js' %}"></script>
+{% block js_tambahan %}
+<script src="{% static 'assets/dashboard/vendor/libs/jquery-repeater/jquery-repeater.js' %}"></script>
+<script src="{% static 'assets/dashboard/js/bawaan/forms-extras.js' %}"></script>
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<script type="text/javascript" src="https://oss.sheetjs.com/sheetjs/xlsx.full.min.js"></script>
 
-  <script>
-    let table = $('#__table').DataTable({
-      language: dt_lang_config()
-    })
-    $('#deleteData').on('click', function () {
-      Swal.fire({
-        title: 'Apakah anda yakin?',
-        html: `Data yang <strong>dihapus</strong> tidak dapat dipulihkan kembali.`,
-        icon: 'warning',
-        showCancelButton: true,
-        cancelButtonText: 'Batalkan',
-        confirmButtonText: 'Ya, hapus data ini!'
-      }).then((result) => {
-        if (result.isConfirmed) {
-          console.log('User clicked the confirm button ...')
-    
-          Swal.fire({
-            title: 'Tunggu sebentar',
-            icon: 'info',
-            html: `Menghapus <b>data</b> yang anda dipilih..`,
-            timer: 2000,
-            didOpen: () => {
-              Swal.showLoading()
-            }
-          }).then((result) => {
-            if (result.dismiss === Swal.DismissReason.timer) {
-              Swal.fire({
-                title: 'Berhasil',
-                html: `Data yang dipilih telah <strong>berhasil</strong> dihapus.`,
-                icon: 'success',
-                confirmButtonText: 'OK',
-                timer: 2000
-              })
-            }
-          })
+<script>
+   document.addEventListener('alpine:init', function() {
+        Alpine.data("create", () => ({
+            id: 0,
+            tanggal_awal: '',
+            tanggal_akhir: '',
+            jumlah_hari_pelaksanaan: "0 hari",
+            kendala: '',
+            tindak_lanjut: '',
+            state: {
+                kendala : {
+                    show_keterangan: false,
+                },
+                tindak_lanjut : {
+                    yes_show_keterangan: false,
+                    no_show_container: false,
+                    no_show_container_lainnya: false,
+                },
+            },
+        }));
+        
+        Alpine.store("edit", {
+            data: {
+                id: 0,
+                tanggal_awal: '',
+                tanggal_akhir: '',
+                jumlah_hari_pelaksanaan: "0 hari",
+                jumlah_peserta: 0,
+                tujuan: '',
+                kendala: '',
+                kesimpulan: '',
+                tindak_lanjut: '',
+                satker: 0,
+                satker_target: 0,
+            },
+            state: {
+                kendala : {
+                    show_keterangan: false,
+                },
+                tindak_lanjut : {
+                    yes_show_keterangan: false,
+                    no_show_container: false,
+                    no_show_container_lainnya: false,
+                },
+            },
+            updateData(data) {
+                this.data = data;
+            },
+            updateState(state) {
+                this.state = state;
+            },
+        });
+    });
+</script>
+
+<script>
+  let table;
+  var id_edit_global;
+  const TIPE_kegiatan = {{ user.profile.satker.level }}
+  const { createApp, ref, onMounted, computed } = Vue;
+
+  createApp({
+    setup() {
+      let rakernisData = ref(null);
+      let satkerLevel = parseInt('{{ user.profile.satker.level }}');
+      let perPage = ref(10);
+      let currentPage = ref(1);
+      let searchField = ref(null);
+      let filteredPage = ref(null);
+      const filter = ref({ search: '', date: '', kegiatan: '' });
+
+      const totalPage = computed(() => {
+        return filteredPage.value ? Math.ceil(filteredPage.value.length / perPage.value) : 0;
+      });
+
+      const pagedData = computed(() => {
+        if (filteredPage.value) {
+          const startIndex = (currentPage.value - 1) * perPage.value;
+          const endIndex = currentPage.value * perPage.value;
+          return filteredPage.value.slice(startIndex, endIndex);
         }
-      })
-    })
-  </script> -->
+        else return [];
+      });
 
-  <script src="{% static 'assets/dashboard/vendor/libs/nested-datatables/nested.tables.js' %}"></script>
+      function searchData(e) {
+        currentPage.value = 1;
 
-  <script>
-window.addEventListener('load', function() {
-  const dataInJson = [
-    {
-        "id": "15",
-        "nama_satker": "BNNP Jawa Barat",
-        "tanggal_awal": "2024-03-01",
-        "tanggal_akhir": "2024-03-22",
-        "deskripsi": "TEST",
-        "level": "0",
-        "bnnk": [
-            {
-                "bnnk": "BNN Kabupaten Cianjur",
-                "data": [
-                    {
-                        "tanggal_awal": "2024-03-21",
-                        "tanggal_akhir": null,
-                        "deskripsi": "asd"
-                    },
-                    {
-                        "tanggal_awal": "2024-03-21",
-                        "tanggal_akhir": null,
-                        "deskripsi": "asd"
-                    }
-                ]
-            }
-        ]
-    },
-    {
-        "id": "213",
-        "nama_satker": "BNN Pusat",
-        "tanggal_awal": "2024-03-23",
-        "tanggal_akhir": "2024-03-23",
-        "deskripsi": "Mom",
-        "level": "2",
-        "bnnk": [
-            {
-                "tanggal_awal": "2024-03-21",
-                "tanggal_akhir": null,
-                "deskripsi": "asd"
-            }
-        ]
-    },
-    {
-        "id": "16",
-        "nama_satker": "BNNP Jawa Tengah",
-        "tanggal_awal": "2024-03-23",
-        "tanggal_akhir": "2024-09-12",
-        "deskripsi": "Proident iusto adip",
-        "level": "0",
-        "bnnk": [
-            {
-                "bnnk": "BNN Kota Tegal",
-                "data": [
-                    {
-                        "tanggal_awal": "2024-03-23",
-                        "tanggal_akhir": "2024-04-30",
-                        "deskripsi": "Officia ad qui quibu"
-                    }
-                ]
-            }
-        ]
-    }
-];
+        filteredPage.value = rakernisData.value.filter((data) => {
+            idx = String(data.satker.toUpperCase());
+            nama_lingkungan = String(data.nama_lingkungan.toUpperCase());
+            daftar_nama_peserta = String(data.daftar_nama_peserta.toUpperCase());
+            tindak_lanjut = String(data.tindak_lanjut.toUpperCase());
 
-      const settings = {
-        iDisplayLength: 20,
-        bLengthChange: false,
-        bFilter: false,
-        bSort: false,
-        bInfo: false,
+            bool1 = idx.indexOf(searchField.value.toUpperCase()) > -1;
+            bool2 = nama_lingkungan.indexOf(searchField.value.toUpperCase()) > -1;
+            bool3 = daftar_nama_peserta.indexOf(searchField.value.toUpperCase()) > -1;
+            bool4 = tindak_lanjut.indexOf(searchField.value.toUpperCase()) > -1;
+
+            return bool1 || bool2 || bool3 || bool4;
+        });
       };
 
-      const tableCoba = new nestedTables.TableHierarchy(
-        "example",
-        dataInJson,
-        settings
-      );
+      const goToNextPage = (current, total) => {
+        if (currentPage.value < total) {
+          currentPage.value++;
+        }
+      }
 
-      tableCoba.initializeTableHierarchy();
-})
-  </script>
+      const goToPreviousPage = (current, total) => {
+        if (currentPage.value > 0 ) {
+          currentPage.value--;
+        }
+      }
+
+      const handleFilterDate = async () => {
+          if (filter.value.date == '') {
+              filteredPage.value = rakernisData.value;
+              return;
+          }
+
+          const dateParts = filter.value.date.split('-');
+            const datePartStart = dateParts[0].trim();
+            const datePartEnd = dateParts[1].trim();
+
+            const startDate = moment(datePartStart, 'YYYY-MM-DD');
+            const endDate = moment(datePartEnd, 'YYYY-MM-DD');
+
+            filteredPage.value = rakernisData.value.filter(item => {
+                const itemDate = moment(item.start_date, 'YYYY-MM-DD');
+                console.log(itemDate);
+                // console.log(itemDate.isBetween(moment(startDate), moment(endDate), null, '[]'));
+                return itemDate.isBetween(startDate, endDate, null, '[]');
+
+            });
+      }
+
+      function hideableButton(status, satkerLevel, type) {
+        if (type == 'kirim') {
+          return satkerLevel != 2 && ((satkerLevel == 0 && status < 2) || (satkerLevel == 1 && status < 1));
+        } else if (type == 'edit') {
+          return satkerLevel == 2 || ((satkerLevel == 0 && status < 2) || (satkerLevel == 1 && status < 1));
+        }
+      }
+
+      const apiURL = (satkerLevel == 1 ? '/kegiatan/api/v1/psm/monev_supervisi/get_data_bnnk/?format=datatables' : '/kegiatan/api/v1/psm/monev_supervisi/?format=datatables')
+      
+      function loadData() {
+        tableContent = [];
+        axios.get(apiURL).then(function (response) {
+          data = response.data.data;
+          
+          for ([key, value] of Object.entries(data)) {
+              // untuk satker tingkat BNNP
+              if (value.data && value.data.length > 0) {
+                baris = { 'class':'table-primary','hide_satker':false,'index': parseInt(key)+1,'satker': value.satker.nama_satker +'(' + value.data.length + ' kegiatan)',
+                  'tanggal':'','nama_lingkungan':'','nama_jabatan':'','pria':'','wanita':'','jumlah_peserta':'','status_indeks':'','nilai_ikp':'','status_ikp':'','deskripsi_hasil':'','simpulan':'','tindak_lanjut':'','dokumentasi':''
+                  ,'aksi':'','status':'','level':'', 'type':'parent', 'id':value.id};
+                tableContent.push(baris);
+                
+                // untuk detail dari satker BNNP
+                for ([key2, value2] of Object.entries(value.data)) {
+                  let formattedData = countHasilTest(value2.pegawai);
+                  baris = { 'class':'table','hide_satker':true,'index': (parseInt(key)+1) + '.' + (parseInt(key2)+1),'satker': '',
+                  'tanggal':value2.tanggal_awal+'-'+value2.tanggal_akhir, 'nama_lingkungan':value2.nama_lingkungan,'nama_jabatan':formatNamaJabatan(value2.pegawai),'pria':countMaleParticipants(value2.pegawai),'wanita':countFemaleParticipants(value2.pegawai),'jumlah_peserta':value2.pegawai.length,'status_indeks':gek_status_indeks(value2.status_indeks),'nilai_ikp': value2.nilai_ikp,'status_ikp':value2.nilai_ikp,'deskripsi_hasil':value2.deskripsi_hasil,'simpulan':value2.simpulan,'tindak_lanjut':value2.tindak_lanjut,'dokumentasi':value2.dokumentasi
+                  ,'aksi':'','status':value2.status,'level':value2.satker.level, 'type':'child', 'id':value2.id, 'start_date':value2.tanggal_awal, 'end_date':value2.tanggal_akhir, 'kirim': hideableButton(value2.status, satkerLevel, 'kirim'), 'edit': hideableButton(value2.status, satkerLevel, 'edit'),};
+                  tableContent.push(baris);
+                }
+  
+                // untuk mengecek
+                if (value.detail !== undefined && value.detail.length>0) {
+                  // untuk satker bnnknya
+                  for ([key3,value3] of Object.entries(value.detail)) {
+                    baris = { 'class':'table-primary','hide_satker':false,'index': (parseInt(key)+1) + '.' + (parseInt(key2)+1) + '.' + (parseInt(key3)+1),'satker': value3.satker.nama_satker +'(' + value3.data.length + ' kegiatan)',
+                    'tanggal':'','nama_lingkungan':'','nama_jabatan':'','pria':'','wanita':'','jumlah_peserta':'','status_indeks':'','nilai_ikp':'','status_ikp':'','deskripsi_hasil':'','simpulan':'','tindak_lanjut':'','dokumentasi':''
+                    ,'aksi':'','status':'','level':'', 'type':'parent', 'id':value3.id};
+                    tableContent.push(baris);
+  
+                  // untuk detail data satker bnnknya
+                    for ([key4, value4] of Object.entries(value3.data)) {
+                      let formattedData = countHasilTest(value4.pegawai);
+                      baris = { 'class':'table','hide_satker':true,'index': (parseInt(key) + 1) + '.' + (parseInt(key2) + 1) + '.' + (parseInt(key3) + 1) + '.' + (parseInt(key4) + 1),'satker': '',
+                      'tanggal':value4.tanggal_awal+'-'+value4.tanggal_akhir, 'nama_lingkungan':value4.nama_lingkungan,'nama_jabatan':formatNamaJabatan(value4.pegawai),'pria':countMaleParticipants(value4.pegawai),'wanita':countFemaleParticipants(value4.pegawai),'jumlah_peserta':value4.pegawai.length,'status_indeks':gek_status_indeks(value4.status_indeks),'nilai_ikp': value4.nilai_ikp,'status_ikp':value4.nilai_ikp,'deskripsi_hasil':value4.deskripsi_hasil,'simpulan':value4.simpulan,'tindak_lanjut':value4.tindak_lanjut,'dokumentasi':value4.dokumentasi
+                      ,'aksi':'','status':value4.status,'level':value4.satker.level, 'type':'child', 'id':value4.id, 'start_date':value4.tanggal_awal, 'end_date':value4.tanggal_akhir, 'kirim': hideableButton(value4.status, satkerLevel, 'kirim'), 'edit': hideableButton(value4.status, satkerLevel, 'edit'),};
+                      tableContent.push(baris);
+                    }
+                  }
+                }
+              }
+            }
+          
+          rakernisData.value = tableContent;
+          filteredPage.value = rakernisData.value;
+        });
+      };
+
+      // fungsi fill data untuk modal edit
+      async function handleEditModal(id) {
+        try {
+          const response = await axios.get(`/kegiatan/api/v1/psm/monev_supervisi_crud/${id}/get_detail_data_detail`);
+          const data = response.data[0];
+          id_edit_global = data.id
+
+          $('#edit__satker').val(data.satker_id).trigger('change'); // Assuming 'satker' is a property in data
+          $('#edit__tanggal_awal').val(data.tanggal_awal);
+          $('#edit__tanggal_akhir').val(data.tanggal_akhir);
+          $('#edit__satker_target').val(data.satker_target).trigger('change');
+          $('#edit__nama_lingkungan').val(data.nama_lingkungan);
+          $('#edit__status_index').val(data.status_indeks).trigger('change');
+          $('#edit__nilai_ikp').val(data.nilai_ikp);
+          $('#edit__deskripsi_hasil').val(data.deskripsi_hasil);
+          $('#edit__simpulan').val(data.simpulan);
+          $('#edit__tindak_lanjut').val(data.tindak_lanjut);
+
+          $('[data-repeater-list="peserta-group-lama"]').children().remove();
+
+          populateFormRepeater(data.peserta);
+
+          $('#editData').modal('show');
+        } catch (error) {
+          showSwalGenericError();
+          console.error('Terjadi kesalahan :', error);
+        }
+      }
+        
+      async function handleDelete(data){
+        let id = data;
+
+        Swal.fire({
+            title: "Peringatan !",
+            text: "Hapus data Kegiatan ?",
+            icon: "warning",
+            showDenyButton: true,
+            confirmButtonText: "Hapus !",
+            denyButtonText: "Batal"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                axios.delete('/kegiatan/api/v1/psm/monev_supervisi/'+id+'/delete_kegiatan_peserta/')
+                    .then(function (response) {
+                        Swal.fire({
+                            icon: "success",
+                            title: "Delete data berhasil !",
+                            text: "Data terhapus !",
+                            showConfirmButton: false,
+                            timer: 1000
+                        }).then((result) => {
+                            if (result.dismiss === Swal.DismissReason.timer) {
+                                location.reload();
+                            }
+                        });
+                    })
+                    .catch(function (error) {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Terjadi kesalahan !",
+                            text: "API bermasalah !",
+                        });
+                });
+
+            } else if (result.isDenied) {
+            }
+        });
+      }
+
+      async function handleDownload(data){
+        var currentURLOrigin = window.location.origin;
+        const combinedData = `${currentURLOrigin}${data}`;
+        window.location.href = combinedData;
+      } 
+
+      // fungsi ubah status post data
+      async function handleSend(data){
+        Swal.fire({
+            title: "Peringatan !",
+            text: "Kirim kegiatan ?",
+            icon: "warning",
+            showDenyButton: true,
+            confirmButtonText: "Kirim !",
+            denyButtonText: "Batal"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                axios.post('/kegiatan/api/v1/psm/monev_supervisi/kirim_kegiatan/', { id_: data })
+                    .then(function (response) {
+                        Swal.fire({
+                            icon: "success",
+                            title: "Kirim data berhasil !",
+                            text: "Data Terkirim !",
+                            showConfirmButton: false,
+                            timer: 1000
+                        }).then((result) => {
+                            if (result.dismiss === Swal.DismissReason.timer) {
+                                location.reload();
+                            }
+                        });
+                    })
+                    .catch(function (error) {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Terjadi kesalahan !",
+                            text: "API bermasalah !",
+                        });
+                });
+
+            } else if (result.isDenied) {
+            }
+        });
+      }
+
+      onMounted(async () => {
+        loadData();
+
+        await sleep(300);
+        filter.value.date = '';
+        var a = $("#filter_date_").val('');
+
+        $('#filter_date_').on('change', async (event) => {
+            if (a == '') {
+              
+            }else{
+              filter.value.date = event.target.value;
+              await sleep(500);
+              await handleFilterDate();
+            }
+        });
+
+        $(".input-group-text").click(function(){
+            $("#filter_date_").val('');
+        });
+
+      });
+      
+      return {
+        rakernisData,
+        satkerLevel,
+        totalPage,
+        perPage,
+        currentPage,
+        pagedData,
+        searchField,
+        filter,
+        loadData,
+        handleEditModal,
+        handleDelete,
+        handleSend,
+        handleDownload,
+        goToNextPage,
+        goToPreviousPage,
+        searchData,
+        handleFilterDate
+      }
+    },
+    delimiters: ['${', '}']
+  }).mount('#app');
+</script>
+
+
+<!-- helper -->
+<script>
+  function handlePost(e) {
+    e.preventDefault();
+
+    var formData = {
+        satker: $('#create__satker').val(),
+        tanggal_awal: $('#create__tanggal_awal').val(),
+        tanggal_akhir: $('#create__tanggal_akhir').val(),
+        tanggal_akhir: $('#create__tanggal_akhir').val(),
+        nama_lingkungan: $('#create__nama_lingkungan').val(),
+        status_index: $('#create__status_index').val(),
+        nilai_ikp: $('#create__nilai_ikp').val(),
+        deskripsi_hasil: $('#create__deskripsi_hasil').val(),
+        simpulan: $('#create__simpulan').val(),
+        tindak_lanjut: $('#create__tindak_lanjut').val(),
+        dokumentasi: $('#create__dokumentasi')[0].files[0],
+        peserta: []
+      };
+
+      $('.form-repeater.create [data-repeater-item]').each(function(index, element) {
+          formData.peserta.push({
+              nama: $(element).find('[id^="form-repeater"]').eq(0).val(),
+              alamat: $(element).find('[id^="form-repeater"]').eq(1).val(),
+              gender: $(element).find('[id^="form-repeater"]').eq(2).val(),
+              status: $(element).find('[id^="form-repeater"]').eq(3).val()
+          });
+      });
+
+      if (checkDataCompleteness(formData.peserta) == 2) {
+        Swal.fire({
+          title: "Simpan data ?",
+          icon: "warning",
+          showDenyButton: true,
+          confirmButtonText: "Simpan",
+          denyButtonText: `Batal`
+        }).then((result) => {
+          /* Read more about isConfirmed, isDenied below */
+          if (result.isConfirmed) {
+            savedata();
+          } else if (result.isDenied) {
+          }
+        });
+      }else if (checkDataCompleteness(formData.peserta) == 0) {
+        Swal.fire({
+          title: "Terjadi Kesalahan !",
+          text: "Data Peserta kosong!",
+          icon: "error"
+        });
+      } else {
+        Swal.fire({
+          title: "Terjadi Kesalahan !",
+          text: "Data Peserta tidak lengkap!",
+          icon: "error"
+        });
+      }
+
+  };
+
+  function savedata() {
+      var url = "/kegiatan/api/v1/psm/monev_supervisi_crud/"
+
+      var formData = new FormData();
+
+      formData.append('satker', $('#create__satker').val());
+      formData.append('tanggal_awal', $('#create__tanggal_awal').val());
+      formData.append('tanggal_akhir', $('#create__tanggal_akhir').val());
+      formData.append('nama_lingkungan', $('#create__nama_lingkungan').val());
+      formData.append('status_indeks', $('#create__status_index').val());
+      formData.append('nilai_ikp', $('#create__nilai_ikp').val());
+      formData.append('deskripsi_hasil', $('#create__deskripsi_hasil').val());
+      formData.append('simpulan', $('#create__simpulan').val());
+      formData.append('tindak_lanjut', $('#create__tindak_lanjut').val());
+      formData.append('dokumentasi', $('#create__dokumentasi')[0].files[0]);
+
+      var pesertaArray = [];
+      $('.form-repeater.create [data-repeater-item]').each(function(index, element) {
+          pesertaArray.push({
+              nama: $(element).find('[id^="form-repeater"]').eq(0).val(),
+              jabatan: $(element).find('[id^="form-repeater"]').eq(1).val(),
+              gender: $(element).find('[id^="form-repeater"]').eq(2).val()
+          });
+      });
+
+      formData.append('peserta_array', JSON.stringify(pesertaArray));
+
+      axios.post(url, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        })
+        .then(function (response) {
+            swal.fire({
+                title: "Berhasil menyimpan kegiatan !",
+                icon : "success",
+                timer: 1500,
+                timerProgressBar: true,
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+            }).then((result) => {
+              window.location.reload();
+            });
+        })
+        .catch(function (error) {
+            console.error(error);
+        });
+    };
+
+  $('#editButton').click(function() {
+    var url = "/kegiatan/api/v1/psm/monev_supervisi_crud/"+id_edit_global+"/"
+
+    var formData = new FormData();
+
+    // formData.append('satker', $('#create__satker').val());
+    formData.append('tanggal_awal', $('#edit__tanggal_awal').val());
+    formData.append('tanggal_akhir', $('#edit__tanggal_akhir').val());
+    formData.append('nama_lingkungan', $('#edit__nama_lingkungan').val());
+    formData.append('status_indeks', $('#edit__status_index').val());
+    formData.append('nilai_ikp', $('#edit__nilai_ikp').val());
+    formData.append('deskripsi_hasil', $('#edit__deskripsi_hasil').val());
+    formData.append('simpulan', $('#edit__simpulan').val());
+    formData.append('tindak_lanjut', $('#edit__tindak_lanjut').val());
+    // Check if file is selected
+    var dokumentasiFile = $('#edit__dokumentasi')[0].files[0];
+    if (dokumentasiFile) {
+        formData.append('dokumentasi', dokumentasiFile);
+    }
+
+    var pesertaArray = [];
+    $('.form-repeater.edit [data-repeater-item]').each(function(index, element) {
+      pesertaArray.push({
+            nama: $(element).find('[id^="form-repeater"]').eq(0).val(),
+            alamat: $(element).find('[id^="form-repeater"]').eq(1).val(),
+            gender: $(element).find('[id^="form-repeater"]').eq(2).val(),
+            status: $(element).find('[id^="form-repeater"]').eq(3).val()
+        });
+    });
+    formData.append('pesertaArray', JSON.stringify(pesertaArray));
+
+    var peserta_lamaArray = [];
+    $('.form-repeater-lama [data-repeater-item-lama]').each(function(index, element) {
+      peserta_lamaArray.push({
+            nama: $(element).find('[id^="form-repeater-edit-lama"]').eq(0).val(),
+            alamat: $(element).find('[id^="form-repeater-edit-lama"]').eq(1).val(),
+            gender: $(element).find('[id^="form-repeater-edit-lama"]').eq(2).val(),
+            status: $(element).find('[id^="form-repeater-edit-lama"]').eq(3).val()
+        });
+    });
+    formData.append('peserta_lamaArray', JSON.stringify(peserta_lamaArray));
+
+    const pesertaCompleteness = checkDataCompleteness(pesertaArray);
+    const pesertaLamaCompleteness = checkDataCompleteness(peserta_lamaArray);
+
+    if (pesertaCompleteness === 2 && pesertaLamaCompleteness === 2) {
+        showConfirmationDialog(formData, url);
+    } else if (pesertaLamaCompleteness === 0) {
+        showErrorDialog("Data Peserta kosong!");
+    } else if (pesertaCompleteness === 1 || pesertaLamaCompleteness === 1) {
+        showErrorDialog("Data Peserta tidak lengkap!");
+    }else{
+        showConfirmationDialog(formData, url);
+    }
+  });
+
+  async function handleExport(){
+    axios.post('/kegiatan/api/v1/psm/monev_supervisi/export_data/')
+        .then(function (response) {
+            
+            const data = response.data;
+
+            window.location.href = data.file_path;
+        })
+        .catch(function (error) {
+            Swal.fire({
+                icon: "error",
+                title: "Terjadi kesalahan !",
+                text: "API bermasalah !",
+            });
+    });
+  }
+
+  async function handleDate(event, target) {
+    const currentDate = moment().format('YYYY-MM-DD');
+    const valueDate = $(event.target).val();
+    (valueDate === currentDate ? $(`#${target}tanggal_akhir`).attr('disabled', true) : $(`#${target}tanggal_akhir`).attr('disabled', false));
+  }
+
+  function countMaleParticipants(data) {
+      let count = 0;
+      data.forEach(function(row) {
+          if (row.jenis_kelamin === "Laki-Laki") {
+              count++;
+          }
+      });
+      return count;
+  }
+
+  function countFemaleParticipants(data) {
+      let count = 0;
+      data.forEach(function(row) {
+          if (row.jenis_kelamin === "Perempuan") {
+              count++;
+          }
+      });
+      return count;
+  }
+
+  function formatNamaJabatan(data) {
+    let formattedData = [];
+    data.forEach(function(row) {
+        let formattedString = row.nama_peserta + " - " + row.jabatan;
+        formattedData.push(formattedString);
+    });
+    // Join the elements of the array with ", "
+    let result = formattedData.join(", ");
+    return result;
+}
+
+  function countHasilTest(data) {
+    let countPositif = 0;
+    let countNegatif = 0;
+
+    data.forEach(function(row) {
+        if (row.hasil_test === "Positif") {
+            countPositif++;
+        } else if (row.hasil_test === "Negatif") {
+            countNegatif++;
+        }
+    });
+
+    return {
+        positif: countPositif,
+        negatif: countNegatif
+    };
+  }
+
+  function populateFormRepeater(data) {
+      data.forEach(function(item) {
+          var $repeaterItem = $('<div data-repeater-item-lama></div>');
+
+          $repeaterItem.append('<div class="row">' +
+              '<div class="mb-3 col-lg-4 col-sm-10 mb-0">' +
+              '<label class="form-label" for="form-repeater-edit-lama-1-1">Nama </label>' +
+              '<input type="text" class="form-control" id="form-repeater-edit-lama-1-1" placeholder="Nama Peserta" value="' + item.nama_peserta + '"/>' +
+              '</div>' +
+              '<div class="mb-3 col-lg-4 col-sm-10 mb-0">' +
+              '<label class="form-label" for="form-repeater-edit-lama-1-2">Jabatan</label>' +
+              '<input type="text" class="form-control" id="form-repeater-edit-lama-1-2" placeholder="Jabatan Peserta" value="' + item.jabatan + '"/>' +
+              '</div>' +
+              '<div class="mb-3 col-lg-4 col-sm-10 mb-0">' +
+              '<label class="form-label d-block" for="form-repeater-edit-lama-1-3">Jenis Kelamin</label>' +
+              '<select class="form-select" id="form-repeater-edit-lama-1-3" name="jenis_kelamin">' +
+              '<option value="" disabled>Pilih Jenis Kelamin</option>' +
+              '<option value="L"' + (item.jenis_kelamin === 'Laki-Laki' ? ' selected' : '') + '>Laki-laki</option>' +
+              '<option value="P"' + (item.jenis_kelamin === 'Perempuan' ? ' selected' : '') + '>Perempuan</option>' +
+              '</select>' +
+              '</div>' +
+              '<div class="mb-3 col-lg-12 col-xl-2 col-12 d-flex align-items-center mb-0">' +
+              '<button class="btn btn-label-danger mt-4 hapus_lama" data-repeater-delete type="button" value="Delete">' +
+              '<i class="ti ti-x ti-xs me-1"></i>' +
+              '<span class="align-middle">Hapus</span>' +
+              '</button>' +
+              '</div>' +
+              '</div>' +
+              '<hr class="mx-n4">');
+
+          $('[data-repeater-list="peserta-group-lama"]').append($repeaterItem);
+      });
+  }
+
+  function removeEmptyObjects(array) {
+      return array.filter(function(obj) {
+          return obj.nama !== "" || obj.alamat !== "" || obj.gender !== null || obj.status !== null;
+      });
+  }
+
+  function checkDataCompleteness(dataArray) {
+      var isDataComplete = true;
+      var allNull = true;
+      var someNull = false;
+      
+      $.each(dataArray, function(index, obj) {
+          if (!Object.values(obj).some(value => value !== null && value !== '')) {
+              allNull = true;
+          } else {
+              allNull = false;
+              if (Object.values(obj).some(value => value === null || value === '')) {
+                  someNull = true;
+                  return false; // Break the loop early if any null value is found
+              }
+          }
+      });
+
+    if (allNull) {
+      return 0;
+    } else if (someNull) {
+        return 1;
+    } else {
+        return 2;
+    }
+  }
+
+  function showConfirmationDialog(formData, url) {
+      Swal.fire({
+          title: "Update data ?",
+          icon: "warning",
+          showDenyButton: true,
+          confirmButtonText: "Simpan",
+          denyButtonText: `Batal`
+      }).then((result) => {
+          if (result.isConfirmed) {
+              sendData(formData, url);
+          }
+      });
+  }
+
+  function sendData(formData, url) {
+      axios.put(url, formData, {
+              headers: {
+                  'Content-Type': 'multipart/form-data'
+              }
+          })
+          .then(function(response) {
+              Swal.fire({
+                  title: "Berhasil menyimpan kegiatan !",
+                  icon: "success",
+                  timer: 1500,
+                  timerProgressBar: true,
+                  allowOutsideClick: false,
+                  allowEscapeKey: false,
+            }).then((result) => {
+              window.location.reload();
+            });
+          })
+          .catch(function(error) {
+              console.error(error);
+          });
+  }
+
+  function showErrorDialog(text) {
+      Swal.fire({
+          title: "Terjadi Kesalahan !",
+          text: text,
+          icon: "error"
+      });
+  }
+
+  function addCell(tr, content, colSpan = 2) {
+    let td = document.createElement('th');
+
+    td.colSpan = colSpan;
+    td.textContent = content;
+
+    tr.appendChild(td);
+  }
+
+  function hideableButton(status, satkerLevel, type) {
+    if (type == 'kirim') {
+      return satkerLevel != 2 && ((satkerLevel == 0 && status < 2) || (satkerLevel == 1 && status < 1));
+    } else if (type == 'edit') {
+      return satkerLevel == 2 || ((satkerLevel == 0 && status < 2) || (satkerLevel == 1 && status < 1));
+    }
+  }
+
+  $('#filter_date_').daterangepicker({
+      showDropdowns: true,
+      ranges: {
+          'Hari ini': [moment(), moment()],
+          'Kemarin': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+          'Minggu ini': [moment().subtract(6, 'days'), moment()],
+          // '30 hari yang lalu': [moment().subtract(29, 'days'), moment()],
+          'Bulan ini': [moment().startOf('month'), moment().endOf('month')],
+          // 'Bulan lalu': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+          'Triwulan 1 (Januari - Maret)': [moment().startOf('year').startOf('quarter'), moment().startOf('year').startOf('quarter').add(2, 'months').endOf('month')],
+          'Triwulan 2 (April - Juni)': [moment().startOf('year').startOf('quarter').add(3, 'months'), moment().startOf('year').startOf('quarter').add(5, 'months').endOf('month')],
+          'Triwulan 3 (Juli - September)': [moment().startOf('year').startOf('quarter').add(6, 'months'), moment().startOf('year').startOf('quarter').add(8, 'months').endOf('month')],
+          'Triwulan 4 (Oktober - Desember)': [moment().startOf('year').startOf('quarter').add(9, 'months'), moment().startOf('year').endOf('year')],
+      },
+      locale: {
+          customRangeLabel: "Rentang Lainnya",
+          cancelLabel: 'Batalkan',
+          applyLabel: 'Terapkan'
+      }
+  });
+
+  function gek_status_indeks(value) {
+    console.log(value)
+      var result = '';
+      switch(value) {
+          case 4:
+              result = 'Sangat Mandiri';
+              break;
+          case 3:
+              result = 'Mandiri';
+              break;
+          case 2:
+              result = 'Kurang Mandiri';
+              break;
+          case 1:
+              result = 'Tidak Mandiri';
+              break;
+          default:
+              result = 'Tidak Valid';
+      }
+      return result;
+  }
+
+</script>
+
 {% endblock %}
 
 {% block modal_tambahan %}
-  {% include 'psm/monev_supervisi_kegiatan_kotan/create.html' %}
-  {% include 'psm/monev_supervisi_kegiatan_kotan/create_kegiatan.html' %}
-  {% include 'psm/monev_supervisi_kegiatan_kotan/edit.html' %}
-  {% include 'psm/monev_supervisi_kegiatan_kotan/edit_kegiatan.html' %}
-  {% include 'psm/monev_supervisi_kegiatan_kotan/detail_pelaksanaan.html' %}
-  {% include 'psm/monev_supervisi_kegiatan_kotan/detail_peserta.html' %}
+{% include 'psm/monev_supervisi_kegiatan_kotan/modals/create.html' %}
+{% include 'psm/monev_supervisi_kegiatan_kotan/modals/edit.html' %}
 {% endblock %}

@@ -1,0 +1,813 @@
+{% extends 'dashboard/dashboard_base.html' %}
+{% load static %}
+
+{% block title %} Pembinaan Teknis {% endblock title %}
+
+{% block content %}
+<div class="breadcrumb">
+    <div class="row">
+        <h3 class="heading mb-2">Pembinaan Teknis</h3>
+        <span class="mb-0"><span class="text-muted fw-light">Kegiatan /</span>
+        <span class="ms-1 fw-medium">Pembinaan Teknis</span></span>
+    </div>
+</div>
+
+<section id="__data" x-data>
+    <div class="card">
+        <div class="card-body">
+            <div id="headline" class="mb-3">
+                <h3 class="text-center">REKAPITULASI PEMBINAAN TEKNIS BNNP &amp; BNNK</h3>
+                <hr />
+            </div>
+
+            <div class="action-button">
+                <div class="d-flex justify-content-end mb-3 gap-2">
+                    <button class="btn btn-success" onclick="handleExport()"><i
+                            class="fas fa-file-export me-2"></i>Ekspor Data</button>
+                    <button class="btn btn-primary" id="createBTN" data-bs-toggle="modal" data-bs-target="#createModal">
+                        <i class="fas fa-plus me-2"></i>Tambah Data</button>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+
+				<div id="example" class="container my-5"></div>
+
+                {% include 'dayatif/binaan_teknis/table.html' %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block js_tambahan %}
+
+<!-- ==== DT CONFIGURATION ===== -->
+<script>
+
+    const satkerLevel = parseInt('{{ user.profile.satker.level }}');
+	let statusPengirimanSemua = '{{ satker_status_pengiriman_semua_kegiatan }}' == 'True' ? true : false;
+
+	let hasilFetch = null;
+	let search = '';
+
+    const table = $("#__table").DataTable({
+        language: dt_lang_config(),
+        serverSide: false,
+        searching: true,
+        responsive: true,
+        pageLength: 10,
+		order: [[1, 'asc']],
+        ajax: {
+            url: `/kegiatan/api/v1/dayatif/binaan_teknis/get_one_row_data/?format=datatables`,
+            dataSrc: function (json) {
+				const data = json.data.map((item, index) => {
+				  item._group = item.nama_satker;
+				  item._group2 = item.nama_satker;
+				  return item;
+				});
+				return data;
+			},
+        },
+        ordering: true,
+        columns: [
+			{ data: null },
+			{
+				data: "nama_satker",
+				visible: false,
+			},
+			{
+				data: null,
+				render: function (data, type, row) {
+					const el = getTanggalKegiatan(row.tanggal_awal, row.tanggal_akhir);
+					return el;
+				},
+			},
+			
+			{
+				data: "jumlah_hari_pelaksanaan",
+				width: "5%",
+				render: function (data, type, row) {
+					return `${data} hari`;
+				},
+			},
+			{
+				data: "nama_satker_target",
+			},
+			{
+				data: "jumlah_peserta",
+				render: function (data, type, row) {
+					return `${data} orang`;
+				},
+			},
+			{
+				data: "tujuan",
+			},
+			{
+				data: "kendala",
+			},
+			{
+				data: "kesimpulan",
+			},
+			{
+				data: "tindak_lanjut",
+			},
+			{
+				data: "dokumentasi",
+				width: "10%",
+				render: function (data, type, row) {
+					const el = `
+					<div class="text-center">
+						<a href="${data}" class="badge bg-primary text-white" target="_blank">
+						<i class="fas fa-eye me-2"></i>
+						Lihat dokumentasi
+						</a>
+					</div>`;
+
+					return el;
+				},
+			},
+
+			{
+				data: "id",
+				orderable: false,
+				render: function (data, type, row) {
+					const deleteArgs = JSON.stringify({
+						id: data,
+						name: 'kegiatan',
+						detail_name: row.nama_satker,
+						apiURL: '/kegiatan/api/v1/dayatif/binaan_teknis'
+					});
+
+					const keteraganStatusList = {
+						0: 'BNNP',
+						1: 'Pusat'
+					};
+
+					const keteranganKirim = keteraganStatusList[row.status] || '?';
+
+					const kirimArgs = JSON.stringify({
+						id: data,
+						nama_satker: row.nama_satker,
+						keterangan: keteranganKirim
+					});
+
+					const isKirimable = satkerLevel != 2 && row.status < 2;
+					const isEditable = satkerLevel == 2 || row.status < 2;
+
+					const BTN = {};
+
+					BTN.kirim = isKirimable ? `<div>
+						<a href="javascript:void(0);" onclick='handleKirim(${kirimArgs}, ${data})'
+							class="badge bg-primary text-white text-decoration-none mb-1"><i
+								class="fas fa-paper-plane me-2"></i>Kirim</a>
+					</div>` : `<div>
+						<a href="javascript:void(0);" class="badge bg-secondary text-white text-decoration-none mb-1"><i
+								class="fas fa-paper-plane me-2"></i>Kirim</a>
+					</div>`;
+
+					BTN.edit = isEditable ? `<div>
+						<a href="javascript:void(0);" onclick="handleEdit(${data})"
+							class="badge bg-success text-white text-decoration-none mb-1">
+							<i class="fas fa-pen-to-square me-2"></i>Edit</a>
+					</div>` : `<div>
+						<a href="javascript:void(0);" class="badge bg-secondary text-white text-decoration-none mb-1">
+							<i class="fas fa-pen-to-square me-2"></i>Edit</a>
+					</div>` ;
+					
+					BTN.delete = isEditable ? `<div>
+						<a href="javascript:void(0);" onclick='handleDelete(${deleteArgs})'
+							class="badge bg-danger text-white text-decoration-none mb-1">
+							<i class="fas fa-trash-alt me-2"></i>Hapus</a>
+					</div>` : `<div>
+						<a href="javascript:void(0);" class="badge bg-secondary text-white text-decoration-none mb-1">
+							<i class="fas fa-trash-alt me-2"></i>Hapus</a>
+					</div>` ;
+					
+					const el = `
+						<div class="list-button gx-3 text-uppercase">
+							${BTN.kirim}
+							${BTN.edit}
+							${BTN.delete}
+						</div>`;
+
+					return el;
+					
+				},
+			},
+		],
+        rowGroup: {
+			dataSrc: ['_group'],
+			className: 'bg-soft-primary',
+			startRender: function (rows, group, sasa) {
+				const tr = document.createElement('tr');
+				addCell(tr, group, 10)
+
+                const buttonBatalKirim = `<a href="javascript:void(0);" onclick="handleSemua('${group}', 'batalkan')" id="batalKirimSemuaBTN" class="badge bg-warning text-white text-decoration-none text-uppercase mb-1">
+					<i class="fas fa-ban me-2"></i>Batalkan Semua Pengiriman
+				</a>`
+
+				const buttonKirim = !statusPengirimanSemua ? `
+				<a href="javascript:void(0);" onclick="handleSemua('${group}', 'kirim')" id="kirimSemuaBTN" class="badge bg-primary text-white text-decoration-none text-uppercase mb-1">
+					<i class="fas fa-paper-plane me-2"></i>Kirim Semua
+				</a>
+				` : `<a href="javascript:void(0);" class="badge bg-secondary text-white text-decoration-none text-uppercase mb-1">
+					<i class="fas fa-paper-plane me-2"></i>Kirim Semua
+				</a>`
+
+				const containerBTN = `
+				<td>
+					<div>
+						${buttonBatalKirim}
+						${buttonKirim}
+					</div>
+				</td>
+				
+				`;
+
+				const td = document.createElement('td');
+				td.innerHTML = containerBTN;
+				tr.appendChild(td);
+		
+				return tr
+			}
+		},
+		columnDefs: [
+            dt_row_pagination(),
+			{
+				searchPanes: { show: true },
+				targets: [1, 2, 3, 4, 5, 6, 7, 8, 9]
+			}
+        ],
+		layout: {
+			top1: {
+			  searchPanes: {
+				viewTotal: true,
+				orderable: false,
+				initCollapsed: true
+			  }
+			},
+
+			topStart: null,
+			topEnd: function () {
+				const el = `
+				<label for="__table__search_input" class="form-label">Pencarian Keseluruhan</label>
+				<div class="w-100">
+					<input class="form-control form-control-sm" type="text" id="__table__search_input" />
+				</div>
+				`;
+
+				return el;
+			},
+			bottomStart: null,
+			bottomEnd: null,
+		},
+		initComplete: function (settings, json) {
+			return console.log("Hasil fetch data : ", json.data);
+		},
+    });
+
+	$('#__table__search_input').on('keyup', function () {
+		table.search($(this).val()).draw();
+	});
+
+	function addCell(tr, content, colSpan = 2) {
+		let td = document.createElement('th');
+	
+		td.colSpan = colSpan;
+		td.textContent = content;
+	
+		tr.appendChild(td);
+	  }
+
+	const getURL = () => {
+		const baseAPIURL = '/kegiatan/api/v1/dayatif/binaan_teknis/get_all_data/?format=datatables';
+		return search ? `${baseAPIURL}&s=${convertToTitleCaseAndReplaceSpace(search)}` : baseAPIURL;
+	}
+
+	let timeoutId;
+	let interval = 500;
+
+    /*
+	$('#__table_wrapper input[type="search"]').on('keyup', function () {
+			table.settings()[0].jqXHR.abort();
+	
+	        clearTimeout(timeoutId);
+	
+	        timeoutId = setTimeout(function () {
+	            search = $(this).val();
+	
+	            const url = getURL();
+	
+	            console.log('URL:', url);
+	
+	            table.ajax.url(url).load();
+	        }.bind(this), interval);
+	    });
+	*/
+</script>
+
+<!-- ==== DOM ===== -->
+<script>
+    document.addEventListener('alpine:init', function() {
+        Alpine.data("create", () => ({
+            id: 0,
+            tanggal_awal: '',
+            tanggal_akhir: '',
+            jumlah_hari_pelaksanaan: "0 hari",
+            kendala: '',
+            tindak_lanjut: '',
+            state: {
+                kendala : {
+                    show_keterangan: false,
+                },
+                tindak_lanjut : {
+                    yes_show_keterangan: false,
+                    no_show_container: false,
+                    no_show_container_lainnya: false,
+                },
+            },
+        }));
+        
+        Alpine.store("edit", {
+            data: {
+                id: 0,
+                tanggal_awal: '',
+                tanggal_akhir: '',
+                jumlah_hari_pelaksanaan: "0 hari",
+                jumlah_peserta: 0,
+                tujuan: '',
+                kendala: '',
+                kesimpulan: '',
+                tindak_lanjut: '',
+                satker: 0,
+                satker_target: 0,
+            },
+            state: {
+                kendala : {
+                    show_keterangan: false,
+                },
+                tindak_lanjut : {
+                    yes_show_keterangan: false,
+                    no_show_container: false,
+                    no_show_container_lainnya: false,
+                },
+            },
+            updateData(data) {
+                this.data = data;
+            },
+            updateState(state) {
+                this.state = state;
+            },
+        });
+    });
+	
+	$(function() {
+		// if (statusPengirimanSemua) $('#kirimSemuaBTN').addClass('disabled bg-secondary').removeClass('bg-primary');
+	});
+	
+
+	function resetSatkerTarget(type) {
+		const semua_option = `<option value="">Semua</option>`;
+
+		$(`#${type}__satker_target`).empty();
+		$(`#${type}__satker_target`).append($(`<option>`, {
+			value: '',
+			text: '--Pilih Satuan Kerja Target --',
+			disabled: true,
+		}));
+		$(`#${type}__satker_target`).prop(`disabled`, true);
+		$(`#${type}__satker_target`).append(semua_option);
+	}
+
+	async function loadSatkerTarget(parentId, type) {
+		if (!parentId) return;
+
+		const dropdownEl = $(`#${type}__satker_target`);
+
+		try {
+			const params = parentId < 213 ? `?parent=${parentId}` : ''
+			const response = await axios.get(`/users/api/v1/satker/${params}`);
+	
+			response.data.forEach(value => {
+				dropdownEl.append($('<option>', {
+					value: value.id,
+					text: `${value.nama_satker}`
+				}));
+			});
+	
+			dropdownEl.removeAttr('disabled');
+		} catch (error) {
+			console.error('Error:', error);
+		}
+	}
+
+	/*
+	$('#create__satker').on('change', async function() {
+		const value = $(this).val();
+
+		resetSatkerTarget('create');
+
+		if (value && value != '') {
+			await loadSatkerTarget(value, 'create');
+		}
+	});
+
+	$('#edit__satker').on('change', async function() {
+		
+		const value = $(this).val();
+
+		resetSatkerTarget('edit');
+
+		if (value && value != '') {
+			await loadSatkerTarget(value, 'edit');
+		}
+	});
+    */
+</script>
+
+<!-- ==== HELPERS ===== -->
+<script>
+    // ******** JUMLAH HARI PELAKSANAAN KERJA ********
+	function formatDate(dateString) {
+        const [year, month, day] = dateString.split('-');
+        return new Date(year, month - 1, day);
+    }
+
+	function calculateDays() {
+        const type = event.target.dataset.type;
+        const tanggal_awal_val = type === 'create' ? this.$refs.create__tanggal_awal.value : this.$refs.edit__tanggal_awal.value;
+		const tanggal_akhir_val = type === 'create' ? this.$refs.create__tanggal_akhir.value : this.$refs.edit__tanggal_akhir.value;
+
+		if (tanggal_awal_val) {
+			this.tanggal_awal = tanggal_awal_val;
+		}
+		if (tanggal_akhir_val) {
+			this.tanggal_akhir = tanggal_akhir_val;
+		}
+
+        console.log('This tanggal_awal :', this.tanggal_awal)
+        console.log('This tanggal_akhir :', this.tanggal_akhir)
+
+        // Clear end date if start date is cleared
+        if (!this.tanggal_awal) {
+            this.tanggal_akhir = '';
+            return;
+        }
+
+        const tanggal_awal = formatDate(this.tanggal_awal);
+        const tanggal_akhir = formatDate(this.tanggal_akhir);
+
+        // Prevent choosing end date less than current date
+        // const currentDate = new Date();
+
+         if (tanggal_awal > tanggal_akhir) {
+             this.tanggal_akhir = '';
+             return;
+         }
+         
+         if (tanggal_akhir < tanggal_awal) {
+             alert('Tanggal akhir tidak boleh kurang atau sama dengan tanggal mulai!');
+             this.tanggal_akhir = '';
+             return;
+         }
+
+        const diffTime = Math.abs(tanggal_akhir - tanggal_awal);
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+        const calculateDays = isNaN(diffDays) ? 1 : diffDays + 1;
+        const jumlah_hari = calculateDays < 0 ? 0 : calculateDays;
+        this.jumlah_hari_pelaksanaan = `${jumlah_hari} hari`;
+    }
+</script>
+
+<!-- ==== FORM ACTIONS ===== -->
+<script>
+    async function handlePost(e) {
+        e.preventDefault();
+
+        showSwalLoading();
+
+        const modal = $('#createModal');
+        const form = $('#createForm');
+
+        const tanggal_awal = form.find('#create__tanggal_awal').val();
+        const tanggal_akhir = form.find('#create__tanggal_akhir').val();
+        const jumlah_hari_pelaksanaan = form.find('#create__jumlah_hari_pelaksanaan').val();
+        const satker = form.find('#create__satker').val();
+        const satker_target = form.find('#create__satker_target').val();
+        const jumlah_peserta = form.find('#create__jumlah_peserta').val();
+        const tujuan = form.find('#create__tujuan').val();
+        const kendala = form.find('#create__kendala').val();
+        const kesimpulan = form.find('#create__kesimpulan').val();
+        const tindak_lanjut = form.find('#create__tindak_lanjut').val();
+        const dokumentasi = form.find('#create__dokumentasi')[0].files[0];
+
+        const formData = new FormData();
+
+        formData.append('parent', parseInt(parent));
+        formData.append('tanggal_awal', tanggal_awal);
+        if (tanggal_akhir) formData.append('tanggal_akhir', tanggal_akhir);
+        formData.append('jumlah_hari_pelaksanaan', parseInt(jumlah_hari_pelaksanaan));
+        formData.append('satker', parseInt(satker));
+        formData.append('satker_target', parseInt(satker_target));
+        formData.append('jumlah_peserta', jumlah_peserta);
+        formData.append('tujuan', tujuan);
+        formData.append('kendala', kendala);
+        formData.append('kesimpulan', kesimpulan);
+        formData.append('tindak_lanjut', tindak_lanjut);
+        formData.append('dokumentasi', dokumentasi);
+
+		const payload = {
+            satker,
+            satker_target,
+            tanggal_awal,
+            tanggal_akhir,
+            jumlah_hari_pelaksanaan,
+            jumlah_peserta,
+            tujuan,
+            kendala,
+            kesimpulan,
+            tindak_lanjut,
+            dokumentasi
+        };
+
+        console.log('Payload :', payload);
+
+        try {
+            const response = await axios.post(`/kegiatan/api/v1/dayatif/binaan_teknis/`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+
+            modal.modal('hide');
+            showSwalSuccess('Berhasil!', `Data kegiatan telah <b>berhasil</b> ditambahkan!`);
+        } catch (error) {
+            showSwalGenericError();
+            console.error('Terjadi kesalahan :', error);
+        } finally {
+            table.ajax.reload();
+        }
+    }
+
+    async function handleEdit(id) {
+        try {
+            const response = await axios.get(`/kegiatan/api/v1/dayatif/binaan_teknis/${id}/`);
+            const data = response.data;
+
+            const modal = $('#editModal');
+            const form = $('#editForm');
+
+            modal.find('#edit__info').text(data.detail.satker.nama_satker);
+
+            const storeData = data;
+            const stateData = { kendala: {}, tindak_lanjut: {} };
+
+			// Kendala/Hambatan
+            if (data.kendala.startsWith('Ada')) {
+                stateData.kendala.show_keterangan = true;
+            } else {
+                stateData.kendala.show_keterangan = false;
+            }
+            
+			// Tindak Lanjut
+			if (data.tindak_lanjut.startsWith('Ada')) {
+                stateData.tindak_lanjut.yes_show_keterangan = true;
+                stateData.tindak_lanjut.no_show_container = false;
+            } else if (data.tindak_lanjut.startsWith('Tidak')) {
+                stateData.tindak_lanjut.yes_show_keterangan = false;
+                stateData.tindak_lanjut.no_show_container = true;
+				if (data.tindak_lanjut.includes('Pemblokiran')) {
+                    stateData.tindak_lanjut.no_show_container_lainnya = false;
+				} else if (data.tindak_lanjut.includes('Anggaran tidak ada alokasi kegiatan')) {
+                    stateData.tindak_lanjut.no_show_container_lainnya = false;
+				} else {
+                    stateData.tindak_lanjut.no_show_container_lainnya = true;
+				}
+			}
+            
+            form.find('#edit__satker').val(data.satker).trigger('change');
+            
+			await loadSatkerTarget(data.satker, 'edit');
+            
+            form.find('#edit__satker_target').val(data.satker_target).trigger('change');
+
+            storeData.jumlah_hari_pelaksanaan = `${storeData.jumlah_hari_pelaksanaan} hari`;
+            
+            Alpine.store('edit').updateData(storeData);
+            Alpine.store('edit').updateState(stateData);
+
+            modal.modal('show');
+        } catch (error) {
+            showSwalGenericError();
+            console.error('Terjadi kesalahan :', error);
+        }
+    }
+
+    async function handleUpdate(e) {
+        e.preventDefault();
+
+        showSwalLoading();
+
+        const modal = $('#editModal');
+        const form = $('#editForm');
+
+        const id = form.find('#edit__id').val();
+
+        const tanggal_awal = form.find('#edit__tanggal_awal').val();
+        const tanggal_akhir = form.find('#edit__tanggal_akhir').val();
+        const jumlah_hari_pelaksanaan = form.find('#edit__jumlah_hari_pelaksanaan').val();
+        const satker = form.find('#edit__satker').val();
+        const satker_target = form.find('#edit__satker_target').val();
+        const jumlah_peserta = form.find('#edit__jumlah_peserta').val();
+        const tujuan = form.find('#edit__tujuan').val();
+        const kendala = form.find('#edit__kendala').val();
+        const kesimpulan = form.find('#edit__kesimpulan').val();
+        const tindak_lanjut = form.find('#edit__tindak_lanjut').val();
+        const dokumentasi = form.find('#edit__dokumentasi')[0].files[0];
+
+        const payload = {
+            satker,
+            satker_target,
+            tanggal_awal,
+            tanggal_akhir,
+            jumlah_hari_pelaksanaan,
+            jumlah_peserta,
+            tujuan,
+            kendala,
+            kesimpulan,
+            tindak_lanjut,
+            dokumentasi
+        };
+
+        const formData = new FormData();
+
+        formData.append('tanggal_awal', tanggal_awal);
+        formData.append('tanggal_akhir', tanggal_akhir ?? null);
+        formData.append('jumlah_hari_pelaksanaan', parseInt(jumlah_hari_pelaksanaan));
+        formData.append('satker', parseInt(satker));
+        formData.append('satker_target', parseInt(satker_target));
+        formData.append('jumlah_peserta', jumlah_peserta);
+        formData.append('tujuan', tujuan);
+        formData.append('kendala', kendala);
+        formData.append('kesimpulan', kesimpulan);
+        formData.append('tindak_lanjut', tindak_lanjut);
+
+        if (dokumentasi) formData.append('dokumentasi', dokumentasi);
+
+        console.log('Payload :', payload);
+
+        try {
+            const response = await axios.patch(`/kegiatan/api/v1/dayatif/binaan_teknis/${id}/`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+
+            modal.modal('hide');
+            showSwalSuccess('Berhasil!', `Data kegiatan telah <b>berhasil</b> diperbarui!`);
+        } catch (error) {
+            showSwalGenericError();
+            console.error('Terjadi kesalahan :', error);
+        } finally {
+            table.ajax.reload();
+        }
+    }
+
+	async function handleDeleteAllKegiatan(satkerId) {
+		const confirmResult = await showSwalConfirm(`Untuk menghapus data <b>kegiatan</b>? <br> Data yang dihapus tidak dapat <b>dipulihkan</b> kembali`, 'Ya, hapus data');
+
+		if (!confirmResult.isConfirmed) return;
+
+		showSwalLoading();
+
+		await sleep(1000);
+
+		try {
+			const response = await axios.delete(`/kegiatan/api/v1/dayatif/binaan_teknis/${satkerId}/delete_all_kegiatan/`);
+			// const response = await axios.delete('/kegiatan/api/v1/dayatif/binaan_teknis/delete_all_kegiatan/?satker_id=' + satkerId);
+
+			console.log('Respose :', response);
+
+			showSwalSuccess('Berhasil', `Data <b>kegiatan</b> telah berhasil <b>dihapus</b>`, 3000);
+
+			reloadAllDataTables();
+		} catch (error) {
+			showSwalGenericError();
+			console.error('Terjadi kesalahan :', error);
+		}
+	}
+
+	async function handleKirim(args) {
+        console.log({args});
+		const confirmResult = await showSwalConfirm(`Apakah anda yakin untuk mengirim kegiatan ID ${args.id} dari Satuan Kerja <b>${args.nama_satker}</b> ke <b>${args.keterangan}</b>`, 'Ya, kirim data');
+
+		if (!confirmResult.isConfirmed) return;
+
+		showSwalLoading();
+
+		await sleep(1000);
+
+		try {
+			const response = await axios.post('/kegiatan/api/v1/dayatif/binaan_teknis/kirim_kegiatan/', { kegiatan_id : args.id });
+
+			console.log('Respose :', response);
+
+			const sendedToParent = response.data.parent.keterangan;
+
+			showSwalSuccess('Berhasil', `Data <b>kegiatan</b> dari <b>${args.nama_satker}</b> telah berhasil <b>dikirimkan ke <b>${sendedToParent}</b></b>`);
+
+			reloadAllDataTables();
+		} catch (error) {
+			showSwalGenericError();
+			console.error('Terjadi kesalahan :', error);
+		}
+	}
+
+    async function handleSemua(nama_satker, tipe) {
+        tipe = tipe == 'kirim' ? 'kirim' : 'batalkan';
+
+        const confirmMessage = tipe == 'kirim' ? `Apakah anda yakin untuk mengirim semua kegiatan dari <b>${nama_satker}</b>` : `Apakah anda yakin untuk membatalkan semua pengiriman kegiatan dari Satuan Kerja <b>${nama_satker}</b>`;
+
+        const confirmMessageButton = tipe == 'kirim' ? 'Ya, kirim data' : 'Ya, batalkan';
+
+        const confirmResult = await showSwalConfirm(confirmMessage, confirmMessageButton);
+
+		if (!confirmResult.isConfirmed) return;
+
+        showSwalLoading();
+
+		await sleep(1000);
+
+        try {
+			const response = await axios.post('/kegiatan/api/v1/dayatif/binaan_teknis/semua_kegiatan/', { nama_satker : nama_satker, tipe: tipe });
+
+			console.log('Respose :', response);
+
+			const sendedToParent = response.data.parent.keterangan;
+
+            const successMessage = tipe == 'kirim' ? `Data <b>kegiatan</b> dari <b>${nama_satker}</b> telah berhasil <b>dikirimkan ke <b>${sendedToParent}</b></b>` : `Data pengiriman <b>kegiatan</b> ke <b>${sendedToParent}</b> dari <b>${nama_satker}</b> telah berhasil <b>dibatalkan</b>`
+
+			showSwalSuccess('Berhasil', successMessage);
+
+			reloadAllDataTables();
+
+			statusPengirimanSemua = tipe == 'kirim';
+            
+            tipe == 'kirim' ?? $('#kirimSemuaBTN').addClass('disabled bg-secondary').removeClass('bg-primary');
+		} catch (error) {
+			showSwalGenericError();
+			console.error('Terjadi kesalahan :', error);
+		}
+    }
+	
+    async function handleExport() {
+		showSwalLoading();
+
+		await sleep(1000);
+
+		try {
+			const response = await axios.post('/kegiatan/api/v1/dayatif/binaan_teknis/export_data/');
+
+            const data = response.data;
+
+            // console.log(data); Swal.close(); return
+
+            window.location.href = data.file_path;
+
+            const confirmation = await Swal.fire({
+                title: "Berhasil",
+                html: `Data <b>Kegiatan Binaan Teknis</b> telah <b>berhasil</b> diexport! <br>Klik tombol unduh ulang apabila <b>gagal</b>!`,
+                icon: "success",
+                confirmButtonText: "Unduh ulang.",
+                showCancelButton: true,
+                cancelButtonText: 'Batalkan',
+                showCloseButton: true,
+                allowOutsideClick: false,
+            });
+    
+            if (confirmation.isConfirmed) {
+                console.log('Blud is downloading again!');
+                window.location.href = data.file;
+            }
+		} catch (error) {
+			showSwalGenericError();
+			console.error('Terjadi kesalahan :', error);
+		}
+	}
+</script>
+{% endblock %}
+
+{% block modal_tambahan %}
+{% include 'dayatif/binaan_teknis/modals/create_modal.html' %}
+{% include 'dayatif/binaan_teknis/modals/edit_modal.html' %}
+{% endblock %}
+
+{% block css_tambahan %}
+<style>
+	#__table > tbody > tr > td[colspan="4"] {
+		padding: 0 20px 50px;
+	}
+</style>
+{% endblock css_tambahan %}

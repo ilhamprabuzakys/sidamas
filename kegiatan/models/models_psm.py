@@ -141,6 +141,52 @@ class PSM_TES_URINE_DETEKSI_DINI_PESERTA(models.Model):
     hasil_test = models.CharField(max_length=15, choices=HASIL_TEST_CHOICES)
     alamat = models.TextField(blank=True, null=True,)
 
+# ======= PSM MONITORING DAN EVALUASI SUPERVISI KEGIATAN KOTAN MODEL =======
+class PSM_MONITORING_DAN_EVALUASI_SUPERVISI(models.Model):
+    created_at = models.DateTimeField(auto_now_add=True, editable=False)
+    updated_at = models.DateTimeField(auto_now=True, editable=False)
+    
+    created_by = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, related_name="psm_monev_supervisi_kegiatan_kotan_created_by")
+    updated_by = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, related_name="psm_monev_supervisi_kegiatan_kotan_updated_by")
+    
+    satker = models.ForeignKey(Satker, on_delete=models.DO_NOTHING, blank=True, null=True, related_name="psm_monev_supervisi_kegiatan_kotan_satker", verbose_name="SATUAN KERJA")
+    
+    tanggal_awal = models.DateField(verbose_name='Tanggal Awal Kegiatan', blank=True, null=True, default=date.today)
+    tanggal_akhir = models.DateField(verbose_name='Tanggal Akhir Kegiatan', blank=True, null=True, default=date.today)
+
+    nama_lingkungan = models.TextField(blank=True, null=True, max_length=2000, verbose_name='Nama Lingkungan Dan Satker')
+    status_indeks = models.TextField(blank=True, null=True, max_length=2000, verbose_name='Status Indeks Kemandirian Partisipasi')
+    nilai_ikp = models.TextField(blank=True, null=True, max_length=2000, verbose_name='Nilai IKP')
+    status_ikp = models.TextField(blank=True, null=True, max_length=2000, verbose_name='Status')
+    deskripsi_hasil = models.TextField(blank=True, null=True, max_length=2000, verbose_name='Deskripsi Hasil')
+    simpulan = models.TextField(blank=True, null=True, max_length=2000, verbose_name='Simpulan')
+    tindak_lanjut = models.TextField(blank=True, null=True, max_length=2000, verbose_name='Tindak Lanjut')
+    dokumentasi = models.FileField(upload_to="uploads/kegiatan/psm/monev_supervisi_kegiatan_kotan/", blank=True)
+    status = models.IntegerField(default=0, verbose_name="Status Pengiriman Kegiatan")
+    
+    class Meta:
+        ordering = ['-updated_at']
+        verbose_name = 'PSM MONITORING DAN EVALUASI SUPERVISI KEGIATAN KOTAN'
+        verbose_name_plural = f'DAFTAR {verbose_name}'
+        db_table = 'kegiatan_psm_monev_supervisi_kegiatan_kotan'
+    
+    def __str__(self):
+        return f'{self.satker.nama_satker} PSM MONITORING DAN EVALUASI SUPERVISI KEGIATAN KOTAN - {self.tanggal_awal}'
+    
+class PSM_MONITORING_DAN_EVALUASI_SUPERVISI_PESERTA(models.Model):
+
+    JENIS_KELAMIN_CHOICES = [
+        ('L', 'Laki-Laki'),
+        ('P', 'Perempuan'),
+    ]
+
+    parent = models.ForeignKey(PSM_MONITORING_DAN_EVALUASI_SUPERVISI, on_delete=models.CASCADE, blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True, editable=False)
+    updated_at = models.DateTimeField(auto_now=True, editable=False)
+    nama_peserta = models.CharField(max_length=100)
+    jenis_kelamin = models.CharField(max_length=15, choices=JENIS_KELAMIN_CHOICES)
+    jabatan = models.CharField(max_length=100, blank=True, null=True,)
+
 # ======= PSM RAKOR PEMETAAN MODEL =======
 class PSM_RAKOR_PEMETAAN(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, editable=False)
@@ -164,3 +210,27 @@ class PSM_RAKOR_PEMETAAN(models.Model):
         verbose_name = 'PSM RAKOR PEMETAAN'
         verbose_name_plural = f'DAFTAR {verbose_name}'
         db_table = 'kegiatan_psm_rakor_pemetaan'
+        
+# ======= PSM AUDIENSI MODEL =======
+class PSM_AUDIENSI(models.Model):
+    created_at = models.DateTimeField(auto_now_add=True, editable=False)
+    updated_at = models.DateTimeField(auto_now=True, editable=False)
+    created_by = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, related_name="psm_audiensi_created_by")
+    updated_by = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, related_name="psm_audiensi_updated_by")
+    satker = models.ForeignKey(Satker, on_delete=models.DO_NOTHING, blank=True, null=True, related_name="psm_audiensi_satker", verbose_name="SATUAN KERJA PELAKSANA")
+    tanggal_awal = models.DateField(verbose_name='Tanggal Awal Kegiatan', blank=True, null=True, default=date.today)
+    tanggal_akhir = models.DateField(verbose_name='Tanggal Akhir Kegiatan', blank=True, null=True, default=date.today)
+    nama_lingkungan = models.TextField(blank=True, null=True, max_length=2000, verbose_name='Nama Lingkungan')  
+    peserta = models.JSONField(blank=True, null=True, verbose_name='Data Peserta')
+    deskripsi = models.TextField(blank=True, null=True, max_length=2000, verbose_name='Deskripsi Hasil')
+    kendala = models.TextField(blank=True, null=True, max_length=2000, verbose_name='Kendala')
+    kesimpulan = models.TextField(blank=True, null=True, max_length=2000, verbose_name='Kesimpulan')
+    tindak_lanjut = models.TextField(blank=True, null=True, max_length=2000, verbose_name='Tindak Lanjut')
+    dokumentasi = models.FileField(upload_to="uploads/kegiatan/psm/audiensi/")
+    status = models.IntegerField(default=0, verbose_name="Status Pengiriman Kegiatan")
+        
+    class Meta:
+        ordering = ['-updated_at']
+        verbose_name = 'PSM AUDIENSI'
+        verbose_name_plural = f'DAFTAR {verbose_name}'
+        db_table = 'kegiatan_psm_audiensi'

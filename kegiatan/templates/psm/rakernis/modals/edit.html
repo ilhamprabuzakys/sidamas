@@ -10,7 +10,9 @@
           <div class="mb-3">
             <label for="edit__satker" class="col-form-label required">Satuan Kerja Pelaksana:</label>
             <select class="form-control select2" disabled id="edit__satker">
-              <option value="{{user.profile.satker_id}}" selected>{{ user.profile.satker }}</option>
+              {% for item in satker %}
+              <option value="{{ item.id }}">{{ item.nama_satker }}</option>
+              {% endfor %}
             </select>
           </div>
           <div class="row mb-3">

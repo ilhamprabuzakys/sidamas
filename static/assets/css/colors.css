@@ -14,8 +14,8 @@
     background-color: #f5f5f5 !important;
 }
 
-.bg-soft-success > *,
-.bg-soft-green > *{
+.bg-soft-success,
+.bg-soft-green {
     background-color: #effff2 !important;
 }
 
@@ -26,6 +26,11 @@
 
 .bg-already-sended {
     background-color: #b2b2b2;
+}
+
+.bg-dark-success,
+.bg-dark-green {
+    background-color: #00A0A9 !important;
 }
 
 .bg-already-sended:hover,

@@ -1,6 +1,12 @@
 {% extends 'dashboard/dashboard_base.html' %}
 {% load static %}
 {% block title %} Pemetaan Potensi {% endblock %}
+
+{% block modal_tambahan %}
+{% include 'dayatif/pemetaan_potensi/modals/create_modal.html' %}
+{% include 'dayatif/pemetaan_potensi/modals/edit_modal.html'  %}
+{% endblock %}
+
 {% block content %}
 <div class="breadcrumb">
     <div class="row">
@@ -24,52 +30,72 @@
             </div>
 
             <div class="action-button">
-                <div class="d-flex justify-content-end mb-3 gap-2">
-                    <button class="btn btn-success" @click="handleExport()">
-                        <i class="fas fa-file-export me-2"></i>Ekspor Data
-                    </button>
-                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createModal">
-                        <i class="fas fa-plus me-2"></i>Tambah Data
-                    </button>
+                <div class="d-flex justify-content-between mb-3">
+                    <div id="filter__btn_container" class="d-flex align-items-center gap-2">
+                        <v-generic-filter :satker="{ id: satkerPK, level: satkerLevel }" :data="tableData" @update="(data) => filteredPage = data"></v-generic-filter>
+                    </div>
+                
+                    <div id="action__btn_container" class="d-flex gap-2">
+                        <v-export-button name="Pemetaan Potensi" url="pemetaan_potensi" :satker="{ id: satkerPK, level: satkerLevel }"></v-export-button>
+
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createModal">
+                            <i class="fas fa-plus me-2"></i>Tambah Data
+                        </button>
+                    </div>
                 </div>
             </div>
+            
+            <v-table-basic-filter :item="{ columns : ['nama_satker', 'deskripsi', 'tanggal', 'jumlah_kegiatan', 'nama_provinsi', 'nama_kabupaten', 'nama_kecamatan', 'nama_desa', 'deskripsi', 'kendala', 'kesimpulan', 'tindak_lanjut'], tableData, totalDefault: 10 }" @set-page="(page) => currentPage = page" @set-data="(data) => filteredPage = data" @set-perpage="(page) => perPage = page">
+            </v-table-basic-filter>
 
-            <!-- Filters -->
-            {% include "dayatif/pemetaan_potensi/partials/filters.html" %}
-            <!--/ Filters -->
 
             <div class="table-responsive" id="__table_container">
-                <table id="__table" class="table table-bordered">
-                    <thead>
+                <v-table :item="{ pagedData }" :pagination="{ currentPage, totalPage, perPage, total: filteredPage?.length }" @go-pagination="(page) => currentPage = page">
+                    <template #thead>
                         <tr>
-                            <th class="bg-soft-success text-center">
-                                <i class="fas fa-circle-chevron-up"></i>
-                                No.
+                            <th class="bg-soft-success text-center cursor-pointer" rowspan="2" @click="handleSort('no')">
+                                <div>
+                                    <i class="fas d-block" :class="sortColumn == 'no' && sortDirection === 'asc' ? 'text-secondary fa-sort-up' : 'fa-sort-up'"></i>
+                                    <span>No.</span>
+                                    <i class="fas d-block" :class="sortColumn == 'no' && sortDirection === 'desc' ? 'text-secondary fa-sort-down' : 'fa-sort-down'"></i>
+                                </div>
                             </th>
-                            <th class="bg-soft-success">Satuan Kerja Pelaksana</th>
-                            <th class="bg-soft-success">Tanggal</th>
-                            <th class="bg-soft-success" style="min-width: 450px;">Lokasi</th>
-                            <th class="bg-soft-success">Deskripsi Hasil</th>
-                            <th class="bg-soft-success">Hambatan/Kendala</th>
-                            <th class="bg-soft-success">Kesimpulan</th>
-                            <th class="bg-soft-success">Tindak Lanjut</th>
-                            <th class="bg-soft-success">Dokumentasi</th>
-                            <th class="bg-soft-success" style="max-width: 150px">Aksi <i class="fas fa-edit ms-2"></i>
+                            <th class="bg-soft-success" rowspan="2">Satuan Kerja Pelaksana</th>
+                            <th class="bg-soft-success" rowspan="1" colspan="2">Pelaksanaan</th>
+                            <th class="bg-soft-success" rowspan="2">Deskripsi Hasil</th>
+                            <th class="bg-soft-success" rowspan="2">Hambatan/Kendala</th>
+                            <th class="bg-soft-success" rowspan="2">Kesimpulan</th>
+                            <th class="bg-soft-success" rowspan="2">Tindak Lanjut</th>
+                            <th class="bg-soft-success" rowspan="2">Dokumentasi</th>
+                            <th class="bg-soft-success text-center" rowspan="2" style="max-width: 150px">Aksi <i class="fas fa-edit ms-2"></i>
                             </th>
                         </tr>
-                    </thead>
-                    <tbody class="align-tr-middle text-white">
-                        <template v-for="(item, index) in pagedData">
+                        <tr>
+                            <th class="bg-soft-success cursor-pointer" rowspan="1" @click="handleSort('tanggal')">
+                                <div>
+                                    <i class="fas d-block" :class="sortColumn == 'tanggal' && sortDirection === 'asc' ? 'text-secondary fa-sort-up' : 'fa-sort-up'"></i>
+                                    <span>Tanggal</span>
+                                    <i class="fas d-block" :class="sortColumn == 'tanggal' && sortDirection === 'desc' ? 'text-secondary fa-sort-down' : 'fa-sort-down'"></i>
+                                </div>
+                            </th>
+                            <th class="bg-soft-success" rowspan="1">Lokasi</th>
+                        </tr>
+                    </template>
+                    <template #tbody>
+                        <template v-for="(item, index) in pagedData" :key="index">
                             <tr :class="item.class">
                                 <td class='text-center' v-text="item.index"></td>
-                                <td :colspan="item.hide_satker ? 1 : 9">
+                                <td :colspan="item.hide_satker ? 0 : 9">
                                     <template v-if="!item.hide_satker">
-                                        <span v-html="item.satker"></span>
+                                        <v-item-header :nama="item.satker.nama_satker" :length="item.jumlah_kegiatan"></v-item-header>
+                                    </template>
+                                    <template v-else>
+                                        <v-item-header :nama="item.satker.nama_satker" :length="item.jumlah_kegiatan" :fade="true" :index="item.index"></v-item-header>
                                     </template>
                                 </td>
                                 <template v-if="item.hide_satker">
                                     <td>
-                                        <v-item-tanggal :awal="item.tanggal_awal" :akhir="item.tanggal_akhir" />
+                                        <v-item-tanggal :awal="item.tanggal_awal" :akhir="item.tanggal_akhir"></v-item-tanggal>
                                     </td>
                                     <td>
                                         <v-lokasi :provinsi="item.nama_provinsi" :kabupaten="item.nama_kabupaten" :kecamatan="item.nama_kecamatan" :desa="item.nama_desa" />
@@ -78,61 +104,28 @@
                                         <v-item-text :text="item.deskripsi" />
                                     </td>
                                     <td>
-                                        <v-item-text :text="item.kendala" />
+                                        <v-item-text :text="item.kendala"></v-item-text>
                                     </td>
                                     <td>
-                                        <v-item-text :text="item.kesimpulan" />
+                                        <v-item-text :text="item.kesimpulan"></v-item-text>
                                     </td>
                                     <td>
-                                        <v-item-text :text="item.tindak_lanjut" />
+                                        <v-item-text :text="item.tindak_lanjut"></v-item-text>
                                     </td>
                                     <td>
-                                        <div class="text-center">
-                                            <a :href="item.dokumentasi" class="badge bg-primary text-white cursor-pointer" target="_blank">
-                                                <i class="fas fa-eye me-2"></i>
-                                                <span v-text="'Lihat dokumentasi'"></span>
-                                            </a>
-                                        </div>
+                                        <v-item-dokumentasi :url="item.dokumentasi"></v-item-dokumentasi>
                                     </td>
                                     <td>
-                                        <v-action-button :level="satkerLevel" :nama="item.satker.nama_satker" :id="item.id"
-                                            :status="item.status" :itemlevel="item.satker.level" @update="loadData"
-                                            @edit="handleEdit" />
+                                        <v-action-button :item="{ id: item.id, nama: item.satker.nama_satker, level: item.satker.level, status: item.status }" :level="satkerLevel" :url="'pemetaan_potensi'" @update="loadData()" @edit="(id) => handleEdit(id)"></v-action-button>
                                     </td>
                                 </template>
                             </tr>
                         </template>
-                        <template v-if="pagedData.length == 0">
-                            <tr class="bg-soft-light">
-                                <td colspan="10">
-                                    <h3 class="my-3 text-capitalize">Data yang anda cari tidak ditemukan ...</h3>
-                                </td>
-                            </tr>
-                        </template>
-                    </tbody>
-                </table>
-
-                <!-- Pagination -->
-                <nav id="__table_pagination" class="mt-3">
-                    <ul class="pagination justify-content-end">
-                        <li class="page-item">
-                            <button :disabled='currentPage <= 1 || totalPage == 0' class="page-link" @click="goToPreviousPage()">
-                                <i class="ti ti-chevron-left ti-xs"></i>
-                            </button>
-                        </li>
-                        <template v-for="(page, index) in totalPage" :key="index">
-                            <li :class="{ 'page-item': true, 'active': currentPage === page }">
-                                <button class="page-link" @click="currentPage === page ? null : goToPage(page)" v-text="page"></button>
-                            </li>
-                        </template>
-                        <li class="page-item">
-                            <button :disabled='currentPage == totalPage || totalPage == 0' class="page-link" @click="goToNextPage()">
-                                <i class="ti ti-chevron-right ti-xs"></i>
-                            </button>
-                        </li>
-                    </ul>
-                </nav>
-                <!--/ Pagination -->
+                    </template>
+                    <template #not-found>
+                        <v-result-not-found colspan="10" text="Hasil pencarian tidak ditemukan"></v-result-not-found>
+                    </template>
+                </v-table>
             </div>
         </div>
     </div>
@@ -140,34 +133,16 @@
 {% endblock %}
 
 {% block js_tambahan %}
-<script type="text/javascript" src="https://oss.sheetjs.com/sheetjs/xlsx.full.min.js"></script>
-
 <script>
-    const { createApp, reactive, ref, onMounted, computed } = Vue;
-    const { createPinia, defineStore } = Pinia;
+    const { createApp, watch, reactive, ref, onMounted, computed } = Vue;
 
-    const pinia = createPinia()
-    
-    const usePostStore = defineStore('post', () => {
+    const useFormStore = defineStore('form', () => {
         const base = {
             deskripsi: {
                 potensiSDA: '',
                 potensiSDM: '',
             },
-            /*
-            tindakLanjut: {
-                yes: {
-                    showKeterangan: false
-                },
-                no: {
-                    showContainer: false,
-                    showContainer2: false, // lainnya
-                }
-            },
-            */
-            kendala: {
-                showKeterangan: false
-            },
+            kendala: { showKeterangan: false },
             kesimpulan: {
                 analisis: {
                     text: '',
@@ -180,133 +155,44 @@
                 },
 
             }
-        }
-        
-        const deskripsi = ref(base.deskripsi);
+        };
+
+        const deskripsi = ref({ ...base.deskripsi });
         const getDeskripsi = computed(() => {
             return `1. Potensi SDA: ${deskripsi.value.potensiSDA}\n2. Potensi SDM: ${deskripsi.value.potensiSDM}`;
         });
-        
-        const kendala = ref(base.kendala);
-        
-        const kesimpulan = ref(base.kesimpulan);
+
+        const kendala = ref({ ...base.kendala });
+        const kesimpulan = ref({ ...base.kesimpulan });
         const getKesimpulan = computed(() => {
             return `Analisis SWOT: ${kesimpulan.value.analisis.text}\n1. Kekuatan: ${kesimpulan.value.analisis.swot.kekuatan}\n2. Kelemahan: ${kesimpulan.value.analisis.swot.kelemahan}\n3. Peluang: ${kesimpulan.value.analisis.swot.peluang}\n4. Tantangan: ${kesimpulan.value.analisis.swot.tantangan}\n
                 `;
         });
-        
-        // const tindakLanjut = ref(base.tindakLanjut);
-        
-        const resetDeskripsi = () => deskripsi.value = base.deskripsi;
-        const resetKendala = () => kendala.value = base.kendala;
-        const resetKesimpulan = () => kesimpulan.value = base.kesimpulan;
-        /*
-        const resetTindakLanjut = () => {
-            tindakLanjut.value = base.tindakLanjut;
-            tindakLanjut.value.no.showContainer = false;
-        };
-        */
 
-        const resetAll = () => {
-            resetDeskripsi();
-            resetKendala();
-            resetKesimpulan();
-            // resetTindakLanjut();
-        }
-
-        return { deskripsi, kendala, kesimpulan, resetDeskripsi, resetKendala, resetAll, getDeskripsi, getKesimpulan };
-    });
-    
-    const useEditStore = defineStore('edit', () => {
-        const base = {
-            deskripsi: {
-                potensiSDA: '',
-                potensiSDM: '',
-            },
-            /*
-            tindakLanjut: {
-                yes: {
-                    showKeterangan: false
-                },
-                no: {
-                    showContainer: false,
-                    showContainer2: false, // lainnya
-                }
-            },
-            */
-            kendala: {
-                showKeterangan: false
-            },
-            kesimpulan: {
-                analisis: {
-                    text: '',
-                    swot: {
-                        kekuatan: '' ,
-                        kelemahan: '' ,
-                        peluang: '' ,
-                        tantangan: '' ,
-                    }
-                },
-
-            }
-        }
-        
-        const deskripsi = ref(base.deskripsi);
-        const getDeskripsi = computed(() => {
-            return `1. Potensi SDA: ${deskripsi.value.potensiSDA}\n2. Potensi SDM: ${deskripsi.value.potensiSDM}`;
-        });
-        
-        const kendala = ref(base.kendala);
-        
-        const kesimpulan = ref(base.kesimpulan);
-        const getKesimpulan = computed(() => {
-            return `Analisis SWOT: ${kesimpulan.value.analisis.text}\n1. Kekuatan: ${kesimpulan.value.analisis.swot.kekuatan}\n2. Kelemahan: ${kesimpulan.value.analisis.swot.kelemahan}\n3. Peluang: ${kesimpulan.value.analisis.swot.peluang}\n4. Tantangan: ${kesimpulan.value.analisis.swot.tantangan}\n
-                `;
-        });
-        
-        // const tindakLanjut = ref(base.tindakLanjut);
-        
-        const resetDeskripsi = () => deskripsi.value = base.deskripsi;
-        const resetKendala = () => kendala.value = base.kendala;
-        const resetKesimpulan = () => kesimpulan.value = base.kesimpulan;
-        /*
-        const resetTindakLanjut = () => {
-            tindakLanjut.value = base.tindakLanjut;
-            tindakLanjut.value.no.showContainer = false;
-        };
-        */
-
-        const resetAll = () => {
-            resetDeskripsi();
-            resetKendala();
-            resetKesimpulan();
-            // resetTindakLanjut();
-        }
-
-        return { deskripsi, kendala, kesimpulan, resetDeskripsi, resetKendala, resetAll, getDeskripsi, getKesimpulan };
+        return { deskripsi, kendala, kesimpulan, getDeskripsi, getKesimpulan };
     });
 </script>
 
-{% include "dayatif/pemetaan_potensi/partials/components.html" %}
+{% include "dayatif/partials/components.html" %}
 
 <script>
     const app = createApp({
         delimiters: ['{', '}'],
         components: {
-            'v-lokasi': Lokasi,
+            'v-item-header': ItemHeader,
+            'v-item-dokumentasi': ItemDokumentasi,
             'v-item-tanggal': ItemTanggal,
             'v-item-text': ItemText,
+            'v-result-not-found': ResultNotFound,
+            'v-lokasi': Lokasi,
             'v-action-button': ActionBTN,
-            'v-pagination': Pagination,
+            'v-export-button': ExportBTN,
+            'v-table': Table,
+            'v-table-basic-filter': TableBasicFilter,
+            'v-generic-filter': GenericFilter,
         },
         setup() {
-            const params = new URLSearchParams(window.location.search);
-            const pathname = window.location.pathname;
-
-            const store = {
-                post: usePostStore(),
-                edit: useEditStore()
-            }
+            const store = useFormStore()
             
             const title = ref('Pemetaan Potensi');
 
@@ -314,165 +200,37 @@
             const satkerLevel = ref(parseInt('{{ user.profile.satker.level }}'));
 
             const tableData = ref(null);
-            
-            const removeParams = (name) => {
-                params.delete(name);
-                const newUrl = pathname + (params.toString() ? `?${params.toString()}` : '');
-                window.history.pushState({ path: newUrl }, '', newUrl);
-            }
-            
-            const getSearch = () => {
-                const search = params.get('search')
-                if (search == '') removeParams('search')
-                return search;
-            }
-
-            const filter = ref({ search: '', date: '', kegiatan: '' });
-
-            const perPage = ref(10);
-
-            const getPage = () => {
-                let page = parseInt(params.get('page'));
-
-                if (isNaN(page) || page <= 0) {
-                    removeParams('page');
-                    page = 1;
-                }
-
-                return page;
-            }
-
-            const currentPage = ref(getPage());
             const filteredPage = ref(null);
 
-            const totalPage = computed(() => {
-                return filteredPage.value ? Math.ceil(filteredPage.value.length / perPage.value) : 0;
-            });
-
-            const pagedData = computed(() => {
-                if (!filteredPage.value) return [];
-                const startIndex = (currentPage.value - 1) * perPage.value;
-                const endIndex = currentPage.value * perPage.value;
-                return filteredPage.value.slice(startIndex, endIndex);
-            });
-
-            const goToPage = (page) => {
-                const paramsString = params.toString();
-                const queryString = paramsString ? `${paramsString}&` : '';
-                const newUrl = page !== 1 ? `?${queryString}page=${page}` : pathname + (queryString != '' ? ('?' + queryString) : '');
-                window.history.pushState({ path: newUrl }, '', newUrl);
-                currentPage.value = page;
-                scrollToTop();
-            }
-
-            const goToNextPage = () => {
-                const nextPage = currentPage.value + 1;
-                const queryString = params.toString() ? `${params.toString()}&` : '';
-                const newUrl = `${window.location.pathname}?${queryString}page=${nextPage}`;
-                window.history.pushState({ path: newUrl }, '', newUrl);
-                currentPage.value = nextPage;
-                scrollToTop();
-            }
-
-            const goToPreviousPage = () => {
-                const previousPage = currentPage.value - 1;
-                const queryString = params.toString() ? `${params.toString()}` + (previousPage !== 1 ? '&' : '') : '';
-                const newUrl = previousPage !== 1 ? `?${queryString}page=${previousPage}` : pathname + (queryString != '' ? ('?' + queryString) : '');
-                window.history.pushState({ path: newUrl }, '', newUrl);
-                currentPage.value = previousPage;
-                scrollToTop();
-            }
-
-            const buildQuery = (data, columns, search) => {
-                const query = search.toUpperCase();
-                return data.filter(item => {
-                    return columns.some(column => {
-                        const columnValue = String(item[column]).toUpperCase();
-                        return columnValue.includes(query);
-                    });
-                });
-            }
-
-            const handleSearch = async () => {
-                currentPage.value = 1;
-
-                const columns = ['nama_satker', 'deskripsi', 'tanggal', 'jumlah_kegiatan', 'nama_provinsi', 'nama_kabupaten', 'nama_kecamatan', 'nama_desa', 'deskripsi', 'kendala', 'kesimpulan', 'tindak_lanjut'];
-
-                block($('#__table'));
-                await sleep(1000);
-                filteredPage.value = buildQuery(tableData.value, columns, filter.value.search);
-                unblock($('#__table'));
-
-                // const newUrl = filter.value.search !== '' ? `?search=${filter.value.search}` : pathname;
-                // window.history.pushState({ path: newUrl }, '', newUrl);
-            }
-
-            const handleFilterDate = async () => {
-                if (filter.value.date == '') {
-                    filteredPage.value = tableData.value;
-                    return;
-                }
-
-                const dateParts = filter.value.date.split('-');
-                console.log('Value :', dateParts)
-
-                const datePartStart = dateParts[0].trim();
-                const datePartEnd = dateParts[1].trim();
-
-                const startDate = moment(datePartStart, 'DD/MM/YYYY');
-                const endDate = moment(datePartEnd, 'DD/MM/YYYY');
-
-                filteredPage.value = tableData.value.filter(item => {
-                    const itemDate = moment(item.tanggal_awal, 'YYYY-MM-DD');
-                    return itemDate.isBetween(startDate, endDate, null, '[]');
-                });
-            }
-
-            const handleFilterKegiatan = (e) => {
-                if (e == '') {
-                    filteredPage.value = tableData.value;
-                    return;
-                }
-
-                filter.value.kegiatan = e;
-                
-                console.log('Filter Kegiatan:', filter.value.kegiatan);
-                const rangeString = filter.value.kegiatan;
-                const rangeArray = rangeString.split("-");
-
-                const rangeAwal = parseInt(rangeArray[0]);
-                const rangeAkhir = parseInt(rangeArray[1]);
-
-                console.log('range awal:', rangeAwal)
-                console.log('range akhir:', rangeAkhir)
-
-                filteredPage.value = tableData.value.filter(item => {
-                    const jumlahKegiatan = parseInt(item.jumlah_kegiatan);
-                    return jumlahKegiatan >= rangeAwal && jumlahKegiatan <= rangeAkhir;
-                });
-            }
-
-            const apiURL = satkerLevel.value == 1 ? '/kegiatan/api/v1/dayatif/pemetaan_potensi/list/get_data_bnnk/?format=datatables' : '/kegiatan/api/v1/dayatif/pemetaan_potensi/list/?format=datatables';
+            const apiURL = `/kegiatan/api/v1/dayatif/pemetaan_potensi/list${satkerLevel.value == 1 ? '/bnnk/' : '/'}?format=datatables`;
             
             const loadData = async () => {
+                block($('#__table'));
                 const tableContent = [];
                 const response = await axios.get(apiURL);
                 const data = response.data.data;
-                
-                const getSatkerKey = (namaSatker, length) => `<b class="me-2">${namaSatker}</b> <span>(${length} kegiatan)<span/>`;
 
+                const getClass = (level) => {
+                    const classMap = {
+                        2: 'bg-soft-danger',
+                        0: 'bg-soft-primary',
+                        1: 'bg-soft-warning',
+                    }
+
+                    return classMap[level];
+                }
+                
                 let key, value, key2, value2, key3, value3, key4, value4;
 
                 for ([key, value] of Object.entries(data)) {
                     const baris = {
-                        class: "bg-soft-primary",
+                        class: getClass(value.satker.level),
                         id: value.id,
                         status: value.status,
                         hide_satker: false,
                         index: parseInt(key) + 1,
                         jumlah_kegiatan: value.data.length,
-                        satker: getSatkerKey(value.satker.nama_satker, value.data.length),
-                        nama_satker: value.satker.nama_satker,
+                        satker: value.satker,
 
                         tanggal: "",
                         tanggal_awal: "",
@@ -482,7 +240,7 @@
                         nama_kabupaten: "",
                         nama_kecamatan: "",
                         nama_desa: "",
-
+                        
                         deskripsi: "",
                         kendala: "",
                         kesimpulan: "",
@@ -502,12 +260,11 @@
                             index: indexKey,
                             satker: value2.satker,
                             jumlah_kegiatan: value.data.length,
-                            nama_satker: value2.satker.nama_satker,
 
                             tanggal: getTanggalKegiatan(value2.tanggal_awal, value2.tanggal_akhir),
                             tanggal_awal: value2.tanggal_awal,
                             tanggal_akhir: value2.tanggal_akhir,
-                            
+
                             nama_provinsi: value2.nama_provinsi,
                             nama_kabupaten: value2.nama_kabupaten,
                             nama_kecamatan: value2.nama_kecamatan,
@@ -523,7 +280,7 @@
                         tableContent.push(baris);
                     }
 
-                    if (value.detail !== undefined && value.detail.length > 0) {
+                    if (value?.detail?.length > 0) {
                         for ([key3, value3] of Object.entries(value.detail)) {
                             const indexKey = `${parseInt(key) + 1}.${parseInt(key2) + 1}.${parseInt(key3) + 1}`;
 
@@ -534,8 +291,7 @@
                                 hide_satker: false,
                                 index: indexKey,
                                 jumlah_kegiatan: value3.data.length,
-                                satker: getSatkerKey(value3.satker.nama_satker, value3.data.length),
-                                nama_satker: value3.satker.nama_satker,
+                                satker: value3.satker,
 
                                 tanggal: "",
                                 tanggal_awal: "",
@@ -545,7 +301,7 @@
                                 nama_kabupaten: "",
                                 nama_kecamatan: "",
                                 nama_desa: "",
-
+                                
                                 deskripsi: "",
                                 kendala: "",
                                 kesimpulan: "",
@@ -566,7 +322,6 @@
                                     index: indexKey,
                                     jumlah_kegiatan: value3.data.length,
                                     satker: value4.satker,
-                                    nama_satker: value4.satker.nama_satker,
 
                                     tanggal: getTanggalKegiatan(value4.tanggal_awal, value4.tanggal_akhir),
                                     tanggal_awal: value4.tanggal_awal,
@@ -591,25 +346,17 @@
 
                 tableData.value = tableContent;
                 filteredPage.value = tableData.value;
+                unblock($('#__table'));
             }
             
-            const post = ref({
-                provinsi: '',
-                kabupaten: '',
-                kecamatan: '',
-                desa: ''
-            });
+            const post = ref({});
 
             const handlePost = async () => {
-                console.log('Post Data:', post.value);
-
-                const modal = $('#createModal');
-                const form = $('#createForm');
-
                 showSwalLoading();
+                
+                const modal = $('#createModal');
 
-                const { tanggal_awal, tanggal_akhir, provinsi, kabupaten, kecamatan, desa, nama_provinsi, nama_kabupaten, nama_kecamatan,
-                    nama_desa, deskripsi, kendala, kesimpulan, tindak_lanjut, dokumentasi } = post.value;
+                const { tanggal_awal, tanggal_akhir, provinsi, kabupaten, kecamatan, desa, nama_provinsi, nama_kabupaten, nama_kecamatan, nama_desa, deskripsi, kendala, kesimpulan, tindak_lanjut, dokumentasi } = post.value;
 
                 const satker = satkerPK.value
 
@@ -656,24 +403,17 @@
                     console.error('Terjadi kesalahan :', error);
                 } finally {
                     await loadData();
-
+                    store.$reset();
                     post.value = {
                         provinsi: '',
                         kabupaten: '',
                         kecamatan: '',
                         desa: ''
                     }
-
-                    store.post.resetAll();
                 }
             }
 
-            const edit = ref({
-                provinsi: '',
-                kabupaten: '',
-                kecamatan: '',
-                desa: ''
-            });
+            const edit = ref({});
 
             const handleEdit = async (id) => {
                 try {
@@ -686,21 +426,25 @@
                     const modal = $('#editModal');
                     const form = $('#editForm');
 
+                    form.find('#edit__info').text(data.satker.nama_satker);
+
                     // Deskripsi
                     const deskripsiParts = data.deskripsi.split(/\d+\./).map(part => part.trim()).filter(part => part !== '');
 
                     const potensiSDA = deskripsiParts[0].replace('Potensi SDA:', '').trim();
                     const potensiSDM = deskripsiParts[1].replace('Potensi SDM:', '').trim();
 
-                    store.edit.deskripsi.potensiSDA = potensiSDA;
-                    store.edit.deskripsi.potensiSDM = potensiSDM;
+                    store.deskripsi.potensiSDA = potensiSDA;
+                    store.deskripsi.potensiSDM = potensiSDM;
 
                     // Kendala
-                    store.edit.kendala.showKeterangan = data.kendala.startsWith('Ada');
+                    store.kendala.showKeterangan = data.kendala.startsWith('Ada');
 
                     // Kesimpulan
                     const [judul, ...poin] = data.kesimpulan.split(/\d+\./);
                     const text = judul.replace('Analisis SWOT:', '').trim();
+                    store.kesimpulan.analisis.text = text;
+
                     const kesimpulanData = poin.map(p => {
                         const [label, teks] = p.split(':');
                         return {
@@ -710,8 +454,8 @@
 
                     const kesimpulanList = Object.assign({ text }, ...kesimpulanData);
                     
-                    ['text', 'kekuatan', 'kelemahan', 'peluang', 'tantangan'].forEach(key => {
-                        store.edit.kesimpulan.analisis.swot[key] = kesimpulanList[key];
+                    ['kekuatan', 'kelemahan', 'peluang', 'tantangan'].forEach(key => {
+                        store.kesimpulan.analisis.swot[key] = kesimpulanList[key];
                     });
 
                     edit.value = {
@@ -738,7 +482,7 @@
             }
 
             const handleUpdate = async (id) => {
-                console.log('Update Data:', edit.value);
+                showSwalLoading();
 
                 const {
                     tanggal_awal,
@@ -758,15 +502,9 @@
                     dokumentasi
                 } = edit.value;
 
-                const satker = satkerPK.value
-
-                showSwalLoading();
-
                 const modal = $('#editModal');
-                const form = $('#editForm');
 
                 const payload = {
-                    satker,
                     tanggal_awal,
                     ...(tanggal_akhir && {
                         tanggal_akhir
@@ -811,24 +549,16 @@
                     console.error('Terjadi kesalahan :', error);
                 } finally {
                     await loadData();
-
+                    store.$reset();
                     edit.value = {
                         provinsi: '',
                         kabupaten: '',
                         kecamatan: '',
                         desa: ''
                     }
-
-                    store.edit.resetAll();
                 }
             }
             
-            const handleExport = async () => {
-                console.log(`[INFO] Exporting data ... Satker ID : ${satkerPK.value} - Level : ${satkerLevel.value}`)
-            }
-            
-            const scrollToTop = () => document.querySelector('#layout-container').scrollIntoView({ behavior: 'smooth', block: 'start' });
-
             const inputTargets = ['provinsi', 'kabupaten', 'kecamatan', 'desa'];
 
             const handleChange = (type, name, event) => {
@@ -844,12 +574,16 @@
                 }
             };
 
-            onMounted(async () => {
-                block($('#__table'));
-                await loadData();
-                unblock($('#__table'));
+            const getUserInfo = () => {
+                const roles = { 0: 'BNNP', 1: 'BNNK', 2: 'PUSAT' };
+                console.log('[INFO] Logged in Satker Level :', satkerLevel.value, `- ${roles[satkerLevel.value]}`);
+            };
 
-                console.log('Satker level :', satkerLevel.value);
+
+            onMounted(async () => {
+                await loadData();
+
+                getUserInfo()
 
                 inputTargets.forEach(name => {
                     ['create', 'edit'].forEach(type => {
@@ -857,29 +591,101 @@
                     });
                 });
 
-                
-                $('#filter__date').on('change', async (event) => {
-                    filter.value.date = event.target.value;
-                    block($('#__table'));
-                    await sleep(1000);
-                    await handleFilterDate();
-                    unblock($('#__table'));
-                });
-                
-                await sleep(500);
-                filter.value.date = '';
+                await sleep(1000);
 
-                await sleep(2000);
+                console.log('[INFO] Paged data :', pagedData.value);
 
-                console.log('pagedData:', pagedData.value)
+                $('#editModal, #createModal').on('hidden.bs.modal', () => store.$reset());
             });
 
+            // ********/ GENERIC TABLE CONFIGURATION \********
+            const getPage = () => {
+                const params = new URLSearchParams(window.location.search);
+                let page = parseInt(params.get('page'));
+
+                if (isNaN(page) || page <= 0) {
+                    removeParams('page');
+                    page = 1;
+                }
+
+                return page;
+            }
+            const perPage = ref(10); // Placeholder
+
+            const currentPage = ref(getPage());
+            const totalPage = computed(() => filteredPage.value ? Math.ceil(filteredPage.value.length / perPage.value) : 0);
+
+            watch(totalPage, () => {
+                // console.log({'TotalPage': totalPage.value, 'perPage': perPage.value, 'currentPage': currentPage.value});
+
+                if (totalPage.value != 0 && (currentPage.value > totalPage.value)) {
+                    toastr['warning'](`Kembali ke halaman <b>1</b> dikarenakan Data pada halaman <b>${currentPage.value}</b> tidak ditemukan`, "Terjadi kesalahan");
+                    currentPage.value = 1;
+                    removeParams('page');
+                }
+            })
+
+            const pagedData = computed(() => {
+                if (!filteredPage.value) return [];
+                const startIndex = (currentPage.value - 1) * perPage.value;
+                const endIndex = currentPage.value * perPage.value;
+                return filteredPage.value.slice(startIndex, endIndex);
+            });
+
+            const sortColumn = ref('no')
+            const sortDirection = ref('asc')
+
+            const handleSort = (column) => {
+                currentPage.value = 1;
+                removeParams('page');
+                sortColumn.value = column;
+                
+                sortDirection.value = sortDirection.value === 'asc' ? 'desc' : 'asc';
+
+                if (column === 'no') {
+                    filteredPage.value.sort((a, b) => {
+                        const dataA = `${a.index}`;
+                        const dataB = `${b.index}`;
+
+                        const indexA = dataA.split('.').map(Number);
+                        const indexB = dataB.split('.').map(Number);
+
+                        for (let i = 0; i < Math.max(indexA.length, indexB.length); i++) {
+                            const numA = indexA[i] || 0;
+                            const numB = indexB[i] || 0;
+
+                            if (numA !== numB) {
+                                return sortDirection.value === 'asc' ? (numA - numB) : (numB - numA);
+                            }
+                        }
+                        return 0;
+                    });
+                } else if (column === 'tanggal') {
+                    filteredPage.value.sort((a, b) => {
+                        const dateA = new Date(a.tanggal_awal);
+                        const dateB = new Date(b.tanggal_awal);
+                        return sortDirection.value === 'asc' ? (dateA - dateB) : (dateB - dateA);
+                    });
+                }
+            }
+            // ********/ GENERIC TABLE CONFIGURATION \********
+
             return {
+                // Preparation
                 store,
                 satkerLevel,
                 satkerPK,
                 title,
 
+                // Action
+                post,
+                handlePost,
+
+                edit,
+                handleEdit,
+                handleUpdate,
+
+                // Data
                 loadData,
                 tableData,
                 
@@ -888,33 +694,15 @@
                 filteredPage,
                 totalPage,
                 pagedData,
-                goToPage,
-                goToNextPage,
-                goToPreviousPage,
                 
-                filter,
-                buildQuery,
-                handleSearch,
-
-                handleFilterDate,
-                handleFilterKegiatan,
-
-                post,
-                handlePost,
-
-                edit,
-                handleEdit,
-                handleUpdate,
-
-                handleExport,
-
-                scrollToTop,
+                sortColumn,
+                sortDirection,
+                handleSort,
             }
         },
     })
 
     app.use(pinia)
-
     app.mount('#app');
 </script>
 
@@ -1081,36 +869,9 @@
                 console.error('Terjadi kesalahan saat memuat data statistik :', error);
             }
         })();
-
-
-        $('#filter__date').daterangepicker({
-            showDropdowns: true,
-            ranges: {
-                'Hari ini': [moment(), moment()],
-                'Kemarin': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-                'Minggu ini': [moment().subtract(6, 'days'), moment()],
-                // '30 hari yang lalu': [moment().subtract(29, 'days'), moment()],
-                'Bulan ini': [moment().startOf('month'), moment().endOf('month')],
-                // 'Bulan lalu': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
-                'Triwulan 1 (Januari - Maret)': [moment().startOf('year').startOf('quarter'), moment().startOf('year').startOf('quarter').add(2, 'months').endOf('month')],
-                'Triwulan 2 (April - Juni)': [moment().startOf('year').startOf('quarter').add(3, 'months'), moment().startOf('year').startOf('quarter').add(5, 'months').endOf('month')],
-                'Triwulan 3 (Juli - September)': [moment().startOf('year').startOf('quarter').add(6, 'months'), moment().startOf('year').startOf('quarter').add(8, 'months').endOf('month')],
-                'Triwulan 4 (Oktober - Desember)': [moment().startOf('year').startOf('quarter').add(9, 'months'), moment().startOf('year').endOf('year')],
-            },
-            locale: {
-                customRangeLabel: "Rentang Lainnya",
-                cancelLabel: 'Batalkan',
-                applyLabel: 'Terapkan'
-            }
-        });
-
     });
 </script>
 
-{% endblock %}
-{% block modal_tambahan %}
-{% include 'dayatif/pemetaan_potensi/modals/create_modal.html'%}
-{% include 'dayatif/pemetaan_potensi/modals/edit_modal.html' %}
 {% endblock %}
 
 {% block css_tambahan %}

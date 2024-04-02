@@ -1,147 +1,285 @@
 {% extends 'dashboard/dashboard_base.html' %}
 {% load static %}
 {% block title %}
-  Audiensi
+Audiensi
 {% endblock %}
 {% block content %}
-  <div class="breadcrumb">
-    <div class="row">
-      <h3 class="heading mb-2">Audiensi</h3>
-      <span class="mb-0">
-        <span class="text-muted fw-light">Kegiatan /</span>
-        <span class="ms-1 fw-medium">Audiensi</span>
-      </span>
-    </div>
+<div class="breadcrumb">
+  <div class="row">
+    <h3 class="heading mb-2">Audiensi</h3>
+    <span class="mb-0">
+      <span class="text-muted fw-light">Kegiatan /</span>
+      <span class="ms-1 fw-medium">Audiensi</span>
+    </span>
   </div>
+</div>
 
-  <section id="__data">
-    <div class="card">
-      <div class="card-body">
-        <div id="headline" class="mb-3">
-          <h3 class="text-center">AUDIENSI KELOMPOK SASARAN/STAKEHOLDER DALAM USAHA PENINGKATAN PERAN SERTA MASYARAKAT<br /> <span id="currentYear"></span></h3>
-          <hr />
-        </div>
+<section id="__data">
+  <div class="card">
+    <div class="card-body">
+      <div id="headline" class="mb-3">
+        <h3 class="text-center">AUDIENSI KELOMPOK SASARAN/STAKEHOLDER DALAM USAHA PENINGKATAN PERAN SERTA
+          MASYARAKAT<br /> <span id="currentYear"></span></h3>
+        <hr />
+      </div>
 
-        <div class="action-button">
-          <div class="d-flex justify-content-end mb-3 gap-2">
-            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exportData"><i class="fas fa-file-export me-2"></i>Ekspor Data</button>
-            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tambahData"><i class="fas fa-plus me-2"></i>Tambah Data</button>
-          </div>
-        </div>
-
-        <div class="table-responsive">
-          {% include 'psm/audiensi/table.html' %}
+      <div class="action-button">
+        <div class="d-flex justify-content-end mb-3 gap-2">
+          <button class="btn btn-success" onclick="handleExport()">
+            <i class="fas fa-file-export me-2"></i>Ekspor Data</button>
+          <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createModal">
+            <i class="fas fa-plus me-2"></i>Tambah Data
+          </button>
         </div>
       </div>
-    </div>
-  </section>
-{% endblock %}
 
-{% block css_tambahan %}
-  <link rel="stylesheet" href="{% static 'assets/dashboard/vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}" />
+      <div class="table-responsive">
+        <div class="col-4 form-outline mb-4">
+          <label class="form-label" for="datatable-search-input">Pencarian </label>
+          <input type="text" class="form-control" v-model="searchField" @input="searchData($event)"
+            @blur="searchData($event)" placeholder="Cari Data" />
+        </div>
+        {% include 'psm/audiensi/table.html' %}
+      </div>
+    </div>
+  </div>
+</section>
 {% endblock %}
 
 {% block js_tambahan %}
-  <script src="{% static 'assets/dashboard/vendor/libs/datatables-bs5/datatables-bootstrap5.js' %}"></script>
-  <script src="{% static 'assets/dashboard/vendor/libs/jquery-repeater/jquery-repeater.js' %}"></script>
-  <script src="{% static 'assets/dashboard/js/bawaan/forms-extras.js' %}"></script>
+<script src="{% static 'assets/dashboard/vendor/libs/jquery-repeater/jquery-repeater.js' %}"></script>
+<script src="{% static 'assets/dashboard/js/bawaan/forms-extras.js' %}"></script>
+<script type="text/javascript" src="https://oss.sheetjs.com/sheetjs/xlsx.full.min.js"></script>
 
-  <script>
-    let table = $('#__table').DataTable({
-      language: dt_lang_config()
-    })
-    
-    $('#deleteData').on('click', function () {
-      Swal.fire({
-        title: 'Apakah anda yakin?',
-        html: `Data yang <strong>dihapus</strong> tidak dapat dipulihkan kembali.`,
-        icon: 'warning',
-        showCancelButton: true,
-        cancelButtonText: 'Batalkan',
-        confirmButtonText: 'Ya, hapus data ini!'
-      }).then((result) => {
-        if (result.isConfirmed) {
-          console.log('User clicked the confirm button ...')
-    
-          Swal.fire({
-            title: 'Tunggu sebentar',
-            icon: 'info',
-            html: `Menghapus <b>data</b> yang anda dipilih..`,
-            timer: 2000,
-            didOpen: () => {
-              Swal.showLoading()
-            }
-          }).then((result) => {
-            if (result.dismiss === Swal.DismissReason.timer) {
-              Swal.fire({
-                title: 'Berhasil',
-                html: `Data yang dipilih telah <strong>berhasil</strong> dihapus.`,
-                icon: 'success',
-                confirmButtonText: 'OK',
-                timer: 2000
-              })
-            }
-          })
+<!-- Vue Config -->
+<script>
+  const { createApp, ref, onMounted, computed } = Vue;
+  createApp({
+    setup() {
+      let dataKegiatan = ref(null);
+      let satkerLevel = parseInt('{{ user.profile.satker.level }}');
+      let perPage = ref(10);
+      let currentPage = ref(1);
+      let searchField = ref(null);
+      let filteredPage = ref(null);
+
+      const totalPage = computed(() => {
+        if (dataKegiatan.value) {
+          return Math.ceil(dataKegiatan.value.length / perPage.value);
         }
-      })
-    })
+        else return 0;
+      });
 
-    $('a#buttonEdit').on('click', function () {
-      $('#editAudiensi').modal('show') //show modal
-    
-      //START SET CURRENT VALUE
-      $('select[name="edit_satker"]').val('BNNP Jawa Barat').trigger('change')
-      //END
-    })
-  </script>
-
-  <script>
-    $('.deleteKegiatan').on('click', function () {
-      Swal.fire({
-        title: 'Apakah anda yakin?',
-        html: `Data yang <strong>dihapus</strong> tidak dapat dipulihkan kembali.`,
-        icon: 'warning',
-        showCancelButton: true,
-        cancelButtonText: 'Batalkan',
-        confirmButtonText: 'Ya, hapus data ini!'
-      }).then((result) => {
-        if (result.isConfirmed) {
-          console.log('User clicked the confirm button ...')
-    
-          Swal.fire({
-            title: 'Tunggu sebentar',
-            icon: 'info',
-            html: `Menghapus <b>data</b> yang anda dipilih..`,
-            timer: 2000,
-            didOpen: () => {
-              Swal.showLoading()
-            }
-          }).then((result) => {
-            if (result.dismiss === Swal.DismissReason.timer) {
-              Swal.fire({
-                title: 'Berhasil',
-                html: `Data yang dipilih telah <strong>berhasil</strong> dihapus.`,
-                icon: 'success',
-                confirmButtonText: 'OK',
-                timer: 2000
-              })
-            }
-          })
+      const pagedData = computed(() => {
+        if (filteredPage.value) {
+          d = filteredPage.value.slice((currentPage.value - 1) * perPage.value, (currentPage.value) * perPage.value);
+          return d;
         }
-      })
-    })
-    
-    $('.editKegiatan').on('click', function () {
-      $('#detailAudiensi').modal('hide')
-      $('#editDataKegiatan').modal('show')
-    })
-  </script>
+        else return [];
+      });
+
+      function searchData(e) {
+        filteredPage.value = dataKegiatan.value.filter((data) => {
+          idx = String(data.satker.toUpperCase());
+          nama_lingkungan = String(data.nama_lingkungan.toUpperCase());
+          tanggal_awal = String(data.tanggal_awal);
+          tanggal_akhir = String(data.tanggal_akhir);
+          deskripsi = String(data.deskripsi.toUpperCase());
+          kendala = String(data.kendala.toUpperCase());
+          kesimpulan = String(data.kesimpulan.toUpperCase());
+          tindak_lanjut = String(data.tindak_lanjut.toUpperCase());
+
+          bool1 = idx.indexOf(searchField.value.toUpperCase()) > -1;
+          bool2 = nama_lingkungan.indexOf(searchField.value.toUpperCase()) > -1;
+          bool3 = deskripsi.indexOf(searchField.value.toUpperCase()) > -1;
+          bool4 = kendala.indexOf(searchField.value.toUpperCase()) > -1;
+          bool5 = kesimpulan.indexOf(searchField.value.toUpperCase()) > -1;
+          bool6 = tindak_lanjut.indexOf(searchField.value.toUpperCase()) > -1;
+          bool7 = tanggal_awal.indexOf(searchField.value.toUpperCase()) > -1;
+          bool8 = tanggal_akhir.indexOf(searchField.value.toUpperCase()) > -1;
+          return bool1 || bool2 || bool3 || bool4 || bool5 || bool6 || bool7 || bool8;
+        });
+      };
+
+      function hideableButton(status, satkerLevel, type) {
+        if (type == 'kirim') {
+          return satkerLevel != 2 && ((satkerLevel == 0 && status < 2) || (satkerLevel == 1 && status < 1));
+        } else if (type == 'edit') {
+          return satkerLevel == 2 || ((satkerLevel == 0 && status < 2) || (satkerLevel == 1 && status < 1));
+        }
+      }
+
+      const apiURL = (satkerLevel == 1 ? '/kegiatan/api/v1/psm/audiensi/get_data_bnnk/?format=datatables' : '/kegiatan/api/v1/psm/audiensi/?format=datatables')
+
+      function loadData() {
+        tableContent = [];
+      }
+    },
+    delimiters: ['${', '}']
+  }).mount('#app')
+</script>
+
+<!-- Handle Action -->
+<script>
+  async function handlePost(e) {
+    e.preventDefault();
+    showSwalLoading()
+
+    const tanggal_awal = $("#create__tanggal_awal").val();
+    const tanggal_akhir = $("#create__tanggal_akhir").val();
+    const satker = parseInt($("#create__satker").val());
+    const nama_lingkungan = $("#create__lingkungan").val();
+    const deskripsi = $("#create__deskripsi").val();
+    const kendala = $("#create__kendala").val();
+    const kesimpulan = $("#create__kesimpulan").val();
+    const tindak_lanjut = $("#create__tindak_lanjut").val();
+    const dokumentasi = $("#create__dokumentasi")[0].files[0];
+    const peserta = [];
+
+    $('.form-repeater.create [data-repeater-item]').each(function (index, element) {
+      peserta.push({
+        nama: $(element).find('[id^="form-repeater"]').eq(0).val(),
+        jabatan: $(element).find('[id^="form-repeater"]').eq(1).val(),
+      });
+    });
+
+    const formData = new FormData();
+
+    formData.append("tanggal_awal", tanggal_awal);
+    formData.append("tanggal_akhir", tanggal_akhir);
+    formData.append("satker", parseInt(satker));
+    formData.append("nama_lingkungan", nama_lingkungan);
+    formData.append("deskripsi", deskripsi);
+    formData.append("kendala", kendala);
+    formData.append("kesimpulan", kesimpulan);
+    formData.append("tindak_lanjut", tindak_lanjut);
+    formData.append("dokumentasi", dokumentasi);
+    formData.append("peserta", JSON.stringify(peserta));
+
+    console.log(formData);
+
+    try {
+      axios.post('/kegiatan/api/v1/psm/audiensi/perform_create/', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }).then(function (response) {
+        Swal.fire({
+          title: 'Berhasil!',
+          html: `Data kegiatan telah <b>berhasil</b> ditambahkan!`,
+          icon: 'success',
+          confirmButtonText: 'OK',
+        }).then((result) => {
+          if (result.isConfirmed) {
+            location.reload()
+          }
+        });
+      });
+    } catch (error) {
+      showSwalGenericError();
+      console.error("Terjadi kesalahan :", error);
+    }
+  }
+
+  async function handleExport() {
+    var tbl = document.getElementById('__table');
+
+    // Remove the column you want to exclude from export
+    var excludeColumnIndex = 2; // Change this to the index of the column you want to exclude
+    var rows = tbl.rows;
+    for (var i = 0; i < rows.length; i++) {
+      rows[i].deleteCell(excludeColumnIndex);
+    }
+
+    // Convert the modified table to workbook
+    var wb = XLSX.utils.table_to_book(tbl);
+
+    // Save the workbook as Excel file
+    XLSX.writeFile(wb, "SheetJSTable.xlsx");
+  }
+
+  async function handleEdit(e) {
+    e.preventDefault();
+    showSwalLoading();
+
+    const id = $('#edit__id').val();
+    const tanggal_awal = $("#edit__tanggal_awal").val();
+    const tanggal_akhir = $("#edit__tanggal_akhir").val();
+    const satker = $("#edit__satker").val();
+    const nama_lingkungan = $("#edit__lingkungan").val();
+    const deskripsi = $("#edit__deskripsi").val();
+    const kendala = $("#edit__kendala").val();
+    const kesimpulan = $("#edit__kesimpulan").val();
+    const tindak_lanjut = $("#edit__tindak_lanjut").val();
+    const dokumentasi = $("#edit__dokumentasi")[0].files[0];
+    const peserta = [];
+
+    $('#edit__form-repeater [data-repeater-item]').each(function (index, element) {
+      peserta.push({
+        nama: $(element).find('[id^="form-repeater"]').eq(0).val(),
+        jabatan: $(element).find('[id^="form-repeater"]').eq(1).val(),
+      });
+    });
+
+    const data = {
+      id,
+      satker,
+      nama_lingkungan,
+      tanggal_awal,
+      tanggal_akhir,
+      deskripsi,
+      kendala,
+      kesimpulan,
+      tindak_lanjut,
+      dokumentasi,
+      peserta
+    };
+    console.log(data);
+
+    const formData = new FormData();
+
+    formData.append("id", id);
+    formData.append("tanggal_awal", tanggal_awal);
+    formData.append("tanggal_akhir", tanggal_akhir);
+    formData.append("satker", parseInt(satker));
+    formData.append("nama_lingkungan", nama_lingkungan);
+    formData.append("deskripsi", deskripsi);
+    formData.append("kendala", kendala);
+    formData.append("kesimpulan", kesimpulan);
+    formData.append("tindak_lanjut", tindak_lanjut);
+    formData.append("peserta", JSON.stringify(peserta));
+    if (dokumentasi) { formData.append('dokumentasi', dokumentasi); }
+
+    console.log(data);
+
+    try {
+      const response = await axios.patch(
+        `/kegiatan/api/v1/psm/audiensi/perform_update/`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }).then(function (response) {
+        $("#editModal").modal("hide");
+        Swal.fire({
+          title: 'Berhasil!',
+          html: `Data kegiatan telah <b>berhasil</b> diperbarui!`,
+          icon: 'success',
+          confirmButtonText: 'OK',
+        }).then((result) => {
+          if (result.isConfirmed) {
+            location.reload()
+          }
+        });
+      });
+    } catch (error) {
+      showSwalGenericError();
+      console.error("Terjadi kesalahan :", error);
+    }
+  }
+</script>
 {% endblock %}
 
 {% block modal_tambahan %}
-  {% include 'psm/audiensi/create.html' %}
-  {% include 'psm/audiensi/create_kegiatan.html' %}
-  {% include 'psm/audiensi/edit.html' %}
-  {% include 'psm/audiensi/edit_kegiatan.html' %}
-  {% include 'psm/audiensi/detail.html' %}
+{% include 'psm/audiensi/modals/create.html' %}
+{% include 'psm/audiensi/modals/edit.html' %}
 {% endblock %}

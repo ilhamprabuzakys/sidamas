@@ -130,7 +130,6 @@ class psm_tes_urine_deteksi_diniView(PSMBaseView, View):
     
     def get(self, request):
             satker = Satker.objects.all()
-            print(satker)
             return render(request, self.template_name, {'satker' : satker})
 
 class psm_monev_supervisi_kegiatan_kotanView(PSMBaseView, View):

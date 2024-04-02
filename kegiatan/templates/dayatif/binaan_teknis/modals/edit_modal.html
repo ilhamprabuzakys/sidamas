@@ -1,197 +1,209 @@
-<form id="editForm" onsubmit="handleUpdate(event)">
+<form id="editForm" class="dont-reset" @submit.prevent="handleUpdate(edit.id)">
     <div class="modal fade" id="editModal">
         <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Edit Data <b>Kegiatan</b> untuk Satuan Kerja Pelaksana <b
-                            id="edit__info"></b></h5>
+                    <h5 class="modal-title">Edit Data <b>Kegiatan</b> untuk Satuan Kerja Pelaksana <b id="edit__info"></b></h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
 
-                <div class="modal-body" x-data="{ tanggal_awal: '', tanggal_akhir: '', jumlah_hari_pelaksanaan: '' }">
-                    <input type="hidden" id="edit__id" :value="$store.edit.data.id" />
+                <div class="modal-body">
 
+                    <!-- Satuan Kerja Pelaksana -->
                     <div class="mb-3">
-                        <label for="edit__satker" class="col-form-label required">Satuan Kerja
-                            Pelaksana:</label>
-                        <select class="form-control select2" id="edit__satker" disabled>
-                            <option value="{{ user.profile.satker.pk }}" selected>{{ user.profile.satker.nama_satker }}
-                            </option>
+                        <label for="edit__satker" class="col-form-label required">Satuan Kerja Pelaksana:</label>
+                        <select class="form-control select2" id="edit__satker" v-model="edit.satker" disabled>
+                            {% if user.profile.satker.level == 2 %}
+                                {% for item in satker %}
+                                <option value="{{ item.pk }}">{{ item.nama_satker }}</option>
+                                {% endfor %}
+                            {% else %}
+                                <option value="{{ user.profile.satker.pk }}" selected>{{ user.profile.satker.nama_satker }}</option>
+                            {% endif %}
                         </select>
                     </div>
+                    <!--/ Satuan Kerja Pelaksana -->
 
-                    <div class="row">
+                    <hr class="mx-n4">
+
+                    <!-- Tanggal Kegiatan -->
+                    <div class="row range_date edit">
                         <div class="col-6">
                             <div class="mb-3">
                                 <label for="edit__tanggal_awal" class="col-form-label required">Tanggal
                                     Awal:</label>
-                                <input type="date" id="edit__tanggal_awal" class="form-control" x-model="$store.edit.data.tanggal_awal"
-                                    @change="calculateDays" data-type="edit" :max="$store.edit.data.tanggal_akhir"
-                                    x-model="tanggal_awal"
-                                    x-ref="edit__tanggal_awal"
-                                    required />
+                                <input type="date" id="edit__tanggal_awal" class="form-control" :value="edit.tanggal_awal" @change="edit.tanggal_awal = $event.target.value; store.tanggal.awal = $event.target.value; edit.jumlah_hari_pelaksanaan = store.getJumlahHari" required />
                             </div>
                         </div>
                         <div class="col-6">
                             <div class="mb-3">
                                 <label for="edit__tanggal_akhir" class="col-form-label required">Tanggal
                                     Akhir:</label>
-                                <input type="date" id="edit__tanggal_akhir" class="form-control" x-model="$store.edit.data.tanggal_akhir"
-                                    @change="calculateDays" data-type="edit" x-ref="edit__tanggal_akhir"
-                                    x-model="tanggal_akhir"
-                                    :min="$store.edit.data.tanggal_awal" />
+                                <input type="date" id="edit__tanggal_akhir" class="form-control" :value="edit.tanggal_akhir" @change="edit.tanggal_akhir = $event.target.value; store.tanggal.akhir = $event.target.value; edit.jumlah_hari_pelaksanaan = store.getJumlahHari" />
                             </div>
                         </div>
                     </div>
+                    <!--/ Tanggal Kegiatan -->
 
-                    <label for="edit__tanggal_helpers" class="col-form-label text-important">Jumlah Hari Pelaksanaan
+                    <div class="text-important my-2">
+                        Jumlah Hari Pelaksanaan
                         Kerja akan digenerate secara <b>otomatis</b> oleh sistem berdasarkan inputan dari <b>Tanggal
-                            Awal</b> dan <b>Tanggal Akhir</b>.</label>
-
-                    <div class="mb-3">
-                        <label for="edit__jumlah_hari_pelaksanaan" class="col-form-label required">Jumlah
-                            Hari Pelaksanaan Kerja:</label>
-                        <input type="text" class="form-control" id="edit__jumlah_hari_pelaksanaan" :value="$store.edit.data.jumlah_hari_pelaksanaan"
-                        x-model="jumlah_hari_pelaksanaan"
-                            disabled readonly />
+                        Awal</b> dan <b>Tanggal Akhir</b>.
                     </div>
+                    
+                    <!-- Jumlah Hari Pelaksanaan -->
+                    <div class="mb-3">
+                        <label for="edit__jumlah_hari_pelaksanaan" class="col-form-label required">Jumlah Hari
+                            Pelaksanaan Kerja:</label>
+                        <input type="text" class="form-control" id="edit__jumlah_hari_pelaksanaan" :value="`${store.getJumlahHari} hari`" disabled readonly />
+                    </div>
+                    <!--/ Jumlah Hari Pelaksanaan -->
+                    
+                    <hr class="mx-n4">
 
+                    <!-- Satuan Kerja Target -->
                     <div class="mb-3">
                         <label for="edit__satker_target" class="col-form-label required">Satuan Kerja
                             Target:</label>
-                        <select class="form-control select2" id="edit__satker_target" required>
-                            <option value="" selected disabled>--Pilih Satuan Kerja Target--</option>
+                        <select class="form-control select2" id="edit__satker_target" v-model="edit.satker_target" required>
+                            <option value="" disabled>--Pilih Satuan Kerja Target--</option>
                             {% for item in satker %}
                             <option value="{{ item.pk }}">{{ item.nama_satker }}</option>
                             {% endfor %}
                         </select>
                     </div>
+                    <!--/ Satuan Kerja Target -->
 
+                    <hr class="mx-n4">
+
+                    <!-- Jumlah Peserta -->
                     <div class="mb-3">
                         <label for="edit__jumlah_peserta" class="col-form-label required">Jumlah Peserta:</label>
-
-                        <div class="input-group input-group-merge">
-                            <input type="number" class="form-control" id="edit__jumlah_peserta" maxlength="3" required :value="$store.edit.data.jumlah_peserta" />
-                            <span class="input-group-text">orang</span>
-                        </div>
+                        <input type="number" class="form-control" id="edit__jumlah_peserta" v-model="edit.jumlah_peserta" required />
                     </div>
+                    <!--/ Jumlah Peserta -->
 
                     <hr class="mx-n4">
 
                     <!-- Rincian Hasil -->
-                    <div class="mb-3">
-                        <label for="pelaksanaan" class="col-form-label required text-light">Rincian Hasil Pelaksanaan
-                            Program Pemberdayaan Alternatif Pada Satker Target:</label>
+					<div class="mb-3" id="edit__rincian_hasil">
+                        <label for="pelaksanaan" class="col-form-label required text-light">Rincian Hasil Pelaksanaan Program Pemberdayaan Alternatif Pada Satker Target:</label>
 
+						<!-- Tujuan -->
                         <div class="mb-3">
                             <label for="edit__tujuan" class="col-form-label required">Tujuan:</label>
-                            <textarea class="form-control" id="edit__tujuan" :value="$store.edit.data.tujuan" required></textarea>
+                            <textarea class="form-control" id="edit__tujuan" v-model="edit.tujuan" required></textarea>
                         </div>
+                        <!--/ Tujuan -->
 
+                        <hr class="mx-n4">
+
+                        <!-- Hambatan/Kendala -->
                         <div class="mb-3">
-                            <label for="edit__kendala" class="col-form-label required">Hambatan
-                                Kendala:</label>
+                            <label for="edit__kendala_yes" class="col-form-label required">Hambatan/Kendala:</label>
 
                             <div class="form-check mt-3">
-                                <input class="form-check-input" type="radio" name="edit__kendala_ketersediaan"
-                                    id="edit__kendala_ketersediaan_yes" @click="$store.edit.state.kendala.show_keterangan = true, $store.edit.data.kendala = ''" :checked="$store.edit.state.kendala.show_keterangan" />
-                                <label class="form-check-label" for="edit__kendala_ketersediaan_yes">Ada, sebutkan
-                                    ...</label>
+                                <input class="form-check-input" type="radio" name="edit__kendala_ketersediaan" id="edit__kendala_yes"
+                                :checked="store.kendala.showKeterangan"
+                                @click="store.kendala.showKeterangan = true; edit.kendala = ''" />
+                                <label class="form-check-label" for="edit__kendala_yes">Ada, sebutkan ...</label>
                             </div>
-
+                        
                             <div class="ps-4">
-                                <textarea class="form-control my-3" id="edit__kendala_yes_keterangan"
-                                    name="edit__kendala_yes_keterangan" x-show="$store.edit.state.kendala.show_keterangan"
-                                    @change="$store.edit.data.kendala = 'Ada, ' + $el.value;" :value="$store.edit.data.kendala"
-                                    :required="$store.edit.state.kendala.show_keterangan"></textarea>
+                                <textarea class="form-control my-3" id="edit__kendala_yes_keterangan" v-if="store.kendala.showKeterangan"
+                                @change="edit.kendala = $event.target.value.includes('Ada') ? $event.target.value : `Ada, ${$event.target.value}`"
+                                :required="store.kendala.showKeterangan"
+                                :value="edit.kendala"
+                                ></textarea>
                             </div>
-
+                        
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="edit__kendala_ketersediaan"
-                                    id="edit__kendala_ketersediaan_no"
-                                    @click="$store.edit.state.kendala.show_keterangan = false; $store.edit.data.kendala = 'Tidak'"
-                                    :checked="!$store.edit.state.kendala.show_keterangan"
-                                    />
-                                <label class="form-check-label" for="edit__kendala_ketersediaan_no">Tidak</label>
+                                <input class="form-check-input" type="radio" id="edit__kendala_no" name="edit__kendala_ketersediaan"
+                                    @click="store.kendala.showKeterangan = false; edit.kendala = 'Tidak ada'" :checked="edit.kendala == 'Tidak ada'" />
+                                <label class="form-check-label" for="edit__kendala_no">Tidak ada</label>
                             </div>
-
-                            <input type="hidden" id="edit__kendala" :value="$store.edit.data.kendala" />
                         </div>
+                        <!--/ Hambatan/Kendala -->
 
+                        <hr class="mx-n4">
+
+                        <!-- Kesimpulan -->
                         <div class="mb-3">
                             <label for="edit__kesimpulan" class="col-form-label required">Kesimpulan:</label>
-                            <textarea class="form-control" id="edit__kesimpulan" :value="$store.edit.data.kesimpulan" required></textarea>
+                            <textarea class="form-control" id="edit__kesimpulan" v-model="edit.kesimpulan" required></textarea>
                         </div>
+                        <!--/ Kesimpulan -->
+                        
+                        <hr class="mx-n4">
 
-                    </div>
-
+                        <!-- Tindak Lanjut -->
+                        <div class="mb-3">
+                            <label for="edit__tindak_lanjut" class="col-form-label required">Tindak Lanjut:</label>
+    
+                            <div class="form-check mt-3">
+                                <input class="form-check-input" type="radio" name="edit__tindak_lanjut_ketersediaan" id="edit__tindak_lanjut_ketersediaan_yes"
+                                :checked="store.tindakLanjut.yes.showKeterangan"
+                                @click="store.tindakLanjut.yes.showKeterangan = true; store.tindakLanjut.no.showContainer = false; edit.tindak_lanjut = 'Ada'" />
+                                <label class="form-check-label" for="edit__tindak_lanjut_ketersediaan_yes">Ada, sebutkan ...</label>
+                            </div>
+    
+                            <div class="ps-4">
+                                <textarea class="form-control my-3" id="edit__tindak_lanjut_yes_keterangan" v-if="store.tindakLanjut.yes.showKeterangan" @change="edit.tindak_lanjut = `Ada, ${$event.target.value}`" :required="store.tindakLanjut.yes.showKeterangan"
+                                :value="edit.tindak_lanjut"
+                                ></textarea>
+                            </div>
+                        
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="edit__tindak_lanjut_ketersediaan" id="edit__tindak_lanjut_ketersediaan_no"
+                                    :checked="store.tindakLanjut.yes.showKeterangan == false"
+                                    @click="store.tindakLanjut.yes.showKeterangan = false; store.tindakLanjut.no.showContainer = true; edit.tindak_lanjut = 'Tidak'" />
+                                <label class="form-check-label" for="edit__tindak_lanjut_ketersediaan_no">Tidak</label>
+                            </div>
+                        
+                            <div id="create_tindak_lanjut_no_container" class="ps-4 mt-1" v-if="store.tindakLanjut.no.showContainer">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="edit__tindak_lanjut_ketersediaan_no" id="edit__tindak_lanjut_ketersediaan_no_pemblokiran"
+                                        :checked="edit.tindak_lanjut == 'Tidak, Pemblokiran'"
+                                        @click="edit.tindak_lanjut = 'Tidak, Pemblokiran'; store.tindakLanjut.no.showContainer2 = false" :required="store.tindakLanjut.no.showContainer"/>
+                                    <label class="form-check-label" for="edit__tindak_lanjut_ketersediaan_no_pemblokiran">A. Pemblokiran</label>
+                                </div>
+                        
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="edit__tindak_lanjut_ketersediaan_no" id="edit__tindak_lanjut_ketersediaan_no_anggaran"
+                                        :checked="edit.tindak_lanjut == 'Tidak, Anggaran tidak ada alokasi kegiatan'"
+                                        @click="edit.tindak_lanjut = 'Tidak, Anggaran tidak ada alokasi kegiatan'; store.tindakLanjut.no.showContainer2 = false;" :required="store.tindakLanjut.no.showContainer"
+                                        />
+                                    <label class="form-check-label" for="edit__tindak_lanjut_ketersediaan_no_anggaran">B. Anggaran tidak ada alokasi kegiatan</label>
+                                </div>
+                        
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="edit__tindak_lanjut_ketersediaan_no" id="edit__tindak_lanjut_ketersediaan_no_lainnya"
+                                    :checked="edit.tindak_lanjut == 'Tidak, Pemblokiran' && edit.tindak_lanjut != 'Tidak, Anggaran tidak ada alokasi kegiatan'"
+                                    @click="store.tindakLanjut.no.showContainer2 = true; edit.tindak_lanjut = 'Lainnya'"
+                                        :required="store.tindakLanjut.no.showContainer"/>
+                                    <label class="form-check-label" for="edit__tindak_lanjut_ketersediaan_no_lainnya">C. Lainnya, sebutkan ...</label>
+                                </div>
+                        
+                                <div class="ps-4">
+                                    <textarea class="form-control mt-3" id="edit__tindak_lanjut_ketersediaan_no_keterangan" v-if="store.tindakLanjut.no.showContainer2" @change="edit.tindak_lanjut = `${$event.target.value}`" :required="store.tindakLanjut.no.showContainer2"
+                                    :value="edit.tindak_lanjut"
+                                    ></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <!--/ Tindak Lanjut -->
+					</div>
+                    <!--/ Rincian Hasil -->
+					
                     <hr class="mx-n4">
 
-                    <div class="mb-3">
-                        <label for="edit__tindak_lanjut" class="col-form-label required">Tindak Lanjut:</label>
-                        
-						<div class="form-check mt-3">
-                            <input class="form-check-input" type="radio" name="edit__tindak_lanjut_ketersediaan" id="edit__tindak_lanjut_ketersediaan_yes" value="yes" :checked="$store.edit.state.tindak_lanjut.yes_show_keterangan"
-                                @click="$store.edit.state.tindak_lanjut.yes_show_keterangan = true; $store.edit.state.tindak_lanjut.no_show_container = false; $store.edit.data.tindak_lanjut = ''" />
-                            <label class="form-check-label" for="edit__tindak_lanjut_ketersediaan_yes">Ada, sebutkan ...</label>
-                        </div>
-                    
-                        <div class="ps-4">
-                            <textarea class="form-control my-3" id="edit__tindak_lanjut_yes_keterangan" x-show="$store.edit.state.tindak_lanjut.yes_show_keterangan" @change="$store.edit.data.tindak_lanjut = 'Ada, ' + $el.value;"  :required="$store.edit.state.tindak_lanjut.yes_show_keterangan" :value="$store.edit.data.tindak_lanjut"></textarea>
-                        </div>
-                    
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="edit__tindak_lanjut_ketersediaan" id="edit__tindak_lanjut_ketersediaan_no" value="no"
-                            :checked="$store.edit.state.tindak_lanjut.no_show_container"
-                            @click="$store.edit.state.tindak_lanjut.yes_show_keterangan = false; $store.edit.state.tindak_lanjut.no_show_container = true" />
-                            <label class="form-check-label" for="edit__tindak_lanjut_ketersediaan_no">Tidak</label>
-                        </div>
-                    
-                        <div id="create_tindak_lanjut_no_container" class="ps-4 mt-1" x-show="$store.edit.state.tindak_lanjut.no_show_container">
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="edit__tindak_lanjut_ketersediaan_no" id="edit__tindak_lanjut_ketersediaan_no_pemblokiran" value="Pemblokiran"
-                                    @click="$store.edit.data.tindak_lanjut = 'Tidak, Pemblokiran', $store.edit.state.tindak_lanjut.no_show_container_lainnya = false;"
-                                    :checked="$store.edit.data.tindak_lanjut.includes('Pemblokiran')"
-                                    />
-
-                                <label class="form-check-label" for="edit__tindak_lanjut_ketersediaan_no_pemblokiran">A. Pemblokiran</label>
-                            </div>
-                    
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="edit__tindak_lanjut_ketersediaan_no" id="edit__tindak_lanjut_ketersediaan_no_anggaran"
-                                    value="Anggaran tidak ada alokasi kegiatan" @click="$store.edit.data.tindak_lanjut = 'Tidak, Anggaran tidak ada alokasi kegiatan', $store.edit.state.tindak_lanjut.no_show_container_lainnya = false;"
-                                    :checked="$store.edit.data.tindak_lanjut.includes('Anggaran tidak ada alokasi kegiatan')"
-
-                                    />
-                                <label class="form-check-label" for="edit__tindak_lanjut_ketersediaan_no_anggaran">B. Anggaran tidak ada alokasi kegiatan</label>
-                            </div>
-                    
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="edit__tindak_lanjut_ketersediaan_no" id="edit__tindak_lanjut_ketersediaan_no_lainnya"
-                                    value="Lainnya" @click="$store.edit.state.tindak_lanjut.no_show_container_lainnya = true; $store.edit.data.tindak_lanjut = ''"
-                                    :checked="!$store.edit.data.tindak_lanjut.includes('Anggaran tidak ada alokasi kegiatan') && !$store.edit.data.tindak_lanjut.includes('Pemblokiran') && !$store.edit.data.tindak_lanjut.includes('Ada')"
-                                    />
-                                <label class="form-check-label" for="edit__tindak_lanjut_ketersediaan_no_lainnya">C. Lainnya, sebutkan ...</label>
-                            </div>
-                    
-                            <div class="ps-4">
-                                <textarea class="form-control mt-3" id="edit__tindak_lanjut_ketersediaan_no_keterangan" x-show="$store.edit.state.tindak_lanjut.no_show_container_lainnya" @change="$store.edit.data.tindak_lanjut = 'Tidak, ' + $el.value"   :required="$store.edit.state.tindak_lanjut.no_show_container_lainnya" :value="$store.edit.data.tindak_lanjut"></textarea>
-                            </div>
-                        </div>
-                    
-                        <input type="hidden" id="edit__tindak_lanjut" :value="$store.edit.data.tindak_lanjut" />
-
-                    </div>
+                    <!-- Dokumentasi -->
                     <div class="mb-3">
                         <label for="edit__dokumentasi" class="col-form-label optional">Dokumentasi:</label>
-                        <input type="file" class="form-control" id="edit__dokumentasi"
-                            accept=".csv, .xlsx, .pdf, docx."></input>
-
-                        <div class="mt-2">
-                            <span class="text-important">Kosongkan <b>bagian</b> ini jika tidak ingin mengganti file
-                                dokumentasi.</span>
-                        </div>
+                        <input type="file" class="form-control" id="edit__dokumentasi" @change="edit.dokumentasi = $event.target.files[0]"
+                            accept=".csv, .xlsx, .pdf, docx." />
                     </div>
+                    <!--/ Dokumentasi -->
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">

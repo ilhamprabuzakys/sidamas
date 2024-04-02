@@ -1,0 +1,1090 @@
+{% extends 'dashboard/dashboard_base.html' %}
+{% load static %}
+{% block title %} Rekapitulasi Pembinaan Teknis {% endblock %}
+
+{% block modal_tambahan %}
+{% include 'dayatif/binaan_teknis/modals/create_modal.html'%}
+{% include 'dayatif/binaan_teknis/modals/edit_modal.html' %}
+{% endblock %}
+
+{% block content %}
+<div class="breadcrumb">
+    <div class="row">
+        <h3 class="heading mb-2">Rekapitulasi Pembinaan Teknis</h3>
+        <span class="mb-0">
+            <span class="text-muted fw-light">Kegiatan /</span>
+            <span class="ms-1 fw-medium">Rekapitulasi Pembinaan Teknis</span>
+        </span>
+    </div>
+</div>
+
+<section id="__data">
+    <div class="card">
+        <div class="card-body">
+            <div id="headline" class="mb-3">
+                <h3 class="text-center">
+                    Rekapitulasi Pembinaan Teknis <b>BNNP</b> &amp; <b>BNNK</b> <br />
+                    <span id="currentYear"></span>
+                </h3>
+                <hr />
+            </div>
+
+            <div class="action-button">
+                <div class="d-flex justify-content-between mb-3">
+                    <div class="d-flex align-items-center gap-2">
+                        <div class="btn-group dropstart me-2">
+                            <button type="button" class="btn btn-outline-secondary rounded-pill dropdown-toggle hide-arrow"
+                                data-bs-toggle="dropdown" aria-expanded="false" data-bs-offset="10,20"
+                                data-bs-auto-close="outside"><i class="fas fa-sliders me-2"></i>Filter Data</button>
+                            <ul class="dropdown-menu w-px-500">
+                                <li>
+                                    <h5 class="dropdown-header text-uppercase">Filter Data</h5>
+                                </li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <div class="pt-0 pb-3 px-3" id="filter__form">
+                                    <div class="mb-2" v-if="satkerLevel != 2">
+                                        <label for="filter__status_pengiriman" class="form-label">Status Pengiriman</label>
+                                        <select id="filter__status_pengiriman" class="form-select"
+                                            v-model="filter.status" required>
+                                            <option disabled>-- Pilih Status Pengiriman --</option>
+                                            <option value="">-- Semua --</option>
+                                            <option value="0">Belum Terkirim</option>
+                                            <option value="1">Terkirim</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-2">
+                                        <label for="filter__date" class="form-label">Rentang Tanggal</label>
+
+                                        <div class="input-group input-group-merge">
+                                            <input type="text" id="filter__date" class="form-control"
+                                                placeholder="Pilih Rentang Tanggal" />
+                                            <span class="input-group-text cursor-pointer text-danger"
+                                                @click="filter.date = ''"><i class="fas fa-xmark"></i></span>
+                                        </div>
+                                    </div>
+                                    <div class="mb-2">
+                                        <label for="filter__kegiatan" class="form-label">Rentang Kegiatan</label>
+
+                                        <select class="form-select form-select-md" id="filter__kegiatan" v-model="filter.kegiatan">
+                                            <option selected disabled>--Pilih rentang kegiatan--</option>
+                                            <option value="">Semua</option>
+                                            <option value="1-10">1 - 10 kegiatan</option>
+                                            <option value="11-20">11 - 20 kegiatan</option>
+                                            <option value="21-50">21 - 50 kegiatan</option>
+                                            <option value="51-100">51 - 100 kegiatan</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-2">
+                                        <label for="filter__satker" class="form-label">Satuan Kerja</label>
+
+                                        <select class="form-select form-select-md select2 no-placeholder" id="filter__satker">
+                                            <option selected disabled>--Pilih satuan kerja --</option>
+                                            <option value="">Semua</option>
+                                            {% for item in satker %}
+                                            <option value="{{ item.pk }}">{{ item.nama_satker }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <div class="list-dropdown-button d-flex justify-content-end px-3 py-2">
+                                    <button type="button" class="btn btn-label-secondary fw-semibold me-2 px-6">
+                                        <i class="fas fa-xmark me-2"></i>Batalkan</button>
+                                    <button type="button" class="btn btn-primary fw-semibold px-6" @click="handleFilter()">
+                                        <i class="fas fa-save me-2"></i>
+                                        Terapkan</button>
+                                </div>
+                            </ul>
+                        </div>
+                        <div v-if="isFilteredSomething">
+                            <button class="all-unset text-primary" @click="handleResetFilter('all')">
+                                <i class="fas fa-xmark me-2"></i>
+                                Clear all
+                            </button>
+                        </div>
+                    </div>
+                    <!-- <button class="btn btn-success" @click="handleExport()">
+                        <i class="fas fa-file-export me-2"></i>Ekspor Data
+                    </button> -->
+                    <!--
+                    <div class="btn-group">
+                    <button type="button" class="btn btn-success dropdown-toggle" data-bs-toggle="dropdown">Ekspor Data</button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="javascript:void(0);">Semua Data</a></li>
+                            <hr class="dropdown-divider">
+                            <li><a class="dropdown-item" href="javascript:void(0);">Hari Ini</a></li>
+                            <li><a class="dropdown-item" href="javascript:void(0);">Minggu Ini</a></li>
+                            <li><a class="dropdown-item" href="javascript:void(0);">Bulan Ini</a></li>
+                            <hr class="dropdown-divider">
+                            <li><a class="dropdown-item" href="javascript:void(0);">Triwulan 1 (Januari - Maret)</a></li>
+                            <li><a class="dropdown-item" href="javascript:void(0);">Triwulan 2 (April - Juni)</a></li>
+                            <li><a class="dropdown-item" href="javascript:void(0);">Triwulan 3 (Juli - September)</a></li>
+                            <li><a class="dropdown-item" href="javascript:void(0);">Triwulan 4 (Oktober - Desember)</a></li>
+                        </ul>
+                    </div> -->
+                    
+                    <div class="d-flex gap-2">
+                        <div class="btn-group dropstart" data-bs-toggle="tooltip" data-bs-placement="top"
+                            data-bs-custom-class="tooltip-dark"
+                            data-bs-original-title="Klik disini untuk mengekspor data.">
+                                <button type="button" class="btn btn-success dropdown-toggle"
+                                    data-bs-toggle="dropdown" aria-expanded="false" data-bs-offset="10,20"
+                                    data-bs-auto-close="outside"><i class="fas fa-file-export me-2"></i>Ekspor Data</button>
+                                <ul class="dropdown-menu w-px-500">
+                                    <li>
+                                        <h5 class="dropdown-header text-uppercase">Eksport Data</h5>
+                                    </li>
+                                    <li>
+                                        <hr class="dropdown-divider">
+                                    </li>
+                                    <div class="pt-0 pb-3 px-3" id="export__form">
+                                        <div class="mb-2">
+                                            <label for="export__status_pengiriman" class="form-label">Status Pengiriman</label>
+                                            <select id="export__status_pengiriman" class="form-select"
+                                                v-model="exportData.status" required>
+                                                <option disabled value="">-- Pilih Status Pengiriman --</option>
+                                                <option value="">-- Semua --</option>
+                                                <option value="0">Belum Terkirim</option>
+                                                <option selected value="1">Terkirim</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-2">
+                                            <label for="export__rentang_waktu" class="form-label">Rentang Waktu</label>
+                                            <select id="export__rentang_waktu" class="form-select"
+                                                v-model="exportData.waktu" required>
+                                                <option disabled value="">-- Pilih Rentang Waktu --</option>
+                                                <option selected value="semua">-- Semua --</option>
+                                                <option value="triwulan1">Triwulan 1 (Januari - Maret)</option>
+                                                <option value="triwulan2">Triwulan 2 (April - Juni)</option>
+                                                <option value="triwulan2">Triwulan 3 (Juli - September)</option>
+                                                <option value="triwulan4">Triwulan 4 (Oktober - Desember)</option>
+                                                <option value="hari_ini">Hari ini</option>
+                                                <option value="minggu_ini">Minggu ini</option>
+                                                <option value="bulan_ini">Bulan ini</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <li>
+                                        <hr class="dropdown-divider">
+                                    </li>
+                                    <div class="list-dropdown-button d-flex justify-content-end px-3 py-2">
+                                        <button type="button" class="btn btn-label-secondary fw-semibold me-2 px-6">
+                                            <i class="fas fa-xmark me-2"></i>Batalkan</button>
+                                        <button type="button" class="btn btn-success fw-semibold px-6" @click="handleExport()">
+                                            <i class="fas fa-save me-2"></i>
+                                            Ekspor</button>
+                                    </div>
+                                </ul>
+                        </div>
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createModal">
+                            <i class="fas fa-plus me-2"></i>Tambah Data
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filters -->
+            {% include "dayatif/binaan_teknis/partials/filters.html" %}
+            <!--/ Filters -->
+
+            <div class="table-responsive" id="__table_container">
+                <table id="__table" class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th class="bg-soft-success text-center cursor-pointer" rowspan="2" @click="handleSort('no')">
+                                <i class="fas" :class="sortColumn == 'no' && sortDirection === 'asc' ? 'fa-sort-up' : 'fa-sort-down'"></i>
+                                No.
+                            </th>
+                            <th class="bg-soft-success" rowspan="2">Satuan Kerja Pelaksana</th>
+                            <th class="bg-soft-success cursor-pointer" rowspan="2" @click="handleSort('tanggal')">
+                                Tanggal
+                                <i class="fas" :class="sortColumn == 'tanggal' && sortDirection === 'asc' ? 'fa-sort-up' : 'fa-sort-down'"></i>
+                            </th>
+                            <th class="bg-soft-success" rowspan="2">Jumlah Hari Pelaksanaan Kerja</th>
+                            <th class="bg-soft-success" rowspan="2">Satuan Kerja Target</th>
+                            <th class="bg-soft-success" rowspan="2">Jumlah peserta</th>
+                            <th class="bg-soft-success" rowspan="1" colspan="3">Rincian Hasil Pelaksanaan Program Pemberdayaan Alternatif Pada Satker Target</th>
+                            <th class="bg-soft-success" rowspan="2">Tindak Lanjut</th>
+                            <th class="bg-soft-success" rowspan="2">Dokumentasi</th>
+                            <th class="bg-soft-success text-center" rowspan="2" style="max-width: 150px">Aksi <i class="fas fa-edit ms-2"></i>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th class="bg-soft-success" rowspan="1">Tujuan</th>
+                            <th class="bg-soft-success" rowspan="1">Hambatan/Kendala</th>
+                            <th class="bg-soft-success" rowspan="1">Kesimpulan</th>
+                        </tr>
+                    </thead>
+                    <tbody class="align-tr-middle text-white">
+                        <template v-for="(item, index) in pagedData" :key="index">
+                            <tr :class="item.class">
+                                <td class='text-center' v-text="item.index"></td>
+                                <td :colspan="item.hide_satker ? 0 : 11">
+                                    <template v-if="!item.hide_satker">
+                                        <v-item-header :nama="item.satker.nama_satker" :length="item.jumlah_kegiatan"></v-item-header>
+                                    </template>
+                                    <template v-else>
+                                        <v-item-header :nama="item.satker.nama_satker" :length="item.jumlah_kegiatan" :fade="true" :index="item.index"></v-item-header>
+                                    </template>
+                                </td>
+                                <template v-if="item.hide_satker">
+                                    <td>
+                                        <v-item-tanggal :awal="item.tanggal_awal" :akhir="item.tanggal_akhir"></v-item-tanggal>
+                                    </td>
+                                    <td>
+                                        <span v-text="item.jumlah_hari_pelaksanaan"></span>
+                                    </td>
+                                    <td>
+                                        <span v-text="item.satker_target"></span>
+                                    </td>
+                                    <td>
+                                        <span v-text="item.jumlah_peserta"></span>
+                                    </td>
+                                    <td>
+                                        <v-item-text :text="item.tujuan"></v-item-text>
+                                    </td>
+                                    <td>
+                                        <v-item-text :text="item.kendala"></v-item-text>
+                                    </td>
+                                    <td>
+                                        <v-item-text :text="item.kesimpulan"></v-item-text>
+                                    </td>
+                                    <td>
+                                        <v-item-text :text="item.tindak_lanjut"></v-item-text>
+                                    </td>
+                                    <td>
+                                        <div class="text-center">
+                                            <a :href="item.dokumentasi" class="badge bg-primary text-white cursor-pointer" target="_blank">
+                                                <i class="fas fa-eye me-2"></i>
+                                                <span v-text="'Lihat dokumentasi'"></span>
+                                            </a>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <v-action-button :item="{ id: item.id, nama: item.satker.nama_satker, level: item.satker.level, status: item.status }" :level="satkerLevel" :url="'binaan_teknis'" @update="loadData()" @edit="(id) => handleEdit(id)"></v-action-button>
+                                    </td>
+                                </template>
+                            </tr>
+                        </template>
+                        <template v-if="pagedData.length == 0">
+                            <v-result-not-found colspan="12" text="Hasil pencarian tidak ditemukan"></v-result-not-found>
+                        </template>
+                    </tbody>
+                </table>
+
+                <!-- Pagination -->
+                <v-pagination :item="{ totalPage, currentPage, perPage, pageLength: pagedData?.length, total: filteredPage?.length }" :scroll-up="true" @go="(page) => currentPage = page"></v-pagination>
+                <!--/ Pagination -->
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block js_tambahan %}
+<script>
+    const { createApp, watch, reactive, ref, onMounted, computed } = Vue;
+
+    const useFormStore = defineStore('form', () => {
+        const base = {
+            tanggal: { awal: '', akhir: '' },
+            tindakLanjut: {
+                yes: {
+                    showKeterangan: false
+                },
+                no: {
+                    showContainer: false,
+                    showContainer2: false, // C. Lainnya
+                }
+            },
+            kendala: { showKeterangan: false },
+        };
+
+        const tanggal = ref({ ...base.tanggal });
+        const tindakLanjut = ref({ ...base.tindakLanjut });
+        const kendala = ref({ ...base.kendala });
+
+        const getJumlahHari = computed(() => {
+            const { awal, akhir } = tanggal.value;
+            if (awal === '' && akhir === '') return 0;
+
+            const tanggal_awal = new Date(awal);
+            const tanggal_akhir = new Date(akhir);
+            const diffTime = Math.abs(tanggal_akhir - tanggal_awal);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            return isNaN(diffDays) ? 1 : diffDays + 1;
+        });
+
+        return { tanggal, tindakLanjut, kendala, getJumlahHari };
+    });
+</script>
+
+{% include "dayatif/partials/components.html" %}
+
+<script>
+    const app = createApp({
+        delimiters: ['{', '}'],
+        components: {
+            'v-item-header': ItemHeader,
+            'v-item-tanggal': ItemTanggal,
+            'v-item-text': ItemText,
+            'v-result-not-found': ResultNotFound,
+            'v-lokasi': Lokasi,
+            'v-action-button': ActionBTN,
+            'v-pagination': Pagination,
+            'v-table': Table,
+        },
+        setup() {
+            const store = { form: useFormStore() }
+            
+            const title = ref('Binaan Teknis');
+
+            const satkerPK = ref(parseInt('{{ user.profile.satker.pk }}'));
+            const satkerLevel = ref(parseInt('{{ user.profile.satker.level }}'));
+
+            const tableData = ref(null);
+            const filteredPage = ref(null);
+
+            const apiURL = '/kegiatan/api/v1/dayatif/binaan_teknis/list/?format=datatables';
+            
+            const loadData = async () => {
+                block($('#__table'));
+                const tableContent = [];
+                const response = await axios.get(apiURL);
+                const data = response.data.data;
+
+                const getClass = (level) => {
+                    const classMap = {
+                        2: 'bg-soft-danger',
+                        0: 'bg-soft-primary',
+                        1: 'bg-soft-warning',
+                    }
+
+                    return classMap[level];
+                }
+                
+                let key, value, key2, value2, key3, value3, key4, value4;
+
+                for ([key, value] of Object.entries(data)) {
+                    const baris = {
+                        class: getClass(value.satker.level),
+                        id: value.id,
+                        status: value.status,
+                        hide_satker: false,
+                        index: parseInt(key) + 1,
+                        jumlah_kegiatan: value.data.length,
+                        satker: value.satker,
+
+                        tanggal: "",
+                        tanggal_awal: "",
+                        tanggal_akhir: "",
+
+                        jumlah_hari_pelaksanaan: "",
+                        satker_target: "",
+                        jumlah_peserta: "",
+                        
+                        tujuan: "",
+                        kendala: "",
+                        kesimpulan: "",
+                        tindak_lanjut: "",
+                        dokumentasi: "",
+                    };
+
+                    tableContent.push(baris);
+
+                    for ([key2, value2] of Object.entries(value.data)) {
+                        const indexKey = `${parseInt(key) +1}.${parseInt(key2) + 1}`;
+                        const baris = {
+                            class: "bg-soft-light",
+                            id: value2.id,
+                            status: value2.status,
+                            hide_satker: true,
+                            index: indexKey,
+                            satker: value2.satker,
+                            jumlah_kegiatan: value.data.length,
+
+                            tanggal: getTanggalKegiatan(value2.tanggal_awal, value2.tanggal_akhir),
+                            tanggal_awal: value2.tanggal_awal,
+                            tanggal_akhir: value2.tanggal_akhir,
+
+                            jumlah_hari_pelaksanaan: `${value2.jumlah_hari_pelaksanaan} hari`,
+                            satker_target: value2.satker_target.nama_satker,
+                            jumlah_peserta: `${value2.jumlah_peserta} orang`,
+
+                            tujuan: value2.tujuan,
+                            kendala: value2.kendala,
+                            kesimpulan: value2.kesimpulan,
+                            tindak_lanjut: value2.tindak_lanjut,
+                            dokumentasi: value2.dokumentasi,
+                        };
+
+                        tableContent.push(baris);
+                    }
+
+                    if (value?.detail.length > 0) {
+                        for ([key3, value3] of Object.entries(value.detail)) {
+                            const indexKey = `${parseInt(key) + 1}.${parseInt(key2) + 1}.${parseInt(key3) + 1}`;
+
+                            const baris = {
+                                class: "bg-soft-warning",
+                                id: value3.id,
+                                status: value3.status,
+                                hide_satker: false,
+                                index: indexKey,
+                                jumlah_kegiatan: value3.data.length,
+                                satker: value3.satker,
+
+                                tanggal: "",
+                                tanggal_awal: "",
+                                tanggal_akhir: "",
+
+                                jumlah_hari_pelaksanaan: "",
+                                satker_target: "",
+                                jumlah_peserta: "",
+                                
+                                tujuan: "",
+                                kendala: "",
+                                kesimpulan: "",
+                                tindak_lanjut: "",
+                                dokumentasi: "",
+                            };
+
+                            tableContent.push(baris);
+
+                            for ([key4, value4] of Object.entries(value3.data)) {
+                                const indexKey = `${parseInt(key) + 1}.${parseInt(key2) + 1}.${parseInt(key3) + 1}.${parseInt(key4) + 1}`;
+
+                                const baris = {
+                                    class: "bg-soft-light",
+                                    id: value4.id,
+                                    status: value4.status,
+                                    hide_satker: true,
+                                    index: indexKey,
+                                    jumlah_kegiatan: value3.data.length,
+                                    satker: value4.satker,
+
+                                    tanggal: getTanggalKegiatan(value4.tanggal_awal, value4.tanggal_akhir),
+                                    tanggal_awal: value4.tanggal_awal,
+                                    tanggal_akhir: value4.tanggal_akhir,
+                                    
+                                    satker_target: value4.satker_target.nama_satker,
+                                    jumlah_hari_pelaksanaan: `${value4.jumlah_hari_pelaksanaan} hari`,
+                                    jumlah_peserta: `${value4.jumlah_peserta} orang`,
+
+                                    tujuan: value4.tujuan,
+                                    kendala: value4.kendala,
+                                    kesimpulan: value4.kesimpulan,
+                                    tindak_lanjut: value4.tindak_lanjut,
+                                    dokumentasi: value4.dokumentasi,
+                                };
+                                tableContent.push(baris);
+                            }
+                        }
+                    }
+                }
+
+                tableData.value = tableContent;
+                filteredPage.value = tableData.value;
+
+                await handleResetFilter('all');
+                unblock($('#__table'));
+            }
+            
+            const post = ref({});
+
+            const handlePost = async () => {
+                showSwalLoading();
+                
+                const modal = $('#createModal');
+
+                const { tanggal_awal, tanggal_akhir, jumlah_hari_pelaksanaan, satker_target, jumlah_peserta, tujuan, kendala, kesimpulan, tindak_lanjut, dokumentasi } = post.value;
+
+                const satker = satkerPK.value
+
+                const payload = {
+                    satker,
+                    tanggal_awal,
+                    ...(tanggal_akhir && {
+                        tanggal_akhir
+                    }),
+                    jumlah_hari_pelaksanaan,
+                    satker_target,
+                    jumlah_peserta,
+                    tujuan,
+                    kendala,
+                    kesimpulan,
+                    tindak_lanjut,
+                    dokumentasi
+                };
+
+                const formData = new FormData();
+
+                Object.entries(payload).forEach(([key, value]) => formData.append(key, value));
+
+                console.log('Payload :', payload);
+
+                try {
+                    const response = await axios.post(`/kegiatan/api/v1/dayatif/binaan_teknis/`,
+                        formData, {
+                            headers: {
+                                'Content-Type': 'multipart/form-data',
+                            },
+                        }
+                    );
+
+                    modal.modal('hide');
+                    showSwalSuccess('Berhasil!', `Data kegiatan telah <b>berhasil</b> ditambahkan!`);
+                } catch (error) {
+                    showSwalGenericError();
+                    console.error('Terjadi kesalahan :', error);
+                } finally {
+                    await loadData();
+                    store.form.$reset();
+                    post.value = {};
+                }
+            }
+
+            const edit = ref({});
+
+            const handleEdit = async (id) => {
+                try {
+                    const response = await axios.get(`/kegiatan/api/v1/dayatif/binaan_teknis/${id}/`);
+                    
+                    const data = response.data;
+
+                    console.log('Data:', data);
+
+                    const modal = $('#editModal');
+                    const form = $('#editForm');
+
+                    form.find('#edit__info').text(data.satker.nama_satker);
+
+                    // Tanggal
+                    store.form.tanggal.awal = data.tanggal_awal;
+                    store.form.tanggal.akhir = data.tanggal_akhir;
+
+                    // Kendala
+                    store.form.kendala.showKeterangan = data.kendala.startsWith('Ada');
+
+                    // Tindak Lanjut
+                    if (data.tindak_lanjut.startsWith('Ada')) {
+                        store.form.tindakLanjut.yes.showKeterangan = true;
+                        store.form.tindakLanjut.no.showContainer = false;
+                    } else if (data.tindak_lanjut.startsWith('Tidak')) {
+                        store.form.tindakLanjut.yes.showKeterangan = false;
+                        store.form.tindakLanjut.no.showContainer = true;
+                        if (data.tindak_lanjut.includes('Pemblokiran')) {
+                            store.form.tindakLanjut.no.showContainer2 = false;
+                        } else if (data.tindak_lanjut.includes('Anggaran tidak ada alokasi kegiatan')) {
+                            store.form.tindakLanjut.no.showContainer2 = false;
+                        } else {
+                            store.form.tindakLanjut.no.showContainer2 = true;
+                        }
+                    }
+
+                    edit.value = { ...data };
+
+                    edit.value.dokumentasi = null;
+                    edit.value.satker = data.satker.id;
+                    edit.value.satker_target = data.satker_target.id;
+
+                    console.log('Edit value diakhir:', edit.value)
+
+                    modal.modal('show');
+                    
+                    form.find('#edit__satker').val(edit.value.satker).trigger('change');
+                    form.find('#edit__satker_target').val(edit.value.satker_target).trigger('change');
+                } catch (error) {
+                    showSwalGenericError();
+                    console.error('Terjadi kesalahan :', error);
+                }
+            }
+
+            const handleUpdate = async (id) => {
+                showSwalLoading();
+
+                const { tanggal_awal, tanggal_akhir, jumlah_hari_pelaksanaan, satker_target, jumlah_peserta, tujuan, kendala, kesimpulan, tindak_lanjut, dokumentasi } = edit.value;
+
+                const modal = $('#editModal');
+
+                const payload = {
+                    tanggal_awal,
+                    ...(tanggal_akhir && {
+                        tanggal_akhir
+                    }),
+                    jumlah_hari_pelaksanaan,
+                    satker_target : parseInt(satker_target),
+                    jumlah_peserta,
+                    tujuan,
+                    kendala,
+                    kesimpulan,
+                    tindak_lanjut,
+                    ...(dokumentasi && {
+                        dokumentasi
+                    }),
+                };
+
+                const formData = new FormData();
+
+                Object.entries(payload).forEach(([key, value]) => formData.append(key, value));
+
+                console.log('Payload :', payload);
+
+                try {
+                    const response = await axios.patch(
+                        `/kegiatan/api/v1/dayatif/binaan_teknis/${edit.value.id}/`,
+                        formData, {
+                            headers: {
+                                'Content-Type': 'multipart/form-data',
+                            },
+                        }
+                    );
+
+                    modal.modal('hide');
+                    showSwalSuccess('Berhasil!', `Data kegiatan telah <b>berhasil</b> diperbarui!`);
+                } catch (error) {
+                    showSwalGenericError();
+                    console.error('Terjadi kesalahan :', error);
+                } finally {
+                    await loadData();
+                    store.form.$reset();
+                    edit.value = {};
+                }
+            }
+            
+            const exportData = ref({ status: 1, waktu: 'semua'});
+
+            const handleExport = async () => {
+                console.log('Exporting data ...', { ...exportData.value });
+                console.log(`[INFO] Exporting data ... Satker ID : ${satkerPK.value} - Level : ${satkerLevel.value}`)
+
+                const response = await axios.post('/kegiatan/api/v1/dayatif/binaan_teknis/export/', exportData.value);
+
+                console.log('Response:', response)
+            }
+            
+            const removeParams = (name) => {
+                const params = new URLSearchParams(window.location.search);
+                const baseURL = window.location.pathname;
+                params.delete(name);
+                const newUrl = baseURL + (params.toString() ? `?${params.toString()}` : '');
+                window.history.pushState({ path: newUrl }, '', newUrl);
+            }
+            
+            const getValueFromParams = (type) => {
+                const params = new URLSearchParams(window.location.search);
+                const value = params.get(type)
+                if (value == '') removeParams(type)
+                return value;
+            }
+
+            const filter = ref({ search: '', date: '', kegiatan: '', satker: '', status: '' });
+            const defaultPerPage = 10;
+            const perPage = ref(getValueFromParams('per_page') ? parseInt(getValueFromParams('per_page')) : defaultPerPage);
+
+            const setPerPageParams = () => {
+                const baseURL = window.location.pathname;
+                const queryParams = new URLSearchParams(window.location.search);
+                
+                const pageParams = queryParams.get('page');
+
+                if (pageParams > totalPage.value) {
+                    currentPage.value = 1;
+                    queryParams.delete('page');
+                }
+
+                if (perPage.value == defaultPerPage) {
+                    queryParams.delete('per_page');
+                } else {
+                    queryParams.set('per_page', perPage.value);
+                }
+                const queryString = queryParams.toString();
+                const newUrl = `${baseURL}${queryString ? `?${queryString}` : ''}`;
+                window.history.pushState({ path: newUrl }, '', newUrl);
+            };
+
+            watch(perPage, setPerPageParams);
+
+            const getPage = () => {
+                const params = new URLSearchParams(window.location.search);
+                let page = parseInt(params.get('page'));
+
+                if (isNaN(page) || page <= 0) {
+                    removeParams('page');
+                    page = 1;
+                }
+
+                return page;
+            }
+
+            const currentPage = ref(getPage());
+
+            const totalPage = computed(() => filteredPage.value ? Math.ceil(filteredPage.value.length / perPage.value) : 0);
+
+            const pagedData = computed(() => {
+                if (!filteredPage.value) return [];
+                const startIndex = (currentPage.value - 1) * perPage.value;
+                const endIndex = currentPage.value * perPage.value;
+                return filteredPage.value.slice(startIndex, endIndex);
+            });
+
+            const sortColumn = ref('no')
+            const sortDirection = ref('asc')
+
+            const handleSort = (column) => {
+                currentPage.value = 1;
+                removeParams('page');
+                sortColumn.value = column;
+                
+                sortDirection.value = sortDirection.value === 'asc' ? 'desc' : 'asc';
+
+                if (column === 'no') {
+                    filteredPage.value.sort((a, b) => {
+                        const dataA = `${a.index}`;
+                        const dataB = `${b.index}`;
+
+                        const indexA = dataA.split('.').map(Number);
+                        const indexB = dataB.split('.').map(Number);
+
+                        for (let i = 0; i < Math.max(indexA.length, indexB.length); i++) {
+                            const numA = indexA[i] || 0;
+                            const numB = indexB[i] || 0;
+
+                            if (numA !== numB) {
+                                return sortDirection.value === 'asc' ? (numA - numB) : (numB - numA);
+                            }
+                        }
+                        return 0;
+                    });
+                } else if (column === 'tanggal') {
+                    filteredPage.value.sort((a, b) => {
+                        const dateA = new Date(a.tanggal_awal);
+                        const dateB = new Date(b.tanggal_awal);
+                        return sortDirection.value === 'asc' ? (dateA - dateB) : (dateB - dateA);
+                    });
+                }
+            }
+
+            const buildQuery = (data, columns, search) => {
+                const query = search.toUpperCase();
+                return data.filter(item => {
+                    return columns.some(column => {
+                        const columnValue = String(item[column]).toUpperCase();
+                        return columnValue.includes(query);
+                    });
+                });
+            }
+
+            const handleSearch = async () => {
+                currentPage.value = 1;
+
+                const columns = ['nama_satker', 'deskripsi', 'tanggal', 'jumlah_kegiatan', 'jumlah_hari_pelaksanaan', 'satker_target', 'jumlah_peserta', 'tujuan', 'kendala', 'kesimpulan', 'tindak_lanjut'];
+
+                block($('#__table'));
+                await sleep(1000);
+                filteredPage.value = buildQuery(tableData.value, columns, filter.value.search);
+                unblock($('#__table'));
+
+                // const newUrl = filter.value.search !== '' ? `?search=${filter.value.search}` : pathname;
+                // window.history.pushState({ path: newUrl }, '', newUrl);
+            }
+
+            const isFilteredSomething = computed(() => {
+                return filter.value.date != '' || filter.value.kegiatan != '' || filter.value.status != '' || filter.value.satker != '';
+            });
+
+            const handleResetFilter = async (type) => {
+                block($('#__table'));
+                if (type == 'all') {
+                    await sleep(500);
+                    filter.value = {
+                        date: '',
+                        kegiatan: '',
+                        status: '',
+                        satker: '',
+                    };
+                    $('#filter__satker').val('').trigger('change');
+                    $('#filter__date').val('').trigger('change');
+                    filteredPage.value = tableData.value;
+                    unblock($('#__table'));
+                    return
+                }
+                
+                if (filter.value[type] == '') return;
+                
+                await sleep(500);
+                filter.value[type] = '';
+                filteredPage.value = tableData.value;
+                unblock($('#__table'));
+            }
+
+            const handleFilterDate = (data) => {
+                if (filter.value.date == '') return data;
+
+                const dateParts = filter.value.date.split('-');
+
+                const datePartStart = dateParts[0].trim();
+                const datePartEnd = dateParts[1].trim();
+
+                const startDate = moment(datePartStart, 'MM/DD/YYYY');
+                const endDate = moment(datePartEnd, 'MM/DD/YYYY');
+
+                const result = data.filter(item => {
+                    if (!item.tanggal_awal) return false;
+                    
+                    const itemDate = moment(item.tanggal_awal, 'YYYY-MM-DD');
+                    const expression = itemDate.isBetween(startDate, endDate, null, '[]');
+                    
+                    return expression;
+                });
+
+                return result
+            }
+
+            const handleFilterKegiatan = (data) => {
+                if (filter.value.kegiatan == '') return data;
+
+                const rangeString = filter.value.kegiatan;
+                const rangeArray = rangeString.split("-");
+
+                const rangeAwal = parseInt(rangeArray[0]);
+                const rangeAkhir = parseInt(rangeArray[1]);
+
+                const result = data.filter(item => item.jumlah_kegiatan >= rangeAwal && item.jumlah_kegiatan <= rangeAkhir);
+                
+                return result;
+            }
+            
+            const handleFilterStatus = (data) => {
+                if (filter.value.status == '') return data;
+                
+                const result = data.filter(item => {
+                    const statusMap = {
+                        0: 1,
+                        1: 2,
+                    };
+
+                    const expectedStatus = statusMap[filter.value.status];
+                    const expression = item.status == expectedStatus
+                    return expression;
+                });
+
+                return result;
+            }
+            
+            const handleFilterSatker = (data) => {
+                if (filter.value.satker == '') return data;
+                
+                const result = data.filter(item => {
+                    return item.satker.id == filter.value.satker;
+                });
+
+                return result;
+            }
+
+            const handleFilter = async () => {
+                block($('#__table'));
+
+                console.log({
+                    date: filter.value.date,
+                    status: filter.value.status,
+                    kegiatan: filter.value.kegiatan,
+                    satker: filter.value.satker,
+                })
+
+                await sleep(500);
+                currentPage.value = 1;
+                removeParams('page');
+
+                if (filter.value.date == '' && filter.value.status == '' && filter.value.satker == '' && filter.value.kegiatan == '') {
+                    filteredPage.value = tableData.value;
+                    unblock($('#__table'));
+                    return;
+                }
+
+                let filteredData = tableData.value;
+
+                filteredData = handleFilterDate(filteredData)
+                filteredData = handleFilterKegiatan(filteredData)
+                filteredData = handleFilterStatus(filteredData)
+                filteredData = handleFilterSatker(filteredData)
+
+                filteredPage.value = filteredData;
+
+                unblock($('#__table'));
+            }
+
+
+            const inputTargets = ['satker_target'];
+
+            const handleChange = (type, name, event) => {
+                const text = $(`#${type}__${name}`).find(':selected').text();
+                const value = event.target.value;
+                
+                if (type === 'create') {
+                    post.value[name] = value;
+                } else {
+                    edit.value[name] = value;
+                }
+            };
+
+            const getUserInfo = () => {
+                const roles = {
+                    0: 'BNNP',
+                    1: 'BNNK',
+                    2: 'PUSAT'
+                };
+
+                console.log('[INFO] Logged in Satker Level :', satkerLevel.value, `- ${roles[satkerLevel.value]}`);
+            };
+
+            onMounted(async () => {
+                await loadData();
+
+                getUserInfo()
+
+                inputTargets.forEach(name => {
+                    ['create', 'edit', 'filter'].forEach(type => {
+                        $(`#${type}__${name}`).on('change', (event) => handleChange(type, name, event));
+                    });
+                });
+
+                $('#filter__satker').on('change', (event) => filter.value.satker = event.target.value);
+
+                const $filterDateInput = $('#filter__date');
+
+                $filterDateInput.daterangepicker({
+                    showDropdowns: true,
+                    autoUpdateInput: false,
+                    ranges: {
+                        'Hari ini': [moment(), moment()],
+                        'Kemarin': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                        'Minggu ini': [moment().subtract(6, 'days'), moment()],
+                        'Bulan ini': [moment().startOf('month'), moment().endOf('month')],
+                        'Triwulan 1 (Januari - Maret)': [moment().startOf('year').startOf('quarter'), moment().startOf('year').startOf('quarter').add(2, 'months').endOf('month')],
+                        'Triwulan 2 (April - Juni)': [moment().startOf('year').startOf('quarter').add(3, 'months'), moment().startOf('year').startOf('quarter').add(5, 'months').endOf('month')],
+                        'Triwulan 3 (Juli - September)': [moment().startOf('year').startOf('quarter').add(6, 'months'), moment().startOf('year').startOf('quarter').add(8, 'months').endOf('month')],
+                        'Triwulan 4 (Oktober - Desember)': [moment().startOf('year').startOf('quarter').add(9, 'months'), moment().startOf('year').endOf('year')],
+                    },
+                    locale: {
+                        customRangeLabel: "Rentang Lainnya",
+                        cancelLabel: 'Batalkan',
+                        applyLabel: 'Terapkan'
+                    }
+                });
+
+                $filterDateInput.on('apply.daterangepicker', async function(ev, picker) {
+                    const value = picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY');
+
+                    $(this).val(value);
+
+                    filter.value.date = value;
+                });
+                
+                $filterDateInput.on('cancel.daterangepicker', async function(ev, picker) {
+                    $(this).val('');
+                    filter.value.date = '';
+                });
+
+                $("div.daterangepicker").click( function(e) {
+                    e.stopPropagation();
+                });
+                
+                $("#filter__date").click( function(e) {
+                    e.stopPropagation();
+                });
+                
+                await sleep(1000);
+
+                console.log('[INFO] Paged data :', pagedData.value);
+
+                $('#editModal, #createModal').on('hidden.bs.modal', () => store.form.$reset());
+            });
+
+            return {
+                store,
+                satkerLevel,
+                satkerPK,
+                title,
+
+                loadData,
+                tableData,
+                
+                perPage,
+                currentPage,
+                filteredPage,
+                totalPage,
+                pagedData,
+                
+                filter,
+                sortColumn,
+                sortDirection,
+                handleSort,
+                buildQuery,
+                handleSearch,
+                isFilteredSomething,
+                handleFilter,
+                handleResetFilter,
+                handleFilterDate,
+                handleFilterKegiatan,
+
+                post,
+                handlePost,
+
+                edit,
+                handleEdit,
+                handleUpdate,
+
+                exportData,
+                handleExport,
+            }
+        },
+    })
+
+    app.use(pinia)
+    app.mount('#app');
+</script>
+
+{% endblock %}
+
+{% block css_tambahan %}
+
+<style>
+    #detail__lokasi {
+        width: 250px
+    }
+
+    #detail__lokasi .detail__value {
+        padding-left: 10px;
+    }
+
+    #edit__selected_lokasi li span {
+        padding-left: 10px;
+    }
+
+    #edit__selected_lokasi .edit__selected_lokasi_label {
+        width: 150px;
+        display: inline-block;
+    }
+
+    ul.location__list {
+        text-align: left;
+    }
+
+    ul.location__list .location__label {
+        width: 150px;
+        display: inline-block;
+        font-weight: bold;
+    }
+
+    ul.location__list .location__value {
+        display: inline-block;
+        padding-left: 5px;
+    }
+</style>
+
+{% endblock css_tambahan %}

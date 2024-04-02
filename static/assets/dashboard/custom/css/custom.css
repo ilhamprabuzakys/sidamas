@@ -19,6 +19,12 @@
     background-color: #a9a9a9;
 }
 
+/* ======= HTML ELEMENT ======= */
+a[disabled] {
+    cursor: default;
+}
+  
+
 /* ===Utilities=== */
 /* ==CUSTOM BACKGROUND COLOR */
 .bg-soft-red,
@@ -89,6 +95,10 @@
     color: var(--text-important) !important;
 }
 
+.hr-light {
+    color: #dadada;
+}
+
 
 /* ==========================
  * TABLE
@@ -129,10 +139,6 @@ table ul li span.value {
     font-weight: bold;
 }
 
-table td div.list-button {
-    text-align: left !important;
-}
-
 /* ===TOPBAR BUTTON ROLE INFORMATION */
 #btn-role {
     text-transform: uppercase !important;
@@ -151,6 +157,29 @@ sup.required {
     color: red;
     margin-left: 0.15rem;
     user-select: none;
+}
+
+.all-unset {
+    all: unset;
+}
+
+
+/* ======= BUTTON ======= */
+.list-button {
+    text-align: left !important;
+}
+
+.list-button a {
+    display: block;
+    text-transform: uppercase;
+}
+
+.list-button button {
+    border: 0;
+    text-transform: uppercase;
+    padding: 0.5em 1em;
+    text-align: center;
+    width: -webkit-fill-available;
 }
 
 /* ===SELECT 2=== */
@@ -260,4 +289,134 @@ section table.table {
         font-size: 0.8rem;
         padding: 6px 15px;
     }
+}
+
+/* ==========================
+ * ANIMATION
+============================= */
+.fade-in {
+    animation: fadeIn ease 5s;
+    -webkit-animation: fadeIn ease 5s;
+    -moz-animation: fadeIn ease 5s;
+    -o-animation: fadeIn ease 5s;
+    -ms-animation: fadeIn ease 5s;
+}
+
+.fade-in-text-25 {
+    opacity: 25%;
+}
+
+.fade-in-text-25:hover {
+    opacity: 100%;
+    transition: opacity 500ms;
+    -webkit-transition: opacity 500ms;
+    -moz-transition: opacity 500ms;
+    -ms-transition: opacity 500ms;
+    -o-transition: opacity 500ms;
+}
+
+.fade-in-text-0 {
+    opacity: 0%;
+    transition: opacity 500ms;
+    -webkit-transition: opacity 500ms;
+    -moz-transition: opacity 500ms;
+    -ms-transition: opacity 500ms;
+    -o-transition: opacity 500ms;
+}
+
+.fade-in-text-0:hover {
+    opacity: 100%;
+    transition: opacity 500ms;
+    -webkit-transition: opacity 500ms;
+    -moz-transition: opacity 500ms;
+    -ms-transition: opacity 500ms;
+    -o-transition: opacity 500ms;
+}
+
+.fade-in-text-50 {
+    opacity: 50%;
+    transition: opacity 500ms;
+    -webkit-transition: opacity 500ms;
+    -moz-transition: opacity 500ms;
+    -ms-transition: opacity 500ms;
+    -o-transition: opacity 500ms;
+}
+
+.fade-in-text-50:hover {
+    opacity: 100%;
+    transition: opacity 500ms;
+    -webkit-transition: opacity 500ms;
+    -moz-transition: opacity 500ms;
+    -ms-transition: opacity 500ms;
+    -o-transition: opacity 500ms;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@-moz-keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@-webkit-keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@-o-keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@-ms-keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+/* ======= VUE TRANSITION ======= */
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity 0.5s;
+}
+
+.fade-enter,
+.fade-leave-to
+
+
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
 }

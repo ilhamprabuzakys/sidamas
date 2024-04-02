@@ -33,4 +33,17 @@ class DAYATIF_PEMETAAN_POTENSI_Filters(filters.FilterSet):
             Q(satker__nama_satker__icontains=value)
         )
 
-# ======= PEMETAAN POTENSI LIST =======
+# ======= PEMETAAN STAKEHOLDER =======
+class DAYATIF_PEMETAAN_STAKEHOLDER_Filters(filters.FilterSet):
+    s = filters.CharFilter(method='filter_global_search', label='Global search')
+    satker = filters.NumberFilter(field_name='satker', label='Satker Pelaksana ID')
+
+    class Meta:
+        model = models.DAYATIF_PEMETAAN_STAKEHOLDER
+        fields = ['satker', 's']
+        order_by = ['-satker__nama_satker']
+
+    def filter_global_search(self, queryset, name, value):
+        return queryset.filter(
+            Q(satker__nama_satker__icontains=value)
+        )

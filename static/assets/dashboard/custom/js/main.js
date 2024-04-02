@@ -21,7 +21,29 @@ $(document).ready(function () {
         $(this).find('.modal-dialog-scrollable .modal-body').css('overflow-x', '');
     });
 
+    // FIX DATE RANGEPICKER CLOSE PARENT
+    $("div.daterangepicker").click((e) => e.stopPropagation());
+
+    document.querySelectorAll('.list-button button').forEach(button => {
+        button.addEventListener('click', function() {
+            const trElement = this.closest('tr');
+            trElement.classList.remove('bg-soft-light');
+            trElement.classList.add('bg-soft-gray');
+        });
+    });
+    
+    document.addEventListener('click', function(event) {
+        const trElements = document.querySelectorAll('tr.bg-soft-gray');
+        trElements.forEach(trElement => {
+            if (!trElement.contains(event.target)) {
+                trElement.classList.remove('bg-soft-gray');
+                trElement.classList.add('bg-soft-light');
+            }
+        });
+    });
 });
+
+
 
 function fetchSearchResults() {
     console.log('Searching a page with query :', this.searchInput);
@@ -54,6 +76,13 @@ $('#resetFilter, #applyFilter').on('click', function () {
     $(this).closest('.dropdown-menu').prev('.dropdown-toggle').dropdown('toggle');
 });
 
+$(function() {
+    
+    $('.list-dropdown-button button').click(function() {
+        $(this).closest('.dropdown-menu').prev('.dropdown-toggle').dropdown('toggle');
+    });
+
+});
 
 const handleLogout = () => {
     $("#logoutModal").modal("show");
@@ -62,3 +91,5 @@ const handleLogout = () => {
 const handleLogoutConfirm = () => {
     $("#logoutModal").modal("hide");
 };
+
+

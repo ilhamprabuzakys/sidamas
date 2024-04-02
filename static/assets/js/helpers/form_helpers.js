@@ -40,15 +40,21 @@ $(function () {
     function resetForm(form) {
         if (!form || typeof form.hasClass !== 'function') { return; }
 
+        // If using form object
         if (form.hasClass('dont-reset') || form.hasClass('filter-form')) {
-            console.log('Form not resetted because it\'s forbidden ...');
+            // console.log('Form not resetted because it\'s forbidden ...');
+            form.find('.select2').val(null).trigger('change');
             return;
         }
 
         form.find('.select2').val(null).trigger('change');
         form.find('input[type="text"]').val('');
+        form.find('input[type="number"]').val(0);
+        form.find('input[type="textarea"]').val('');
         form.find('input[type="checkbox"]').prop('checked', false);
         form.find('input[type="file"]').val(null);
+
+        // console.log('Resetted this form :', form);
 
         form.trigger('reset');
     }

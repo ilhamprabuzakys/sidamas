@@ -12,12 +12,16 @@ psm.register("binaan_teknis", api.PSM_BINAAN_TEKNIS_ViewSet)
 psm.register("asistensi", api.PSM_ASISTENSI_ViewSet)
 psm.register("tes_urine", api.PSM_TES_URINE_DETEKSI_DINI_ViewSet)
 psm.register("tes_urine_crud", api.PSM_TES_URNIE_CURD_ViewSet) #crud;
+psm.register("monev_supervisi", api.PSM_MONITORING_DAN_EVALUASI_SUPERVISI_ViewSet)
+psm.register("monev_supervisi_crud", api.PSM_MONITORING_DAN_EVALUASI_SUPERVISI_CURD_ViewSet) #crud;
+psm.register("rakor_pemetaan", api.PSM_RAKOR_PEMETAAN_ViewSet)
+psm.register("audiensi", api.PSM_AUDIENSI_ViewSet)
 
 # ==== DAYATIF ====
 dayatif = routers.DefaultRouter()
 dayatif.register("binaan_teknis", api.DAYATIF_BINAAN_TEKNIS_ViewSet, basename='binaan_teknis')
-dayatif.register("pemetaan_potensi/list", api.DAYATIF_PEMETAAN_POTENSI_LIST_ViewSet, basename='pemetaan_potensi_list')
 dayatif.register("pemetaan_potensi", api.DAYATIF_PEMETAAN_POTENSI_ViewSet, basename='pemetaan_potensi')
+dayatif.register("pemetaan_stakeholder", api.DAYATIF_PEMETAAN_STAKEHOLDER_ViewSet, basename='pemetaan_stakeholder')
 
 router.registry.extend(psm.registry)
 router.registry.extend(dayatif.registry)

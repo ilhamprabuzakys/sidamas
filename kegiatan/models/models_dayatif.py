@@ -92,6 +92,8 @@ class DAYATIF_PEMETAAN_POTENSI(models.Model):
         return f'{self.satker.nama_satker} DAYATIF PEMETAAN POTENSI - {self.tanggal_awal} s/d {self.tanggal_akhir}'
 
 class DAYATIF_PEMETAAN_STAKEHOLDER(models.Model):
+    status = models.IntegerField(default=0, verbose_name='Status Pengiriman Kegiatan')
+    
     created_at = models.DateTimeField(auto_now_add=True, editable=False)
     updated_at = models.DateTimeField(auto_now=True, editable=False)
     
@@ -103,12 +105,17 @@ class DAYATIF_PEMETAAN_STAKEHOLDER(models.Model):
     tanggal_awal = models.DateField(verbose_name='Tanggal Awal Kegiatan')
     tanggal_akhir = models.DateField(verbose_name='Tanggal Akhir Kegiatan', blank=True, null=True)
     
-    desa = models.IntegerField(blank=True, null=True)
-    kecamatan = models.IntegerField(blank=True, null=True)
-    kabupaten = models.IntegerField(blank=True, null=True)
-    provinsi = models.IntegerField(blank=True, null=True)
+    desa = models.CharField(max_length=250, blank=True, null=True)
+    kecamatan = models.CharField(max_length=250, blank=True, null=True)
+    kabupaten = models.CharField(max_length=250, blank=True, null=True)
+    provinsi = models.CharField(max_length=250, blank=True, null=True)
     
-    stakeholder = models.TextField(blank=True, null=True, max_length=2000, verbose_name='Daftar Stakeholder')
+    nama_desa = models.CharField(max_length=150, blank=True, null=True)
+    nama_kecamatan = models.CharField(max_length=150, blank=True, null=True)
+    nama_kabupaten = models.CharField(max_length=150, blank=True, null=True)
+    nama_provinsi = models.CharField(max_length=150, blank=True, null=True)
+    
+    stakeholders = models.JSONField(blank=True, null=True, verbose_name='Daftar Stakeholder')
     
     deskripsi = models.TextField(blank=True, null=True, max_length=2000, verbose_name='Deskripsi Hasil')
     kendala = models.TextField(blank=True, null=True, max_length=2000, verbose_name='Hambatan/Kendala')

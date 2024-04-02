@@ -2,6 +2,21 @@ async function sleep(duration) {
     return await new Promise(resolve => setTimeout(resolve, duration));
 }
 
+function removeParams(name) {
+    const params = new URLSearchParams(window.location.search);
+    const baseURL = window.location.pathname;
+    params.delete(name);
+    const newUrl = baseURL + (params.toString() ? `?${params.toString()}` : '');
+    window.history.pushState({ path: newUrl }, '', newUrl);
+}
+
+function getValueFromParams (type) {
+    const params = new URLSearchParams(window.location.search);
+    const value = params.get(type)
+    if (value == '') removeParams(type)
+    return value;
+}
+
 function getRandomInt(min, max) {
     if (min && max) {
         min = Math.ceil(min);

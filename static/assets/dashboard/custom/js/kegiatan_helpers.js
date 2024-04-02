@@ -135,35 +135,7 @@ function getTanggalKegiatan(tanggal_awal, tanggal_akhir) {
 }
 
 
-// function formatDate(dateString) {
-//     const [year, month, day] = dateString.split('-');
-//     return new Date(year, month - 1, day);
-// }
-
-// function calculateDays() {
-//     const startDate = formatDate(this.startDate);
-//     const endDate = formatDate(this.endDate);
-
-//     // Clear end date if start date is cleared
-//     if (!this.startDate) {
-//         this.endDate = '';
-//         return;
-//     }
-
-//     // Prevent choosing end date less than current date
-//      const currentDate = new Date();
-//      if (endDate < currentDate) {
-//          alert('Tanggal akhir tidak boleh kurang dari tanggal saat ini!');
-//          this.endDate = '';
-//          return;
-//      }
-
-//     const diffTime = Math.abs(endDate - startDate);
-//     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
-//     const calculateDays = isNaN(diffDays) ? 1 : diffDays + 1;
-//     const jumlahHari = calculateDays < 0 ? 0 : calculateDays;
-//     this.jumlahHari = `${jumlahHari} hari`;
-// }
-
-
+function formatDate(dateString) {
+    const [year, month, day] = dateString.split('-');
+    return new Date(year, month - 1, day);
+}

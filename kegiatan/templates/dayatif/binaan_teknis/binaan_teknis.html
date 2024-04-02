@@ -1,39 +1,139 @@
 {% extends 'dashboard/dashboard_base.html' %}
 {% load static %}
+{% block title %} Rekapitulasi Pembinaan Teknis {% endblock %}
 
-{% block title %} Pembinaan Teknis {% endblock title %}
+{% block modal_tambahan %}
+{% include 'dayatif/binaan_teknis/modals/create_modal.html' %}
+{% include 'dayatif/binaan_teknis/modals/edit_modal.html'  %}
+{% endblock %}
 
 {% block content %}
 <div class="breadcrumb">
     <div class="row">
-        <h3 class="heading mb-2">Pembinaan Teknis</h3>
-        <span class="mb-0"><span class="text-muted fw-light">Kegiatan /</span>
-        <span class="ms-1 fw-medium">Pembinaan Teknis</span></span>
+        <h3 class="heading mb-2">Rekapitulasi Pembinaan Teknis</h3>
+        <span class="mb-0">
+            <span class="text-muted fw-light">Kegiatan /</span>
+            <span class="ms-1 fw-medium">Rekapitulasi Pembinaan Teknis</span>
+        </span>
     </div>
 </div>
 
-<section id="__data" x-data>
+<section id="__data">
     <div class="card">
         <div class="card-body">
             <div id="headline" class="mb-3">
-                <h3 class="text-center">REKAPITULASI PEMBINAAN TEKNIS BNNP &amp; BNNK</h3>
+                <h3 class="text-center">
+                    Rekapitulasi Pembinaan Teknis <b>BNNP</b> &amp; <b>BNNK</b> <br />
+                    <span id="currentYear"></span>
+                </h3>
                 <hr />
             </div>
 
             <div class="action-button">
-                <div class="d-flex justify-content-end mb-3 gap-2">
-                    <button class="btn btn-success" onclick="handleExport()"><i
-                            class="fas fa-file-export me-2"></i>Ekspor Data</button>
-                    <button class="btn btn-primary" id="createBTN" data-bs-toggle="modal" data-bs-target="#createModal">
-                        <i class="fas fa-plus me-2"></i>Tambah Data</button>
+                <div class="d-flex justify-content-between mb-3">
+                    <div id="filter__btn_container" class="d-flex align-items-center gap-2">
+                        <v-generic-filter :satker="{ id: satkerPK, level: satkerLevel }" :data="tableData" @update="(data) => filteredPage = data"></v-generic-filter>
+                    </div>
+                
+                    <div id="action__btn_container" class="d-flex gap-2">
+                        <v-export-button name="Binaan Teknis" url="binaan_teknis" :satker="{ id: satkerPK, level: satkerLevel }"></v-export-button>
+
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createModal">
+                            <i class="fas fa-plus me-2"></i>Tambah Data
+                        </button>
+                    </div>
                 </div>
             </div>
+            
+            <v-table-basic-filter :item="{ columns : ['nama_satker', 'deskripsi', 'tanggal', 'jumlah_kegiatan', 'jumlah_hari_pelaksanaan', 'satker_target', 'jumlah_peserta', 'tujuan', 'kendala', 'kesimpulan', 'tindak_lanjut'], tableData, totalDefault: 10 }" @set-page="(page) => currentPage = page" @set-data="(data) => filteredPage = data" @set-perpage="(page) => perPage = page">
+            </v-table-basic-filter>
 
-            <div class="table-responsive">
 
-				<div id="example" class="container my-5"></div>
-
-                {% include 'dayatif/binaan_teknis/table.html' %}
+            <div class="table-responsive" id="__table_container">
+                <v-table :item="{ pagedData }" :pagination="{ currentPage, totalPage, perPage, total: filteredPage?.length }" @go-pagination="(page) => currentPage = page">
+                    <template #thead>
+                        <tr>
+                            <th class="bg-soft-success text-center cursor-pointer" rowspan="2" @click="handleSort('no')">
+                                <div>
+                                    <i class="fas d-block" :class="sortColumn == 'no' && sortDirection === 'asc' ? 'text-secondary fa-sort-up' : 'fa-sort-up'"></i>
+                                    <span>No.</span>
+                                    <i class="fas d-block" :class="sortColumn == 'no' && sortDirection === 'desc' ? 'text-secondary fa-sort-down' : 'fa-sort-down'"></i>
+                                </div>
+                            </th>
+                            <th class="bg-soft-success" rowspan="2">Satuan Kerja Pelaksana</th>
+                            <th class="bg-soft-success cursor-pointer" rowspan="2" @click="handleSort('tanggal')">
+                                <div>
+                                    <i class="fas d-block" :class="sortColumn == 'tanggal' && sortDirection === 'asc' ? 'text-secondary fa-sort-up' : 'fa-sort-up'"></i>
+                                    <span>Tanggal</span>
+                                    <i class="fas d-block" :class="sortColumn == 'tanggal' && sortDirection === 'desc' ? 'text-secondary fa-sort-down' : 'fa-sort-down'"></i>
+                                </div>
+                            </th>
+                            <th class="bg-soft-success" rowspan="2">Jumlah Hari Pelaksanaan Kerja</th>
+                            <th class="bg-soft-success" rowspan="2">Satuan Kerja Target</th>
+                            <th class="bg-soft-success" rowspan="2">Jumlah peserta</th>
+                            <th class="bg-soft-success" rowspan="1" colspan="3">Rincian Hasil Pelaksanaan Program Pemberdayaan Alternatif Pada Satker Target</th>
+                            <th class="bg-soft-success" rowspan="2">Tindak Lanjut</th>
+                            <th class="bg-soft-success" rowspan="2">Dokumentasi</th>
+                            <th class="bg-soft-success text-center" rowspan="2" style="max-width: 150px">Aksi <i class="fas fa-edit ms-2"></i>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th class="bg-soft-success" rowspan="1">Tujuan</th>
+                            <th class="bg-soft-success" rowspan="1">Hambatan/Kendala</th>
+                            <th class="bg-soft-success" rowspan="1">Kesimpulan</th>
+                        </tr>
+                    </template>
+                    <template #tbody>
+                        <template v-for="(item, index) in pagedData" :key="index">
+                            <tr :class="item.class">
+                                <td class='text-center' v-text="item.index"></td>
+                                <td :colspan="item.hide_satker ? 0 : 11">
+                                    <template v-if="!item.hide_satker">
+                                        <v-item-header :nama="item.satker.nama_satker" :length="item.jumlah_kegiatan"></v-item-header>
+                                    </template>
+                                    <template v-else>
+                                        <v-item-header :nama="item.satker.nama_satker" :length="item.jumlah_kegiatan" :fade="true" :index="item.index"></v-item-header>
+                                    </template>
+                                </td>
+                                <template v-if="item.hide_satker">
+                                    <td>
+                                        <v-item-tanggal :awal="item.tanggal_awal" :akhir="item.tanggal_akhir"></v-item-tanggal>
+                                    </td>
+                                    <td>
+                                        <span v-text="item.jumlah_hari_pelaksanaan"></span>
+                                    </td>
+                                    <td>
+                                        <span v-text="item.satker_target"></span>
+                                    </td>
+                                    <td>
+                                        <span v-text="item.jumlah_peserta"></span>
+                                    </td>
+                                    <td>
+                                        <v-item-text :text="item.tujuan"></v-item-text>
+                                    </td>
+                                    <td>
+                                        <v-item-text :text="item.kendala"></v-item-text>
+                                    </td>
+                                    <td>
+                                        <v-item-text :text="item.kesimpulan"></v-item-text>
+                                    </td>
+                                    <td>
+                                        <v-item-text :text="item.tindak_lanjut"></v-item-text>
+                                    </td>
+                                    <td>
+                                        <v-item-dokumentasi :url="item.dokumentasi"></v-item-dokumentasi>
+                                    </td>
+                                    <td>
+                                        <v-action-button :item="{ id: item.id, nama: item.satker.nama_satker, level: item.satker.level, status: item.status }" :level="satkerLevel" :url="'binaan_teknis'" @update="loadData()" @edit="(id) => handleEdit(id)"></v-action-button>
+                                    </td>
+                                </template>
+                            </tr>
+                        </template>
+                    </template>
+                    <template #not-found>
+                        <v-result-not-found colspan="12" text="Hasil pencarian tidak ditemukan"></v-result-not-found>
+                    </template>
+                </v-table>
             </div>
         </div>
     </div>
@@ -41,773 +141,557 @@
 {% endblock %}
 
 {% block js_tambahan %}
-
-<!-- ==== DT CONFIGURATION ===== -->
 <script>
+    const { createApp, watch, reactive, ref, onMounted, computed } = Vue;
 
-    const satkerLevel = parseInt('{{ user.profile.satker.level }}');
-	let statusPengirimanSemua = '{{ satker_status_pengiriman_semua_kegiatan }}' == 'True' ? true : false;
-
-	let hasilFetch = null;
-	let search = '';
-
-    const table = $("#__table").DataTable({
-        language: dt_lang_config(),
-        serverSide: false,
-        searching: true,
-        responsive: true,
-        pageLength: 10,
-		order: [[1, 'asc']],
-        ajax: {
-            url: `/kegiatan/api/v1/dayatif/binaan_teknis/get_one_row_data/?format=datatables`,
-            dataSrc: function (json) {
-				const data = json.data.map((item, index) => {
-				  item._group = item.nama_satker;
-				  item._group2 = item.nama_satker;
-				  return item;
-				});
-				return data;
-			},
-        },
-        ordering: true,
-        columns: [
-			{ data: null },
-			{
-				data: "nama_satker",
-				visible: false,
-			},
-			{
-				data: null,
-				render: function (data, type, row) {
-					const el = getTanggalKegiatan(row.tanggal_awal, row.tanggal_akhir);
-					return el;
-				},
-			},
-			
-			{
-				data: "jumlah_hari_pelaksanaan",
-				width: "5%",
-				render: function (data, type, row) {
-					return `${data} hari`;
-				},
-			},
-			{
-				data: "nama_satker_target",
-			},
-			{
-				data: "jumlah_peserta",
-				render: function (data, type, row) {
-					return `${data} orang`;
-				},
-			},
-			{
-				data: "tujuan",
-			},
-			{
-				data: "kendala",
-			},
-			{
-				data: "kesimpulan",
-			},
-			{
-				data: "tindak_lanjut",
-			},
-			{
-				data: "dokumentasi",
-				width: "10%",
-				render: function (data, type, row) {
-					const el = `
-					<div class="text-center">
-						<a href="${data}" class="badge bg-primary text-white" target="_blank">
-						<i class="fas fa-eye me-2"></i>
-						Lihat dokumentasi
-						</a>
-					</div>`;
-
-					return el;
-				},
-			},
-
-			{
-				data: "id",
-				orderable: false,
-				render: function (data, type, row) {
-					const deleteArgs = JSON.stringify({
-						id: data,
-						name: 'kegiatan',
-						detail_name: row.nama_satker,
-						apiURL: '/kegiatan/api/v1/dayatif/binaan_teknis'
-					});
-
-					const keteraganStatusList = {
-						0: 'BNNP',
-						1: 'Pusat'
-					};
-
-					const keteranganKirim = keteraganStatusList[row.status] || '?';
-
-					const kirimArgs = JSON.stringify({
-						id: data,
-						nama_satker: row.nama_satker,
-						keterangan: keteranganKirim
-					});
-
-					const isKirimable = satkerLevel != 2 && row.status < 2;
-					const isEditable = satkerLevel == 2 || row.status < 2;
-
-					const BTN = {};
-
-					BTN.kirim = isKirimable ? `<div>
-						<a href="javascript:void(0);" onclick='handleKirim(${kirimArgs}, ${data})'
-							class="badge bg-primary text-white text-decoration-none mb-1"><i
-								class="fas fa-paper-plane me-2"></i>Kirim</a>
-					</div>` : `<div>
-						<a href="javascript:void(0);" class="badge bg-secondary text-white text-decoration-none mb-1"><i
-								class="fas fa-paper-plane me-2"></i>Kirim</a>
-					</div>`;
-
-					BTN.edit = isEditable ? `<div>
-						<a href="javascript:void(0);" onclick="handleEdit(${data})"
-							class="badge bg-success text-white text-decoration-none mb-1">
-							<i class="fas fa-pen-to-square me-2"></i>Edit</a>
-					</div>` : `<div>
-						<a href="javascript:void(0);" class="badge bg-secondary text-white text-decoration-none mb-1">
-							<i class="fas fa-pen-to-square me-2"></i>Edit</a>
-					</div>` ;
-					
-					BTN.delete = isEditable ? `<div>
-						<a href="javascript:void(0);" onclick='handleDelete(${deleteArgs})'
-							class="badge bg-danger text-white text-decoration-none mb-1">
-							<i class="fas fa-trash-alt me-2"></i>Hapus</a>
-					</div>` : `<div>
-						<a href="javascript:void(0);" class="badge bg-secondary text-white text-decoration-none mb-1">
-							<i class="fas fa-trash-alt me-2"></i>Hapus</a>
-					</div>` ;
-					
-					const el = `
-						<div class="list-button gx-3 text-uppercase">
-							${BTN.kirim}
-							${BTN.edit}
-							${BTN.delete}
-						</div>`;
-
-					return el;
-					
-				},
-			},
-		],
-        rowGroup: {
-			dataSrc: ['_group'],
-			className: 'bg-soft-primary',
-			startRender: function (rows, group, sasa) {
-				const tr = document.createElement('tr');
-				addCell(tr, group, 10)
-
-                const buttonBatalKirim = `<a href="javascript:void(0);" onclick="handleSemua('${group}', 'batalkan')" id="batalKirimSemuaBTN" class="badge bg-warning text-white text-decoration-none text-uppercase mb-1">
-					<i class="fas fa-ban me-2"></i>Batalkan Semua Pengiriman
-				</a>`
-
-				const buttonKirim = !statusPengirimanSemua ? `
-				<a href="javascript:void(0);" onclick="handleSemua('${group}', 'kirim')" id="kirimSemuaBTN" class="badge bg-primary text-white text-decoration-none text-uppercase mb-1">
-					<i class="fas fa-paper-plane me-2"></i>Kirim Semua
-				</a>
-				` : `<a href="javascript:void(0);" class="badge bg-secondary text-white text-decoration-none text-uppercase mb-1">
-					<i class="fas fa-paper-plane me-2"></i>Kirim Semua
-				</a>`
-
-				const containerBTN = `
-				<td>
-					<div>
-						${buttonBatalKirim}
-						${buttonKirim}
-					</div>
-				</td>
-				
-				`;
-
-				const td = document.createElement('td');
-				td.innerHTML = containerBTN;
-				tr.appendChild(td);
-		
-				return tr
-			}
-		},
-		columnDefs: [
-            dt_row_pagination(),
-			{
-				searchPanes: { show: true },
-				targets: [1, 2, 3, 4, 5, 6, 7, 8, 9]
-			}
-        ],
-		layout: {
-			top1: {
-			  searchPanes: {
-				viewTotal: true,
-				orderable: false,
-				initCollapsed: true
-			  }
-			},
-
-			topStart: null,
-			topEnd: function () {
-				const el = `
-				<label for="__table__search_input" class="form-label">Pencarian Keseluruhan</label>
-				<div class="w-100">
-					<input class="form-control form-control-sm" type="text" id="__table__search_input" />
-				</div>
-				`;
-
-				return el;
-			},
-			bottomStart: null,
-			bottomEnd: null,
-		},
-		initComplete: function (settings, json) {
-			return console.log("Hasil fetch data : ", json.data);
-		},
-    });
-
-	$('#__table__search_input').on('keyup', function () {
-		table.search($(this).val()).draw();
-	});
-
-	function addCell(tr, content, colSpan = 2) {
-		let td = document.createElement('th');
-	
-		td.colSpan = colSpan;
-		td.textContent = content;
-	
-		tr.appendChild(td);
-	  }
-
-	const getURL = () => {
-		const baseAPIURL = '/kegiatan/api/v1/dayatif/binaan_teknis/get_all_data/?format=datatables';
-		return search ? `${baseAPIURL}&s=${convertToTitleCaseAndReplaceSpace(search)}` : baseAPIURL;
-	}
-
-	let timeoutId;
-	let interval = 500;
-
-    /*
-	$('#__table_wrapper input[type="search"]').on('keyup', function () {
-			table.settings()[0].jqXHR.abort();
-	
-	        clearTimeout(timeoutId);
-	
-	        timeoutId = setTimeout(function () {
-	            search = $(this).val();
-	
-	            const url = getURL();
-	
-	            console.log('URL:', url);
-	
-	            table.ajax.url(url).load();
-	        }.bind(this), interval);
-	    });
-	*/
-</script>
-
-<!-- ==== DOM ===== -->
-<script>
-    document.addEventListener('alpine:init', function() {
-        Alpine.data("create", () => ({
-            id: 0,
-            tanggal_awal: '',
-            tanggal_akhir: '',
-            jumlah_hari_pelaksanaan: "0 hari",
-            kendala: '',
-            tindak_lanjut: '',
-            state: {
-                kendala : {
-                    show_keterangan: false,
+    const useFormStore = defineStore('form', () => {
+        const base = {
+            tanggal: { awal: '', akhir: '' },
+            tindakLanjut: {
+                yes: {
+                    showKeterangan: false
                 },
-                tindak_lanjut : {
-                    yes_show_keterangan: false,
-                    no_show_container: false,
-                    no_show_container_lainnya: false,
-                },
+                no: {
+                    showContainer: false,
+                    showContainer2: false, // C. Lainnya
+                }
             },
-        }));
-        
-        Alpine.store("edit", {
-            data: {
-                id: 0,
-                tanggal_awal: '',
-                tanggal_akhir: '',
-                jumlah_hari_pelaksanaan: "0 hari",
-                jumlah_peserta: 0,
-                tujuan: '',
-                kendala: '',
-                kesimpulan: '',
-                tindak_lanjut: '',
-                satker: 0,
-                satker_target: 0,
-            },
-            state: {
-                kendala : {
-                    show_keterangan: false,
-                },
-                tindak_lanjut : {
-                    yes_show_keterangan: false,
-                    no_show_container: false,
-                    no_show_container_lainnya: false,
-                },
-            },
-            updateData(data) {
-                this.data = data;
-            },
-            updateState(state) {
-                this.state = state;
-            },
+            kendala: { showKeterangan: false },
+        };
+
+        const tanggal = ref({ ...base.tanggal });
+        const tindakLanjut = ref({ ...base.tindakLanjut });
+        const kendala = ref({ ...base.kendala });
+
+        const getJumlahHari = computed(() => {
+            const { awal, akhir } = tanggal.value;
+            if (awal === '' && akhir === '') return 0;
+
+            const tanggal_awal = new Date(awal);
+            const tanggal_akhir = new Date(akhir);
+            const diffTime = Math.abs(tanggal_akhir - tanggal_awal);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            return isNaN(diffDays) ? 1 : diffDays + 1;
         });
+
+        return { tanggal, tindakLanjut, kendala, getJumlahHari };
     });
-	
-	$(function() {
-		// if (statusPengirimanSemua) $('#kirimSemuaBTN').addClass('disabled bg-secondary').removeClass('bg-primary');
-	});
-	
-
-	function resetSatkerTarget(type) {
-		const semua_option = `<option value="">Semua</option>`;
-
-		$(`#${type}__satker_target`).empty();
-		$(`#${type}__satker_target`).append($(`<option>`, {
-			value: '',
-			text: '--Pilih Satuan Kerja Target --',
-			disabled: true,
-		}));
-		$(`#${type}__satker_target`).prop(`disabled`, true);
-		$(`#${type}__satker_target`).append(semua_option);
-	}
-
-	async function loadSatkerTarget(parentId, type) {
-		if (!parentId) return;
-
-		const dropdownEl = $(`#${type}__satker_target`);
-
-		try {
-			const params = parentId < 213 ? `?parent=${parentId}` : ''
-			const response = await axios.get(`/users/api/v1/satker/${params}`);
-	
-			response.data.forEach(value => {
-				dropdownEl.append($('<option>', {
-					value: value.id,
-					text: `${value.nama_satker}`
-				}));
-			});
-	
-			dropdownEl.removeAttr('disabled');
-		} catch (error) {
-			console.error('Error:', error);
-		}
-	}
-
-	/*
-	$('#create__satker').on('change', async function() {
-		const value = $(this).val();
-
-		resetSatkerTarget('create');
-
-		if (value && value != '') {
-			await loadSatkerTarget(value, 'create');
-		}
-	});
-
-	$('#edit__satker').on('change', async function() {
-		
-		const value = $(this).val();
-
-		resetSatkerTarget('edit');
-
-		if (value && value != '') {
-			await loadSatkerTarget(value, 'edit');
-		}
-	});
-    */
 </script>
 
-<!-- ==== HELPERS ===== -->
+{% include "dayatif/partials/components.html" %}
+
 <script>
-    // ******** JUMLAH HARI PELAKSANAAN KERJA ********
-	function formatDate(dateString) {
-        const [year, month, day] = dateString.split('-');
-        return new Date(year, month - 1, day);
-    }
+    const app = createApp({
+        delimiters: ['{', '}'],
+        components: {
+            'v-item-header': ItemHeader,
+            'v-item-dokumentasi': ItemDokumentasi,
+            'v-item-tanggal': ItemTanggal,
+            'v-item-text': ItemText,
+            'v-result-not-found': ResultNotFound,
+            'v-action-button': ActionBTN,
+            'v-export-button': ExportBTN,
+            'v-table': Table,
+            'v-table-basic-filter': TableBasicFilter,
+            'v-generic-filter': GenericFilter,
+        },
+        setup() {
+            const store = useFormStore()
+            
+            const title = ref('Binaan Teknis');
 
-	function calculateDays() {
-        const type = event.target.dataset.type;
-        const tanggal_awal_val = type === 'create' ? this.$refs.create__tanggal_awal.value : this.$refs.edit__tanggal_awal.value;
-		const tanggal_akhir_val = type === 'create' ? this.$refs.create__tanggal_akhir.value : this.$refs.edit__tanggal_akhir.value;
+            const satkerPK = ref(parseInt('{{ user.profile.satker.pk }}'));
+            const satkerLevel = ref(parseInt('{{ user.profile.satker.level }}'));
 
-		if (tanggal_awal_val) {
-			this.tanggal_awal = tanggal_awal_val;
-		}
-		if (tanggal_akhir_val) {
-			this.tanggal_akhir = tanggal_akhir_val;
-		}
+            const tableData = ref(null);
+            const filteredPage = ref(null);
 
-        console.log('This tanggal_awal :', this.tanggal_awal)
-        console.log('This tanggal_akhir :', this.tanggal_akhir)
+            const apiURL = '/kegiatan/api/v1/dayatif/binaan_teknis/list/?format=datatables';
+            
+            const loadData = async () => {
+                block($('#__table'));
+                const tableContent = [];
+                const response = await axios.get(apiURL);
+                const data = response.data.data;
 
-        // Clear end date if start date is cleared
-        if (!this.tanggal_awal) {
-            this.tanggal_akhir = '';
-            return;
-        }
+                const getClass = (level) => {
+                    const classMap = {
+                        2: 'bg-soft-danger',
+                        0: 'bg-soft-primary',
+                        1: 'bg-soft-warning',
+                    }
 
-        const tanggal_awal = formatDate(this.tanggal_awal);
-        const tanggal_akhir = formatDate(this.tanggal_akhir);
+                    return classMap[level];
+                }
+                
+                let key, value, key2, value2, key3, value3, key4, value4;
 
-        // Prevent choosing end date less than current date
-        // const currentDate = new Date();
+                for ([key, value] of Object.entries(data)) {
+                    const baris = {
+                        class: getClass(value.satker.level),
+                        id: value.id,
+                        status: value.status,
+                        hide_satker: false,
+                        index: parseInt(key) + 1,
+                        jumlah_kegiatan: value.data.length,
+                        satker: value.satker,
 
-         if (tanggal_awal > tanggal_akhir) {
-             this.tanggal_akhir = '';
-             return;
-         }
-         
-         if (tanggal_akhir < tanggal_awal) {
-             alert('Tanggal akhir tidak boleh kurang atau sama dengan tanggal mulai!');
-             this.tanggal_akhir = '';
-             return;
-         }
+                        tanggal: "",
+                        tanggal_awal: "",
+                        tanggal_akhir: "",
 
-        const diffTime = Math.abs(tanggal_akhir - tanggal_awal);
-        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                        jumlah_hari_pelaksanaan: "",
+                        satker_target: "",
+                        jumlah_peserta: "",
+                        
+                        tujuan: "",
+                        kendala: "",
+                        kesimpulan: "",
+                        tindak_lanjut: "",
+                        dokumentasi: "",
+                    };
 
-        const calculateDays = isNaN(diffDays) ? 1 : diffDays + 1;
-        const jumlah_hari = calculateDays < 0 ? 0 : calculateDays;
-        this.jumlah_hari_pelaksanaan = `${jumlah_hari} hari`;
-    }
-</script>
+                    tableContent.push(baris);
 
-<!-- ==== FORM ACTIONS ===== -->
-<script>
-    async function handlePost(e) {
-        e.preventDefault();
+                    for ([key2, value2] of Object.entries(value.data)) {
+                        const indexKey = `${parseInt(key) +1}.${parseInt(key2) + 1}`;
+                        const baris = {
+                            class: "bg-soft-light",
+                            id: value2.id,
+                            status: value2.status,
+                            hide_satker: true,
+                            index: indexKey,
+                            satker: value2.satker,
+                            jumlah_kegiatan: value.data.length,
 
-        showSwalLoading();
+                            tanggal: getTanggalKegiatan(value2.tanggal_awal, value2.tanggal_akhir),
+                            tanggal_awal: value2.tanggal_awal,
+                            tanggal_akhir: value2.tanggal_akhir,
 
-        const modal = $('#createModal');
-        const form = $('#createForm');
+                            jumlah_hari_pelaksanaan: `${value2.jumlah_hari_pelaksanaan} hari`,
+                            satker_target: value2.satker_target.nama_satker,
+                            jumlah_peserta: `${value2.jumlah_peserta} orang`,
 
-        const tanggal_awal = form.find('#create__tanggal_awal').val();
-        const tanggal_akhir = form.find('#create__tanggal_akhir').val();
-        const jumlah_hari_pelaksanaan = form.find('#create__jumlah_hari_pelaksanaan').val();
-        const satker = form.find('#create__satker').val();
-        const satker_target = form.find('#create__satker_target').val();
-        const jumlah_peserta = form.find('#create__jumlah_peserta').val();
-        const tujuan = form.find('#create__tujuan').val();
-        const kendala = form.find('#create__kendala').val();
-        const kesimpulan = form.find('#create__kesimpulan').val();
-        const tindak_lanjut = form.find('#create__tindak_lanjut').val();
-        const dokumentasi = form.find('#create__dokumentasi')[0].files[0];
+                            tujuan: value2.tujuan,
+                            kendala: value2.kendala,
+                            kesimpulan: value2.kesimpulan,
+                            tindak_lanjut: value2.tindak_lanjut,
+                            dokumentasi: value2.dokumentasi,
+                        };
 
-        const formData = new FormData();
+                        tableContent.push(baris);
+                    }
 
-        formData.append('parent', parseInt(parent));
-        formData.append('tanggal_awal', tanggal_awal);
-        if (tanggal_akhir) formData.append('tanggal_akhir', tanggal_akhir);
-        formData.append('jumlah_hari_pelaksanaan', parseInt(jumlah_hari_pelaksanaan));
-        formData.append('satker', parseInt(satker));
-        formData.append('satker_target', parseInt(satker_target));
-        formData.append('jumlah_peserta', jumlah_peserta);
-        formData.append('tujuan', tujuan);
-        formData.append('kendala', kendala);
-        formData.append('kesimpulan', kesimpulan);
-        formData.append('tindak_lanjut', tindak_lanjut);
-        formData.append('dokumentasi', dokumentasi);
+                    if (value?.detail.length > 0) {
+                        for ([key3, value3] of Object.entries(value.detail)) {
+                            const indexKey = `${parseInt(key) + 1}.${parseInt(key2) + 1}.${parseInt(key3) + 1}`;
 
-		const payload = {
-            satker,
-            satker_target,
-            tanggal_awal,
-            tanggal_akhir,
-            jumlah_hari_pelaksanaan,
-            jumlah_peserta,
-            tujuan,
-            kendala,
-            kesimpulan,
-            tindak_lanjut,
-            dokumentasi
-        };
+                            const baris = {
+                                class: "bg-soft-warning",
+                                id: value3.id,
+                                status: value3.status,
+                                hide_satker: false,
+                                index: indexKey,
+                                jumlah_kegiatan: value3.data.length,
+                                satker: value3.satker,
 
-        console.log('Payload :', payload);
+                                tanggal: "",
+                                tanggal_awal: "",
+                                tanggal_akhir: "",
 
-        try {
-            const response = await axios.post(`/kegiatan/api/v1/dayatif/binaan_teknis/`, formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-            });
+                                jumlah_hari_pelaksanaan: "",
+                                satker_target: "",
+                                jumlah_peserta: "",
+                                
+                                tujuan: "",
+                                kendala: "",
+                                kesimpulan: "",
+                                tindak_lanjut: "",
+                                dokumentasi: "",
+                            };
 
-            modal.modal('hide');
-            showSwalSuccess('Berhasil!', `Data kegiatan telah <b>berhasil</b> ditambahkan!`);
-        } catch (error) {
-            showSwalGenericError();
-            console.error('Terjadi kesalahan :', error);
-        } finally {
-            table.ajax.reload();
-        }
-    }
+                            tableContent.push(baris);
 
-    async function handleEdit(id) {
-        try {
-            const response = await axios.get(`/kegiatan/api/v1/dayatif/binaan_teknis/${id}/`);
-            const data = response.data;
+                            for ([key4, value4] of Object.entries(value3.data)) {
+                                const indexKey = `${parseInt(key) + 1}.${parseInt(key2) + 1}.${parseInt(key3) + 1}.${parseInt(key4) + 1}`;
 
-            const modal = $('#editModal');
-            const form = $('#editForm');
+                                const baris = {
+                                    class: "bg-soft-light",
+                                    id: value4.id,
+                                    status: value4.status,
+                                    hide_satker: true,
+                                    index: indexKey,
+                                    jumlah_kegiatan: value3.data.length,
+                                    satker: value4.satker,
 
-            modal.find('#edit__info').text(data.detail.satker.nama_satker);
+                                    tanggal: getTanggalKegiatan(value4.tanggal_awal, value4.tanggal_akhir),
+                                    tanggal_awal: value4.tanggal_awal,
+                                    tanggal_akhir: value4.tanggal_akhir,
+                                    
+                                    satker_target: value4.satker_target.nama_satker,
+                                    jumlah_hari_pelaksanaan: `${value4.jumlah_hari_pelaksanaan} hari`,
+                                    jumlah_peserta: `${value4.jumlah_peserta} orang`,
 
-            const storeData = data;
-            const stateData = { kendala: {}, tindak_lanjut: {} };
+                                    tujuan: value4.tujuan,
+                                    kendala: value4.kendala,
+                                    kesimpulan: value4.kesimpulan,
+                                    tindak_lanjut: value4.tindak_lanjut,
+                                    dokumentasi: value4.dokumentasi,
+                                };
+                                tableContent.push(baris);
+                            }
+                        }
+                    }
+                }
 
-			// Kendala/Hambatan
-            if (data.kendala.startsWith('Ada')) {
-                stateData.kendala.show_keterangan = true;
-            } else {
-                stateData.kendala.show_keterangan = false;
+                tableData.value = tableContent;
+                filteredPage.value = tableData.value;
+                unblock($('#__table'));
             }
             
-			// Tindak Lanjut
-			if (data.tindak_lanjut.startsWith('Ada')) {
-                stateData.tindak_lanjut.yes_show_keterangan = true;
-                stateData.tindak_lanjut.no_show_container = false;
-            } else if (data.tindak_lanjut.startsWith('Tidak')) {
-                stateData.tindak_lanjut.yes_show_keterangan = false;
-                stateData.tindak_lanjut.no_show_container = true;
-				if (data.tindak_lanjut.includes('Pemblokiran')) {
-                    stateData.tindak_lanjut.no_show_container_lainnya = false;
-				} else if (data.tindak_lanjut.includes('Anggaran tidak ada alokasi kegiatan')) {
-                    stateData.tindak_lanjut.no_show_container_lainnya = false;
-				} else {
-                    stateData.tindak_lanjut.no_show_container_lainnya = true;
-				}
-			}
-            
-            form.find('#edit__satker').val(data.satker).trigger('change');
-            
-			await loadSatkerTarget(data.satker, 'edit');
-            
-            form.find('#edit__satker_target').val(data.satker_target).trigger('change');
+            const post = ref({});
 
-            storeData.jumlah_hari_pelaksanaan = `${storeData.jumlah_hari_pelaksanaan} hari`;
-            
-            Alpine.store('edit').updateData(storeData);
-            Alpine.store('edit').updateState(stateData);
+            const handlePost = async () => {
+                showSwalLoading();
+                
+                const modal = $('#createModal');
 
-            modal.modal('show');
-        } catch (error) {
-            showSwalGenericError();
-            console.error('Terjadi kesalahan :', error);
-        }
-    }
+                const { tanggal_awal, tanggal_akhir, jumlah_hari_pelaksanaan, satker_target, jumlah_peserta, tujuan, kendala, kesimpulan, tindak_lanjut, dokumentasi } = post.value;
 
-    async function handleUpdate(e) {
-        e.preventDefault();
+                const satker = satkerPK.value
 
-        showSwalLoading();
+                const payload = {
+                    satker,
+                    tanggal_awal,
+                    ...(tanggal_akhir && {
+                        tanggal_akhir
+                    }),
+                    jumlah_hari_pelaksanaan,
+                    satker_target,
+                    jumlah_peserta,
+                    tujuan,
+                    kendala,
+                    kesimpulan,
+                    tindak_lanjut,
+                    dokumentasi
+                };
 
-        const modal = $('#editModal');
-        const form = $('#editForm');
+                const formData = new FormData();
 
-        const id = form.find('#edit__id').val();
+                Object.entries(payload).forEach(([key, value]) => formData.append(key, value));
 
-        const tanggal_awal = form.find('#edit__tanggal_awal').val();
-        const tanggal_akhir = form.find('#edit__tanggal_akhir').val();
-        const jumlah_hari_pelaksanaan = form.find('#edit__jumlah_hari_pelaksanaan').val();
-        const satker = form.find('#edit__satker').val();
-        const satker_target = form.find('#edit__satker_target').val();
-        const jumlah_peserta = form.find('#edit__jumlah_peserta').val();
-        const tujuan = form.find('#edit__tujuan').val();
-        const kendala = form.find('#edit__kendala').val();
-        const kesimpulan = form.find('#edit__kesimpulan').val();
-        const tindak_lanjut = form.find('#edit__tindak_lanjut').val();
-        const dokumentasi = form.find('#edit__dokumentasi')[0].files[0];
+                console.log('Payload :', payload);
 
-        const payload = {
-            satker,
-            satker_target,
-            tanggal_awal,
-            tanggal_akhir,
-            jumlah_hari_pelaksanaan,
-            jumlah_peserta,
-            tujuan,
-            kendala,
-            kesimpulan,
-            tindak_lanjut,
-            dokumentasi
-        };
+                try {
+                    const response = await axios.post(`/kegiatan/api/v1/dayatif/binaan_teknis/`,
+                        formData, {
+                            headers: {
+                                'Content-Type': 'multipart/form-data',
+                            },
+                        }
+                    );
 
-        const formData = new FormData();
-
-        formData.append('tanggal_awal', tanggal_awal);
-        formData.append('tanggal_akhir', tanggal_akhir ?? null);
-        formData.append('jumlah_hari_pelaksanaan', parseInt(jumlah_hari_pelaksanaan));
-        formData.append('satker', parseInt(satker));
-        formData.append('satker_target', parseInt(satker_target));
-        formData.append('jumlah_peserta', jumlah_peserta);
-        formData.append('tujuan', tujuan);
-        formData.append('kendala', kendala);
-        formData.append('kesimpulan', kesimpulan);
-        formData.append('tindak_lanjut', tindak_lanjut);
-
-        if (dokumentasi) formData.append('dokumentasi', dokumentasi);
-
-        console.log('Payload :', payload);
-
-        try {
-            const response = await axios.patch(`/kegiatan/api/v1/dayatif/binaan_teknis/${id}/`, formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-            });
-
-            modal.modal('hide');
-            showSwalSuccess('Berhasil!', `Data kegiatan telah <b>berhasil</b> diperbarui!`);
-        } catch (error) {
-            showSwalGenericError();
-            console.error('Terjadi kesalahan :', error);
-        } finally {
-            table.ajax.reload();
-        }
-    }
-
-	async function handleDeleteAllKegiatan(satkerId) {
-		const confirmResult = await showSwalConfirm(`Untuk menghapus data <b>kegiatan</b>? <br> Data yang dihapus tidak dapat <b>dipulihkan</b> kembali`, 'Ya, hapus data');
-
-		if (!confirmResult.isConfirmed) return;
-
-		showSwalLoading();
-
-		await sleep(1000);
-
-		try {
-			const response = await axios.delete(`/kegiatan/api/v1/dayatif/binaan_teknis/${satkerId}/delete_all_kegiatan/`);
-			// const response = await axios.delete('/kegiatan/api/v1/dayatif/binaan_teknis/delete_all_kegiatan/?satker_id=' + satkerId);
-
-			console.log('Respose :', response);
-
-			showSwalSuccess('Berhasil', `Data <b>kegiatan</b> telah berhasil <b>dihapus</b>`, 3000);
-
-			reloadAllDataTables();
-		} catch (error) {
-			showSwalGenericError();
-			console.error('Terjadi kesalahan :', error);
-		}
-	}
-
-	async function handleKirim(args) {
-        console.log({args});
-		const confirmResult = await showSwalConfirm(`Apakah anda yakin untuk mengirim kegiatan ID ${args.id} dari Satuan Kerja <b>${args.nama_satker}</b> ke <b>${args.keterangan}</b>`, 'Ya, kirim data');
-
-		if (!confirmResult.isConfirmed) return;
-
-		showSwalLoading();
-
-		await sleep(1000);
-
-		try {
-			const response = await axios.post('/kegiatan/api/v1/dayatif/binaan_teknis/kirim_kegiatan/', { kegiatan_id : args.id });
-
-			console.log('Respose :', response);
-
-			const sendedToParent = response.data.parent.keterangan;
-
-			showSwalSuccess('Berhasil', `Data <b>kegiatan</b> dari <b>${args.nama_satker}</b> telah berhasil <b>dikirimkan ke <b>${sendedToParent}</b></b>`);
-
-			reloadAllDataTables();
-		} catch (error) {
-			showSwalGenericError();
-			console.error('Terjadi kesalahan :', error);
-		}
-	}
-
-    async function handleSemua(nama_satker, tipe) {
-        tipe = tipe == 'kirim' ? 'kirim' : 'batalkan';
-
-        const confirmMessage = tipe == 'kirim' ? `Apakah anda yakin untuk mengirim semua kegiatan dari <b>${nama_satker}</b>` : `Apakah anda yakin untuk membatalkan semua pengiriman kegiatan dari Satuan Kerja <b>${nama_satker}</b>`;
-
-        const confirmMessageButton = tipe == 'kirim' ? 'Ya, kirim data' : 'Ya, batalkan';
-
-        const confirmResult = await showSwalConfirm(confirmMessage, confirmMessageButton);
-
-		if (!confirmResult.isConfirmed) return;
-
-        showSwalLoading();
-
-		await sleep(1000);
-
-        try {
-			const response = await axios.post('/kegiatan/api/v1/dayatif/binaan_teknis/semua_kegiatan/', { nama_satker : nama_satker, tipe: tipe });
-
-			console.log('Respose :', response);
-
-			const sendedToParent = response.data.parent.keterangan;
-
-            const successMessage = tipe == 'kirim' ? `Data <b>kegiatan</b> dari <b>${nama_satker}</b> telah berhasil <b>dikirimkan ke <b>${sendedToParent}</b></b>` : `Data pengiriman <b>kegiatan</b> ke <b>${sendedToParent}</b> dari <b>${nama_satker}</b> telah berhasil <b>dibatalkan</b>`
-
-			showSwalSuccess('Berhasil', successMessage);
-
-			reloadAllDataTables();
-
-			statusPengirimanSemua = tipe == 'kirim';
-            
-            tipe == 'kirim' ?? $('#kirimSemuaBTN').addClass('disabled bg-secondary').removeClass('bg-primary');
-		} catch (error) {
-			showSwalGenericError();
-			console.error('Terjadi kesalahan :', error);
-		}
-    }
-	
-    async function handleExport() {
-		showSwalLoading();
-
-		await sleep(1000);
-
-		try {
-			const response = await axios.post('/kegiatan/api/v1/dayatif/binaan_teknis/export_data/');
-
-            const data = response.data;
-
-            // console.log(data); Swal.close(); return
-
-            window.location.href = data.file_path;
-
-            const confirmation = await Swal.fire({
-                title: "Berhasil",
-                html: `Data <b>Kegiatan Binaan Teknis</b> telah <b>berhasil</b> diexport! <br>Klik tombol unduh ulang apabila <b>gagal</b>!`,
-                icon: "success",
-                confirmButtonText: "Unduh ulang.",
-                showCancelButton: true,
-                cancelButtonText: 'Batalkan',
-                showCloseButton: true,
-                allowOutsideClick: false,
-            });
-    
-            if (confirmation.isConfirmed) {
-                console.log('Blud is downloading again!');
-                window.location.href = data.file;
+                    modal.modal('hide');
+                    showSwalSuccess('Berhasil!', `Data kegiatan telah <b>berhasil</b> ditambahkan!`);
+                } catch (error) {
+                    showSwalGenericError();
+                    console.error('Terjadi kesalahan :', error);
+                } finally {
+                    await loadData();
+                    store.$reset();
+                    post.value = {};
+                }
             }
-		} catch (error) {
-			showSwalGenericError();
-			console.error('Terjadi kesalahan :', error);
-		}
-	}
-</script>
-{% endblock %}
 
-{% block modal_tambahan %}
-{% include 'dayatif/binaan_teknis/modals/create_modal.html' %}
-{% include 'dayatif/binaan_teknis/modals/edit_modal.html' %}
+            const edit = ref({});
+
+            const handleEdit = async (id) => {
+                try {
+                    const response = await axios.get(`/kegiatan/api/v1/dayatif/binaan_teknis/${id}/`);
+                    
+                    const data = response.data;
+
+                    console.log('Data:', data);
+
+                    const modal = $('#editModal');
+                    const form = $('#editForm');
+
+                    form.find('#edit__info').text(data.satker.nama_satker);
+
+                    // Tanggal
+                    store.tanggal.awal = data.tanggal_awal;
+                    store.tanggal.akhir = data.tanggal_akhir;
+
+                    // Kendala
+                    store.kendala.showKeterangan = data.kendala.startsWith('Ada');
+
+                    // Tindak Lanjut
+                    /*
+                    if (data.tindak_lanjut.startsWith('Ada')) {
+                        store.tindakLanjut.yes.showKeterangan = true;
+                        store.tindakLanjut.no.showContainer = false;
+                    } else if (data.tindak_lanjut.startsWith('Tidak')) {
+                        store.tindakLanjut.yes.showKeterangan = false;
+                        store.tindakLanjut.no.showContainer = true;
+                        if (data.tindak_lanjut.includes('Pemblokiran')) {
+                            store.tindakLanjut.no.showContainer2 = false;
+                        } else if (data.tindak_lanjut.includes('Anggaran tidak ada alokasi kegiatan')) {
+                            store.tindakLanjut.no.showContainer2 = false;
+                        } else {
+                            store.tindakLanjut.no.showContainer2 = true;
+                        }
+                    }
+                    */
+
+                    edit.value = { ...data };
+
+                    edit.value.dokumentasi = null;
+                    edit.value.satker = data.satker.id;
+                    edit.value.satker_target = data.satker_target.id;
+
+                    console.log('Edit value diakhir:', edit.value)
+
+                    modal.modal('show');
+                    
+                    form.find('#edit__satker').val(edit.value.satker).trigger('change');
+                    form.find('#edit__satker_target').val(edit.value.satker_target).trigger('change');
+                } catch (error) {
+                    showSwalGenericError();
+                    console.error('Terjadi kesalahan :', error);
+                }
+            }
+
+            const handleUpdate = async (id) => {
+                showSwalLoading();
+
+                const { tanggal_awal, tanggal_akhir, jumlah_hari_pelaksanaan, satker_target, jumlah_peserta, tujuan, kendala, kesimpulan, tindak_lanjut, dokumentasi } = edit.value;
+
+                const modal = $('#editModal');
+
+                const payload = {
+                    tanggal_awal,
+                    ...(tanggal_akhir && {
+                        tanggal_akhir
+                    }),
+                    jumlah_hari_pelaksanaan,
+                    satker_target : parseInt(satker_target),
+                    jumlah_peserta,
+                    tujuan,
+                    kendala,
+                    kesimpulan,
+                    tindak_lanjut,
+                    ...(dokumentasi && {
+                        dokumentasi
+                    }),
+                };
+
+                const formData = new FormData();
+
+                Object.entries(payload).forEach(([key, value]) => formData.append(key, value));
+
+                console.log('Payload :', payload);
+
+                try {
+                    const response = await axios.patch(
+                        `/kegiatan/api/v1/dayatif/binaan_teknis/${edit.value.id}/`,
+                        formData, {
+                            headers: {
+                                'Content-Type': 'multipart/form-data',
+                            },
+                        }
+                    );
+
+                    modal.modal('hide');
+                    showSwalSuccess('Berhasil!', `Data kegiatan telah <b>berhasil</b> diperbarui!`);
+                } catch (error) {
+                    showSwalGenericError();
+                    console.error('Terjadi kesalahan :', error);
+                } finally {
+                    await loadData();
+                    store.$reset();
+                    edit.value = {};
+                }
+            }
+            
+            const inputTargets = ['satker_target'];
+
+            const handleChange = (type, name, event) => {
+                const text = $(`#${type}__${name}`).find(':selected').text();
+                const value = event.target.value;
+                
+                if (type === 'create') {
+                    post.value[name] = value;
+                } else {
+                    edit.value[name] = value;
+                }
+            };
+
+            const getUserInfo = () => {
+                const roles = { 0: 'BNNP', 1: 'BNNK', 2: 'PUSAT' };
+                console.log('[INFO] Logged in Satker Level :', satkerLevel.value, `- ${roles[satkerLevel.value]}`);
+            };
+
+            onMounted(async () => {
+                await loadData();
+
+                getUserInfo()
+
+                inputTargets.forEach(name => {
+                    ['create', 'edit'].forEach(type => {
+                        $(`#${type}__${name}`).on('change', (event) => handleChange(type, name, event));
+                    });
+                });
+
+                await sleep(1000);
+
+                console.log('[INFO] Paged data :', pagedData.value);
+
+                $('#editModal, #createModal').on('hidden.bs.modal', () => store.$reset());
+            });
+
+            // ******** GENERIC TABLE CONFIGURATION ********
+            const getPage = () => {
+                const params = new URLSearchParams(window.location.search);
+                let page = parseInt(params.get('page'));
+
+                if (isNaN(page) || page <= 0) {
+                    removeParams('page');
+                    page = 1;
+                }
+
+                return page;
+            }
+            const perPage = ref(10); // Placeholder
+
+            const currentPage = ref(getPage());
+            const totalPage = computed(() => filteredPage.value ? Math.ceil(filteredPage.value.length / perPage.value) : 0);
+
+            watch(totalPage, () => {
+                // console.log({'TotalPage': totalPage.value, 'perPage': perPage.value, 'currentPage': currentPage.value});
+
+                if (totalPage.value != 0 && (currentPage.value > totalPage.value)) {
+                    toastr['warning'](`Kembali ke halaman <b>1</b> dikarenakan Data pada halaman <b>${currentPage.value}</b> tidak ditemukan`, "Terjadi kesalahan");
+                    currentPage.value = 1;
+                    removeParams('page');
+                }
+            })
+
+            const pagedData = computed(() => {
+                if (!filteredPage.value) return [];
+                const startIndex = (currentPage.value - 1) * perPage.value;
+                const endIndex = currentPage.value * perPage.value;
+                return filteredPage.value.slice(startIndex, endIndex);
+            });
+
+            const sortColumn = ref('no')
+            const sortDirection = ref('asc')
+
+            const handleSort = (column) => {
+                currentPage.value = 1;
+                removeParams('page');
+                sortColumn.value = column;
+                
+                sortDirection.value = sortDirection.value === 'asc' ? 'desc' : 'asc';
+
+                if (column === 'no') {
+                    filteredPage.value.sort((a, b) => {
+                        const dataA = `${a.index}`;
+                        const dataB = `${b.index}`;
+
+                        const indexA = dataA.split('.').map(Number);
+                        const indexB = dataB.split('.').map(Number);
+
+                        for (let i = 0; i < Math.max(indexA.length, indexB.length); i++) {
+                            const numA = indexA[i] || 0;
+                            const numB = indexB[i] || 0;
+
+                            if (numA !== numB) {
+                                return sortDirection.value === 'asc' ? (numA - numB) : (numB - numA);
+                            }
+                        }
+                        return 0;
+                    });
+                } else if (column === 'tanggal') {
+                    filteredPage.value.sort((a, b) => {
+                        const dateA = new Date(a.tanggal_awal);
+                        const dateB = new Date(b.tanggal_awal);
+                        return sortDirection.value === 'asc' ? (dateA - dateB) : (dateB - dateA);
+                    });
+                }
+            }
+
+            return {
+                // Preparation
+                store,
+                satkerLevel,
+                satkerPK,
+                title,
+
+                // Action
+                post,
+                handlePost,
+
+                edit,
+                handleEdit,
+                handleUpdate,
+
+                // Data
+                loadData,
+                tableData,
+                
+                perPage,
+                currentPage,
+                filteredPage,
+                totalPage,
+                pagedData,
+                
+                sortColumn,
+                sortDirection,
+                handleSort,
+            }
+        },
+    })
+
+    app.use(pinia)
+    app.mount('#app');
+</script>
+
 {% endblock %}
 
 {% block css_tambahan %}
+
 <style>
-	#__table > tbody > tr > td[colspan="4"] {
-		padding: 0 20px 50px;
-	}
+    #detail__lokasi {
+        width: 250px
+    }
+
+    #detail__lokasi .detail__value {
+        padding-left: 10px;
+    }
+
+    #edit__selected_lokasi li span {
+        padding-left: 10px;
+    }
+
+    #edit__selected_lokasi .edit__selected_lokasi_label {
+        width: 150px;
+        display: inline-block;
+    }
+
+    ul.location__list {
+        text-align: left;
+    }
+
+    ul.location__list .location__label {
+        width: 150px;
+        display: inline-block;
+        font-weight: bold;
+    }
+
+    ul.location__list .location__value {
+        display: inline-block;
+        padding-left: 5px;
+    }
 </style>
+
 {% endblock css_tambahan %}

@@ -25,10 +25,12 @@ Binaan Teknis
 
       <div class="action-button">
         <div class="d-flex justify-content-end mb-3 gap-2">
-          <button class="btn btn-success" onclick="handleExport()"><i class="fas fa-file-export me-2"></i>Ekspor
-            Data</button>
-          <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createModal"><i
-              class="fas fa-plus me-2"></i>Tambah Data</button>
+          <button class="btn btn-success" onclick="handleExport()">
+            <i class="fas fa-file-export me-2"></i>Ekspor Data
+          </button>
+          <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createModal">
+            <i class="fas fa-plus me-2"></i>Tambah Data
+          </button>
         </div>
       </div>
 
@@ -295,7 +297,7 @@ Binaan Teknis
       }
 
       async function handleDelete(id) {
-        const confirmationText = `Untuk menghapus data tersebut ${id}? <br> Data yang dihapus tidak dapat <b>dipulihkan</b> kembali`;
+        const confirmationText = `Untuk menghapus data tersebut? <br> Data yang dihapus tidak dapat <b>dipulihkan</b> kembali`;
         const confirmResult = await showSwalConfirm(confirmationText, 'Ya, hapus data');
         if (!confirmResult.isConfirmed) return;
         showSwalLoading();
@@ -311,7 +313,7 @@ Binaan Teknis
       }
 
       async function handleKirim(satker, id) {
-        const confirmResult = await showSwalConfirm(`Apakah anda yakin untuk mengirim semua kegiatan dari Satuan Kerja <b>${satker}</b>`, 'Ya, kirim data');
+        const confirmResult = await showSwalConfirm(`Apakah anda yakin untuk mengirim data kegiatan dari Satuan Kerja <b>${satker}</b>`, 'Ya, kirim data');
         if (!confirmResult.isConfirmed) return;
         showSwalLoading();
         await sleep(1000);
@@ -379,6 +381,7 @@ Binaan Teknis
       console.error('Terjadi kesalahan :', error);
     }
   }
+  
   async function handleEdit(e) {
     e.preventDefault();
     showSwalLoading();
@@ -438,11 +441,7 @@ Binaan Teknis
       console.error("Terjadi kesalahan :", error);
     }
   }
-  async function handleDate(event, target) {
-    const currentDate = moment().format('YYYY-MM-DD');
-    const valueDate = $(event.target).val();
-    (valueDate === currentDate ? $(`#${target}tanggal_akhir`).attr('disabled', true) : $(`#${target}tanggal_akhir`).attr('disabled', false));
-  }
+  
   async function handlePost(e) {
     e.preventDefault()
     showSwalLoading()

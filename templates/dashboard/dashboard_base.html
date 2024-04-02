@@ -117,9 +117,7 @@
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script src="https://unpkg.com/vue-demi"></script>
     <script src="https://unpkg.com/pinia"></script>
-    
-    <!-- Petite Vue: not being used because unsupported reactivity -->
-    {% comment %} <script src="https://unpkg.com/petite-vue" defer init></script> {% endcomment %}
+    <script src="{% static 'assets/plugins/lodash/lodash-clonedeep.js' %}"></script>
     {% endblock vue %}
 
     <!-- Leaflet -->
@@ -250,11 +248,7 @@
     <!-- Cleave Js -->
     <script src="{% static 'assets/dashboard/vendor/libs/cleave/dist/cleave.min.js' %}"></script>
     <script src="{% static 'assets/dashboard/vendor/libs/cleave/dist/addons/cleave-phone.id.js' %}"></script>
-
-    <!-- Jquery Form Reapeater Js -->
-    <script src="{% static 'assets/plugins/jquery/input-masks/input-masks.min.js' %}"></script>
-    <script src="{% static 'assets/plugins/jquery/input-masks/input-masks.binding.js' %}"></script>
-
+    
     <!-- Jquery Input Mask Js -->
     <script src="{% static 'assets/plugins/jquery/input-masks/input-masks.min.js' %}"></script>
     <script src="{% static 'assets/plugins/jquery/input-masks/input-masks.binding.js' %}"></script>
@@ -272,6 +266,9 @@
     <!-- Picker -->
     <script src="{% static 'assets/dashboard/vendor/libs/bootstrap-daterangepicker/bootstrap-daterangepicker.js' %}"></script>
 
+    <!-- XLSX -->
+    <script type="text/javascript" src="https://oss.sheetjs.com/sheetjs/xlsx.full.min.js"></script>
+
     <!-- Main JS (Bawaan Tema) -->
     <script src="{% static 'assets/dashboard/js/bawaan/main.js' %}"></script>
 
@@ -287,6 +284,8 @@
     <script src="{% static 'assets/js/helpers/alert_helpers.js' %}"></script>
     <script src="{% static 'assets/js/helpers/datatable_helpers.js' %}"></script>
     <script src="{% static 'assets/js/helpers/form_helpers.js' %}"></script>
+
+    {% block helpers_tambahan %} {% endblock %}
 
     <!-- Page JS -->
     {% block js_tambahan %} {% endblock %}

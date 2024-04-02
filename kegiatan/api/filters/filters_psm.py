@@ -78,7 +78,29 @@ class PSM_TES_URINE_DETEKSI_DINI_Filters(filters.FilterSet):
         satker_level = Satker.objects.values_list('level', flat=True).get(id=satker)
 
         return queryset.filter(satker=satker)
+
+# ======= PSM MONITORING DAN EVALUASI SUPERVISI KEGIATAN KOTAN FILTER =======
     
+class PSM_MONITORING_DAN_EVALUASI_SUPERVISI_Filters(filters.FilterSet):
+    s = filters.CharFilter(method='filter_global_search', label='Global search')
+    satker = filters.NumberFilter(field_name='satker', label='Satker Pelaksana ID')
+
+    class Meta:
+        model = models.PSM_MONITORING_DAN_EVALUASI_SUPERVISI
+        fields = ['s', 'satker']
+        order_by = ['-satker__nama_satker']
+
+    def filter_global_search(self, queryset, name, value):
+        return queryset.filter(
+            Q(s__deskripsi__icontains=value) |
+            Q(satker__nama_satker__icontains=value)
+        )
+
+    def filter_by_leveling(self, queryset, name, value):
+        user_id = self.user.id
+        satker = Profile.objects.values_list('satker', flat=True).get(user_id=user_id)
+
+        return queryset.filter(satker=satker)
 
 # ======= PSM RAKOR PEMETAAN FILTER =======
 class PSM_RAKOR_PEMETAAN_Filters(filters.FilterSet):
@@ -87,6 +109,22 @@ class PSM_RAKOR_PEMETAAN_Filters(filters.FilterSet):
 
     class Meta:
         model = models.PSM_RAKOR_PEMETAAN
+        fields = ['s', 'satker']
+        order_by = ['-satker__nama_satker']
+
+    def filter_global_search(self, queryset, name, value):
+        return queryset.filter(
+            Q(s__deskripsi__icontains=value) |
+            Q(satker__nama_satker__icontains=value)
+        )
+    
+# ======= PSM AUDIENSI FILTER =======
+class PSM_AUDIENSI_Filters(filters.FilterSet):
+    s = filters.CharFilter(method='filter_global_search', label='Global search')
+    satker = filters.NumberFilter(field_name='satker', label='Satker Pelaksana ID')
+
+    class Meta:
+        model = models.PSM_AUDIENSI
         fields = ['s', 'satker']
         order_by = ['-satker__nama_satker']
 
