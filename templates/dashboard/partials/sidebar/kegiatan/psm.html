@@ -4,11 +4,15 @@
             <div data-i18n="Rapat Kerja Teknis">Rapat Kerja Teknis</div>
         </a>
     </li>
+    
+    {% if user.profile.satker.level == 0 or user.profile.satker.level == 2 %}
     <li class="menu-item {% if request.resolver_match.url_name == 'psm_bintek' %}active{% endif %}">
         <a href="{% url 'psm_bintek' %}" class="menu-link">
             <div data-i18n="Binaan Teknis">Bintek</div>
         </a>
     </li>
+    {% endif %}
+
     <li class="menu-item {% if 'rakor_pemetaan' in request.path %}active{% endif %}">
         <a href="{% url "psm_rakor_pemetaan" %}" class="menu-link">
             <div data-i18n="Rakor Pemetaan">Rakor Pemetaan</div>
@@ -29,9 +33,9 @@
             <div data-i18n="Workshop Penggiat">Workshop Penggiat</div>
         </a>
     </li>
-    <li class="menu-item {% if request.resolver_match.url_name == 'psm_bintek_peggian_p4gn' %}active{% endif %}">
-        <a href="{% url 'psm_bintek_peggian_p4gn' %}" class="menu-link">
-            <div data-i18n="Bintek Penggiat P4GN">Bintek Penggiat P4GN</div>
+    <li class="menu-item {% if request.resolver_match.url_name == 'psm_bimtek_penggiat_p4gn' %}active{% endif %}">
+        <a href="{% url 'psm_bimtek_penggiat_p4gn' %}" class="menu-link">
+            <div data-i18n="Bimbingan Teknis Penggiat P4GN">Bimbingan Teknis Penggiat P4GN</div>
         </a>
     </li>
     <li class="menu-item {% if request.resolver_match.url_name == 'psm_sinkronisasi_kebijakan' %}active{% endif %}">

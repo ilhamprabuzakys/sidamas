@@ -14,14 +14,29 @@ psm.register("tes_urine", api.PSM_TES_URINE_DETEKSI_DINI_ViewSet)
 psm.register("tes_urine_crud", api.PSM_TES_URNIE_CURD_ViewSet) #crud;
 psm.register("monev_supervisi", api.PSM_MONITORING_DAN_EVALUASI_SUPERVISI_ViewSet)
 psm.register("monev_supervisi_crud", api.PSM_MONITORING_DAN_EVALUASI_SUPERVISI_CURD_ViewSet) #crud;
+psm.register("pengumpulan_data_ikotan", api.PSM_PENGUMPULAN_DATA_IKOTAN_ViewSet)
+psm.register("pengumpulan_data_ikotan_crud", api.PSM_PENGUMPULAN_DATA_IKOTAN_CURD_ViewSet) #crud;
+psm.register("dukungan_stakeholder", api.PSM_DUKUNGAN_STAKEHOLDER_ViewSet)
+psm.register("dukungan_stakeholder_crud", api.PSM_DUKUNGAN_STAKEHOLDER_CURD_ViewSet) #crud;
+psm.register("kegiatan_lainnya", api.PSM_KEGIATAN_LAINNYA_ViewSet)
+psm.register("kegiatan_lainnya_crud", api.PSM_KEGIATAN_LAINNYA_CURD_ViewSet) #crud;
 psm.register("rakor_pemetaan", api.PSM_RAKOR_PEMETAAN_ViewSet)
 psm.register("audiensi", api.PSM_AUDIENSI_ViewSet)
+psm.register("konsolidasi_kebijakan", api.PSM_KONSOLIDASI_KEBIJAKAN_ViewSet)
+psm.register("workshop_penggiat", api.PSM_WORKSHOP_PENGGIAT_ViewSet)
+psm.register("workshop_tematik", api.PSM_WORKSHOP_TEMATIK_ViewSet)
+psm.register("sinkronisasi_kebijakan", api.PSM_SINKRONISASI_KEBIJAKAN_ViewSet)
+psm.register("bimtek_penggiat_p4gn", api.PSM_BIMTEK_P4GN_ViewSet)
 
-# ==== DAYATIF ====
+# ==== DAYATIF (8 Modules) ====
 dayatif = routers.DefaultRouter()
 dayatif.register("binaan_teknis", api.DAYATIF_BINAAN_TEKNIS_ViewSet, basename='binaan_teknis')
 dayatif.register("pemetaan_potensi", api.DAYATIF_PEMETAAN_POTENSI_ViewSet, basename='pemetaan_potensi')
 dayatif.register("pemetaan_stakeholder", api.DAYATIF_PEMETAAN_STAKEHOLDER_ViewSet, basename='pemetaan_stakeholder')
+dayatif.register("rapat_sinergi_stakeholder", api.DAYATIF_RAPAT_SINERGI_STAKEHOLDER_ViewSet, basename='rapat_sinergi_stakeholder')
+dayatif.register("bimbingan_teknis_stakeholder", api.DAYATIF_BIMBINGAN_TEKNIS_STAKEHOLDER_ViewSet, basename='bimbingan_teknis_stakeholder')
+dayatif.register("bimbingan_teknis_lifeskill", api.DAYATIF_BIMBINGAN_TEKNIS_LIFESKILL_ViewSet, basename='bimbingan_teknis_lifeskill')
+dayatif.register("dukungan_stakeholder", api.DAYATIF_DUKUNGAN_STAKEHOLDER_ViewSet, basename='dukungan_stakeholder')
 
 router.registry.extend(psm.registry)
 router.registry.extend(dayatif.registry)
@@ -43,7 +58,7 @@ urlpatterns = (
     path("psm/audiensi/",views.psm_audiensiView.as_view(),name="psm_audiensi",),
     path("psm/konsolidasi_kebijakan/",views.psm_konsolidasi_kebijakanView.as_view(),name="psm_konsolidasi_kebijakan",),
     path("psm/workshop_penggiat/",views.psm_workshop_penggiatView.as_view(),name="psm_workshop_penggiat",),
-    path("psm/bintek_peggiat_p4gn/",views.psm_bintek_peggiat_p4gnView.as_view(),name="psm_bintek_peggian_p4gn",),
+    path("psm/bimtek_peggiat_p4gn/",views.psm_bimtek_penggiat_p4gnView.as_view(),name="psm_bimtek_penggiat_p4gn",),
     path("psm/sinkronisasi_kebijakan/",views.psm_sinkronisasi_kebijakanView.as_view(),name="psm_sinkronisasi_kebijakan",),
     path("psm/workshop_tematik/",views.psm_workshop_tematikView.as_view(),name="psm_workshop_tematik",),
     path("psm/asistensi/",views.psm_asistensiView.as_view(),name="psm_asistensi",),
@@ -54,17 +69,12 @@ urlpatterns = (
     path("psm/kegiatan_lainnya/",views.psm_kegiatan_lainnyaView.as_view(),name="psm_kegiatan_lainnya",),
 
     # VIEW HALAMAN DAYATIF
-    path("dayatif/binaan_teknis2/",views.DAYATIF_BINAAN_TEKNIS2_View.as_view(),name="dayatif_binaan_teknis2",),
     path("dayatif/binaan_teknis/",views.DAYATIF_BINAAN_TEKNIS_View.as_view(),name="dayatif_binaan_teknis",),
-    
     path("dayatif/pemetaan_potensi/",views.DAYATIF_PEMETAAN_POTENSI_View.as_view(),name="dayatif_pemetaan_potensi",),
-    path("dayatif/pemetaan_stakeholder/",views.dayatif_pemetaan_stakeholderView.as_view(),name="dayatif_pemetaan_stakeholder",),
-    path("dayatif/rapat_sinergi_stakeholder/",views.dayatif_rapat_sinergi_stakeholderView.as_view(),name="dayatif_rapat_sinergi_stakeholder",),
-    path("dayatif/bimtek_stakeholder/",views.dayatif_bimtek_stakeholderView.as_view(),name="dayatif_bimtek_stakeholder",),
-    path("dayatif/bimtek_lifeskill/",views.dayatif_bimtek_lifeskillView.as_view(),name="dayatif_bimtek_lifeskill",),
-    path("dayatif/monev_dayatif/",views.dayatif_monev_dayatifView.as_view(),name="dayatif_monev_dayatif",),
-    path("dayatif/monev_kewirausahaan_dan_ikkr/",views.dayatif_monev_kewirausahaan_dan_ikkrView.as_view(),name="dayatif_monev_kewirausahaan_dan_ikkr",),
-    path("dayatif/monev_pendampingan/",views.dayatif_monev_pendampinganView.as_view(),name="dayatif_monev_pendampingan",),
-    path("dayatif/data_dukungan_stakeholder/",views.dayatif_data_dukungan_stakeholderView.as_view(),name="dayatif_data_dukungan_stakeholder",),
-    path("dayatif/dukungan_stakeholder/",views.dayatif_dukungan_stakeholderView.as_view(),name="dayatif_dukungan_stakeholder",),
+    path("dayatif/pemetaan_stakeholder/",views.DAYATIF_PEMETAAN_STAKEHOLDER_View.as_view(),name="dayatif_pemetaan_stakeholder",),
+    path("dayatif/rapat_sinergi_stakeholder/",views.DAYATIF_RAPAT_SINERGI_STAKEHOLDER_View.as_view(),name="dayatif_rapat_sinergi_stakeholder",),
+    path("dayatif/bimbingan_teknis_stakeholder/",views.DAYATIF_BIMBINGAN_TEKNIS_STAKEHOLDER_View.as_view(),name="dayatif_bimbingan_teknis_stakeholder",),
+    path("dayatif/bimbingan_teknis_lifeskill/",views.DAYATIF_BIMBINGAN_TEKNIS_LIFESKILL_View.as_view(),name="dayatif_bimbingan_teknis_lifeskill",),
+    path("dayatif/monev_dayatif/",views.DAYATIF_MONEV_DAYATiF_View.as_view(),name="dayatif_monev_dayatif",),
+    path("dayatif/dukungan_stakeholder/",views.DAYATIF_DUKUNGAN_STAKEHOLDER_View.as_view(),name="dayatif_dukungan_stakeholder",),
 )

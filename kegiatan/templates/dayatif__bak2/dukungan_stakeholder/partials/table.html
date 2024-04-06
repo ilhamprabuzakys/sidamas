@@ -1,0 +1,36 @@
+<table class="table table-bordered" id="__table">
+    <thead class="bg-soft-green">
+        <tr>
+            <th class="bg-soft-success" rowspan="2">Satuan Kerja</th>
+            <th class="bg-soft-success" rowspan="2">Nama Stakeholder</th>
+            <th class="bg-soft-success" rowspan="1" colspan="3">Dukungan Yang Diberikan</th>
+            <th class="bg-soft-success" rowspan="2">Kawasan Yang Diintervensi</th>
+            <th class="bg-soft-success" rowspan="2">Jumlah Sasaran</th>
+            <th class="bg-soft-success" rowspan="2">Pengaruh/Manfaat</th>
+            <th class="bg-soft-success" rowspan="2">Kesimpulan</th>
+            <th class="bg-soft-success" rowspan="2">Tindak Lanjut</th>
+            <th class="bg-soft-success" rowspan="2">Dokumentasi</th>
+            <th class="bg-soft-success text-center" rowspan="2" style="max-width: 150px">Aksi <i class="fas fa-edit ms-2"></i>
+        </tr>
+        <tr>
+            <th class="bg-soft-success" rowspan="1">Jenis</th>
+            <th class="bg-soft-success" rowspan="1">Bentuk</th>
+            <th class="bg-soft-success" rowspan="1">Jumlah</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr v-for="item in tableData" :key="item.id">
+            <td>{{ item.nama_satker }}</td>
+            <td>{{ item.stakeholder }}</td>
+            <td>{{ item.jenis }}</td>
+            <td>{{ item.bentuk }}</td>
+            <td>{{ item.jumlah }}</td>
+            <td>{{ item.desa }}</td>
+            <td>{{ item.jumlah_sasaran }}</td>
+            <td>{{ item.pengaruh }}</td>
+            <td>{{ item.kesimpulan }}</td>
+            <td>{{ item.tindak_lanjut }}</td>
+            <td>{{ item.dokumentasi }}</td>
+          </tr>
+    </tbody>
+</table>

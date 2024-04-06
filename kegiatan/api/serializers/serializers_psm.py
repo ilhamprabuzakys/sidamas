@@ -111,7 +111,6 @@ class PSM_RAKERNIS_CRUD_Serializer(serializers.ModelSerializer):
         fields = '__all__'
 
 # ======= PSM BINAAN TEKNIS SERIALIZER =======
-
 class PSM_BINAAN_TEKNIS_DATA_Serializer(serializers.ModelSerializer):
     satker = SatkerSerializer(many=False, read_only=True)
     satker_target = SatkerSerializer(many=False, read_only=True)
@@ -317,11 +316,215 @@ class PSM_ASISTENSI_CREATE_UPDATE_Serializer(serializers.ModelSerializer):
         model = models.PSM_ASISTENSI
         fields = '__all__'
 
+# ======= PSM SINKRONISASI KEBIJAKAN SERIALIZER =======
+class PSM_SINKRONISASI_KEBIJAKAN_DATA_Serializer(serializers.ModelSerializer):
+    satker = SatkerSerializer(many=False, read_only=True)
+    class Meta:
+        model = models.PSM_SINKRONISASI_KEBIJAKAN
+        exclude = []
+        fields = [
+            'id','tanggal_awal', 'tanggal_akhir', 'satker', 'jumlah_kegiatan', 'jumlah_peserta', 'stakeholder',
+            'deskripsi', 'kendala', 'kesimpulan', 'tindak_lanjut', 'dokumentasi', 'status'
+        ]
+
+class PSM_SINKRONISASI_KEBIJAKAN_CHILD_Serializer(serializers.ModelSerializer):
+    satker = SatkerSerializer(many=False, read_only=True)
+    data = serializers.SerializerMethodField()
+
+    class Meta:
+        model = models.PSM_SINKRONISASI_KEBIJAKAN
+        exclude = []
+        fields = [
+            'id','satker','data'
+        ]
+    
+    def get_data(self, obj):
+        user_id = self.context['request'].user.id
+        satker = Profile.objects.values_list('satker', flat=True).get(user_id=user_id)
+        satker_level = Satker.objects.values_list('level', flat=True).get(id=satker)
+
+        status = None
+        if satker_level == 1:
+            # bnnk
+            res = models.PSM_SINKRONISASI_KEBIJAKAN.objects.filter(satker = obj.satker)
+        elif satker_level == 0:
+            # bnnp
+            res = models.PSM_SINKRONISASI_KEBIJAKAN.objects.filter(satker = obj.satker, status__gt = 0)
+        elif satker_level == 2:
+            # pusat
+            res = models.PSM_SINKRONISASI_KEBIJAKAN.objects.filter(satker = obj.satker, status = 2)
+
+        ret = PSM_SINKRONISASI_KEBIJAKAN_DATA_Serializer(res, many=True).data
+        #print(ret)
+        return ret
+    
+class PSM_SINKRONISASI_KEBIJAKAN_Serializer(serializers.ModelSerializer):
+    satker = SatkerSerializer(many=False, read_only=True)
+    #satker_target = SatkerSerializer(many=False, read_only=True)
+    data = serializers.SerializerMethodField()
+    detail = serializers.SerializerMethodField()
+
+    class Meta:
+        model = models.PSM_SINKRONISASI_KEBIJAKAN
+        exclude = []
+        fields = [
+            'id','satker','data','detail'
+        ]
+    
+    def get_detail(self, obj):
+        user_id = self.context['request'].user.id
+        satker = Profile.objects.values_list('satker', flat=True).get(user_id=user_id)
+        satker_level = Satker.objects.values_list('level', flat=True).get(id=satker)
+
+        status = None
+        if satker_level == 1:
+            # bnnk
+            res = models.PSM_SINKRONISASI_KEBIJAKAN.objects.filter(satker__parent = obj.satker).order_by('satker__id', 'satker__order').distinct('satker__id')
+        elif satker_level == 0:
+            # bnnp
+            res = models.PSM_SINKRONISASI_KEBIJAKAN.objects.filter(satker__parent = obj.satker, status__gt = 0).order_by('satker__id', 'satker__order').distinct('satker__id')
+        elif satker_level == 2:
+            # pusat
+            res = models.PSM_SINKRONISASI_KEBIJAKAN.objects.filter(satker__parent = obj.satker, status= 2).order_by('satker__id', 'satker__order').distinct('satker__id')
+            
+        ret = PSM_SINKRONISASI_KEBIJAKAN_CHILD_Serializer(res, many=True, context={'request': self.context['request']}).data
+        #print(ret)
+        return ret
+
+    def get_data(self, obj):
+        user_id = self.context['request'].user.id
+        satker = Profile.objects.values_list('satker', flat=True).get(user_id=user_id)
+        satker_level = Satker.objects.values_list('level', flat=True).get(id=satker)
+
+        status = None
+        if satker_level == 1:
+            # bnnk
+            res = models.PSM_SINKRONISASI_KEBIJAKAN.objects.filter(satker = obj.satker)
+        elif satker_level == 0:
+            # bnnp
+            res = models.PSM_SINKRONISASI_KEBIJAKAN.objects.filter(satker = obj.satker, status__gt = 0)
+        elif satker_level == 2:
+            # pusat
+            res = models.PSM_SINKRONISASI_KEBIJAKAN.objects.filter(satker = obj.satker, status = 2)
+
+        ret = PSM_SINKRONISASI_KEBIJAKAN_DATA_Serializer(res, many=True, context={'request': self.context['request']}).data
+        #print(ret)
+        return ret
+
+class PSM_SINKRONISASI_KEBIJAKAN_CREATE_UPDATE_Serializer(serializers.ModelSerializer):
+    satker = serializers.PrimaryKeyRelatedField(queryset=Satker.objects.all())
+
+    class Meta:
+        model = models.PSM_SINKRONISASI_KEBIJAKAN
+        fields = '__all__'
+
+# ======= PSM WORKSHOP TEMATIK SERIALIZER =======
+class PSM_WORKSHOP_TEMATIK_DATA_Serializer(serializers.ModelSerializer):
+    satker = SatkerSerializer(many=False, read_only=True)
+    class Meta:
+        model = models.PSM_WORKSHOP_TEMATIK
+        exclude = []
+        fields = [
+            'id','tanggal_awal', 'tanggal_akhir', 'satker', 'jumlah_kegiatan', 'jumlah_peserta', 'stakeholder',
+            'deskripsi', 'kendala', 'kesimpulan', 'tindak_lanjut', 'dokumentasi', 'status'
+        ]
+
+class PSM_WORKSHOP_TEMATIK_CHILD_Serializer(serializers.ModelSerializer):
+    satker = SatkerSerializer(many=False, read_only=True)
+    data = serializers.SerializerMethodField()
+
+    class Meta:
+        model = models.PSM_WORKSHOP_TEMATIK
+        exclude = []
+        fields = [
+            'id','satker','data'
+        ]
+    
+    def get_data(self, obj):
+        user_id = self.context['request'].user.id
+        satker = Profile.objects.values_list('satker', flat=True).get(user_id=user_id)
+        satker_level = Satker.objects.values_list('level', flat=True).get(id=satker)
+
+        status = None
+        if satker_level == 1:
+            # bnnk
+            res = models.PSM_WORKSHOP_TEMATIK.objects.filter(satker = obj.satker)
+        elif satker_level == 0:
+            # bnnp
+            res = models.PSM_WORKSHOP_TEMATIK.objects.filter(satker = obj.satker, status__gt = 0)
+        elif satker_level == 2:
+            # pusat
+            res = models.PSM_WORKSHOP_TEMATIK.objects.filter(satker = obj.satker, status = 2)
+
+        ret = PSM_WORKSHOP_TEMATIK_DATA_Serializer(res, many=True).data
+        #print(ret)
+        return ret
+    
+class PSM_WORKSHOP_TEMATIK_Serializer(serializers.ModelSerializer):
+    satker = SatkerSerializer(many=False, read_only=True)
+    #satker_target = SatkerSerializer(many=False, read_only=True)
+    data = serializers.SerializerMethodField()
+    detail = serializers.SerializerMethodField()
+
+    class Meta:
+        model = models.PSM_WORKSHOP_TEMATIK
+        exclude = []
+        fields = [
+            'id','satker','data','detail'
+        ]
+    
+    def get_detail(self, obj):
+        user_id = self.context['request'].user.id
+        satker = Profile.objects.values_list('satker', flat=True).get(user_id=user_id)
+        satker_level = Satker.objects.values_list('level', flat=True).get(id=satker)
+
+        status = None
+        if satker_level == 1:
+            # bnnk
+            res = models.PSM_WORKSHOP_TEMATIK.objects.filter(satker__parent = obj.satker).order_by('satker__id', 'satker__order').distinct('satker__id')
+        elif satker_level == 0:
+            # bnnp
+            res = models.PSM_WORKSHOP_TEMATIK.objects.filter(satker__parent = obj.satker, status__gt = 0).order_by('satker__id', 'satker__order').distinct('satker__id')
+        elif satker_level == 2:
+            # pusat
+            res = models.PSM_WORKSHOP_TEMATIK.objects.filter(satker__parent = obj.satker, status= 2).order_by('satker__id', 'satker__order').distinct('satker__id')
+            
+        ret = PSM_WORKSHOP_TEMATIK_CHILD_Serializer(res, many=True, context={'request': self.context['request']}).data
+        #print(ret)
+        return ret
+
+    def get_data(self, obj):
+        user_id = self.context['request'].user.id
+        satker = Profile.objects.values_list('satker', flat=True).get(user_id=user_id)
+        satker_level = Satker.objects.values_list('level', flat=True).get(id=satker)
+
+        status = None
+        if satker_level == 1:
+            # bnnk
+            res = models.PSM_WORKSHOP_TEMATIK.objects.filter(satker = obj.satker)
+        elif satker_level == 0:
+            # bnnp
+            res = models.PSM_WORKSHOP_TEMATIK.objects.filter(satker = obj.satker, status__gt = 0)
+        elif satker_level == 2:
+            # pusat
+            res = models.PSM_WORKSHOP_TEMATIK.objects.filter(satker = obj.satker, status = 2)
+
+        ret = PSM_WORKSHOP_TEMATIK_DATA_Serializer(res, many=True, context={'request': self.context['request']}).data
+        #print(ret)
+        return ret
+
+class PSM_WORKSHOP_TEMATIK_CREATE_UPDATE_Serializer(serializers.ModelSerializer):
+    satker = serializers.PrimaryKeyRelatedField(queryset=Satker.objects.all())
+
+    class Meta:
+        model = models.PSM_WORKSHOP_TEMATIK
+        fields = '__all__'
+
 # ======= PSM TES URINE DETEKSI DINI SERIALIZER =======  
 class PSM_TES_URINE_DETEKSI_DINI_PESERTA_Serializer(serializers.ModelSerializer):
     class Meta:
         model = models.PSM_TES_URINE_DETEKSI_DINI_PESERTA
-        fields = ['id', 'parent', 'nama_peserta', 'jenis_kelamin', 'hasil_test', 'alamat']
+        fields = ['id', 'parent', 'nama_peserta', 'jenis_kelamin', 'hasil_test', 'isi_parameter', 'alamat']
 
 class PSM_TES_URINE_DETEKSI_DINI_DATA_Serializer(serializers.ModelSerializer):
     satker = SatkerSerializer(many=False, read_only=True)
@@ -370,23 +573,23 @@ class PSM_TES_URINE_DETEKSI_DINI_Serializer(serializers.ModelSerializer):
         ]
 
     def get_data(self, obj):
-        # user_id = self.context['request'].user.id
-        # satker = Profile.objects.values_list('satker', flat=True).get(user_id=user_id)
-        # satker_level = Satker.objects.values_list('level', flat=True).get(id=satker)
+        user_id = self.context['request'].user.id
+        satker = Profile.objects.values_list('satker', flat=True).get(user_id=user_id)
+        satker_provinsi = Satker.objects.values_list('provinsi_id', flat=True).get(id=satker)
+        satker_level = Satker.objects.values_list('level', flat=True).get(id=satker)
 
-        # if satker_level == 1:
-        #     # bnnk
-        #     res = models.PSM_TES_URINE_DETEKSI_DINI.objects.filter(satker__parent = obj.satker).order_by('satker__id', 'satker__order').distinct('satker__id')
-        # elif satker_level == 0:
-        #     # bnnp
-        #     res = models.PSM_TES_URINE_DETEKSI_DINI.objects.filter(satker__parent = obj.satker, status__gt = 0).order_by('satker__id', 'satker__order').distinct('satker__id')
-        # elif satker_level == 2:
-        #     # pusat
-        #     res = models.PSM_TES_URINE_DETEKSI_DINI.objects.filter(satker__parent = obj.satker, status= 2).order_by('satker__id', 'satker__order').distinct('satker__id')
+        if satker_level == 1:
+            # bnnk
+            res = models.PSM_TES_URINE_DETEKSI_DINI.objects.filter(satker = obj.satker)
+        elif satker_level == 0:
+            # bnnp
+            res = models.PSM_TES_URINE_DETEKSI_DINI.objects.filter(satker = obj.satker, status__gt = 0)
+        elif satker_level == 2:
+            # pusat
+            res = models.PSM_TES_URINE_DETEKSI_DINI.objects.filter(satker = obj.satker, status = 2)
 
-        # ret = PSM_RAKERNIS_CHILD_Serializer(res, many=True, context={'request': self.context['request']}).data
-        # #print(ret)
-        # return ret
+        ret = PSM_TES_URINE_DETEKSI_DINI_DATA_Serializer(res, many=True, context={'request': self.context['request']}).data
+        return ret
 
         res = models.PSM_TES_URINE_DETEKSI_DINI.objects.filter(satker = obj.satker)
         ret = PSM_TES_URINE_DETEKSI_DINI_DATA_Serializer(res, many=True).data
@@ -460,7 +663,6 @@ class PSM_MONITORING_DAN_EVALUASI_SUPERVISI_DATA_Serializer(serializers.ModelSer
 
 class PSM_MONITORING_DAN_EVALUASI_SUPERVISI_CHILD_Serializer(serializers.ModelSerializer):
     satker = SatkerSerializer(many=False, read_only=True)
-    satker_target = SatkerSerializer(many=False, read_only=True)
     data = serializers.SerializerMethodField()
 
     class Meta:
@@ -488,6 +690,23 @@ class PSM_MONITORING_DAN_EVALUASI_SUPERVISI_Serializer(serializers.ModelSerializ
         ]
 
     def get_data(self, obj):
+        user_id = self.context['request'].user.id
+        satker = Profile.objects.values_list('satker', flat=True).get(user_id=user_id)
+        satker_level = Satker.objects.values_list('level', flat=True).get(id=satker)
+
+        if satker_level == 1:
+            # bnnk
+            res = models.PSM_MONITORING_DAN_EVALUASI_SUPERVISI.objects.filter(satker = obj.satker)
+        elif satker_level == 0:
+            # bnnp
+            res = models.PSM_MONITORING_DAN_EVALUASI_SUPERVISI.objects.filter(satker = obj.satker, status__gt = 0)
+        elif satker_level == 2:
+            # pusat
+            res = models.PSM_MONITORING_DAN_EVALUASI_SUPERVISI.objects.filter(satker = obj.satker, status = 2)
+
+        ret = PSM_MONITORING_DAN_EVALUASI_SUPERVISI_DATA_Serializer(res, many=True, context={'request': self.context['request']}).data
+        return ret
+
         res = models.PSM_MONITORING_DAN_EVALUASI_SUPERVISI.objects.filter(satker = obj.satker)
         ret = PSM_MONITORING_DAN_EVALUASI_SUPERVISI_DATA_Serializer(res, many=True).data
         return ret
@@ -517,10 +736,285 @@ class PSM_MONITORING_DAN_EVALUASI_SUPERVISI_CREATE_UPDATE_Serializer(serializers
         model = models.PSM_MONITORING_DAN_EVALUASI_SUPERVISI
         fields = ['id', 'satker', 'tanggal_awal', 'tanggal_akhir', 'nama_lingkungan', 'status_indeks', 'nilai_ikp', 'status_ikp', 'deskripsi_hasil', 'simpulan', 'tindak_lanjut', 'dokumentasi']
 
+# ======= PSM PENGUMPULAN DATA IKOTAN SERIALIZER =======
+class PSM_PENGUMPULAN_DATA_IKOTAN_PESERTA_Serializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.PSM_PENGUMPULAN_DATA_IKOTAN_PESERTA
+        fields = ['id', 'parent', 'nama_peserta']
+
+    def __init__(self, *args, parent_id=None, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.parent_id = parent_id
+
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        return data
+
+    def to_internal_value(self, data):
+        data['parent'] = self.parent_id
+        return super().to_internal_value(data)
+
+class PSM_PENGUMPULAN_DATA_IKOTAN_DATA_Serializer(serializers.ModelSerializer):
+    satker = SatkerSerializer(many=False, read_only=True)
+    satker_target = SatkerSerializer(many=False, read_only=True)
+    pegawai = serializers.SerializerMethodField()
+
+    class Meta:
+        model = models.PSM_PENGUMPULAN_DATA_IKOTAN
+        exclude = []
+        datatables_always_serialize = ['id', 'observasi', 'satker', 'deskripsi_hasil', 'deskripsi_hasil', 'simpulan', 'tindak_lanjut', 'dokumentasi', 'pegawai']
+
+    def get_pegawai(self, obj):
+        parent_id = obj.id
+        pegawai_objects = models.PSM_PENGUMPULAN_DATA_IKOTAN_PESERTA.objects.filter(parent=parent_id)
+        ret = PSM_PENGUMPULAN_DATA_IKOTAN_PESERTA_Serializer(pegawai_objects, many=True).data
+        return ret
+
+class PSM_PENGUMPULAN_DATA_IKOTAN_CHILD_Serializer(serializers.ModelSerializer):
+    satker = SatkerSerializer(many=False, read_only=True)
+    data = serializers.SerializerMethodField()
+
+    class Meta:
+        model = models.PSM_PENGUMPULAN_DATA_IKOTAN
+        exclude = []
+        fields = [
+            'id','satker','data'
+        ]
+    def get_data(self, obj):
+
+        res = models.PSM_PENGUMPULAN_DATA_IKOTAN.objects.filter(satker = obj.satker)
+        ret = PSM_PENGUMPULAN_DATA_IKOTAN_DATA_Serializer(res, many=True).data
+        return ret
+
+class PSM_PENGUMPULAN_DATA_IKOTAN_Serializer(serializers.ModelSerializer):
+    satker = SatkerSerializer(many=False, read_only=True)
+    data = serializers.SerializerMethodField()
+    detail = serializers.SerializerMethodField()
+
+    class Meta:
+        model = models.PSM_PENGUMPULAN_DATA_IKOTAN
+        exclude = []
+        fields = [
+            'id','satker','data','detail'
+        ]
+
+    def get_data(self, obj):
+        user_id = self.context['request'].user.id
+        satker = Profile.objects.values_list('satker', flat=True).get(user_id=user_id)
+        satker_level = Satker.objects.values_list('level', flat=True).get(id=satker)
+
+        if satker_level == 1:
+            # bnnk
+            res = models.PSM_PENGUMPULAN_DATA_IKOTAN.objects.filter(satker = obj.satker)
+        elif satker_level == 0:
+            # bnnp
+            res = models.PSM_PENGUMPULAN_DATA_IKOTAN.objects.filter(satker = obj.satker, status__gt = 0)
+        elif satker_level == 2:
+            # pusat
+            res = models.PSM_PENGUMPULAN_DATA_IKOTAN.objects.filter(satker = obj.satker, status = 2)
+
+        ret = PSM_PENGUMPULAN_DATA_IKOTAN_DATA_Serializer(res, many=True, context={'request': self.context['request']}).data
+        return ret
+
+        res = models.PSM_PENGUMPULAN_DATA_IKOTAN.objects.filter(satker = obj.satker)
+        ret = PSM_PENGUMPULAN_DATA_IKOTAN_DATA_Serializer(res, many=True).data
+        return ret
+    
+    def get_detail(self, obj):
+        user_id = self.context['request'].user.id
+        satker = Profile.objects.values_list('satker', flat=True).get(user_id=user_id)
+        satker_level = Satker.objects.values_list('level', flat=True).get(id=satker)
+
+        if satker_level == 1:
+            # bnnk
+            res = models.PSM_PENGUMPULAN_DATA_IKOTAN.objects.filter(satker__parent = obj.satker).order_by('satker__id', 'satker__order').distinct('satker__id')
+        elif satker_level == 0:
+            # bnnp
+            res = models.PSM_PENGUMPULAN_DATA_IKOTAN.objects.filter(satker__parent = obj.satker, status__gt = 0).order_by('satker__id', 'satker__order').distinct('satker__id')
+        elif satker_level == 2:
+            # pusat
+            res = models.PSM_PENGUMPULAN_DATA_IKOTAN.objects.filter(satker__parent = obj.satker, status= 2).order_by('satker__id', 'satker__order').distinct('satker__id')
+
+        ret = PSM_PENGUMPULAN_DATA_IKOTAN_CHILD_Serializer(res, many=True, context={'request': self.context['request']}).data
+        return ret
+
+class PSM_PENGUMPULAN_DATA_IKOTAN_CREATE_UPDATE_Serializer(serializers.ModelSerializer):
+    dokumentasi = serializers.FileField(required=False, max_length=None, allow_empty_file=True, use_url=True)
+    class Meta:
+        model = models.PSM_PENGUMPULAN_DATA_IKOTAN
+        fields = ['id', 'observasi', 'satker', 'deskripsi_hasil', 'deskripsi_hasil', 'simpulan', 'tindak_lanjut', 'dokumentasi']
+
+# ======= PSM DUKUNGAN STAKEHOLDER SERIALIZER =======
+class PSM_DUKUNGAN_STAKEHOLDER_DATA_Serializer(serializers.ModelSerializer):
+    satker = SatkerSerializer(many=False, read_only=True)
+    satker_target = SatkerSerializer(many=False, read_only=True)
+
+    class Meta:
+        model = models.PSM_DUKUNGAN_STAKEHOLDER
+        exclude = []
+        datatables_always_serialize = ['id', 'satker', 'pemda', 'kegiatan', 'alamat', 'jumlah_sasaran', 'hasil_dampak', 'kesimpulan', 'tindak_lanjut', 'dokumentasi']
+
+class PSM_DUKUNGAN_STAKEHOLDER_CHILD_Serializer(serializers.ModelSerializer):
+    satker = SatkerSerializer(many=False, read_only=True)
+    data = serializers.SerializerMethodField()
+
+    class Meta:
+        model = models.PSM_DUKUNGAN_STAKEHOLDER
+        exclude = []
+        fields = [
+            'id','satker','data'
+        ]
+    def get_data(self, obj):
+
+        res = models.PSM_DUKUNGAN_STAKEHOLDER.objects.filter(satker = obj.satker)
+        ret = PSM_DUKUNGAN_STAKEHOLDER_DATA_Serializer(res, many=True).data
+        return ret
+
+class PSM_DUKUNGAN_STAKEHOLDER_Serializer(serializers.ModelSerializer):
+    satker = SatkerSerializer(many=False, read_only=True)
+    data = serializers.SerializerMethodField()
+    detail = serializers.SerializerMethodField()
+
+    class Meta:
+        model = models.PSM_DUKUNGAN_STAKEHOLDER
+        exclude = []
+        fields = [
+            'id','satker','data','detail'
+        ]
+
+    def get_data(self, obj):
+        user_id = self.context['request'].user.id
+        satker = Profile.objects.values_list('satker', flat=True).get(user_id=user_id)
+        satker_level = Satker.objects.values_list('level', flat=True).get(id=satker)
+
+        if satker_level == 1:
+            # bnnk
+            res = models.PSM_DUKUNGAN_STAKEHOLDER.objects.filter(satker = obj.satker)
+        elif satker_level == 0:
+            # bnnp
+            res = models.PSM_DUKUNGAN_STAKEHOLDER.objects.filter(satker = obj.satker, status__gt = 0)
+        elif satker_level == 2:
+            # pusat
+            res = models.PSM_DUKUNGAN_STAKEHOLDER.objects.filter(satker = obj.satker, status = 2)
+
+        ret = PSM_DUKUNGAN_STAKEHOLDER_DATA_Serializer(res, many=True, context={'request': self.context['request']}).data
+        return ret
+
+        res = models.PSM_DUKUNGAN_STAKEHOLDER.objects.filter(satker = obj.satker)
+        ret = PSM_DUKUNGAN_STAKEHOLDER_DATA_Serializer(res, many=True).data
+        return ret
+    
+    def get_detail(self, obj):
+        user_id = self.context['request'].user.id
+        satker = Profile.objects.values_list('satker', flat=True).get(user_id=user_id)
+        satker_level = Satker.objects.values_list('level', flat=True).get(id=satker)
+
+        if satker_level == 1:
+            # bnnk
+            res = models.PSM_DUKUNGAN_STAKEHOLDER.objects.filter(satker__parent = obj.satker).order_by('satker__id', 'satker__order').distinct('satker__id')
+        elif satker_level == 0:
+            # bnnp
+            res = models.PSM_DUKUNGAN_STAKEHOLDER.objects.filter(satker__parent = obj.satker, status__gt = 0).order_by('satker__id', 'satker__order').distinct('satker__id')
+        elif satker_level == 2:
+            # pusat
+            res = models.PSM_DUKUNGAN_STAKEHOLDER.objects.filter(satker__parent = obj.satker, status= 2).order_by('satker__id', 'satker__order').distinct('satker__id')
+
+        ret = PSM_DUKUNGAN_STAKEHOLDER_CHILD_Serializer(res, many=True, context={'request': self.context['request']}).data
+        return ret
+    
+class PSM_DUKUNGAN_STAKEHOLDER_CREATE_UPDATE_Serializer(serializers.ModelSerializer):
+    dokumentasi = serializers.FileField(required=False, max_length=None, allow_empty_file=True, use_url=True)
+    class Meta:
+        model = models.PSM_DUKUNGAN_STAKEHOLDER
+        fields = ['id', 'satker', 'pemda', 'kegiatan', 'alamat', 'jumlah_sasaran', 'hasil_dampak', 'kesimpulan', 'tindak_lanjut', 'dokumentasi']
+
+# ======= PSM KEGIATAN LAINNYA SERIALIZER =======
+class PSM_KEGIATAN_LAINNYA_DATA_Serializer(serializers.ModelSerializer):
+    satker = SatkerSerializer(many=False, read_only=True)
+    satker_target = SatkerSerializer(many=False, read_only=True)
+
+    class Meta:
+        model = models.PSM_KEGIATAN_LAINNYA
+        exclude = []
+        datatables_always_serialize = ['id', 'satker', 'kegiatan', 'tempat', 'waktu_awal', 'waktu_akhir', 'lingkungan', 'jumlah_sasaran', 'hasil_dampak', 'kesimpulan', 'tindak_lanjut', 'dokumentasi']
+
+class PSM_KEGIATAN_LAINNYA_CHILD_Serializer(serializers.ModelSerializer):
+    satker = SatkerSerializer(many=False, read_only=True)
+    data = serializers.SerializerMethodField()
+
+    class Meta:
+        model = models.PSM_KEGIATAN_LAINNYA
+        exclude = []
+        fields = [
+            'id','satker','data'
+        ]
+    def get_data(self, obj):
+
+        res = models.PSM_KEGIATAN_LAINNYA.objects.filter(satker = obj.satker)
+        ret = PSM_KEGIATAN_LAINNYA_DATA_Serializer(res, many=True).data
+        return ret
+
+class PSM_KEGIATAN_LAINNYA_Serializer(serializers.ModelSerializer):
+    satker = SatkerSerializer(many=False, read_only=True)
+    data = serializers.SerializerMethodField()
+    detail = serializers.SerializerMethodField()
+
+    class Meta:
+        model = models.PSM_KEGIATAN_LAINNYA
+        exclude = []
+        fields = [
+            'id','satker','data','detail'
+        ]
+
+    def get_data(self, obj):
+        user_id = self.context['request'].user.id
+        satker = Profile.objects.values_list('satker', flat=True).get(user_id=user_id)
+        satker_level = Satker.objects.values_list('level', flat=True).get(id=satker)
+
+        if satker_level == 1:
+            # bnnk
+            res = models.PSM_KEGIATAN_LAINNYA.objects.filter(satker = obj.satker)
+        elif satker_level == 0:
+            # bnnp
+            res = models.PSM_KEGIATAN_LAINNYA.objects.filter(satker = obj.satker, status__gt = 0)
+        elif satker_level == 2:
+            # pusat
+            res = models.PSM_KEGIATAN_LAINNYA.objects.filter(satker = obj.satker, status = 2)
+
+        ret = PSM_KEGIATAN_LAINNYA_DATA_Serializer(res, many=True, context={'request': self.context['request']}).data
+        return ret
+
+        res = models.PSM_KEGIATAN_LAINNYA.objects.filter(satker = obj.satker)
+        ret = PSM_KEGIATAN_LAINNYA_DATA_Serializer(res, many=True).data
+        return ret
+    
+    def get_detail(self, obj):
+        user_id = self.context['request'].user.id
+        satker = Profile.objects.values_list('satker', flat=True).get(user_id=user_id)
+        satker_level = Satker.objects.values_list('level', flat=True).get(id=satker)
+
+        if satker_level == 1:
+            # bnnk
+            res = models.PSM_KEGIATAN_LAINNYA.objects.filter(satker__parent = obj.satker).order_by('satker__id', 'satker__order').distinct('satker__id')
+        elif satker_level == 0:
+            # bnnp
+            res = models.PSM_KEGIATAN_LAINNYA.objects.filter(satker__parent = obj.satker, status__gt = 0).order_by('satker__id', 'satker__order').distinct('satker__id')
+        elif satker_level == 2:
+            # pusat
+            res = models.PSM_KEGIATAN_LAINNYA.objects.filter(satker__parent = obj.satker, status= 2).order_by('satker__id', 'satker__order').distinct('satker__id')
+
+        ret = PSM_KEGIATAN_LAINNYA_CHILD_Serializer(res, many=True, context={'request': self.context['request']}).data
+        return ret
+    
+class PSM_KEGIATAN_LAINNYA_CREATE_UPDATE_Serializer(serializers.ModelSerializer):
+    dokumentasi = serializers.FileField(required=False, max_length=None, allow_empty_file=True, use_url=True)
+    class Meta:
+        model = models.PSM_KEGIATAN_LAINNYA
+        fields = ['id', 'satker', 'kegiatan', 'tempat', 'waktu_awal', 'waktu_akhir', 'lingkungan', 'jumlah_sasaran', 'hasil_dampak', 'kesimpulan', 'tindak_lanjut', 'dokumentasi']
+
 # ======= PSM RAKOR PEMETAAN SERIALIZER =======
 class PSM_RAKOR_PEMETAAN_Serializer(serializers.ModelSerializer):
     satker = SatkerSerializer(many=False, read_only=True)
-    #satker_target = SatkerSerializer(many=False, read_only=True)
     data = serializers.SerializerMethodField()
     detail = serializers.SerializerMethodField()
 
@@ -539,13 +1033,13 @@ class PSM_RAKOR_PEMETAAN_Serializer(serializers.ModelSerializer):
         status = None
         if satker_level == 1:
             # bnnk
-            res = models.PSM_RAKOR_PEMETAAN.objects.filter(satker__parent = obj.satker).order_by('satker__id', 'satker__order').distinct('satker__id')
+            res = models.PSM_RAKOR_PEMETAAN.objects.filter(satker__parent = obj.satker).order_by('satker__id').distinct('satker__id')
         elif satker_level == 0:
             # bnnp
-            res = models.PSM_RAKOR_PEMETAAN.objects.filter(satker__parent = obj.satker, status__gt = 0).order_by('satker__id', 'satker__order').distinct('satker__id')
+            res = models.PSM_RAKOR_PEMETAAN.objects.filter(satker__parent = obj.satker, status__gt = 0).order_by('satker__id').distinct('satker__id')
         elif satker_level == 2:
             # pusat
-            res = models.PSM_RAKOR_PEMETAAN.objects.filter(satker__parent = obj.satker, status= 2).order_by('satker__id', 'satker__order').distinct('satker__id')
+            res = models.PSM_RAKOR_PEMETAAN.objects.filter(satker__parent = obj.satker, status= 2).order_by('satker__id').distinct('satker__id')
 
         ret = PSM_RAKOR_PEMETAAN_CHILD_Serializer(res, many=True, context={'request': self.context['request']}).data
         #print(ret)
@@ -556,7 +1050,6 @@ class PSM_RAKOR_PEMETAAN_Serializer(serializers.ModelSerializer):
         satker = Profile.objects.values_list('satker', flat=True).get(user_id=user_id)
         satker_level = Satker.objects.values_list('level', flat=True).get(id=satker)
 
-        status = None
         if satker_level == 1:
             # bnnk
             res = models.PSM_RAKOR_PEMETAAN.objects.filter(satker = obj.satker)
@@ -618,7 +1111,7 @@ class PSM_RAKOR_PEMETAAN_CRUD_Serializer(serializers.ModelSerializer):
         model = models.PSM_RAKOR_PEMETAAN
         fields = '__all__'
 
-# ======= PSM RAKOR PEMETAAN SERIALIZER =======
+# ======= PSM AUDIENSI SERIALIZER =======
 class PSM_AUDIENSI_CRUD_Serializer(serializers.ModelSerializer):
     satker = serializers.PrimaryKeyRelatedField(queryset=Satker.objects.all())
     class Meta:
@@ -662,7 +1155,6 @@ class PSM_AUDIENSI_Serializer(serializers.ModelSerializer):
         satker = Profile.objects.values_list('satker', flat=True).get(user_id=user_id)
         satker_level = Satker.objects.values_list('level', flat=True).get(id=satker)
 
-        status = None
         if satker_level == 1:
             # bnnk
             res = models.PSM_AUDIENSI.objects.filter(satker = obj.satker)
@@ -717,3 +1209,296 @@ class PSM_AUDIENSI_DATA_Serializer(serializers.ModelSerializer):
             'id','tanggal_awal', 'tanggal_akhir', 'satker', 'nama_lingkungan', 'peserta',
             'deskripsi', 'kendala', 'kesimpulan', 'tindak_lanjut', 'dokumentasi', 'status'
         ]
+
+# ======= PSM KONSOLIDASI KEBIJAKAN SERIALIZER =======
+class PSM_KONSOLIDASI_KEBIJAKAN_CRUD_Serializer(serializers.ModelSerializer):
+    satker = serializers.PrimaryKeyRelatedField(queryset=Satker.objects.all())
+    class Meta:
+        model = models.PSM_KONSOLIDASI_KEBIJAKAN
+        fields = '__all__'
+
+class PSM_KONSOLIDASI_KEBIJAKAN_Serializer(serializers.ModelSerializer):
+    satker = SatkerSerializer(many=False, read_only=True)
+    data = serializers.SerializerMethodField()
+    detail = serializers.SerializerMethodField()
+
+    class Meta:
+        model = models.PSM_KONSOLIDASI_KEBIJAKAN
+        exclude = []
+        fields = [
+            'id','satker','data','detail'
+        ]
+    
+    def get_detail(self, obj):
+        user_id = self.context['request'].user.id
+        satker = Profile.objects.values_list('satker', flat=True).get(user_id=user_id)
+        satker_level = Satker.objects.values_list('level', flat=True).get(id=satker)
+
+        status = None
+        if satker_level == 1:
+            # bnnk
+            res = models.PSM_KONSOLIDASI_KEBIJAKAN.objects.filter(satker__parent = obj.satker).order_by('satker__id', 'satker__order').distinct('satker__id')
+        elif satker_level == 0:
+            # bnnp
+            res = models.PSM_KONSOLIDASI_KEBIJAKAN.objects.filter(satker__parent = obj.satker, status__gt = 0).order_by('satker__id', 'satker__order').distinct('satker__id')
+        elif satker_level == 2:
+            # pusat
+            res = models.PSM_KONSOLIDASI_KEBIJAKAN.objects.filter(satker__parent = obj.satker, status= 2).order_by('satker__id', 'satker__order').distinct('satker__id')
+
+        ret = PSM_KONSOLIDASI_KEBIJAKAN_CHILD_Serializer(res, many=True, context={'request': self.context['request']}).data
+        #print(ret)
+        return ret
+
+    def get_data(self, obj):
+        user_id = self.context['request'].user.id
+        satker = Profile.objects.values_list('satker', flat=True).get(user_id=user_id)
+        satker_level = Satker.objects.values_list('level', flat=True).get(id=satker)
+
+        if satker_level == 1:
+            # bnnk
+            res = models.PSM_KONSOLIDASI_KEBIJAKAN.objects.filter(satker = obj.satker)
+        elif satker_level == 0:
+            # bnnp
+            res = models.PSM_KONSOLIDASI_KEBIJAKAN.objects.filter(satker = obj.satker, status__gt = 0)
+        elif satker_level == 2:
+            # pusat
+            res = models.PSM_KONSOLIDASI_KEBIJAKAN.objects.filter(satker = obj.satker, status = 2)
+
+        ret = PSM_KONSOLIDASI_KEBIJAKAN_DATA_Serializer(res, many=True, context={'request': self.context['request']}).data
+        #print(ret)
+        return ret        
+    
+class PSM_KONSOLIDASI_KEBIJAKAN_CHILD_Serializer(serializers.ModelSerializer):
+    satker = SatkerSerializer(many=False, read_only=True)
+    data = serializers.SerializerMethodField()
+
+    class Meta:
+        model = models.PSM_KONSOLIDASI_KEBIJAKAN
+        exclude = []
+        fields = [
+            'id','satker', 'data'
+        ]
+    
+    def get_data(self, obj):
+        user_id = self.context['request'].user.id
+        satker = Profile.objects.values_list('satker', flat=True).get(user_id=user_id)
+        satker_level = Satker.objects.values_list('level', flat=True).get(id=satker)
+
+        status = None
+        if satker_level == 1:
+            # bnnk
+            res = models.PSM_KONSOLIDASI_KEBIJAKAN.objects.filter(satker = obj.satker)
+        elif satker_level == 0:
+            # bnnp
+            res = models.PSM_KONSOLIDASI_KEBIJAKAN.objects.filter(satker = obj.satker, status__gt = 0)
+        elif satker_level == 2:
+            # pusat
+            res = models.PSM_KONSOLIDASI_KEBIJAKAN.objects.filter(satker = obj.satker, status = 2)
+
+        ret = PSM_KONSOLIDASI_KEBIJAKAN_DATA_Serializer(res, many=True).data
+        #print(ret)
+        return ret
+    
+class PSM_KONSOLIDASI_KEBIJAKAN_DATA_Serializer(serializers.ModelSerializer):
+    satker = SatkerSerializer(many=False, read_only=True)
+    class Meta:
+        model = models.PSM_KONSOLIDASI_KEBIJAKAN
+        exclude = []
+        fields = [
+            'id','tanggal_awal', 'tanggal_akhir', 'satker', 'stakeholder', 'peserta',
+            'deskripsi', 'kendala', 'kesimpulan', 'tindak_lanjut', 'dokumentasi', 'status'
+        ]
+
+# ======= PSM WORKSHOP PENGGIAT SERIALIZER =======
+class PSM_WORKSHOP_PENGGIAT_CRUD_Serializer(serializers.ModelSerializer):
+    satker = serializers.PrimaryKeyRelatedField(queryset=Satker.objects.all())
+    class Meta:
+        model = models.PSM_WORKSHOP_PENGGIAT
+        fields = '__all__'
+
+class PSM_WORKSHOP_PENGGIAT_Serializer(serializers.ModelSerializer):
+    satker = SatkerSerializer(many=False, read_only=True)
+    data = serializers.SerializerMethodField()
+    detail = serializers.SerializerMethodField()
+
+    class Meta:
+        model = models.PSM_WORKSHOP_PENGGIAT
+        exclude = []
+        fields = [
+            'id','satker','data','detail'
+        ]
+    
+    def get_detail(self, obj):
+        user_id = self.context['request'].user.id
+        satker = Profile.objects.values_list('satker', flat=True).get(user_id=user_id)
+        satker_level = Satker.objects.values_list('level', flat=True).get(id=satker)
+
+        status = None
+        if satker_level == 1:
+            # bnnk
+            res = models.PSM_WORKSHOP_PENGGIAT.objects.filter(satker__parent = obj.satker).order_by('satker__id', 'satker__order').distinct('satker__id')
+        elif satker_level == 0:
+            # bnnp
+            res = models.PSM_WORKSHOP_PENGGIAT.objects.filter(satker__parent = obj.satker, status__gt = 0).order_by('satker__id', 'satker__order').distinct('satker__id')
+        elif satker_level == 2:
+            # pusat
+            res = models.PSM_WORKSHOP_PENGGIAT.objects.filter(satker__parent = obj.satker, status= 2).order_by('satker__id', 'satker__order').distinct('satker__id')
+
+        ret = PSM_WORKSHOP_PENGGIAT_CHILD_Serializer(res, many=True, context={'request': self.context['request']}).data
+        #print(ret)
+        return ret
+
+    def get_data(self, obj):
+        user_id = self.context['request'].user.id
+        satker = Profile.objects.values_list('satker', flat=True).get(user_id=user_id)
+        satker_level = Satker.objects.values_list('level', flat=True).get(id=satker)
+
+        if satker_level == 1:
+            # bnnk
+            res = models.PSM_WORKSHOP_PENGGIAT.objects.filter(satker = obj.satker)
+        elif satker_level == 0:
+            # bnnp
+            res = models.PSM_WORKSHOP_PENGGIAT.objects.filter(satker = obj.satker, status__gt = 0)
+        elif satker_level == 2:
+            # pusat
+            res = models.PSM_WORKSHOP_PENGGIAT.objects.filter(satker = obj.satker, status = 2)
+
+        ret = PSM_WORKSHOP_PENGGIAT_DATA_Serializer(res, many=True, context={'request': self.context['request']}).data
+        #print(ret)
+        return ret        
+    
+class PSM_WORKSHOP_PENGGIAT_CHILD_Serializer(serializers.ModelSerializer):
+    satker = SatkerSerializer(many=False, read_only=True)
+    data = serializers.SerializerMethodField()
+
+    class Meta:
+        model = models.PSM_WORKSHOP_PENGGIAT
+        exclude = []
+        fields = [
+            'id','satker', 'data'
+        ]
+    
+    def get_data(self, obj):
+        user_id = self.context['request'].user.id
+        satker = Profile.objects.values_list('satker', flat=True).get(user_id=user_id)
+        satker_level = Satker.objects.values_list('level', flat=True).get(id=satker)
+
+        status = None
+        if satker_level == 1:
+            # bnnk
+            res = models.PSM_WORKSHOP_PENGGIAT.objects.filter(satker = obj.satker)
+        elif satker_level == 0:
+            # bnnp
+            res = models.PSM_WORKSHOP_PENGGIAT.objects.filter(satker = obj.satker, status__gt = 0)
+        elif satker_level == 2:
+            # pusat
+            res = models.PSM_WORKSHOP_PENGGIAT.objects.filter(satker = obj.satker, status = 2)
+
+        ret = PSM_WORKSHOP_PENGGIAT_DATA_Serializer(res, many=True).data
+        #print(ret)
+        return ret
+    
+class PSM_WORKSHOP_PENGGIAT_DATA_Serializer(serializers.ModelSerializer):
+    satker = SatkerSerializer(many=False, read_only=True)
+    class Meta:
+        model = models.PSM_WORKSHOP_PENGGIAT
+        exclude = []
+        fields = [
+            'id','tanggal_awal', 'tanggal_akhir', 'satker', 'stakeholder', 'peserta',
+            'deskripsi', 'kendala', 'kesimpulan', 'tindak_lanjut', 'dokumentasi', 'status'
+        ]
+
+# ======= PSM BIMBINGAN TEKNIS PENGGIAT P4GN SERIALIZER =======
+class PSM_BIMTEK_P4GN_CRUD_Serializer(serializers.ModelSerializer):
+    satker = serializers.PrimaryKeyRelatedField(queryset=Satker.objects.all())
+    class Meta:
+        model = models.PSM_BIMTEK_P4GN
+        fields = '__all__'
+
+class PSM_BIMTEK_P4GN_PESERTA_Serializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.PSM_BIMTEK_P4GN_PESERTA
+        fields = ['id', 'parent', 'nama', 'jenis_kelamin', 'alamat', 'no_telepon']
+
+    def __init__(self, *args, parent_id=None, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.parent_id = parent_id
+
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        return data
+
+    def to_internal_value(self, data):
+        data['parent'] = self.parent_id
+        return super().to_internal_value(data)
+    
+class PSM_BIMTEK_P4GN_DATA_Serializer(serializers.ModelSerializer):
+    satker = SatkerSerializer(many=False, read_only=True)
+    satker_target = SatkerSerializer(many=False, read_only=True)
+    peserta_bimtek = serializers.SerializerMethodField()
+
+    class Meta:
+        model = models.PSM_BIMTEK_P4GN
+        exclude = []
+        datatables_always_serialize = [
+            'id', 'satker', 'seri_pin_penggiat', 'tanggal_awal', 'tanggal_akhir', 'nama_lingkungan',
+            'kendala', 'hasil_capaian', 'kesimpulan', 'tindak_lanjut', 'dokumentasi', 'peserta_bimtek', 'peserta'
+        ]
+
+    def get_peserta_bimtek(self, obj):
+        parent_id = obj.id
+        peserta_bimtek_objects = models.PSM_BIMTEK_P4GN_PESERTA.objects.filter(parent=parent_id)
+        ret = PSM_BIMTEK_P4GN_PESERTA_Serializer(peserta_bimtek_objects, many=True).data
+        return ret
+
+class PSM_BIMTEK_P4GN_CHILD_Serializer(serializers.ModelSerializer):
+    satker = SatkerSerializer(many=False, read_only=True)
+    data = serializers.SerializerMethodField()
+
+    class Meta:
+        model = models.PSM_BIMTEK_P4GN
+        exclude = []
+        fields = [
+            'id','satker', 'data'
+        ]
+    def get_data(self, obj):
+
+        res = models.PSM_BIMTEK_P4GN.objects.filter(satker = obj.satker)
+        ret = PSM_BIMTEK_P4GN_DATA_Serializer(res, many=True).data
+        return ret
+
+class PSM_BIMTEK_P4GN_Serializer(serializers.ModelSerializer):
+    satker = SatkerSerializer(many=False, read_only=True)
+    data = serializers.SerializerMethodField()
+    detail = serializers.SerializerMethodField()
+
+    class Meta:
+        model = models.PSM_BIMTEK_P4GN
+        exclude = []
+        fields = [
+            'id','satker','data','detail'
+        ]
+
+    def get_data(self, obj):
+        res = models.PSM_BIMTEK_P4GN.objects.filter(satker = obj.satker)
+        ret = PSM_BIMTEK_P4GN_DATA_Serializer(res, many=True).data
+        return ret
+    
+    def get_detail(self, obj):
+        user_id = self.context['request'].user.id
+        satker = Profile.objects.values_list('satker', flat=True).get(user_id=user_id)
+        satker_level = Satker.objects.values_list('level', flat=True).get(id=satker)
+
+        if satker_level == 1:
+            # bnnk
+            res = models.PSM_BIMTEK_P4GN.objects.filter(satker__parent = obj.satker).order_by('satker__id', 'satker__order').distinct('satker__id')
+        elif satker_level == 0:
+            # bnnp
+            res = models.PSM_BIMTEK_P4GN.objects.filter(satker__parent = obj.satker, status__gt = 0).order_by('satker__id', 'satker__order').distinct('satker__id')
+        elif satker_level == 2:
+            # pusat
+            res = models.PSM_BIMTEK_P4GN.objects.filter(satker__parent = obj.satker, status= 2).order_by('satker__id', 'satker__order').distinct('satker__id')
+
+        ret = PSM_BIMTEK_P4GN_CHILD_Serializer(res, many=True, context={'request': self.context['request']}).data
+        #print(ret)
+        return ret

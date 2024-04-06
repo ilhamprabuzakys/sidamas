@@ -32,129 +32,18 @@ from kegiatan.api import filters
 from users.serializers import SatkerSerializer
 from users.models import Satker
 
-def get_data_list_queryset(request, queryset):
-    satker = request.user.profile.satker
+from kegiatan.api.helpers.api_helpers import (
+    get_data_list,
+    get_data_list_queryset,
+    get_data_list_bnnk,
+    get_filtered_data,
+    set_created_kegiatan_status,
+    get_tanggal_kegiatan,
     
-    if satker.level == 1:
-        # BNNK
-        queryset = queryset.filter(satker__id=satker, satker__level=1)
-    elif satker.level == 0:
-        # BNNP
-        queryset = queryset.filter(satker__provinsi_id=satker.provinsi_id, status__gt=0)
-    elif satker.level == 2:
-        # PUSAT
-        queryset = queryset.filter(status=2)
-    return queryset
-
-def get_filtered_data(satker, data, status, waktu):
-    now = datetime.datetime.now()
-    start_date = ''
-    end_date = ''
-    
-    if waktu == 'hari_ini':
-        start_date = now.replace(hour=0, minute=0, second=0, microsecond=0)
-        end_date = now.replace(hour=23, minute=59, second=59, microsecond=999999)
-    elif waktu == 'minggu_ini':
-        start_date = now - datetime.timedelta(days=now.weekday())
-        start_date = start_date.replace(hour=0, minute=0, second=0, microsecond=0)
-        end_date = start_date + datetime.timedelta(days=6, hours=23, minutes=59, seconds=59, microseconds=999999)
-    elif waktu == 'bulan_ini':
-        start_date = now.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
-        end_date = start_date.replace(day=calendar.monthrange(now.year, now.month)[1], hour=23, minute=59, second=59, microsecond=999999)
-    elif waktu.startswith('triwulan'):
-        triwulan = int(waktu[-1])
-        start_month = (triwulan - 1) * 3 + 1
-        start_date = now.replace(month=start_month, day=1, hour=0, minute=0, second=0, microsecond=0)
-        end_month = start_month + 2
-        end_date = start_date.replace(month=end_month, day=calendar.monthrange(now.year, end_month)[1], hour=23, minute=59, second=59, microsecond=999999)
-        
-        print('Triwulan :', waktu)
-        print('Triwulan ke-:', triwulan)
-        print('Triwulan start_month :', start_month)
-        print('Triwulan start_date :', start_date)
-        print('Triwulan end_month :', end_month)
-        print('Triwulan end_date :', end_date)
-
-    # return { 'start_date': start_date, 'end_date': end_date }
-    print(f'Args : {waktu} {status}')
-    
-    choosen_status = 0
-    
-    if status == '1':
-        if satker.level == 2:
-            choosen_status = 2
-        else:
-            choosen_status = 1 if satker.level == 1 else 2
-    else:
-        choosen_status = 1 if satker.level == 0 else 0
-
-    if waktu != 'semua':
-        data = data.filter(tanggal_awal__lte=end_date, tanggal_akhir__gte=start_date)
-    
-    if status != 'semua':
-        data = data.filter(status=choosen_status)
-        
-    
-    print(f'Panjang data dari filter {waktu} dengan status {choosen_status} dengan start_date {start_date} s/d end_date {end_date}:', len(data))
-    
-    return data
-
-def get_kegiatan_satker_status(request):
-    satker = request.user.profile.satker
-    
-    """
-        Mapping :
-        Satker Level       Status Pengiriman
-        0 : BNNP        -> 1 : Sudah di BNNP
-        1 : BNNK        -> 0 : Masih di BNNK
-        2 : Pusat       -> 2 : Tetap di Pusat
-    """
-
-    status_map = {
-        0: 1,
-        1: 0,
-        2: 2
-    }
-    
-    status = status_map.get(satker.level, None)
-    
-    return status
-
-def get_tanggal_kegiatan(self, tanggal_awal, tanggal_akhir=None):
-    start = datetime.date.fromisoformat(f'{tanggal_awal}')
-    start_date = start.strftime('%-d')
-    start_month = start.strftime('%B')
-    start_year = start.strftime('%Y')
-    
-    nama_bulan = {
-        "January": "Januari",
-        "February": "Februari",
-        "March": "Maret",
-        "April": "April",
-        "May": "Mei",
-        "June": "Juni",
-        "July": "Juli",
-        "August": "Agustus",
-        "September": "September",
-        "October": "Oktober",
-        "November": "November",
-        "December": "Desember"
-    }
-
-    if tanggal_akhir:
-        end = datetime.date.fromisoformat(f'{tanggal_akhir}')
-        end_date = end.strftime('%-d')
-        end_month = end.strftime('%B')
-        end_year = end.strftime('%Y')
-
-        if start_month == end_month and start_year == end_year:
-            return f"{start_date} - {end_date} {nama_bulan[start_month]} {start_year}"
-        elif start_year != end_year:
-            return f"{start.strftime('%-d')} {nama_bulan[start_month]} {start_year} - {end.strftime('%-d')} {nama_bulan[end_month]} {end_year}"
-        else:
-            return f"{start.strftime('%-d')} {nama_bulan[start_month]} - {end.strftime('%-d')} {nama_bulan[end_month]} {end_year}"
-    else:
-        return f"{start.strftime('%-d')} {nama_bulan[start_month]} {start_year}"
+    kirim_kegiatan_helper,
+    delete_all_kegiatan_helper,
+    aksi_semua_kegiatan,
+)
 
 # ======= BINAAN TEKNIS =======
 class DAYATIF_BINAAN_TEKNIS_ViewSet(viewsets.ModelViewSet):
@@ -165,151 +54,31 @@ class DAYATIF_BINAAN_TEKNIS_ViewSet(viewsets.ModelViewSet):
     filter_backends = [DjangoFilterBackend]
     filterset_class = filters.DAYATIF_BINAAN_TEKNIS_Filters
     
-    # def get_view_name(self):
-    #     return 'Binaan Teknis'
-    
     def perform_create(self, serializer):
-        serializer.save(created_by=self.request.user, status=get_kegiatan_satker_status(self.request), satker=self.request.user.profile.satker)
+        serializer.save(created_by=self.request.user, status=set_created_kegiatan_status(self.request), satker=self.request.user.profile.satker)
 
     def perform_update(self, serializer):
         serializer.save(updated_by=self.request.user)
         
     @action(detail=False, methods=['GET'], url_path='list', name='List Data')
     def data_list(self, request):
-        queryset = self.queryset.filter(satker__parent__isnull=True).order_by('satker__satker_order', 'tanggal_awal').distinct('satker__satker_order')
-        queryset = get_data_list_queryset(request, queryset)
-        
-        paginator = pagination.Page10NumberPagination()
-        paginated_queryset = paginator.paginate_queryset(queryset, request)
-        
-        serializer = serializers.DAYATIF_BINAAN_TEKNIS_LIST_Serializer(paginated_queryset, many=True, context={'request': request})
-        return paginator.get_paginated_response(serializer.data)
+        return get_data_list(request, self.queryset, serializers.DAYATIF_BINAAN_TEKNIS_LIST_Serializer)
 
     @action(detail=False, methods=['GET'], url_path='list/bnnk', name='List Data BNNK')
     def data_list_bnnk(self, request):
-        satker = self.request.user.profile.satker
-
-        data = models.DAYATIF_BINAAN_TEKNIS.objects.all().filter(satker_id=satker, satker__level=1).order_by('satker__nama_satker')
-        
-        serialized_data = [{
-            'satker': SatkerSerializer(satker, many=False).data,
-            'data': serializers.DAYATIF_BINAAN_TEKNIS_Serializer(data, many=True).data
-        }]
-        
-        return Response(serialized_data, status=status.HTTP_200_OK)
+        return get_data_list_bnnk(self.request.user.profile.satker, models.DAYATIF_BINAAN_TEKNIS, serializers.DAYATIF_BINAAN_TEKNIS_Serializer)
 
     @action(detail=True, methods=['DELETE'], url_path='delete_all_kegiatan', name='Hapus semua Kegiatan')
     def delete_all_kegiatan(self, request, pk=None):
-        try:
-            deleted_count, _ = models.DAYATIF_BINAAN_TEKNIS.objects.filter(satker_id=pk).delete()
-            
-            return Response({
-                'status': deleted_count > 0,
-                'deleted_count' : deleted_count,
-                'message': 'Data kegiatan berhasil dihapus' if deleted_count > 0 else f'Data kegiatan dari Satker ID {pk} tidak ditemukan',
-                'satker_id': pk,
-            }, status=status.HTTP_200_OK)
-        except Exception as e:
-            return Response({
-                'status': False,
-                'message': f'Gagal saat menghapus semua kegiatan pada satker_id {pk}',
-                'satker_id': pk,
-                'error': f'{str(e)}'
-            }, status=status.HTTP_400_BAD_REQUEST)
+        return delete_all_kegiatan_helper(models.DAYATIF_BINAAN_TEKNIS, pk)
     
     @action(detail=False, methods=['POST'], url_path='semua_kegiatan', name='Aksi untuk semua Kegiatan')
     def semua_kegiatan(self, request):
-        tipe = request.data.get("tipe", 'kirim')
-        satker_id = request.data.get("satker_id", None)
-        nama_satker = request.data.get("nama_satker", None)
-        
-        try:
-            satker_instance = Satker.objects.filter(nama_satker=nama_satker).first() if not satker_id else Satker.objects.filter(pk=satker_id).first()
-            satker_parent = {}
-            
-            if satker_instance.level == 1:
-                satker_parent_instance = satker_instance.parent
-                satker_parent['id'] = satker_parent_instance.pk
-                satker_parent['keterangan'] = satker_parent_instance.nama_satker
-            elif satker_instance.level == 0:
-                satker_parent['id'] = 213
-                satker_parent['keterangan'] = 'BNN Pusat'
-            else:
-                satker_parent['id'] = 0
-                satker_parent['keterangan'] = ''
-                
-            kegiatan = models.DAYATIF_BINAAN_TEKNIS.objects.filter(satker_id=satker_instance.pk)
-            message = ''
-            
-            if tipe == 'kirim':
-                if satker_instance.level == 0:
-                    kegiatan.update(status=2)
-                elif satker_instance.level == 1:
-                    kegiatan.update(status=1)
-                    
-                message = f'Data kegiatan dari Satuan Kerja {satker_instance.nama_satker} berhasil dikirim ke {satker_parent.get("keterangan")}'
-            else:
-                if satker_instance.level == 0:
-                    kegiatan.update(status=1)
-                elif satker_instance.level == 1:
-                    kegiatan.update(status=0)
-                
-                message = f'Data kegiatan dari Satuan Kerja {satker_instance.nama_satker} berhasil dibatalkan dikirim ke {satker_parent.get("keterangan")}'
-                
-            return Response({
-                'status': True,
-                'message': message,
-                'parent': satker_parent,
-            }, status=status.HTTP_200_OK)
-        except Exception as e:
-            return Response({
-                'status': False,
-                'message': f'Gagal melakukan proses kirim/batal dari Satuan Kerja {nama_satker or satker_id}',
-                'satker': nama_satker or satker_id,
-                'error': f'{str(e)}'
-            }, status=status.HTTP_400_BAD_REQUEST)
+        return aksi_semua_kegiatan(request, models.DAYATIF_BINAAN_TEKNIS)
     
     @action(detail=False, methods=['POST'], url_path='kirim_kegiatan', name='Kirim Kegiatan')
     def kirim_kegiatan(self, request):
-        kegiatan_id = request.data.get("kegiatan_id", None)
-        kegiatan_id = int(kegiatan_id) if kegiatan_id else kegiatan_id
-        
-        try:
-            satker_instance = self.request.user.profile.satker
-            satker_parent = {}
-            
-            if satker_instance.level == 1:
-                satker_parent_instance = satker_instance.parent
-                satker_parent['id'] = satker_parent_instance.pk
-                satker_parent['keterangan'] = satker_parent_instance.nama_satker
-            elif satker_instance.level == 0:
-                satker_parent['id'] = 213
-                satker_parent['keterangan'] = 'BNN Pusat'
-            else:
-                satker_parent['id'] = 0
-                satker_parent['keterangan'] = ''
-                
-            kegiatan = models.DAYATIF_BINAAN_TEKNIS.objects.filter(pk=kegiatan_id).first()
-            
-            if satker_instance.level == 0: # BNNP ke Pusat
-                kegiatan.status = 2
-            elif satker_instance.level == 1: # BNNK ke BNNP
-                kegiatan.status = 1
-            
-            kegiatan.save()
-                
-            return Response({
-                'status': True,
-                'message': f'Data kegiatan ID {kegiatan_id} dari Satuan Kerja {satker_instance.nama_satker} berhasil dikirim ke {satker_parent.get("keterangan")}',
-                'parent': satker_parent,
-            }, status=status.HTTP_200_OK)
-        except Exception as e:
-            return Response({
-                'status': False,
-                'message': f'Gagal mengirim kegiatan ID {kegiatan_id} dari Satuan Kerja ID {satker_instance.pk}',
-                'kegiatan_id': kegiatan_id,
-                'error': f'{str(e)}'
-            }, status=status.HTTP_400_BAD_REQUEST)
+        return kirim_kegiatan_helper(models.DAYATIF_BINAAN_TEKNIS, request)
             
     def get_flat_values(self, request, status, waktu):
         satker = self.request.user.profile.satker
@@ -579,151 +348,31 @@ class DAYATIF_PEMETAAN_POTENSI_ViewSet(viewsets.ModelViewSet):
     filter_backends = [DjangoFilterBackend]
     filterset_class = filters.DAYATIF_PEMETAAN_POTENSI_Filters
     
-    # def get_view_name(self):
-    #     return 'Pemetaan Potensi'
-    
     def perform_create(self, serializer):
-        serializer.save(created_by=self.request.user, status=get_kegiatan_satker_status(self.request), satker=self.request.user.profile.satker)
+        serializer.save(created_by=self.request.user, status=set_created_kegiatan_status(self.request), satker=self.request.user.profile.satker)
 
     def perform_update(self, serializer):
         serializer.save(updated_by=self.request.user)
         
     @action(detail=False, methods=['GET'], url_path='list', name='List Data')
     def data_list(self, request):
-        queryset = self.queryset.filter(satker__parent__isnull=True).order_by('satker__satker_order', 'tanggal_awal').distinct('satker__satker_order')
-        queryset = get_data_list_queryset(request, queryset)
-        
-        paginator = pagination.Page10NumberPagination()
-        paginated_queryset = paginator.paginate_queryset(queryset, request)
-        
-        serializer = serializers.DAYATIF_PEMETAAN_POTENSI_LIST_Serializer(paginated_queryset, many=True, context={'request': request})
-        return paginator.get_paginated_response(serializer.data)
+        return get_data_list(request, self.queryset, serializers.DAYATIF_PEMETAAN_POTENSI_LIST_Serializer)
 
     @action(detail=False, methods=['GET'], url_path='list/bnnk', name='List Data BNNK')
     def data_list_bnnk(self, request):
-        satker = self.request.user.profile.satker
-
-        data = models.DAYATIF_PEMETAAN_POTENSI.objects.all().filter(satker_id=satker, satker__level=1).order_by('satker__nama_satker')
-        
-        serialized_data = [{
-            'satker': SatkerSerializer(satker, many=False).data,
-            'data': serializers.DAYATIF_PEMETAAN_POTENSI_Serializer(data, many=True).data
-        }]
-        
-        return Response(serialized_data, status=status.HTTP_200_OK)
+        return get_data_list_bnnk(self.request.user.profile.satker, models.DAYATIF_PEMETAAN_POTENSI, serializers.DAYATIF_PEMETAAN_POTENSI_Serializer)
 
     @action(detail=True, methods=['DELETE'], url_path='delete_all_kegiatan', name='Hapus semua Kegiatan')
     def delete_all_kegiatan(self, request, pk=None):
-        try:
-            deleted_count, _ = models.DAYATIF_PEMETAAN_POTENSI.objects.filter(satker_id=pk).delete()
-            
-            return Response({
-                'status': deleted_count > 0,
-                'deleted_count' : deleted_count,
-                'message': 'Data kegiatan berhasil dihapus' if deleted_count > 0 else f'Data kegiatan dari Satker ID {pk} tidak ditemukan',
-                'satker_id': pk,
-            }, status=status.HTTP_200_OK)
-        except Exception as e:
-            return Response({
-                'status': False,
-                'message': f'Gagal saat menghapus semua kegiatan pada satker_id {pk}',
-                'satker_id': pk,
-                'error': f'{str(e)}'
-            }, status=status.HTTP_400_BAD_REQUEST)
+        return delete_all_kegiatan_helper(models.DAYATIF_PEMETAAN_POTENSI, pk)
     
     @action(detail=False, methods=['POST'], url_path='semua_kegiatan', name='Aksi untuk semua Kegiatan')
     def semua_kegiatan(self, request):
-        tipe = request.data.get("tipe", 'kirim')
-        satker_id = request.data.get("satker_id", None)
-        nama_satker = request.data.get("nama_satker", None)
-        
-        try:
-            satker_instance = Satker.objects.filter(nama_satker=nama_satker).first() if not satker_id else Satker.objects.filter(pk=satker_id).first()
-            satker_parent = {}
-            
-            if satker_instance.level == 1:
-                satker_parent_instance = satker_instance.parent
-                satker_parent['id'] = satker_parent_instance.pk
-                satker_parent['keterangan'] = satker_parent_instance.nama_satker
-            elif satker_instance.level == 0:
-                satker_parent['id'] = 213
-                satker_parent['keterangan'] = 'BNN Pusat'
-            else:
-                satker_parent['id'] = 0
-                satker_parent['keterangan'] = ''
-                
-            kegiatan = models.DAYATIF_PEMETAAN_POTENSI.objects.filter(satker_id=satker_instance.pk)
-            message = ''
-            
-            if tipe == 'kirim':
-                if satker_instance.level == 0:
-                    kegiatan.update(status=2)
-                elif satker_instance.level == 1:
-                    kegiatan.update(status=1)
-                    
-                message = f'Data kegiatan dari Satuan Kerja {satker_instance.nama_satker} berhasil dikirim ke {satker_parent.get("keterangan")}'
-            else:
-                if satker_instance.level == 0:
-                    kegiatan.update(status=1)
-                elif satker_instance.level == 1:
-                    kegiatan.update(status=0)
-                
-                message = f'Data kegiatan dari Satuan Kerja {satker_instance.nama_satker} berhasil dibatalkan dikirim ke {satker_parent.get("keterangan")}'
-                
-            return Response({
-                'status': True,
-                'message': message,
-                'parent': satker_parent,
-            }, status=status.HTTP_200_OK)
-        except Exception as e:
-            return Response({
-                'status': False,
-                'message': f'Gagal melakukan proses kirim/batal dari Satuan Kerja {nama_satker or satker_id}',
-                'satker': nama_satker or satker_id,
-                'error': f'{str(e)}'
-            }, status=status.HTTP_400_BAD_REQUEST)
+        return aksi_semua_kegiatan(request, models.DAYATIF_PEMETAAN_POTENSI)
     
     @action(detail=False, methods=['POST'], url_path='kirim_kegiatan', name='Kirim Kegiatan')
     def kirim_kegiatan(self, request):
-        kegiatan_id = request.data.get("kegiatan_id", None)
-        kegiatan_id = int(kegiatan_id) if kegiatan_id else kegiatan_id
-        
-        try:
-            satker_instance = self.request.user.profile.satker
-            satker_parent = {}
-            
-            if satker_instance.level == 1:
-                satker_parent_instance = satker_instance.parent
-                satker_parent['id'] = satker_parent_instance.pk
-                satker_parent['keterangan'] = satker_parent_instance.nama_satker
-            elif satker_instance.level == 0:
-                satker_parent['id'] = 213
-                satker_parent['keterangan'] = 'BNN Pusat'
-            else:
-                satker_parent['id'] = 0
-                satker_parent['keterangan'] = ''
-                
-            kegiatan = models.DAYATIF_PEMETAAN_POTENSI.objects.filter(pk=kegiatan_id).first()
-            
-            if satker_instance.level == 0: # BNNP ke Pusat
-                kegiatan.status = 2
-            elif satker_instance.level == 1: # BNNK ke BNNP
-                kegiatan.status = 1
-            
-            kegiatan.save()
-                
-            return Response({
-                'status': True,
-                'message': f'Data kegiatan ID {kegiatan_id} dari Satuan Kerja {satker_instance.nama_satker} berhasil dikirim ke {satker_parent.get("keterangan")}',
-                'parent': satker_parent,
-            }, status=status.HTTP_200_OK)
-        except Exception as e:
-            return Response({
-                'status': False,
-                'message': f'Gagal mengirim kegiatan ID {kegiatan_id} dari Satuan Kerja ID {satker_instance.pk}',
-                'kegiatan_id': kegiatan_id,
-                'error': f'{str(e)}'
-            }, status=status.HTTP_400_BAD_REQUEST)
+        return kirim_kegiatan_helper(models.DAYATIF_PEMETAAN_POTENSI, request)
 
     def get_flat_values(self, request, status, waktu):
         satker = self.request.user.profile.satker
@@ -981,8 +630,7 @@ class DAYATIF_PEMETAAN_POTENSI_ViewSet(viewsets.ModelViewSet):
                 'message': f'Gagal mengekspor daftar kegiatan dari Satuan Kerja {satker.nama_satker}',
                 'error': f'{str(e)}'
             }, status=status.HTTP_400_BAD_REQUEST)
-            
-            
+                    
 # ======= PEMETAAN STAKEHOLDER =======
 class DAYATIF_PEMETAAN_STAKEHOLDER_ViewSet(viewsets.ModelViewSet):
     queryset = models.DAYATIF_PEMETAAN_STAKEHOLDER.objects.all().order_by('-tanggal_awal')
@@ -992,152 +640,31 @@ class DAYATIF_PEMETAAN_STAKEHOLDER_ViewSet(viewsets.ModelViewSet):
     filter_backends = [DjangoFilterBackend]
     filterset_class = filters.DAYATIF_PEMETAAN_STAKEHOLDER_Filters
     
-    # def get_view_name(self):
-    #     return 'Pemetaan Stakeholder'
-    
     def perform_create(self, serializer):
-        serializer.save(created_by=self.request.user, status=get_kegiatan_satker_status(self.request), satker=self.request.user.profile.satker)
+        serializer.save(created_by=self.request.user, status=set_created_kegiatan_status(self.request), satker=self.request.user.profile.satker)
 
     def perform_update(self, serializer):
         serializer.save(updated_by=self.request.user)
         
     @action(detail=False, methods=['GET'], url_path='list', name='List Data')
     def data_list(self, request):
-        queryset = self.queryset.filter(satker__parent__isnull=True).order_by('satker__satker_order', 'tanggal_awal').distinct('satker__satker_order')
-        queryset = get_data_list_queryset(request, queryset)
-        
-        paginator = pagination.Page10NumberPagination()
-        paginated_queryset = paginator.paginate_queryset(queryset, request)
-        
-        serializer = serializers.DAYATIF_PEMETAAN_STAKEHOLDER_LIST_Serializer(paginated_queryset, many=True, context={'request': request})
-        return paginator.get_paginated_response(serializer.data)
+        return get_data_list(request, self.queryset, serializers.DAYATIF_PEMETAAN_STAKEHOLDER_LIST_Serializer)
 
     @action(detail=False, methods=['GET'], url_path='list/bnnk', name='List Data BNNK')
     def data_list_bnnk(self, request):
-        satker = self.request.user.profile.satker
-
-        data = models.DAYATIF_PEMETAAN_STAKEHOLDER.objects.all().filter(satker_id=satker, satker__level=1).order_by('satker__nama_satker')
-        
-        serialized_data = [{
-            'satker': SatkerSerializer(satker, many=False).data,
-            'data': serializers.DAYATIF_PEMETAAN_STAKEHOLDER_Serializer(data, many=True).data
-        }]
-        
-        return Response(serialized_data, status=status.HTTP_200_OK)
+        return get_data_list_bnnk(self.request.user.profile.satker, models.DAYATIF_PEMETAAN_STAKEHOLDER, serializers.DAYATIF_PEMETAAN_STAKEHOLDER_Serializer)
 
     @action(detail=True, methods=['DELETE'], url_path='delete_all_kegiatan', name='Hapus semua Kegiatan')
     def delete_all_kegiatan(self, request, pk=None):
-        try:
-            deleted_count, _ = models.DAYATIF_PEMETAAN_STAKEHOLDER.objects.filter(satker_id=pk).delete()
-            
-            return Response({
-                'status': deleted_count > 0,
-                'deleted_count' : deleted_count,
-                'message': 'Data kegiatan berhasil dihapus' if deleted_count > 0 else f'Data kegiatan dari Satker ID {pk} tidak ditemukan',
-                'satker_id': pk,
-            }, status=status.HTTP_200_OK)
-        except Exception as e:
-            return Response({
-                'status': False,
-                'message': f'Gagal saat menghapus semua kegiatan pada satker_id {pk}',
-                'satker_id': pk,
-                'error': f'{str(e)}'
-            }, status=status.HTTP_400_BAD_REQUEST)
+        return delete_all_kegiatan_helper(models.DAYATIF_PEMETAAN_STAKEHOLDER, pk)
     
     @action(detail=False, methods=['POST'], url_path='semua_kegiatan', name='Aksi untuk semua Kegiatan')
     def semua_kegiatan(self, request):
-        tipe = request.data.get("tipe", 'kirim')
-        satker_id = request.data.get("satker_id", None)
-        nama_satker = request.data.get("nama_satker", None)
-        
-        try:
-            satker_instance = Satker.objects.filter(nama_satker=nama_satker).first() if not satker_id else Satker.objects.filter(pk=satker_id).first()
-            satker_parent = {}
-            
-            if satker_instance.level == 1:
-                satker_parent_instance = satker_instance.parent
-                satker_parent['id'] = satker_parent_instance.pk
-                satker_parent['keterangan'] = satker_parent_instance.nama_satker
-            elif satker_instance.level == 0:
-                satker_parent['id'] = 213
-                satker_parent['keterangan'] = 'BNN Pusat'
-            else:
-                satker_parent['id'] = 0
-                satker_parent['keterangan'] = ''
-                
-            kegiatan = models.DAYATIF_PEMETAAN_STAKEHOLDER.objects.filter(satker_id=satker_instance.pk)
-            message = ''
-            
-            if tipe == 'kirim':
-                if satker_instance.level == 0:
-                    kegiatan.update(status=2)
-                elif satker_instance.level == 1:
-                    kegiatan.update(status=1)
-                    
-                message = f'Data kegiatan dari Satuan Kerja {satker_instance.nama_satker} berhasil dikirim ke {satker_parent.get("keterangan")}'
-            else:
-                if satker_instance.level == 0:
-                    kegiatan.update(status=1)
-                elif satker_instance.level == 1:
-                    kegiatan.update(status=0)
-                
-                message = f'Data kegiatan dari Satuan Kerja {satker_instance.nama_satker} berhasil dibatalkan dikirim ke {satker_parent.get("keterangan")}'
-                
-            return Response({
-                'status': True,
-                'message': message,
-                'parent': satker_parent,
-            }, status=status.HTTP_200_OK)
-        except Exception as e:
-            return Response({
-                'status': False,
-                'message': f'Gagal melakukan proses kirim/batal dari Satuan Kerja {nama_satker or satker_id}',
-                'satker': nama_satker or satker_id,
-                'error': f'{str(e)}'
-            }, status=status.HTTP_400_BAD_REQUEST)
+        return aksi_semua_kegiatan(request, models.DAYATIF_PEMETAAN_STAKEHOLDER)
     
     @action(detail=False, methods=['POST'], url_path='kirim_kegiatan', name='Kirim Kegiatan')
     def kirim_kegiatan(self, request):
-        kegiatan_id = request.data.get("kegiatan_id", None)
-        kegiatan_id = int(kegiatan_id) if kegiatan_id else kegiatan_id
-        
-        try:
-            satker_instance = self.request.user.profile.satker
-            satker_parent = {}
-            
-            if satker_instance.level == 1:
-                satker_parent_instance = satker_instance.parent
-                satker_parent['id'] = satker_parent_instance.pk
-                # satker_parent['keterangan'] = satker_parent_instance.nama_satker
-                satker_parent['keterangan'] = 'BNN Pusat'
-            elif satker_instance.level == 0:
-                satker_parent['id'] = 213
-                satker_parent['keterangan'] = 'BNN Pusat'
-            else:
-                satker_parent['id'] = 0
-                satker_parent['keterangan'] = ''
-                
-            kegiatan = models.DAYATIF_PEMETAAN_STAKEHOLDER.objects.filter(pk=kegiatan_id).first()
-            
-            if satker_instance.level == 0: # BNNP ke Pusat
-                kegiatan.status = 2
-            elif satker_instance.level == 1: # BNNK ke BNNP
-                kegiatan.status = 2
-            
-            kegiatan.save()
-                
-            return Response({
-                'status': True,
-                'message': f'Data kegiatan ID {kegiatan_id} dari Satuan Kerja {satker_instance.nama_satker} berhasil dikirim ke {satker_parent.get("keterangan")}',
-                'parent': satker_parent,
-            }, status=status.HTTP_200_OK)
-        except Exception as e:
-            return Response({
-                'status': False,
-                'message': f'Gagal mengirim kegiatan ID {kegiatan_id} dari Satuan Kerja ID {satker_instance.pk}',
-                'kegiatan_id': kegiatan_id,
-                'error': f'{str(e)}'
-            }, status=status.HTTP_400_BAD_REQUEST)
+        return kirim_kegiatan_helper(models.DAYATIF_PEMETAAN_STAKEHOLDER, request)
 
     def get_flat_values(self, request, status, waktu):
         satker = self.request.user.profile.satker
@@ -1550,3 +1077,330 @@ class DAYATIF_PEMETAAN_STAKEHOLDER_ViewSet(viewsets.ModelViewSet):
         #         'message': f'Gagal mengekspor daftar kegiatan dari Satuan Kerja {satker.nama_satker}',
         #         'error': f'{str(e)}'
         #     }, status=status.HTTP_400_BAD_REQUEST)
+
+# ======= RAPAT SINERGI STAKEHOLDER =======
+class DAYATIF_RAPAT_SINERGI_STAKEHOLDER_ViewSet(viewsets.ModelViewSet):
+    queryset = models.DAYATIF_RAPAT_SINERGI_STAKEHOLDER.objects.all().order_by('-tanggal_awal')
+    serializer_class = serializers.DAYATIF_RAPAT_SINERGI_STAKEHOLDER_Serializer
+    permission_classes = [permissions.IsAuthenticated]
+    pagination_class = pagination.Page10NumberPagination
+    filter_backends = [DjangoFilterBackend]
+    
+    def perform_create(self, serializer):
+        serializer.save(created_by=self.request.user, status=set_created_kegiatan_status(self.request), satker=self.request.user.profile.satker)
+
+    def perform_update(self, serializer):
+        serializer.save(updated_by=self.request.user)
+        
+    @action(detail=False, methods=['GET'], url_path='list', name='List Data')
+    def data_list(self, request):
+        return get_data_list(request, self.queryset, serializers.DAYATIF_RAPAT_SINERGI_STAKEHOLDER_LIST_Serializer)
+
+    @action(detail=False, methods=['GET'], url_path='list/bnnk', name='List Data BNNK')
+    def data_list_bnnk(self, request):
+        return get_data_list_bnnk(self.request.user.profile.satker, models.DAYATIF_RAPAT_SINERGI_STAKEHOLDER, serializers.DAYATIF_RAPAT_SINERGI_STAKEHOLDER_Serializer)
+
+    @action(detail=True, methods=['DELETE'], url_path='delete_all_kegiatan', name='Hapus semua Kegiatan')
+    def delete_all_kegiatan(self, request, pk=None):
+        return delete_all_kegiatan_helper(models.DAYATIF_RAPAT_SINERGI_STAKEHOLDER, pk)
+    
+    @action(detail=False, methods=['POST'], url_path='semua_kegiatan', name='Aksi untuk semua Kegiatan')
+    def semua_kegiatan(self, request):
+        return aksi_semua_kegiatan(request, models.DAYATIF_RAPAT_SINERGI_STAKEHOLDER)
+    
+    @action(detail=False, methods=['POST'], url_path='kirim_kegiatan', name='Kirim Kegiatan')
+    def kirim_kegiatan(self, request):
+        return kirim_kegiatan_helper(models.DAYATIF_RAPAT_SINERGI_STAKEHOLDER, request)
+
+    def get_flat_values(self, request, status, waktu):
+        satker = self.request.user.profile.satker
+
+        data = models.DAYATIF_RAPAT_SINERGI_STAKEHOLDER.objects.values(
+            'id', 'satker_id', 'satker__nama_satker', 'tanggal_awal', 'tanggal_akhir',
+            'desa', 'kecamatan', 'kabupaten', 'provinsi', 'nama_desa', 'nama_kecamatan', 'nama_kabupaten', 'nama_provinsi', 'deskripsi', 'kendala', 'kesimpulan', 'tindak_lanjut', 'dokumentasi', 'status'
+        ).order_by('satker__nama_satker')
+
+        data = get_data_list_queryset(request, data)
+        
+        print('Panjang data sebelum filter:', len(data))
+        
+        data = get_filtered_data(satker, data, status, waktu)
+        
+        print('Panjang data sesudah filter:', len(data))
+    
+        serialized_data = []
+        for item in data:
+            serialized_item = {
+                'id': item['id'],
+                'satker_id': item['satker_id'],
+                'nama_satker': item['satker__nama_satker'],
+                'tanggal_awal': item['tanggal_awal'],
+                'tanggal_akhir': item['tanggal_akhir'],
+                'desa': item['desa'],
+                'kecamatan': item['kecamatan'],
+                'kabupaten': item['kabupaten'],
+                'provinsi': item['provinsi'],
+                
+                'nama_desa': item['nama_desa'],
+                'nama_kecamatan': item['nama_kecamatan'],
+                'nama_kabupaten': item['nama_kabupaten'],
+                'nama_provinsi': item['nama_provinsi'],
+                'stakeholders': item['stakeholders'],
+                
+                'deskripsi': item['deskripsi'],
+                'kendala': item['kendala'],
+                'kesimpulan': item['kesimpulan'],
+                'tindak_lanjut': item['tindak_lanjut'],
+                'dokumentasi': item['dokumentasi'],
+                'status': item['status'],
+                'satker_level': satker.level
+            }
+            serialized_data.append(serialized_item)
+        
+        return serialized_data
+
+# ======= BIMBINGAN_TEKNIS_STAKEHOLDER =======
+class DAYATIF_BIMBINGAN_TEKNIS_STAKEHOLDER_ViewSet(viewsets.ModelViewSet):
+    queryset = models.DAYATIF_BIMBINGAN_TEKNIS_STAKEHOLDER.objects.all().order_by('-tanggal_awal')
+    serializer_class = serializers.DAYATIF_BIMBINGAN_TEKNIS_STAKEHOLDER_Serializer
+    permission_classes = [permissions.IsAuthenticated]
+    pagination_class = pagination.Page10NumberPagination
+    filter_backends = [DjangoFilterBackend]
+    
+    def perform_create(self, serializer):
+        serializer.save(created_by=self.request.user, status=set_created_kegiatan_status(self.request), satker=self.request.user.profile.satker)
+
+    def perform_update(self, serializer):
+        serializer.save(updated_by=self.request.user)
+        
+    @action(detail=False, methods=['GET'], url_path='list', name='List Data')
+    def data_list(self, request):
+        return get_data_list(request, self.queryset, serializers.DAYATIF_BIMBINGAN_TEKNIS_STAKEHOLDER_LIST_Serializer)
+
+    @action(detail=False, methods=['GET'], url_path='list/bnnk', name='List Data BNNK')
+    def data_list_bnnk(self, request):
+        return get_data_list_bnnk(self.request.user.profile.satker, models.DAYATIF_BIMBINGAN_TEKNIS_STAKEHOLDER, serializers.DAYATIF_BIMBINGAN_TEKNIS_STAKEHOLDER_Serializer)
+
+    @action(detail=True, methods=['DELETE'], url_path='delete_all_kegiatan', name='Hapus semua Kegiatan')
+    def delete_all_kegiatan(self, request, pk=None):
+        return delete_all_kegiatan_helper(models.DAYATIF_BIMBINGAN_TEKNIS_STAKEHOLDER, pk)
+    
+    @action(detail=False, methods=['POST'], url_path='semua_kegiatan', name='Aksi untuk semua Kegiatan')
+    def semua_kegiatan(self, request):
+        return aksi_semua_kegiatan(request, models.DAYATIF_BIMBINGAN_TEKNIS_STAKEHOLDER)
+    
+    @action(detail=False, methods=['POST'], url_path='kirim_kegiatan', name='Kirim Kegiatan')
+    def kirim_kegiatan(self, request):
+        return kirim_kegiatan_helper(models.DAYATIF_BIMBINGAN_TEKNIS_STAKEHOLDER, request)
+
+    def get_flat_values(self, request, status, waktu):
+        satker = self.request.user.profile.satker
+
+        data = models.DAYATIF_BIMBINGAN_TEKNIS_STAKEHOLDER.objects.values(
+            'id', 'satker_id', 'satker__nama_satker', 'tanggal_awal', 'tanggal_akhir',
+            'desa', 'kecamatan', 'kabupaten', 'provinsi', 'nama_desa', 'nama_kecamatan', 'nama_kabupaten', 'nama_provinsi', 'deskripsi', 'kendala', 'kesimpulan', 'tindak_lanjut', 'dokumentasi', 'status'
+        ).order_by('satker__nama_satker')
+
+        data = get_data_list_queryset(request, data)
+        
+        print('Panjang data sebelum filter:', len(data))
+        
+        data = get_filtered_data(satker, data, status, waktu)
+        
+        print('Panjang data sesudah filter:', len(data))
+    
+        serialized_data = []
+        for item in data:
+            serialized_item = {
+                'id': item['id'],
+                'satker_id': item['satker_id'],
+                'nama_satker': item['satker__nama_satker'],
+                'tanggal_awal': item['tanggal_awal'],
+                'tanggal_akhir': item['tanggal_akhir'],
+                'desa': item['desa'],
+                'kecamatan': item['kecamatan'],
+                'kabupaten': item['kabupaten'],
+                'provinsi': item['provinsi'],
+                
+                'nama_desa': item['nama_desa'],
+                'nama_kecamatan': item['nama_kecamatan'],
+                'nama_kabupaten': item['nama_kabupaten'],
+                'nama_provinsi': item['nama_provinsi'],
+                'stakeholders': item['stakeholders'],
+                
+                'deskripsi': item['deskripsi'],
+                'kendala': item['kendala'],
+                'kesimpulan': item['kesimpulan'],
+                'tindak_lanjut': item['tindak_lanjut'],
+                'dokumentasi': item['dokumentasi'],
+                'status': item['status'],
+                'satker_level': satker.level
+            }
+            serialized_data.append(serialized_item)
+        
+        return serialized_data
+
+# ======= BIMBINGAN_TEKNIS_LIFESKILL =======
+class DAYATIF_BIMBINGAN_TEKNIS_LIFESKILL_ViewSet(viewsets.ModelViewSet):
+    queryset = models.DAYATIF_BIMBINGAN_TEKNIS_LIFESKILL.objects.all().order_by('-tanggal_awal')
+    serializer_class = serializers.DAYATIF_BIMBINGAN_TEKNIS_LIFESKILL_Serializer
+    permission_classes = [permissions.IsAuthenticated]
+    pagination_class = pagination.Page10NumberPagination
+    filter_backends = [DjangoFilterBackend]
+    
+    def perform_create(self, serializer):
+        serializer.save(created_by=self.request.user, status=set_created_kegiatan_status(self.request), satker=self.request.user.profile.satker)
+
+    def perform_update(self, serializer):
+        serializer.save(updated_by=self.request.user)
+        
+    @action(detail=False, methods=['GET'], url_path='list', name='List Data')
+    def data_list(self, request):
+        return get_data_list(request, self.queryset, serializers.DAYATIF_BIMBINGAN_TEKNIS_LIFESKILL_LIST_Serializer)
+
+    @action(detail=False, methods=['GET'], url_path='list/bnnk', name='List Data BNNK')
+    def data_list_bnnk(self, request):
+        return get_data_list_bnnk(self.request.user.profile.satker, models.DAYATIF_BIMBINGAN_TEKNIS_LIFESKILL, serializers.DAYATIF_BIMBINGAN_TEKNIS_LIFESKILL_Serializer)
+
+    @action(detail=True, methods=['DELETE'], url_path='delete_all_kegiatan', name='Hapus semua Kegiatan')
+    def delete_all_kegiatan(self, request, pk=None):
+        return delete_all_kegiatan_helper(models.DAYATIF_BIMBINGAN_TEKNIS_LIFESKILL, pk)
+    
+    @action(detail=False, methods=['POST'], url_path='semua_kegiatan', name='Aksi untuk semua Kegiatan')
+    def semua_kegiatan(self, request):
+        return aksi_semua_kegiatan(request, models.DAYATIF_BIMBINGAN_TEKNIS_LIFESKILL)
+    
+    @action(detail=False, methods=['POST'], url_path='kirim_kegiatan', name='Kirim Kegiatan')
+    def kirim_kegiatan(self, request):
+        return kirim_kegiatan_helper(models.DAYATIF_BIMBINGAN_TEKNIS_LIFESKILL, request)
+
+    def get_flat_values(self, request, status, waktu):
+        satker = self.request.user.profile.satker
+
+        data = models.DAYATIF_BIMBINGAN_TEKNIS_LIFESKILL.objects.values(
+            'id', 'satker_id', 'satker__nama_satker', 'tanggal_awal', 'tanggal_akhir',
+            'desa', 'kecamatan', 'kabupaten', 'provinsi', 'nama_desa', 'nama_kecamatan', 'nama_kabupaten', 'nama_provinsi', 'deskripsi', 'kendala', 'kesimpulan', 'tindak_lanjut', 'dokumentasi', 'status'
+        ).order_by('satker__nama_satker')
+
+        data = get_data_list_queryset(request, data)
+        
+        print('Panjang data sebelum filter:', len(data))
+        
+        data = get_filtered_data(satker, data, status, waktu)
+        
+        print('Panjang data sesudah filter:', len(data))
+    
+        serialized_data = []
+        for item in data:
+            serialized_item = {
+                'id': item['id'],
+                'satker_id': item['satker_id'],
+                'nama_satker': item['satker__nama_satker'],
+                'tanggal_awal': item['tanggal_awal'],
+                'tanggal_akhir': item['tanggal_akhir'],
+                'desa': item['desa'],
+                'kecamatan': item['kecamatan'],
+                'kabupaten': item['kabupaten'],
+                'provinsi': item['provinsi'],
+                
+                'nama_desa': item['nama_desa'],
+                'nama_kecamatan': item['nama_kecamatan'],
+                'nama_kabupaten': item['nama_kabupaten'],
+                'nama_provinsi': item['nama_provinsi'],
+                'stakeholders': item['stakeholders'],
+                
+                'deskripsi': item['deskripsi'],
+                'kendala': item['kendala'],
+                'kesimpulan': item['kesimpulan'],
+                'tindak_lanjut': item['tindak_lanjut'],
+                'dokumentasi': item['dokumentasi'],
+                'status': item['status'],
+                'satker_level': satker.level
+            }
+            serialized_data.append(serialized_item)
+        
+        return serialized_data
+
+# ======= DUKUNGAN_STAKEHOLDER =======
+class DAYATIF_DUKUNGAN_STAKEHOLDER_ViewSet(viewsets.ModelViewSet):
+    queryset = models.DAYATIF_DUKUNGAN_STAKEHOLDER.objects.all()
+    serializer_class = serializers.DAYATIF_DUKUNGAN_STAKEHOLDER_Serializer
+    permission_classes = [permissions.IsAuthenticated]
+    pagination_class = pagination.Page10NumberPagination
+    filter_backends = [DjangoFilterBackend]
+    
+    def perform_create(self, serializer):
+        serializer.save(created_by=self.request.user, status=set_created_kegiatan_status(self.request), satker=self.request.user.profile.satker)
+
+    def perform_update(self, serializer):
+        serializer.save(updated_by=self.request.user)
+        
+    @action(detail=False, methods=['GET'], url_path='list', name='List Data')
+    def data_list(self, request):
+        return get_data_list(request, self.queryset, serializers.DAYATIF_DUKUNGAN_STAKEHOLDER_Serializer)
+
+    @action(detail=False, methods=['GET'], url_path='list/bnnk', name='List Data BNNK')
+    def data_list_bnnk(self, request):
+        return get_data_list_bnnk(self.request.user.profile.satker, models.DAYATIF_DUKUNGAN_STAKEHOLDER, serializers.DAYATIF_DUKUNGAN_STAKEHOLDER_Serializer)
+
+    @action(detail=True, methods=['DELETE'], url_path='delete_all_kegiatan', name='Hapus semua Kegiatan')
+    def delete_all_kegiatan(self, request, pk=None):
+        return delete_all_kegiatan_helper(models.DAYATIF_DUKUNGAN_STAKEHOLDER, pk)
+    
+    @action(detail=False, methods=['POST'], url_path='semua_kegiatan', name='Aksi untuk semua Kegiatan')
+    def semua_kegiatan(self, request):
+        return aksi_semua_kegiatan(request, models.DAYATIF_DUKUNGAN_STAKEHOLDER)
+    
+    @action(detail=False, methods=['POST'], url_path='kirim_kegiatan', name='Kirim Kegiatan')
+    def kirim_kegiatan(self, request):
+        return kirim_kegiatan_helper(models.DAYATIF_DUKUNGAN_STAKEHOLDER, request)
+
+    def get_flat_values(self, request, status, waktu):
+        satker = self.request.user.profile.satker
+
+        data = models.DAYATIF_DUKUNGAN_STAKEHOLDER.objects.values(
+            'id', 'satker_id', 'satker__nama_satker', 'stakeholder', 'jumlah_peserta', 'jenis', 'bentuk', 'jumlah',
+            'desa', 'kecamatan', 'kabupaten', 'provinsi', 'nama_desa', 'nama_kecamatan', 'nama_kabupaten', 'nama_provinsi', 'jumlah_sasaran', 'pengaruh', 'kesimpulan', 'tindak_lanjut', 'dokumentasi', 'status'
+        ).order_by('satker__nama_satker')
+
+        data = get_data_list_queryset(request, data)
+        
+        print('Panjang data sebelum filter:', len(data))
+        
+        data = get_filtered_data(satker, data, status, waktu)
+        
+        print('Panjang data sesudah filter:', len(data))
+    
+        serialized_data = []
+        for item in data:
+            serialized_item = {
+                'id': item['id'],
+                'satker_id': item['satker_id'],
+                'nama_satker': item['satker__nama_satker'],
+                'stakeholder': item['stakeholder'],
+                'jumlah_peserta': item['jumlah_peserta'],
+                'jenis': item['jenis'],
+                'bentuk': item['bentuk'],
+                'jumlah': item['jumlah'],
+
+                'desa': item['desa'],
+                'kecamatan': item['kecamatan'],
+                'kabupaten': item['kabupaten'],
+                'provinsi': item['provinsi'],
+                
+                'nama_desa': item['nama_desa'],
+                'nama_kecamatan': item['nama_kecamatan'],
+                'nama_kabupaten': item['nama_kabupaten'],
+                'nama_provinsi': item['nama_provinsi'],
+                'jumlah_sasaran': item['jumlah_sasaran'],
+                
+                'pengaruh': item['pengaruh'],
+                'kesimpulan': item['kesimpulan'],
+                'tindak_lanjut': item['tindak_lanjut'],
+                'dokumentasi': item['dokumentasi'],
+                'status': item['status'],
+                'satker_level': satker.level
+            }
+            serialized_data.append(serialized_item)
+        
+        return serialized_data

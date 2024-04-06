@@ -18,6 +18,88 @@
     </tr>
   </thead>
   <tbody>
-    
+    <template v-for="(topLevel, index) in pagedData">
+      <tr :class="topLevel.class">
+        <td style="text-align: right;">${topLevel.index}</td>
+        <td>
+          <template v-if="topLevel.hide_satker"></template>
+          <template v-else>${topLevel.satker}</template>
+        </td>
+        <td>${topLevel.tanggal}</td>
+        <td>
+          <template v-for="(peserta, index) in topLevel.peserta">
+            <ul>
+              <li>${peserta.nama} - ${peserta.jabatan}</li>
+            </ul>
+          </template>
+        </td>
+        <td>${topLevel.nama_lingkungan}</td>
+        <td>${topLevel.deskripsi}</td>
+        <td>${topLevel.kendala}</td>
+        <td>${topLevel.kesimpulan}</td>
+        <td>${topLevel.tindak_lanjut}</td>
+        <td class="text-center">
+          <template v-if="topLevel.type != 'parent'">
+            <a :href='topLevel.dokumentasi'><i class="fa-solid fa-download"></i></a>
+          </template>
+        </td>
+        <td>
+          <template v-if="topLevel.type != 'parent'">
+            <div class="list-button gx-3 text-uppercase">
+              <template v-if="topLevel.kirim">
+                <div>
+                  <a href="javascript:void(0);" style="background-color:#00A0A9;"
+                    @click="handleKirim(topLevel.satker, topLevel.id)"
+                    class="badge text-white text-decoration-none mb-1">
+                    <i class="fa-regular fa-paper-plane me-2"></i>Kirim
+                  </a>
+                </div>
+              </template>
+              <template v-if="satkerLevel == 2">
+                <div>
+                  <a href="javascript:void(0);" @click="handleEditModal(topLevel.id)"
+                    class="badge bg-success text-white text-decoration-none mb-1">
+                    <i class="fas fa-pen-to-square me-2"></i>Edit
+                  </a>
+                </div>
+                <div>
+                  <a href="javascript:void(0);" @click="handleDelete(topLevel.id)"
+                    class="badge bg-danger text-white text-decoration-none mb-1"><i
+                      class="fas fa-trash-alt me-2"></i>Hapus</a>
+                </div>
+              </template>
+              <template v-else>
+                <template v-if="topLevel.type != 'second__child'">
+                  <template v-if="topLevel.edit">
+                    <div>
+                      <a href="javascript:void(0);" @click="handleEditModal(topLevel.id)"
+                        class="badge bg-success text-white text-decoration-none mb-1">
+                        <i class="fas fa-pen-to-square me-2"></i>Edit
+                      </a>
+                    </div>
+                    <div>
+                      <a href="javascript:void(0);" @click="handleDelete(topLevel.id)"
+                        class="badge bg-danger text-white text-decoration-none mb-1"><i
+                          class="fas fa-trash-alt me-2"></i>Hapus</a>
+                    </div>
+                  </template>
+                  <template v-else>
+                    <div>
+                      <a href="javascript:void(0);" class="badge bg-secondary text-white text-decoration-none mb-1">
+                        <i class="fas fa-pen-to-square me-2"></i>Edit
+                      </a>
+                    </div>
+                    <div>
+                      <a href="javascript:void(0);" class="badge bg-secondary text-white text-decoration-none mb-1"><i
+                          class="fas fa-trash-alt me-2"></i>Hapus</a>
+                    </div>
+                  </template>
+                </template>
+              </template>
+            </div>
+          </template>
+        </td>
+      </tr>
+    </template>
   </tbody>
 </table>

@@ -34,21 +34,107 @@ document.addEventListener("DOMContentLoaded", function () {
     /***=======================================================
     * KEGIATAN HEADLINE LIMIT INPUT DATE ONLY FOR CURRENT YEAR
     =======================================================***/
-    // Dapatkan semua elemen input dengan tipe "date"
     const inputDates = document.querySelectorAll("input[type='date']");
 
-    // Iterasi melalui setiap elemen input date
     inputDates && inputDates.forEach(function (inputDate) {
-        // Set atribut min dan max untuk setiap elemen
         inputDate.setAttribute("min", currentYear + "-01-01");
         inputDate.setAttribute("max", currentYear + "-12-31");
     });
 
+    /***=======================================================
+    * KEGIATAN LIMIT INPUT DOKUMENTASI
+    =======================================================***/
+    const inputFilesAll = document.querySelectorAll("input[type='file']:not(.input-image)");
+    const inputFilesAdd = document.querySelectorAll("input[type='file']:not(.input-image):not(#edit__dokumentasi)");
+
+    let allowedExt = ['.xlsx', '.pdf', '.docx'];
+    let keteranganFile = `<li>PDF/DOCX/XLSX : <b>2MB</b></li>`;
+    
+    if (window.location.href.includes('psm')) {
+        allowedExt = allowedExt.concat(['.jpeg', '.jpg', '.png']);
+        keteranganFile += `<li>Gambar : <b>2MB</b></li>`;
+    }
+
+    inputFilesAll && inputFilesAll.forEach(function (inputFile) {
+        inputFile.setAttribute("accept", allowedExt);
+    });
+    
+    inputFilesAdd && inputFilesAdd.forEach(function (inputFile) {
+        const helperElement = document.createElement('div');
+        helperElement.classList.add('dokumentasi_helper');
+
+        helperElement.innerHTML = `
+            <div class="text-muted mt-2">Kriteria file :</div>
+            <ul class="text-muted">
+                <li>Format file yang diizinkan hanya : <b>${allowedExt.join(', ')}</b></li>
+                <li>Ukuran file yang diizinkan :
+                    <ul>
+                        ${keteranganFile}
+                    </ul>
+                </li>
+            </ul>
+        `;
+        
+        inputFile.parentNode.insertBefore(helperElement, inputFile.nextSibling);
+    });
+
+    $('input[type="file"]:not(.input-image)').change(function() {
+        const fileName = $(this).val();
+        const accept = $(this).attr('accept');
+        const fileExt = fileName.split('.').pop().toLowerCase();
+        const file = $(this).prop('files')[0];
+        const fileSize = (file.size / 1024 / 1024).toFixed(2);
+
+        const isExtensionValid = validateFileExtension(fileExt, accept);
+        const isSizeValid = validateFileSize(fileExt, fileSize);
+
+        if (!isExtensionValid || !isSizeValid) $(this).val(null);
+    });
+
 });
 
-/***=======================================================
-* KEGIATAN MAX MIN INPUT DATE
-=======================================================***/
+/* ==========================
+ * KEGIATAN - INPUT FILE
+============================= */
+function validateFileExtension(extension, accept) {
+    if (accept && accept.indexOf(extension) === -1) {
+        const allowedFormats = accept.toUpperCase().split(',');
+
+        const formats = allowedFormats.map(function(format) {
+            return format.trim().replace('.', '');
+        });
+
+        const allowedFormatsString = formats.join(', ');
+
+        showSwalError('Terjadi Kesalahan', `File yang Anda upload <b>tidak valid</b>. Format file yang diizinkan hanya : <br> <b>${allowedFormatsString}</b>`);
+
+        return false;
+    }
+    return true;
+}
+
+function validateFileSize(extension, size) {
+    let maxSize;
+
+    extension = extension.toUpperCase();
+
+    if (['PDF', 'DOCX', 'XLSX'].includes(extension)) {
+        maxSize = 2;
+    } else if (['JPG', 'JPEG', 'PNG'].includes(extension)) {
+        maxSize = 2;
+    }
+
+    if (size > maxSize) {
+        showSwalError('Terjadi Kesalahan', `Ukuran file yang Anda upload <b>${size}MB</b> melebihi batas maksimum<br>yang diizinkan hanya : hanya <b>${maxSize}MB</b>.`);
+
+        return false;
+    }
+    return true;
+}
+
+/* ==========================
+ * KEGIATAN - INPUT DATE
+============================= */
 document.addEventListener('show.bs.modal', function (event) {
     const modal = event.target;
 
@@ -107,8 +193,6 @@ document.addEventListener('show.bs.modal', function (event) {
         }
     });
 });
-
-
 
 function getTanggalKegiatan(tanggal_awal, tanggal_akhir) {
     const start = moment(tanggal_awal);

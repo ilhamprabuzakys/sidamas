@@ -29,7 +29,7 @@ class PSM_BINAAN_TEKNIS_Filters(filters.FilterSet):
 
     class Meta:
         model = models.PSM_BINAAN_TEKNIS
-        fields = ['s', 'satker']
+        fields = ['s', 'satker', 'satker_target']
         order_by = ['-satker__nama_satker']
 
     def filter_global_search(self, queryset, name, value):
@@ -53,7 +53,36 @@ class PSM_ASISTENSI_Filters(filters.FilterSet):
         return queryset.filter(
             Q(satker__nama_satker__icontains=value)
         )
-    
+
+# ======= PSM SINKRONISASI KEBIJAKAN FILTER =======
+class PSM_SINKRONISASI_KEBIJAKAN_Filters(filters.FilterSet):
+    s = filters.CharFilter(method='filter_global_search', label='Global search')
+    satker = filters.NumberFilter(field_name='satker', label='Satker Pelaksana ID')
+
+    class Meta:
+        model = models.PSM_SINKRONISASI_KEBIJAKAN
+        fields = ['s', 'satker']
+        order_by = ['-satker__nama_satker']
+
+    def filter_global_search(self, queryset, name, value):
+        return queryset.filter(
+            Q(satker__nama_satker__icontains=value)
+        )
+
+# ======= PSM WORKSHOP TEMATIK FILTER =======
+class PSM_WORKSHOP_TEMATIK_Filters(filters.FilterSet):
+    s = filters.CharFilter(method='filter_global_search', label='Global search')
+    satker = filters.NumberFilter(field_name='satker', label='Satker Pelaksana ID')
+
+    class Meta:
+        model = models.PSM_WORKSHOP_TEMATIK
+        fields = ['s', 'satker']
+        order_by = ['-satker__nama_satker']
+
+    def filter_global_search(self, queryset, name, value):
+        return queryset.filter(
+            Q(satker__nama_satker__icontains=value)
+        )
 # ======= PSM TES URINE DETEKSI DINI FILTER =======
 class PSM_TES_URINE_DETEKSI_DINI_Filters(filters.FilterSet):
     s = filters.CharFilter(method='filter_global_search', label='Global search')
@@ -80,13 +109,78 @@ class PSM_TES_URINE_DETEKSI_DINI_Filters(filters.FilterSet):
         return queryset.filter(satker=satker)
 
 # ======= PSM MONITORING DAN EVALUASI SUPERVISI KEGIATAN KOTAN FILTER =======
-    
 class PSM_MONITORING_DAN_EVALUASI_SUPERVISI_Filters(filters.FilterSet):
     s = filters.CharFilter(method='filter_global_search', label='Global search')
     satker = filters.NumberFilter(field_name='satker', label='Satker Pelaksana ID')
 
     class Meta:
         model = models.PSM_MONITORING_DAN_EVALUASI_SUPERVISI
+        fields = ['s', 'satker']
+        order_by = ['-satker__nama_satker']
+
+    def filter_global_search(self, queryset, name, value):
+        return queryset.filter(
+            Q(s__deskripsi__icontains=value) |
+            Q(satker__nama_satker__icontains=value)
+        )
+
+    def filter_by_leveling(self, queryset, name, value):
+        user_id = self.user.id
+        satker = Profile.objects.values_list('satker', flat=True).get(user_id=user_id)
+
+        return queryset.filter(satker=satker)
+
+# ======= PSM MONITORING DAN EVALUASI SUPERVISI KEGIATAN KOTAN FILTER =======
+class PSM_PENGUMPULAN_DATA_IKOTAN_Filters(filters.FilterSet):
+    s = filters.CharFilter(method='filter_global_search', label='Global search')
+    satker = filters.NumberFilter(field_name='satker', label='Satker Pelaksana ID')
+
+    class Meta:
+        model = models.PSM_PENGUMPULAN_DATA_IKOTAN
+        fields = ['s', 'satker']
+        order_by = ['-satker__nama_satker']
+
+    def filter_global_search(self, queryset, name, value):
+        return queryset.filter(
+            Q(s__deskripsi__icontains=value) |
+            Q(satker__nama_satker__icontains=value)
+        )
+
+    def filter_by_leveling(self, queryset, name, value):
+        user_id = self.user.id
+        satker = Profile.objects.values_list('satker', flat=True).get(user_id=user_id)
+
+        return queryset.filter(satker=satker)
+    
+# ======= PSM DUKUNGAN STAKEHOLDER FILTER =======
+class PSM_DUKUNGAN_STAKEHOLDER_Filters(filters.FilterSet):
+    s = filters.CharFilter(method='filter_global_search', label='Global search')
+    satker = filters.NumberFilter(field_name='satker', label='Satker Pelaksana ID')
+
+    class Meta:
+        model = models.PSM_DUKUNGAN_STAKEHOLDER
+        fields = ['s', 'satker']
+        order_by = ['-satker__nama_satker']
+
+    def filter_global_search(self, queryset, name, value):
+        return queryset.filter(
+            Q(s__deskripsi__icontains=value) |
+            Q(satker__nama_satker__icontains=value)
+        )
+
+    def filter_by_leveling(self, queryset, name, value):
+        user_id = self.user.id
+        satker = Profile.objects.values_list('satker', flat=True).get(user_id=user_id)
+
+        return queryset.filter(satker=satker)
+
+# ======= PSM KEGIATAN LAINNYA FILTER =======
+class PSM_KEGIATAN_LAINNYA_Filters(filters.FilterSet):
+    s = filters.CharFilter(method='filter_global_search', label='Global search')
+    satker = filters.NumberFilter(field_name='satker', label='Satker Pelaksana ID')
+
+    class Meta:
+        model = models.PSM_KEGIATAN_LAINNYA
         fields = ['s', 'satker']
         order_by = ['-satker__nama_satker']
 
@@ -125,6 +219,70 @@ class PSM_AUDIENSI_Filters(filters.FilterSet):
 
     class Meta:
         model = models.PSM_AUDIENSI
+        fields = ['s', 'satker']
+        order_by = ['-satker__nama_satker']
+
+    def filter_global_search(self, queryset, name, value):
+        return queryset.filter(
+            Q(s__deskripsi__icontains=value) |
+            Q(satker__nama_satker__icontains=value)
+        )
+    
+# ======= PSM KONSOLIDASI_KEBIJAKAN FILTER =======
+class PSM_KONSOLIDASI_KEBIJAKAN_Filters(filters.FilterSet):
+    s = filters.CharFilter(method='filter_global_search', label='Global search')
+    satker = filters.NumberFilter(field_name='satker', label='Satker Pelaksana ID')
+
+    class Meta:
+        model = models.PSM_KONSOLIDASI_KEBIJAKAN
+        fields = ['s', 'satker']
+        order_by = ['-satker__nama_satker']
+
+    def filter_global_search(self, queryset, name, value):
+        return queryset.filter(
+            Q(s__deskripsi__icontains=value) |
+            Q(satker__nama_satker__icontains=value)
+        )
+    
+# ======= PSM KONSOLIDASI_KEBIJAKAN FILTER =======
+class PSM_KONSOLIDASI_KEBIJAKAN_Filters(filters.FilterSet):
+    s = filters.CharFilter(method='filter_global_search', label='Global search')
+    satker = filters.NumberFilter(field_name='satker', label='Satker Pelaksana ID')
+
+    class Meta:
+        model = models.PSM_KONSOLIDASI_KEBIJAKAN
+        fields = ['s', 'satker']
+        order_by = ['-satker__nama_satker']
+
+    def filter_global_search(self, queryset, name, value):
+        return queryset.filter(
+            Q(s__deskripsi__icontains=value) |
+            Q(satker__nama_satker__icontains=value)
+        )
+    
+# ======= PSM BIMTEK_P4GN FILTER =======
+class PSM_BIMTEK_P4GN_Filters(filters.FilterSet):
+    s = filters.CharFilter(method='filter_global_search', label='Global search')
+    satker = filters.NumberFilter(field_name='satker', label='Satker Pelaksana ID')
+
+    class Meta:
+        model = models.PSM_BIMTEK_P4GN
+        fields = ['s', 'satker']
+        order_by = ['-satker__nama_satker']
+
+    def filter_global_search(self, queryset, name, value):
+        return queryset.filter(
+            Q(s__deskripsi__icontains=value) |
+            Q(satker__nama_satker__icontains=value)
+        )
+    
+# ======= PSM WORKSHOP_PENGGIAT FILTER =======
+class PSM_WORKSHOP_PENGGIAT_Filters(filters.FilterSet):
+    s = filters.CharFilter(method='filter_global_search', label='Global search')
+    satker = filters.NumberFilter(field_name='satker', label='Satker Pelaksana ID')
+
+    class Meta:
+        model = models.PSM_WORKSHOP_PENGGIAT
         fields = ['s', 'satker']
         order_by = ['-satker__nama_satker']
 

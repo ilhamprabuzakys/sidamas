@@ -27,17 +27,7 @@ function toast(type, title, message) {
     toastr[type](message, title);
 }
 
-// function toast(icon, title) {
-//     Toast.fire({
-//         icon: icon,
-//         title: title
-//     });
-// }
-
-function hideSwal() {
-    Swal.close();
-}
-
+function hideSwal() { Swal.close() }
 
 function showSwalLoading() {
     Swal.fire({

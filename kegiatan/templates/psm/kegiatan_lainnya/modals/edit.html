@@ -1,0 +1,81 @@
+<div class="modal fade" id="editData" aria-labelledby="modalEdit" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <h5 class="modal-title" id="createModal">Update Data <b>KEGIATAN LAINNYA</b></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+          <div class="modal-body">
+              <section id="formEdit">
+
+              <div class="mb-3">
+                <label for="edit__tindak_lanjut" class="col-form-label required">Kegiatan Lainnya:</label>
+                <input type="text" class="form-control" id="edit__kegiatan" required placeholder="Nasional"></input>
+              </div>
+
+              <div class="mb-3">
+                <label for="edit__tindak_lanjut" class="col-form-label required">Tempat:</label>
+                <input type="text" class="form-control" id="edit__tempat" required placeholder="Nasional"></input>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6">
+                  <label for="edit__tindak_lanjut" class="col-form-label required">Waktu Awal:</label>
+                  <input type="time" id="edit__awal_w" class="form-control" required>
+                </div>
+                <div class="col-md-6">
+                  <label for="edit__tindak_lanjut" class="col-form-label required">Waktu Akhir:</label>
+                  <input type="time" id="edit__akhir_w" class="form-control" required>
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label for="edit__tindak_lanjut" class="col-form-label required">Lingkungan/Sasaran:</label>
+                <input type="text" class="form-control" id="edit__lingkungan" required placeholder="Lingkungan"></input>
+              </div>
+
+              <div class="mb-3">
+                <label for="edit__tindak_lanjut" class="col-form-label required">Jumlah Orang:</label>
+                <input type="number" class="form-control" id="edit__jumlah" required placeholder="Banyak Peserta"></input>
+              </div>
+
+                <!-- deskripsi hasil -->
+                <div class="mb-3">
+                  <label for="edit__tindak_lanjut" class="col-form-label required">Hasil Dampak:</label>
+                  <textarea class="form-control" id="edit__hasil_dampak" required placeholder="Deskripsi Hasil"></textarea>
+                </div>
+
+                <!-- simpulan -->
+                <div class="mb-3">
+                  <label for="edit__tindak_lanjut" class="col-form-label required">Kesimpulan:</label>
+                  <textarea class="form-control" id="edit__simpulan" required placeholder="Simpulan"></textarea>
+                </div>
+
+                <!-- tindak lanjut -->
+                <div class="mb-3">
+                  <label for="edit__tindak_lanjut" class="col-form-label required">Tindak Lanjut:</label>
+                  <textarea class="form-control" id="edit__tindak_lanjut" required placeholder="Tindak Lanjut"></textarea>
+                </div>
+                
+                <!-- file yang di lampirkan -->
+                <div class="mb-3">
+                  <label for="edit__dokumentasi" class="col-form-label">Dokumentasi</label>
+                  <input required type="file" class="form-control" id="edit__dokumentasi"
+                    aria-describedby="inputGroupFileAddon03" aria-label="Upload" />
+                </div>
+                
+              </section>
+          </div>
+
+          <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                  <i class="fas fa-xmark me-2"></i>Tutup</button>
+              <button type="button" class="btn btn-primary" id="editButton">
+                  <i class="fas fa-save me-2"></i>
+                  Simpan</button>
+          </div>
+      </div>
+  </div>
+</div>

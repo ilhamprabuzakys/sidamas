@@ -139,6 +139,11 @@ table ul li span.value {
     font-weight: bold;
 }
 
+td > .list-button {
+    vertical-align: bottom;
+}
+
+
 /* ===TOPBAR BUTTON ROLE INFORMATION */
 #btn-role {
     text-transform: uppercase !important;

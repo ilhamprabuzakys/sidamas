@@ -20,11 +20,13 @@
                 <input type="number" name="jumlah_kegiatan" class="form-control" id="create__jumlah_kegiatan" />
             </div>
 
-            <div class="row range_date mb-3">
+            <!-- <div class="row range_date mb-3"> -->
+            <div class="row mb-3">
               <div class="col-6">
                 <div class="mb-3">
                   <label for="create__tanggal_awal" class="col-form-label required">Tanggal Awal</label>
-                  <input type="date" id="create__tanggal_awal" class="form-control" required onchange="handleDate(event, 'create__');" />
+                  <!-- <input type="date" id="create__tanggal_awal" class="form-control" required onchange="handleDate(event, 'create__');" /> -->
+                  <input type="date" id="create__tanggal_awal" class="form-control" />
                 </div>
               </div>
               
@@ -69,7 +71,7 @@
 
             <div class="mb-3">
               <label for="create__dokumentasi" class="col-form-label required">Dokumentasi</label>
-              <input type="file" class="form-control" id="create__dokumentasi" required accept=".csv, .xlsx, .pdf, docx." />
+              <input type="file" class="form-control" id="create__dokumentasi" required/>
             </div>
 
           </div>

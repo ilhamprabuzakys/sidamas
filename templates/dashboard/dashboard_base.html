@@ -18,7 +18,15 @@
     <meta name="viewport"
         content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
-    <title>{% block title %} {{ title }} {% endblock title %} - Sistem Informasi Deputi Bidang Pemberdayaan Masyarakat
+    <title>
+        {% if user.profile.satker.level == 1 %}
+            BNNK
+        {% elif user.profile.satker.level == 0 %}
+            BNNP
+        {% elif user.profile.satker.level == 2 %}
+            PUSAT
+        {% endif %}
+        - {% block title %} {{ title }} {% endblock title %} - Sistem Informasi Deputi Bidang Pemberdayaan Masyarakat
         (SIDAMAS)</title>
 
     <meta name="description" content="Sistem Informasi Pemberdayaan Masyarakat" />
@@ -88,6 +96,7 @@
     <!-- Toastr -->
     <link rel="stylesheet" href="{% static 'assets/dashboard/vendor/libs/toastr/toastr.css' %}" />
 
+    {% if '/kegiatan/' not in request.path %}
     <!-- Datatable -->
     <link rel="stylesheet" href="{% static 'assets/dashboard/vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}" />
 
@@ -98,6 +107,7 @@
 
 	<link rel="stylesheet" href="{% static 'assets/dashboard/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css' %}" />
     <link rel="stylesheet"href="{% static 'assets/dashboard/vendor/libs/datatables-checkboxes-jquery/datatables.checkboxes.css' %}" />
+    {% endif %}
 
     <!-- Select 2 -->
     <link rel="stylesheet" href="{% static 'assets/dashboard/vendor/libs/select2/select2.css' %}" />
@@ -223,9 +233,9 @@
     <!-- Toastr -->
     <script src="{% static 'assets/dashboard/vendor/libs/toastr/toastr.js' %}"></script>
 
+    {% if '/kegiatan/' not in request.path %}
     <!-- Datatable -->
     <script src="{% static 'assets/dashboard/vendor/libs/datatables-bs5/datatables-2-bootstrap5.js' %}"></script>
-    {% comment %} <script src="{% static 'assets/dashboard/vendor/libs/nested-datatables/nested.tables.js' %}"></script> {% endcomment %}
 
     <!-- Rows Group Datatables -->
     {% comment %} <script src="{% static 'assets/dashboard/vendor/libs/datatables-bs5/rowsGroup-datatables-2.js' %}"></script>
@@ -238,6 +248,7 @@
     <!-- Select Datatables -->
     <script src="{% static 'assets/dashboard/vendor/libs/datatables-bs5/dataTables.select.js' %}"></script>
     <script src="{% static 'assets/dashboard/vendor/libs/datatables-bs5/select.dataTables.js' %}"></script>
+    {% endif %}
 
     <!-- Axios -->
     <script src="{% static 'assets/dashboard/vendor/libs/axios/axios.min.js' %}"></script>
@@ -252,6 +263,9 @@
     <!-- Jquery Input Mask Js -->
     <script src="{% static 'assets/plugins/jquery/input-masks/input-masks.min.js' %}"></script>
     <script src="{% static 'assets/plugins/jquery/input-masks/input-masks.binding.js' %}"></script>
+
+    <!-- Vue Input Mask JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/v-mask/2.0.1/v-mask.min.js" integrity="sha512-CkTt3uvVyl/Jh5WRxXDutyvzI40vj0nb0V1RNW0MwSf/qxMu28OmGMlKWfw1/UZ38vpw2zJgfH84XC/TyDvwjQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <!-- Bootstrap Max Length Js -->
     <script src="{% static 'assets/dashboard/vendor/libs/bootstrap-maxlength/bootstrap-maxlength.js' %}"></script>
@@ -271,6 +285,7 @@
 
     <!-- Main JS (Bawaan Tema) -->
     <script src="{% static 'assets/dashboard/js/bawaan/main.js' %}"></script>
+    <script src="{% static 'assets/dashboard/js/bawaan/ui-popover.js' %}"></script>
 
     <!-- Custom JS (Override default theme behavior) -->
     <script src="{% static 'assets/dashboard/custom/js/main.js' %}"></script>

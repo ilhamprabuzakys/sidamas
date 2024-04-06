@@ -138,15 +138,26 @@ Monitoring dan Evaluasi Supervisi Kegiatan Kotan
         filteredPage.value = rakernisData.value.filter((data) => {
             idx = String(data.satker.toUpperCase());
             nama_lingkungan = String(data.nama_lingkungan.toUpperCase());
-            daftar_nama_peserta = String(data.daftar_nama_peserta.toUpperCase());
+            peserta = String(data.nama_jabatan.toUpperCase());
             tindak_lanjut = String(data.tindak_lanjut.toUpperCase());
+            status_indeks = String(data.status_indeks.toUpperCase());
+            nilai_ikp = String(data.nilai_ikp.toUpperCase());
+            status = String(data.status_ikp.toUpperCase());
+            deskripsi_hasil = String(data.deskripsi_hasil.toUpperCase());
+            simpulan = String(data.simpulan.toUpperCase());
+            tindaklanjut = String(data.tindak_lanjut.toUpperCase());
 
             bool1 = idx.indexOf(searchField.value.toUpperCase()) > -1;
             bool2 = nama_lingkungan.indexOf(searchField.value.toUpperCase()) > -1;
-            bool3 = daftar_nama_peserta.indexOf(searchField.value.toUpperCase()) > -1;
+            bool3 = peserta.indexOf(searchField.value.toUpperCase()) > -1;
             bool4 = tindak_lanjut.indexOf(searchField.value.toUpperCase()) > -1;
+            bool5 = status_indeks.indexOf(searchField.value.toUpperCase()) > -1;
+            bool6 = nilai_ikp.indexOf(searchField.value.toUpperCase()) > -1;
+            bool7 = status.indexOf(searchField.value.toUpperCase()) > -1;
+            bool8 = deskripsi_hasil.indexOf(searchField.value.toUpperCase()) > -1;
+            bool9 = simpulan.indexOf(searchField.value.toUpperCase()) > -1;
 
-            return bool1 || bool2 || bool3 || bool4;
+            return bool1 || bool2 || bool3 || bool4 || bool5 || bool6 || bool7 || bool8 || bool9;
         });
       };
 
@@ -211,8 +222,8 @@ Monitoring dan Evaluasi Supervisi Kegiatan Kotan
                 for ([key2, value2] of Object.entries(value.data)) {
                   let formattedData = countHasilTest(value2.pegawai);
                   baris = { 'class':'table','hide_satker':true,'index': (parseInt(key)+1) + '.' + (parseInt(key2)+1),'satker': '',
-                  'tanggal':value2.tanggal_awal+'-'+value2.tanggal_akhir, 'nama_lingkungan':value2.nama_lingkungan,'nama_jabatan':formatNamaJabatan(value2.pegawai),'pria':countMaleParticipants(value2.pegawai),'wanita':countFemaleParticipants(value2.pegawai),'jumlah_peserta':value2.pegawai.length,'status_indeks':gek_status_indeks(value2.status_indeks),'nilai_ikp': value2.nilai_ikp,'status_ikp':value2.nilai_ikp,'deskripsi_hasil':value2.deskripsi_hasil,'simpulan':value2.simpulan,'tindak_lanjut':value2.tindak_lanjut,'dokumentasi':value2.dokumentasi
-                  ,'aksi':'','status':value2.status,'level':value2.satker.level, 'type':'child', 'id':value2.id, 'start_date':value2.tanggal_awal, 'end_date':value2.tanggal_akhir, 'kirim': hideableButton(value2.status, satkerLevel, 'kirim'), 'edit': hideableButton(value2.status, satkerLevel, 'edit'),};
+                  'tanggal':value2.tanggal_awal+'-'+value2.tanggal_akhir, 'nama_lingkungan':value2.nama_lingkungan,'nama_jabatan':formatNamaJabatan(value2.pegawai),'pria':countMaleParticipants(value2.pegawai),'wanita':countFemaleParticipants(value2.pegawai),'jumlah_peserta':value2.pegawai.length,'status_indeks':gek_status_indeks(value2.status_indeks),'nilai_ikp': value2.nilai_ikp,'status_ikp':value2.status_ikp,'deskripsi_hasil':value2.deskripsi_hasil,'simpulan':value2.simpulan,'tindak_lanjut':value2.tindak_lanjut,'dokumentasi':value2.dokumentasi
+                  ,'aksi':'','status':value2.status,'level':value2.satker.level, 'type':'first__child', 'id':value2.id, 'start_date':value2.tanggal_awal, 'end_date':value2.tanggal_akhir, 'kirim': hideableButton(value2.status, satkerLevel, 'kirim'), 'edit': hideableButton(value2.status, satkerLevel, 'edit'),};
                   tableContent.push(baris);
                 }
   
@@ -229,8 +240,8 @@ Monitoring dan Evaluasi Supervisi Kegiatan Kotan
                     for ([key4, value4] of Object.entries(value3.data)) {
                       let formattedData = countHasilTest(value4.pegawai);
                       baris = { 'class':'table','hide_satker':true,'index': (parseInt(key) + 1) + '.' + (parseInt(key2) + 1) + '.' + (parseInt(key3) + 1) + '.' + (parseInt(key4) + 1),'satker': '',
-                      'tanggal':value4.tanggal_awal+'-'+value4.tanggal_akhir, 'nama_lingkungan':value4.nama_lingkungan,'nama_jabatan':formatNamaJabatan(value4.pegawai),'pria':countMaleParticipants(value4.pegawai),'wanita':countFemaleParticipants(value4.pegawai),'jumlah_peserta':value4.pegawai.length,'status_indeks':gek_status_indeks(value4.status_indeks),'nilai_ikp': value4.nilai_ikp,'status_ikp':value4.nilai_ikp,'deskripsi_hasil':value4.deskripsi_hasil,'simpulan':value4.simpulan,'tindak_lanjut':value4.tindak_lanjut,'dokumentasi':value4.dokumentasi
-                      ,'aksi':'','status':value4.status,'level':value4.satker.level, 'type':'child', 'id':value4.id, 'start_date':value4.tanggal_awal, 'end_date':value4.tanggal_akhir, 'kirim': hideableButton(value4.status, satkerLevel, 'kirim'), 'edit': hideableButton(value4.status, satkerLevel, 'edit'),};
+                      'tanggal':value4.tanggal_awal+'-'+value4.tanggal_akhir, 'nama_lingkungan':value4.nama_lingkungan,'nama_jabatan':formatNamaJabatan(value4.pegawai),'pria':countMaleParticipants(value4.pegawai),'wanita':countFemaleParticipants(value4.pegawai),'jumlah_peserta':value4.pegawai.length,'status_indeks':gek_status_indeks(value4.status_indeks),'nilai_ikp': value4.nilai_ikp,'status_ikp':value4.status_ikp,'deskripsi_hasil':value4.deskripsi_hasil,'simpulan':value4.simpulan,'tindak_lanjut':value4.tindak_lanjut,'dokumentasi':value4.dokumentasi
+                      ,'aksi':'','status':value4.status,'level':value4.satker.level, 'type':'second__child', 'id':value4.id, 'start_date':value4.tanggal_awal, 'end_date':value4.tanggal_akhir, 'kirim': hideableButton(value4.status, satkerLevel, 'kirim'), 'edit': hideableButton(value4.status, satkerLevel, 'edit'),};
                       tableContent.push(baris);
                     }
                   }
@@ -284,7 +295,7 @@ Monitoring dan Evaluasi Supervisi Kegiatan Kotan
             denyButtonText: "Batal"
         }).then((result) => {
             if (result.isConfirmed) {
-                axios.delete('/kegiatan/api/v1/psm/monev_supervisi/'+id+'/delete_kegiatan_peserta/')
+                axios.delete('/kegiatan/api/v1/psm/monev_supervisi_crud/'+id+'/')
                     .then(function (response) {
                         Swal.fire({
                             icon: "success",
@@ -405,8 +416,18 @@ Monitoring dan Evaluasi Supervisi Kegiatan Kotan
 
 <!-- helper -->
 <script>
+  $(document).ready(function() {
+    // remove
+    $('[data-repeater-list="peserta-group-lama"]').on('click', '.hapus_lama', function() {
+      $(this).closest('[data-repeater-item-lama]').remove();
+    });
+  })
+
   function handlePost(e) {
     e.preventDefault();
+
+    var nilai_ikp = $('#create__nilai_ikp').val()
+    var status_ikp = calculateikp(nilai_ikp);
 
     var formData = {
         satker: $('#create__satker').val(),
@@ -414,8 +435,9 @@ Monitoring dan Evaluasi Supervisi Kegiatan Kotan
         tanggal_akhir: $('#create__tanggal_akhir').val(),
         tanggal_akhir: $('#create__tanggal_akhir').val(),
         nama_lingkungan: $('#create__nama_lingkungan').val(),
-        status_index: $('#create__status_index').val(),
-        nilai_ikp: $('#create__nilai_ikp').val(),
+        status_indeks: $('#create__status_index').val(),
+        nilai_ikp: nilai_ikp,
+        status_ikp: status_ikp,
         deskripsi_hasil: $('#create__deskripsi_hasil').val(),
         simpulan: $('#create__simpulan').val(),
         tindak_lanjut: $('#create__tindak_lanjut').val(),
@@ -467,12 +489,16 @@ Monitoring dan Evaluasi Supervisi Kegiatan Kotan
 
       var formData = new FormData();
 
+      var nilai_ikp = $('#create__nilai_ikp').val()
+      var status_ikp = calculateikp(nilai_ikp);
+
       formData.append('satker', $('#create__satker').val());
       formData.append('tanggal_awal', $('#create__tanggal_awal').val());
       formData.append('tanggal_akhir', $('#create__tanggal_akhir').val());
       formData.append('nama_lingkungan', $('#create__nama_lingkungan').val());
       formData.append('status_indeks', $('#create__status_index').val());
-      formData.append('nilai_ikp', $('#create__nilai_ikp').val());
+      formData.append('nilai_ikp', nilai_ikp);
+      formData.append('status_ikp', status_ikp);
       formData.append('deskripsi_hasil', $('#create__deskripsi_hasil').val());
       formData.append('simpulan', $('#create__simpulan').val());
       formData.append('tindak_lanjut', $('#create__tindak_lanjut').val());
@@ -515,13 +541,16 @@ Monitoring dan Evaluasi Supervisi Kegiatan Kotan
     var url = "/kegiatan/api/v1/psm/monev_supervisi_crud/"+id_edit_global+"/"
 
     var formData = new FormData();
+    var nilai_ikp = $('#edit__nilai_ikp').val()
+    var status_ikp = calculateikp(nilai_ikp);
 
     // formData.append('satker', $('#create__satker').val());
     formData.append('tanggal_awal', $('#edit__tanggal_awal').val());
     formData.append('tanggal_akhir', $('#edit__tanggal_akhir').val());
     formData.append('nama_lingkungan', $('#edit__nama_lingkungan').val());
     formData.append('status_indeks', $('#edit__status_index').val());
-    formData.append('nilai_ikp', $('#edit__nilai_ikp').val());
+    formData.append('nilai_ikp', nilai_ikp);
+    formData.append('status_ikp', status_ikp);
     formData.append('deskripsi_hasil', $('#edit__deskripsi_hasil').val());
     formData.append('simpulan', $('#edit__simpulan').val());
     formData.append('tindak_lanjut', $('#edit__tindak_lanjut').val());
@@ -535,9 +564,8 @@ Monitoring dan Evaluasi Supervisi Kegiatan Kotan
     $('.form-repeater.edit [data-repeater-item]').each(function(index, element) {
       pesertaArray.push({
             nama: $(element).find('[id^="form-repeater"]').eq(0).val(),
-            alamat: $(element).find('[id^="form-repeater"]').eq(1).val(),
+            jabatan: $(element).find('[id^="form-repeater"]').eq(1).val(),
             gender: $(element).find('[id^="form-repeater"]').eq(2).val(),
-            status: $(element).find('[id^="form-repeater"]').eq(3).val()
         });
     });
     formData.append('pesertaArray', JSON.stringify(pesertaArray));
@@ -546,9 +574,8 @@ Monitoring dan Evaluasi Supervisi Kegiatan Kotan
     $('.form-repeater-lama [data-repeater-item-lama]').each(function(index, element) {
       peserta_lamaArray.push({
             nama: $(element).find('[id^="form-repeater-edit-lama"]').eq(0).val(),
-            alamat: $(element).find('[id^="form-repeater-edit-lama"]').eq(1).val(),
+            jabatan: $(element).find('[id^="form-repeater-edit-lama"]').eq(1).val(),
             gender: $(element).find('[id^="form-repeater-edit-lama"]').eq(2).val(),
-            status: $(element).find('[id^="form-repeater-edit-lama"]').eq(3).val()
         });
     });
     formData.append('peserta_lamaArray', JSON.stringify(peserta_lamaArray));
@@ -556,10 +583,15 @@ Monitoring dan Evaluasi Supervisi Kegiatan Kotan
     const pesertaCompleteness = checkDataCompleteness(pesertaArray);
     const pesertaLamaCompleteness = checkDataCompleteness(peserta_lamaArray);
 
+    console.log(pesertaArray);
+    console.log(peserta_lamaArray);
+
     if (pesertaCompleteness === 2 && pesertaLamaCompleteness === 2) {
         showConfirmationDialog(formData, url);
     } else if (pesertaLamaCompleteness === 0) {
         showErrorDialog("Data Peserta kosong!");
+        // showConfirmationDialog(formData, url);
+
     } else if (pesertaCompleteness === 1 || pesertaLamaCompleteness === 1) {
         showErrorDialog("Data Peserta tidak lengkap!");
     }else{
@@ -568,26 +600,32 @@ Monitoring dan Evaluasi Supervisi Kegiatan Kotan
   });
 
   async function handleExport(){
-    axios.post('/kegiatan/api/v1/psm/monev_supervisi/export_data/')
-        .then(function (response) {
+    // axios.post('/kegiatan/api/v1/psm/monev_supervisi/export_data/')
+    //     .then(function (response) {
             
-            const data = response.data;
+    //         const data = response.data;
 
-            window.location.href = data.file_path;
-        })
-        .catch(function (error) {
-            Swal.fire({
-                icon: "error",
-                title: "Terjadi kesalahan !",
-                text: "API bermasalah !",
-            });
-    });
+    //         window.location.href = data.file_path;
+    //     })
+    //     .catch(function (error) {
+    //         Swal.fire({
+    //             icon: "error",
+    //             title: "Terjadi kesalahan !",
+    //             text: "API bermasalah !",
+    //         });
+    // });
+    var tbl = document.getElementById('__table');
+    var wb = XLSX.utils.table_to_book(tbl);
+    XLSX.writeFile(wb, "SheetJSTable.xlsx");
   }
 
   async function handleDate(event, target) {
     const currentDate = moment().format('YYYY-MM-DD');
     const valueDate = $(event.target).val();
-    (valueDate === currentDate ? $(`#${target}tanggal_akhir`).attr('disabled', true) : $(`#${target}tanggal_akhir`).attr('disabled', false));
+    if (valueDate === currentDate) {
+      $('#create__tanggal_akhir').val(new Date().toISOString().split('T')[0]);
+    } else {
+    }
   }
 
   function countMaleParticipants(data) {
@@ -788,28 +826,44 @@ Monitoring dan Evaluasi Supervisi Kegiatan Kotan
       }
   });
 
-  function gek_status_indeks(value) {
-    console.log(value)
-      var result = '';
-      switch(value) {
-          case 4:
-              result = 'Sangat Mandiri';
-              break;
-          case 3:
-              result = 'Mandiri';
-              break;
-          case 2:
-              result = 'Kurang Mandiri';
-              break;
-          case 1:
-              result = 'Tidak Mandiri';
-              break;
-          default:
-              result = 'Tidak Valid';
-      }
-      return result;
+  function gek_status_indeks(inputValue) {
+    console.log(inputValue);
+    var result;
+    switch(inputValue) {
+        case 4:
+            result = 'Sangat Mandiri';
+            break;
+        case 3:
+            result = 'Mandiri';
+            break;
+        case 2:
+            result = 'Kurang Mandiri';
+            break;
+        case 1:
+            result = 'Tidak Mandiri';
+            break;
+        default:
+            result = '';
+    }
+    return result;
   }
 
+  function calculateikp(inputValue) {
+      console.log(inputValue);
+      var label;
+      if(inputValue >= 81.26 && inputValue <= 100) {
+          label = "Sangat Mandiri";
+      } else if(inputValue >= 62.51 && inputValue <= 81.25) {
+          label = "Mandiri";
+      } else if(inputValue >= 43.76 && inputValue <= 62.50) {
+          label = "Kurang Mandiri";
+      } else if(inputValue >= 25 && inputValue <= 43.75) {
+          label = "Tidak Mandiri";
+      } else {
+          label = "Not Valid";
+      }
+      return label;
+  }
 </script>
 
 {% endblock %}

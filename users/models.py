@@ -20,7 +20,10 @@ class Satker(models.Model):
     
     def __str__(self):
         return str(self.nama_satker)
-        
+
+class Observasi(models.Model):
+    nama_unit = models.CharField(null=True, blank=True, max_length=100)
+
 class Profile(models.Model):
     
     DIREKTORAT_CHOICES = (

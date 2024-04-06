@@ -17,7 +17,7 @@
                 {% endfor %}
               </select>
             </div>
-            <div class="row mb-3 range_date">
+            <div class="row mb-3 range_date edit">
               <div class="col-6">
                 <div class="mb-3">
                   <label for="edit__tanggal_awal" class="col-form-label required">Tanggal Awal:</label>
@@ -43,12 +43,12 @@
                   <div class="row">
                     <div class="mb-3 col-lg-5 col-sm-10 mb-0">
                       <label class="form-label" for="form-repeater-1-1">Nama </label>
-                      <input required type="text" id="form-repeater-1-1" class="form-control"
+                      <input required type="text" name="repeater_nama" id="form-repeater-1-1" class="form-control"
                         placeholder="Nama Peserta" />
                     </div>
                     <div class="mb-3 col-lg-5 col-sm-10 mb-0">
                       <label class="form-label" for="form-repeater-1-1">Jabatan </label>
-                      <input required type="text" id="form-repeater-1-2" class="form-control" placeholder="Jabatan" />
+                      <input required type="text" name="repeater_jabatan" id="form-repeater-1-2" class="form-control" placeholder="Jabatan" />
                     </div>
                     <div class="mb-3 col-lg-12 col-xl-2 col-12 d-flex align-items-center mb-0">
                       <button class="btn btn-label-danger mt-4" data-repeater-delete type="button" value="Delete">

@@ -59,7 +59,7 @@
     setup() {
       let asistensiData = ref(null);
       let satkerLevel = parseInt('{{ user.profile.satker.level }}');
-      let perPage = ref(2);
+      let perPage = ref(10);
       let currentPage = ref(1);
       let searchField = ref(null);
       let filteredPage = ref(null);
@@ -141,7 +141,7 @@
             tableContent.push(baris);
             for ([key2, value2] of Object.entries(value.data)) {
               baris = {
-                'class': 'table-light',
+                'class': '',
                 'hide_satker': true,
                 'index': (parseInt(key) + 1) + '.' + (parseInt(key2) + 1),
                 'id': value2.id,
@@ -157,7 +157,7 @@
                 'dokumentasi': value2.dokumentasi,
                 'status': value2.status,
                 'level': value2.satker.level,
-                'type': 'child',
+                'type': 'first__child',
                 'kirim': hideableButton(value2.status, satkerLevel, 'kirim'),
                 'edit': hideableButton(value2.status, satkerLevel, 'edit'),
               };
@@ -184,7 +184,7 @@
                 tableContent.push(baris);
                 for ([key4, value4] of Object.entries(value3.data)) {
                   baris = {
-                    'class': 'table-light',
+                    'class': '',
                     'hide_satker': true,
                     'index': (parseInt(key) + 1) + '.' + (parseInt(key2) + 1) + '.' + (parseInt(key3) + 1) + '.' + (parseInt(key4) + 1),
                     'id': value4.id,
@@ -200,7 +200,7 @@
                     'dokumentasi': value4.dokumentasi,
                     'level': value4.satker.level,
                     'status': value4.status,
-                    'type': 'child',
+                    'type': 'second__child',
                     'kirim': hideableButton(value4.status, satkerLevel, 'kirim'),
                     'edit': hideableButton(value4.status, satkerLevel, 'edit'),
                   };
@@ -237,7 +237,7 @@
           $('#edit__id').val(data[0].id);
           $('#edit__tanggal_awal').val(data[0].tanggal_awal);
           $('#edit__tanggal_akhir').val(data[0].tanggal_akhir);
-          (data[0].tanggal_akhir ? $('#edit__tanggal_akhir').attr('disabled', false) : $('#edit__tanggal_akhir').attr('disabled', true))
+          // (data[0].tanggal_akhir ? $('#edit__tanggal_akhir').attr('disabled', false) : $('#edit__tanggal_akhir').attr('disabled', true))
           $('#edit__satker').val(data[0].satker_id).trigger('change');
           $('#edit__jumlah_kegiatan').val(data[0].jumlah_kegiatan);
           $('#edit__jumlah_peserta').val(data[0].jumlah_peserta);
@@ -276,22 +276,32 @@
     }
 
     async function handleKirim(satker, id) {
-      const confirmResult = await showSwalConfirm(`Apakah anda yakin untuk mengirim semua kegiatan dari Satuan Kerja <b>${satker}</b>`, 'Ya, kirim data');
-      if (!confirmResult.isConfirmed) return;
-      showSwalLoading();
-      await sleep(1000);
-      try {
-        const response = await axios.post(`/kegiatan/api/v1/psm/asistensi/kirim_kegiatan/`, {id: id});
-        console.log('Respose :', response);
-        const sendedToParent = response.data.parent.keterangan;
-        showSwalSuccess('Berhasil', `Data <b>kegiatan</b> untuk <b>${satker}</b> telah berhasil <b>dikirimkan ke <b>${sendedToParent}</b></b>`);
-        // reloadAllDataTables();
-        location.reload()
-      } catch (error) {
-        showSwalGenericError();
-        console.error('Terjadi kesalahan :', error);
+        const confirmResult = await showSwalConfirm(`Apakah anda yakin untuk mengirim semua kegiatan dari Satuan Kerja <b>${satker}</b>`, 'Ya, kirim data');
+        if (!confirmResult.isConfirmed) return;
+        showSwalLoading();
+        await sleep(1000);
+        try {
+          const response = await axios.post(
+            `/kegiatan/api/v1/psm/asistensi/kirim_kegiatan/`,
+            { id: id }
+          ).then(function (response) {
+            const sendedToParent = response.data.parent.keterangan;
+            Swal.fire({
+              title: 'Berhasil!',
+              html: `Data <b>kegiatan</b> untuk <b>${satker}</b> telah berhasil <b>dikirimkan ke ${sendedToParent}</b>`,
+              icon: 'success',
+              confirmButtonText: 'OK',
+            }).then((result) => {
+              if (result.isConfirmed) {
+                location.reload()
+              }
+            });
+          });
+        } catch (error) {
+          showSwalGenericError();
+          console.error('Terjadi kesalahan :', error);
+        }
       }
-    }
 
       onMounted(() => {
         loadData();
@@ -319,12 +329,19 @@
 
 <!-- script handle crud -->
 <script>
+  // async function handleDate(event, target) {
+  //   const currentDate = moment().format('YYYY-MM-DD');
+  //   const valueDate = $(event.target).val();
+  //   (valueDate === currentDate ? $(`#${target}tanggal_akhir`).attr('disabled', false) : $(`#${target}tanggal_akhir`).attr('disabled', false));
+  // }
   async function handleDate(event, target) {
     const currentDate = moment().format('YYYY-MM-DD');
     const valueDate = $(event.target).val();
-    (valueDate === currentDate ? $(`#${target}tanggal_akhir`).attr('disabled', true) : $(`#${target}tanggal_akhir`).attr('disabled', false));
+    if (valueDate === currentDate) {
+      $('#create__tanggal_akhir').val(new Date().toISOString().split('T')[0]);
+    } else {
+    }
   }
-
   async function handlePost(e) {
     e.preventDefault();
     showSwalLoading();

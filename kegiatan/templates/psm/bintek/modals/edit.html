@@ -1,9 +1,9 @@
 <form id="editForm" onsubmit="handleEdit(event)">
-  <div class="modal fade" id="modalEdit" aria-labelledby="modalEdit" aria-hidden="true">
+  <div class="modal fade" id="editModal" aria-labelledby="editModal" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="modalEdit">Edit Data</h5>
+          <h5 class="modal-title" id="editModal">Edit Data</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
@@ -19,8 +19,7 @@
             <div class="col-6">
               <div class="mb-3">
                 <label for="create__tanggal_awal" class="col-form-label required">Tanggal Awal:</label>
-                <input type="date" id="edit__tanggal_awal" class="form-control"
-                  onchange="handleDate(event, 'edit__');" />
+                <input type="date" id="edit__tanggal_awal" class="form-control" required/>
               </div>
             </div>
             <div class="col-6">
@@ -34,7 +33,7 @@
           </div>
           <div class="mb-3">
             <label for="edit__satker_target" class="col-form-label required">Satuan Kerja Yang Diundang:</label>
-            <select class="form-control select2" id="edit__satker_target">
+            <select class="form-control select2" id="edit__satker_target" required> 
               <option value="" selected disabled>Pilih Satuan Kerja</option>
               {% for item in satker %}
               <option value="{{ item.pk }}">{{ item.nama_satker }}</option>
@@ -43,22 +42,22 @@
           </div>
           <div class="mb-3">
             <label for="edit__deskripsi" class="col-form-label required">Deskripsi Hasil</label>
-            <textarea class="form-control" id="edit__deskripsi"></textarea>
+            <textarea class="form-control" id="edit__deskripsi" required></textarea>
           </div>
           <div class="mb-3">
             <label for="edit__kendala" class="col-form-label required">Kendala:</label>
-            <textarea class="form-control" id="edit__kendala"></textarea>
+            <textarea class="form-control" id="edit__kendala" required></textarea>
           </div>
           <div class="mb-3">
             <label for="edit__kesimpulan" class="col-form-label required">Kesimpulan:</label>
-            <textarea class="form-control" id="edit__kesimpulan"></textarea>
+            <textarea class="form-control" id="edit__kesimpulan" required></textarea>
           </div>
           <div class="mb-3">
             <label for="edit__tindak_lanjut" class="col-form-label required">Tindak Lanjut:</label>
-            <textarea class="form-control" id="edit__tindak_lanjut"></textarea>
+            <textarea class="form-control" id="edit__tindak_lanjut" required></textarea>
           </div>
           <div class="mb-3">
-            <label for="edit__dokumentasi" class="col-form-label required">Dokumentasi</label>
+            <label for="edit__dokumentasi" class="col-form-label">Dokumentasi</label>
             <input type="file" class="form-control" id="edit__dokumentasi" accept=".csv, .xlsx, .pdf, docx." />
           </div>
         </div>

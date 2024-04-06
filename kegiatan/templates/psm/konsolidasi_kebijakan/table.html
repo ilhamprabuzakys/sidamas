@@ -1,30 +1,105 @@
 <table class="table table-bordered" id="__table">
-  <thead class="bg-soft-green">
+  <thead style="background-color: #2ca8dc;">
     <tr>
-      <th>No.</th>
-      <th>Satuan Kerja</th>
-      <th>Jumlah Kegiatan</th>
-      <th class="bg-soft-danger">Pelaksanaan</th>
-      <th>
-        AKSI<i class="fas fa-edit ms-2"></i>
-      </th>
+      <th rowspan="2" class="putih" style="color: white;">No</th>
+      <th rowspan="2" class="putih" style="color: white;">Satuan Kerja</th>
+      <th rowspan="1" colspan="3" class="putih" style="text-align: center; color: white;">Pelaksanaan</th>
+      <th rowspan="2" class="putih" style="color: white;">Deskripsi Hasil</th>
+      <th rowspan="2" class="putih" style="color: white;">Kendala/Hambatan</th>
+      <th rowspan="2" class="putih" style="color: white;">Kesimpulan</th>
+      <th rowspan="2" class="putih" style="color: white;">Tindak Lanjut</th>
+      <th rowspan="2" class="putih" style="color: white;">Dokumentasi</th>
+      <th rowspan="2" class="putih" style="color: white;">Aksi <i class="fas fa-edit ms-2"></i></th>
+    </tr>
+    <tr>
+      <th rowspan="1" class="putih" style="color: white;">Tanggal</th>
+      <th rowspan="1" class="putih" style="color: white;">Peserta</th>
+      <th rowspan="1" class="putih" style="color: white;">Stakeholder/Pendamping yang diundang</th>
     </tr>
   </thead>
   <tbody>
-    <tr class="">
-      <td scope="row">1</td>
-      <td>BNNP Jawa Barat</td>
-      <td>3</td>
-      <td>
-        <a href="javascript:;" class="badge bg-primary text-decoration-none text-white" data-bs-toggle="modal" data-bs-target="#detailKonsilidasiKebijakan"><i class="fas fa-eye me-2"></i>Lihat Detail</a>
-      </td>
-      <td>
-        <div class="list-button">
-          <a href="javascript:;" class="badge bg-primary text-white text-decoration-none mb-1" data-bs-toggle="modal" data-bs-target="#tambahDataKegiatan"><i class="fas fa-plus me-2"></i>TAMBAH KEGIATAN</a>
-          <a href="javascript:;" id="buttonEdit" class="badge bg-success text-white text-decoration-none mb-1"><i class="fas fa-pen-to-square me-2"></i>EDIT</a>
-          <a href="javascript:;" id="deleteData" class="badge bg-danger text-white text-decoration-none mb-1"><i class="fas fa-trash-alt me-2"></i>HAPUS</a>
-        </div>
-      </td>
-    </tr>
+    <template v-for="(topLevel, index) in pagedData">
+      <tr :class="topLevel.class">
+        <td style="text-align: right;">${topLevel.index}</td>
+        <td>
+          <template v-if="topLevel.hide_satker"></template>
+          <template v-else>${topLevel.satker}</template>
+        </td>
+        <td>${topLevel.tanggal}</td>
+        <td>
+          <template v-for="(peserta, index) in topLevel.peserta">
+            <ul>
+              <li>${peserta.nama} - ${peserta.jabatan}</li>
+            </ul>
+          </template>
+        </td>
+        <td>${topLevel.stakeholder}</td>
+        <td>${topLevel.deskripsi}</td>
+        <td>${topLevel.kendala}</td>
+        <td>${topLevel.kesimpulan}</td>
+        <td>${topLevel.tindak_lanjut}</td>
+        <td class="text-center">
+          <template v-if="topLevel.type != 'parent'">
+            <a :href='topLevel.dokumentasi'><i class="fa-solid fa-download"></i></a>
+          </template>
+        </td>
+        <td>
+          <template v-if="topLevel.type != 'parent'">
+            <div class="list-button gx-3 text-uppercase">
+              <template v-if="topLevel.kirim">
+                <div>
+                  <a href="javascript:void(0);" style="background-color:#00A0A9;"
+                    @click="handleKirim(topLevel.satker, topLevel.id)"
+                    class="badge text-white text-decoration-none mb-1">
+                    <i class="fa-regular fa-paper-plane me-2"></i>Kirim
+                  </a>
+                </div>
+              </template>
+              <template v-if="satkerLevel == 2">
+                <div>
+                  <a href="javascript:void(0);" @click="handleEditModal(topLevel.id)"
+                    class="badge bg-success text-white text-decoration-none mb-1">
+                    <i class="fas fa-pen-to-square me-2"></i>Edit
+                  </a>
+                </div>
+                <div>
+                  <a href="javascript:void(0);" @click="handleDelete(topLevel.id)"
+                    class="badge bg-danger text-white text-decoration-none mb-1"><i
+                      class="fas fa-trash-alt me-2"></i>Hapus</a>
+                </div>
+              </template>
+              <template v-else>
+                <template v-if="topLevel.type != 'second__child'">
+                  <template v-if="topLevel.edit">
+                    <div>
+                      <a href="javascript:void(0);" @click="handleEditModal(topLevel.id)"
+                        class="badge bg-success text-white text-decoration-none mb-1">
+                        <i class="fas fa-pen-to-square me-2"></i>Edit
+                      </a>
+                    </div>
+                    <div>
+                      <a href="javascript:void(0);" @click="handleDelete(topLevel.id)"
+                        class="badge bg-danger text-white text-decoration-none mb-1"><i
+                          class="fas fa-trash-alt me-2"></i>Hapus</a>
+                    </div>
+                  </template>
+                  <template v-else>
+                    <div>
+                      <a href="javascript:void(0);" class="badge bg-secondary text-white text-decoration-none mb-1">
+                        <i class="fas fa-pen-to-square me-2"></i>Edit
+                      </a>
+                    </div>
+                    <div>
+                      <a href="javascript:void(0);" class="badge bg-secondary text-white text-decoration-none mb-1"><i
+                          class="fas fa-trash-alt me-2"></i>Hapus</a>
+                    </div>
+                  </template>
+                </template>
+              </template>
+            </div>
+          </template>
+        </td>
+      </tr>
+    </template>
   </tbody>
 </table>

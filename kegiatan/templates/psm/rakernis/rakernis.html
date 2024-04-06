@@ -35,89 +35,12 @@
       </div>
       <div class="table-responsive">
         <div class="col-4 form-outline mb-4">
-          <label class="form-label" for="datatable-search-input">Pencarian</label>
+          <label class="form-label" for="datatable-search-input">Pencarian </label>
           <input type="text" class="form-control" v-model="searchField" @input="searchData($event)"
-            @blur="searchData($event)" placeholder="Cari Data.."/>
+            @blur="searchData($event)" placeholder="Cari Data" />
         </div>
-        <table class="table table-bordered" id="__table">
-          <thead class="" style="background-color: #2ca8dc;">
-            <tr>
-              <th style="color: white;">NO</th>
-              <th style="color: white;">SATKER PELAKSANA</th>
-              <th style="color: white;">TANGGAL</th>
-              <th style="color: white;">SATUAN KERJA YANG DIUNDANG</th>
-              <th style="color: white;">DESKRIPSI</th>
-              <th style="color: white;">KENDALA</th>
-              <th style="color: white;">KESIMPULAN</th>
-              <th style="color: white;">TINDAK LANJUT</th>
-              <th style="color: white;">DOKUMENTASI</th>
-              <th style="color: white;">AKSI</th>
-            </tr>
-          </thead>
-          <tbody class="align-tr-middle text-white">
-            <template v-for="(topLevel, index) in pagedData">
-              <tr :class="topLevel.class">
-                <td style='text-align:right'>${topLevel.index}</td>
-                <td>
-                  <template v-if="topLevel.hide_satker"></template>
-                  <template v-else>${topLevel.satker}</template>
-                </td>
-                <td>${topLevel.tanggal}</td>
-                <td>${topLevel.target}</td>
-                <td>${topLevel.deskripsi}</td>
-                <td>${topLevel.kendala}</td>
-                <td>${topLevel.kesimpulan}</td>
-                <td>${topLevel.tindak_lanjut}</td>
-                <td class="text-center">
-                  <template v-if="topLevel.type == 'child'">
-                    <a :href='topLevel.dokumentasi'><i class="fa-solid fa-download"></i></a>
-                  </template>
-                </td>
-                <td>
-                  <template v-if="topLevel.type == 'child'">
-                    <div class="list-button gx-3 text-uppercase">
-                      <template v-if="topLevel.kirim">
-                        <div>
-                          <a href="javascript:void(0);" style="background-color:#00A0A9;"
-                            @click="handleKirim(topLevel.satker, topLevel.id)"
-                            class="badge text-white text-decoration-none mb-1">
-                            <i class="fa-regular fa-paper-plane me-2"></i>Kirim
-                          </a>
-                        </div>
-                      </template>
-                      <template v-if="topLevel.edit">
-                        <div>
-                          <a href="javascript:void(0);" @click="handleEditModal(topLevel.id)"
-                            class="badge bg-success text-white text-decoration-none mb-1">
-                            <i class="fas fa-pen-to-square me-2"></i>Edit
-                          </a>
-                        </div>
-                        <div>
-                          <a href="javascript:void(0);" @click="handleDelete(topLevel.id)"
-                            class="badge bg-danger text-white text-decoration-none mb-1"><i
-                              class="fas fa-trash-alt me-2"></i>Hapus</a>
-                        </div>
-                      </template>
-                      <template v-else>
-                        <div>
-                          <a href="javascript:void(0);" class="badge bg-secondary text-white text-decoration-none mb-1">
-                            <i class="fas fa-pen-to-square me-2"></i>Edit
-                          </a>
-                        </div>
-                        <div>
-                          <a href="javascript:void(0);"
-                            class="badge bg-secondary text-white text-decoration-none mb-1"><i
-                              class="fas fa-trash-alt me-2"></i>Hapus</a>
-                        </div>
-                      </template>
-                    </div>
-                  </template>
-                </td>
-              </tr>
-            </template>
-          </tbody>
-        </table>
-        <nav aria-label="Page navigation example">
+        {% include 'psm/rakernis/table.html' %}
+        <nav class="mt-3" aria-label="Page navigation example">
           <ul class="pagination">
             <li class="page-item">
               <button :disabled='currentPage <= 1' class="page-link" href="#" aria-label="Previous"
@@ -223,7 +146,7 @@
               tableContent.push(baris);
               for ([key2, value2] of Object.entries(value.data)) {
                 baris = {
-                  'class': 'table-light',
+                  'class': '',
                   'hide_satker': true,
                   'index': (parseInt(key) + 1) + '.' + (parseInt(key2) + 1),
                   'id': value2.id,
@@ -237,7 +160,7 @@
                   'dokumentasi': value2.dokumentasi,
                   'status': value2.status,
                   'level': value2.satker.level,
-                  'type': 'child',
+                  'type': 'first__child',
                   'kirim': hideableButton(value2.status, satkerLevel, 'kirim'),
                   'edit': hideableButton(value2.status, satkerLevel, 'edit'),
                 };
@@ -262,7 +185,7 @@
                 tableContent.push(baris);
                 for ([key4, value4] of Object.entries(value3.data)) {
                   baris = {
-                    'class': 'table-light',
+                    'class': '',
                     'hide_satker': true,
                     'index': (parseInt(key) + 1) + '.' + (parseInt(key2) + 1) + '.' + (parseInt(key3) + 1) + '.' + (parseInt(key4) + 1),
                     'id': value4.id,
@@ -276,7 +199,7 @@
                     'dokumentasi': value2.dokumentasi,
                     'level': value4.satker.level,
                     'status': value4.status,
-                    'type': 'child',
+                    'type': 'second__child',
                     'kirim': hideableButton(value4.status, satkerLevel, 'kirim'),
                     'edit': hideableButton(value4.status, satkerLevel, 'edit'),
                   };
@@ -299,7 +222,6 @@
           $('#edit__satker').val(data[0].satker_id).trigger('change');
           $('#edit__tanggal_awal').val(data[0].tanggal_awal);
           $('#edit__tanggal_akhir').val(data[0].tanggal_akhir);
-          (data[0].tanggal_akhir ? $('#edit__tanggal_akhir').attr('disabled', false) : $('#edit__tanggal_akhir').attr('disabled', true))
           $('#edit__satker_target').val(data[0].satker_target).trigger('change');
           $('#edit__deskripsi').val(data[0].deskripsi);
           $('#edit__kendala').val(data[0].kendala);
@@ -308,7 +230,7 @@
 
           console.log(data[0].satker_id)
 
-          $('#modalEdit').modal('show');
+          $('#editModal').modal('show');
         } catch (error) {
           showSwalGenericError();
           console.error('Terjadi kesalahan :', error);
@@ -316,7 +238,7 @@
       }
 
       async function handleDelete(id) {
-        const confirmationText = `Untuk menghapus data tersebut ${id}? <br> Data yang dihapus tidak dapat <b>dipulihkan</b> kembali`;
+        const confirmationText = `Untuk menghapus data tersebut? <br> Data yang dihapus tidak dapat <b>dipulihkan</b> kembali`;
 
         const confirmResult = await showSwalConfirm(confirmationText, 'Ya, hapus data');
 
@@ -324,9 +246,20 @@
         showSwalLoading();
         await sleep(1000);
         try {
-          const response = await axios.delete(`/kegiatan/api/v1/psm/rakernis/perform_delete/?id=${id}`);
-          showSwalSuccess('Berhasil', `Data kegiatan berhasil <b>dihapus</b>`, 3000);
-          location.reload()
+          const response = await axios.delete(
+            `/kegiatan/api/v1/psm/rakernis/perform_delete/?id=${id}`
+          ).then(function (response) {
+            Swal.fire({
+              title: 'Berhasil!',
+              html: `Data kegiatan berhasil <b>dihapus</b>`,
+              icon: 'success',
+              confirmButtonText: 'OK',
+            }).then((result) => {
+              if (result.isConfirmed) {
+                location.reload()
+              }
+            });
+          });
         } catch (error) {
           console.log('Terjadi kesalahan : ', error);
           showSwalGenericError();
@@ -339,11 +272,22 @@
         showSwalLoading();
         await sleep(1000);
         try {
-          const response = await axios.post(`/kegiatan/api/v1/psm/rakernis/kirim_kegiatan/`, { id: id });
-          console.log('Respose :', response);
-          const sendedToParent = response.data.parent.keterangan;
-          showSwalSuccess('Berhasil', `Data <b>kegiatan</b> untuk <b>${satker}</b> telah berhasil <b>dikirimkan ke <b>${sendedToParent}</b></b>`);
-          reloadAllDataTables();
+          const response = await axios.post(
+            `/kegiatan/api/v1/psm/rakernis/kirim_kegiatan/`,
+            { id: id }
+          ).then(function (response) {
+            const sendedToParent = response.data.parent.keterangan;
+            Swal.fire({
+              title: 'Berhasil!',
+              html: `Data <b>kegiatan</b> untuk <b>${satker}</b> telah berhasil <b>dikirimkan ke ${sendedToParent}</b>`,
+              icon: 'success',
+              confirmButtonText: 'OK',
+            }).then((result) => {
+              if (result.isConfirmed) {
+                location.reload()
+              }
+            });
+          });
         } catch (error) {
           showSwalGenericError();
           console.error('Terjadi kesalahan :', error);
@@ -374,12 +318,6 @@
 
 <!-- script handle crud -->
 <script>
-  async function handleDate(event, target) {
-    const currentDate = moment().format('YYYY-MM-DD');
-    const valueDate = $(event.target).val();
-    (valueDate === currentDate ? $(`#${target}tanggal_akhir`).attr('disabled', true) : $(`#${target}tanggal_akhir`).attr('disabled', false));
-  }
-
   async function handlePost(e) {
     e.preventDefault();
     showSwalLoading();
@@ -405,7 +343,6 @@
       tindak_lanjut,
       dokumentasi,
     };
-    console.log(data);
 
     const formData = new FormData();
 
@@ -421,20 +358,22 @@
 
     try {
       const response = await axios.post(
-        `/kegiatan/api/v1/psm/rakernis/perform_create/`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-
-      $("div#createModal").modal("hide");
-      showSwalSuccess(
-        "Berhasil!",
-        `Data kegiatan telah <b>berhasil</b> ditambahkan!`
-      );
+        `/kegiatan/api/v1/psm/rakernis/perform_create/`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }).then(function (response) {
+        Swal.fire({
+          title: 'Berhasil!',
+          html: `Data kegiatan telah <b>berhasil</b> ditambahkan!`,
+          icon: 'success',
+          confirmButtonText: 'OK',
+        }).then((result) => {
+          if (result.isConfirmed) {
+            location.reload()
+          }
+        });
+      });
     } catch (error) {
       showSwalGenericError();
       console.error("Terjadi kesalahan :", error);
@@ -491,12 +430,19 @@
         headers: {
           "Content-Type": "multipart/form-data",
         },
-      }
-      );
-
-      $("div#modalEdit").modal("hide");
-      showSwalSuccess('Berhasil!', `Data kegiatan telah <b>berhasil</b> diperbarui!`);
-      location.reload()
+      }).then(function (response) {
+        $("#editModal").modal("hide");
+        Swal.fire({
+          title: 'Berhasil!',
+          html: `Data kegiatan telah <b>berhasil</b> diperbarui!`,
+          icon: 'success',
+          confirmButtonText: 'OK',
+        }).then((result) => {
+          if (result.isConfirmed) {
+            location.reload()
+          }
+        });
+      });
 
     } catch (error) {
       showSwalGenericError();
@@ -504,25 +450,23 @@
     }
   }
 
-  async function handleKirim(data) {
-    const confirmResult = await showSwalConfirm(`Apakah anda yakin untuk mengirim semua kegiatan dari Satuan Kerja <b>${data.nama}</b>`, 'Ya, kirim data');
-    if (!confirmResult.isConfirmed) return;
-    showSwalLoading();
-    await sleep(1000);
-    try {
-      const response = await axios.post(`/kegiatan/api/v1/psm/rakernis/kirim_kegiatan/?id=${data.id}`);
-      console.log('Respose :', response);
-      const sendedToParent = response.data.parent.keterangan;
-      showSwalSuccess('Berhasil', `Data <b>kegiatan</b> untuk <b>${data.nama}</b> telah berhasil <b>dikirimkan ke <b>${sendedToParent}</b></b>`);
-      reloadAllDataTables();
-    } catch (error) {
-      showSwalGenericError();
-      console.error('Terjadi kesalahan :', error);
-    }
-  }
-
   async function handleExport() {
-    showSwalLoading();
+    var tbl = document.getElementById('__table');
+
+    // Remove the column you want to exclude from export
+    var excludeColumnIndex = 2; // Change this to the index of the column you want to exclude
+    var rows = tbl.rows;
+    for (var i = 0; i < rows.length; i++) {
+      rows[i].deleteCell(excludeColumnIndex);
+    }
+
+    // Convert the modified table to workbook
+    var wb = XLSX.utils.table_to_book(tbl);
+
+    // Save the workbook as Excel file
+    XLSX.writeFile(wb, "PSM_RAPAT KERJA TEKNIS.xlsx");
+
+    /* showSwalLoading();
 
     await sleep(1000);
 
@@ -548,7 +492,7 @@
     } catch (error) {
       showSwalGenericError();
       console.error('Terjadi kesalahan :', error);
-    }
+    } */
   }
 </script>
 {% endblock %}

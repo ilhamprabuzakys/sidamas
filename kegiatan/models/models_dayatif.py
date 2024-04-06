@@ -134,6 +134,8 @@ class DAYATIF_PEMETAAN_STAKEHOLDER(models.Model):
         return f'{self.satker.nama_satker} DAYATIF PEMETAAN STAKEHOLDER - {self.tanggal_awal} s/d {self.tanggal_akhir}'
 
 class DAYATIF_RAPAT_SINERGI_STAKEHOLDER(models.Model):
+    status = models.IntegerField(default=0, verbose_name='Status Pengiriman Kegiatan')
+    
     created_at = models.DateTimeField(auto_now_add=True, editable=False)
     updated_at = models.DateTimeField(auto_now=True, editable=False)
     
@@ -147,12 +149,7 @@ class DAYATIF_RAPAT_SINERGI_STAKEHOLDER(models.Model):
     
     jumlah_peserta = models.IntegerField(blank=True, null=True, verbose_name='Jumlah Peserta Kegiatan')
     
-    desa = models.IntegerField(blank=True, null=True)
-    kecamatan = models.IntegerField(blank=True, null=True)
-    kabupaten = models.IntegerField(blank=True, null=True)
-    provinsi = models.IntegerField(blank=True, null=True)
-    
-    stakeholder = models.TextField(blank=True, null=True, max_length=2000, verbose_name='Daftar Stakeholder Pendamping')
+    stakeholders = models.JSONField(blank=True, null=True, verbose_name='Daftar Stakeholder')
     
     deskripsi = models.TextField(blank=True, null=True, max_length=2000, verbose_name='Deskripsi Hasil')
     kendala = models.TextField(blank=True, null=True, max_length=2000, verbose_name='Hambatan/Kendala')
@@ -172,6 +169,8 @@ class DAYATIF_RAPAT_SINERGI_STAKEHOLDER(models.Model):
         return f'{self.satker.nama_satker} DAYATIF RAPAT SINERGI STAKEHOLDER - {self.tanggal_awal} s/d {self.tanggal_akhir}'
 
 class DAYATIF_BIMBINGAN_TEKNIS_STAKEHOLDER(models.Model):
+    status = models.IntegerField(default=0, verbose_name='Status Pengiriman Kegiatan')
+    
     created_at = models.DateTimeField(auto_now_add=True, editable=False)
     updated_at = models.DateTimeField(auto_now=True, editable=False)
     
@@ -181,7 +180,7 @@ class DAYATIF_BIMBINGAN_TEKNIS_STAKEHOLDER(models.Model):
     satker = models.ForeignKey(Satker, on_delete=models.DO_NOTHING, blank=True, null=True, related_name="dayatif_bimbingan_teknis_stakeholder_satker", verbose_name="SATUAN KERJA PELAKSANA")
     
     tanggal_awal = models.DateField(verbose_name='Tanggal Awal Kegiatan')
-    tanggal_akhir = models.DateField(verbose_name='Tanggal Akhir Kegiatan')
+    tanggal_akhir = models.DateField(verbose_name='Tanggal Akhir Kegiatan', blank=True, null=True)
     
     JENIS_BIMBINGAN_CHOICES = (
         ('bimbingan_teknis_stakeholder', 'Bimbingan Teknis Stakeholder'),
@@ -193,7 +192,7 @@ class DAYATIF_BIMBINGAN_TEKNIS_STAKEHOLDER(models.Model):
     tempat = models.TextField(blank=True, null=True, max_length=2000, verbose_name='Tempat')
     jumlah_peserta = models.IntegerField(blank=True, null=True, verbose_name='Jumlah Peserta Yang Hadir')
     
-    stakeholder = models.TextField(blank=True, null=True, max_length=2000, verbose_name='Daftar Stakeholder Pendamping')
+    stakeholders = models.JSONField(blank=True, null=True, verbose_name='Daftar Stakeholder')
     
     deskripsi = models.TextField(blank=True, null=True, max_length=2000, verbose_name='Deskripsi Hasil')
     kendala = models.TextField(blank=True, null=True, max_length=2000, verbose_name='Hambatan/Kendala')
@@ -213,6 +212,8 @@ class DAYATIF_BIMBINGAN_TEKNIS_STAKEHOLDER(models.Model):
         return f'{self.satker.nama_satker} DAYATIF BIMBINGAN TEKNIS STAKEHOLDER - {self.tanggal_awal} s/d {self.tanggal_akhir}'
 
 class DAYATIF_BIMBINGAN_TEKNIS_LIFESKILL(models.Model):
+    status = models.IntegerField(default=0, verbose_name='Status Pengiriman Kegiatan')
+    
     created_at = models.DateTimeField(auto_now_add=True, editable=False)
     updated_at = models.DateTimeField(auto_now=True, editable=False)
     
@@ -222,28 +223,25 @@ class DAYATIF_BIMBINGAN_TEKNIS_LIFESKILL(models.Model):
     satker = models.ForeignKey(Satker, on_delete=models.DO_NOTHING, blank=True, null=True, related_name="dayatif_bimbingan_teknis_lifeskill_satker", verbose_name="SATUAN KERJA PELAKSANA")
     
     tanggal_awal = models.DateField(verbose_name='Tanggal Awal Kegiatan')
-    tanggal_akhir = models.DateField(verbose_name='Tanggal Akhir Kegiatan')
+    tanggal_akhir = models.DateField(verbose_name='Tanggal Akhir Kegiatan', blank=True, null=True)
     
     tempat = models.TextField(blank=True, null=True, max_length=2000, verbose_name='Tempat')
     
     # Kawasan yang diintervensi
-    desa = models.IntegerField(blank=True, null=True)
-    kecamatan = models.IntegerField(blank=True, null=True)
-    kabupaten = models.IntegerField(blank=True, null=True)
-    provinsi = models.IntegerField(blank=True, null=True)
+    desa = models.CharField(max_length=250, blank=True, null=True)
+    kecamatan = models.CharField(max_length=250, blank=True, null=True)
+    kabupaten = models.CharField(max_length=250, blank=True, null=True)
+    provinsi = models.CharField(max_length=250, blank=True, null=True)
     
-    KETERAMPILAN_CHOICES = (
-        ('menjahit', 'Menjahit'),
-        ('kerajinan_tangan', 'Kerajinan Tangan'),
-        ('pengolahan_makanan', 'Pengolahan Makanan'),
-        ('pembuatan_sabun', 'Pembuatan Sabun'),
-        ('barista_kopi', 'Barista Kopi'),
-        ('lainnya', 'Lainnya')
-	)
+    nama_desa = models.CharField(max_length=150, blank=True, null=True)
+    nama_kecamatan = models.CharField(max_length=150, blank=True, null=True)
+    nama_kabupaten = models.CharField(max_length=150, blank=True, null=True)
+    nama_provinsi = models.CharField(max_length=150, blank=True, null=True)
     
-    keterampilan = models.CharField(max_length=max(len(key) for key, _ in KETERAMPILAN_CHOICES), choices=KETERAMPILAN_CHOICES, default="menjahit", verbose_name='Jenis Bimbingan')
+    keterampilan = models.TextField(blank=True, null=True, max_length=2000, verbose_name='keterampilan')
     
-    keterampilan_detail = models.CharField(max_length=100, blank=True, null=True)
+    peserta = models.JSONField(blank=True, null=True, verbose_name='Daftar Peserta')
+    jumlah_peserta = models.IntegerField(blank=True, null=True, verbose_name='Jumlah Peserta Yang Hadir')
     
     sinergi_desa = models.BooleanField(default=False, verbose_name='Sinergi Desa')
     sinergi_ibm = models.BooleanField(default=False, verbose_name='Sinergi IBM')
@@ -259,7 +257,7 @@ class DAYATIF_BIMBINGAN_TEKNIS_LIFESKILL(models.Model):
     
     hasil_skm_kategori = models.CharField(max_length=max(len(key) for key, _ in HASIL_SKM_KATEGORI_CHOICES), choices=HASIL_SKM_KATEGORI_CHOICES, default="cukup", verbose_name='Hasil SKM Kategori')
     
-    deskripsi = models.TextField(blank=True, null=True, max_length=2000, verbose_name='Deskripsi Hasil')
+    anggaran = models.TextField(blank=True, null=True, max_length=2000, verbose_name='Anggaran')
     kendala = models.TextField(blank=True, null=True, max_length=2000, verbose_name='Hambatan/Kendala')
     kesimpulan = models.TextField(blank=True, null=True, max_length=2000, verbose_name='Kesimpulan')
     tindak_lanjut = models.TextField(blank=True, null=True, max_length=2000, verbose_name='Tindak Lanjut')
@@ -332,6 +330,8 @@ class DAYATIF_MONITORING_DAN_EVALUASI(models.Model):
         return f'DAYATIF MONITORING DAN EVALUASI - {self.satker.nama_satker}'
 
 class DAYATIF_DUKUNGAN_STAKEHOLDER(models.Model):
+    status = models.IntegerField(default=0, verbose_name='Status Pengiriman Kegiatan')
+    
     created_at = models.DateTimeField(auto_now_add=True, editable=False)
     updated_at = models.DateTimeField(auto_now=True, editable=False)
     
@@ -339,6 +339,37 @@ class DAYATIF_DUKUNGAN_STAKEHOLDER(models.Model):
     updated_by = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, related_name="dayatif_dukungan_stakeholder_updated_by")
     
     satker = models.ForeignKey(Satker, on_delete=models.DO_NOTHING, blank=True, null=True, related_name="dayatif_dukungan_stakeholder_satker", verbose_name="SATUAN KERJA PELAKSANA")
+    stakeholder = models.JSONField(blank=True, null=True, verbose_name='Daftar Stakeholder')
+    
+    jumlah_peserta = models.IntegerField(blank=True, null=True, verbose_name='Jumlah Peserta Yang Hadir')
+    
+    JENIS_CHOICES = (
+        ('DSP', 'Dukungan Sarana Produksi'),
+        ('DSSDM', 'Dukungan SDM'),
+        ('Lainnya', 'Dukungan Lainnya')
+	)
+
+    jenis = models.CharField(max_length=50, choices=JENIS_CHOICES, default="DSP")
+    bentuk = models.TextField(blank=True, null=True, max_length=2000, verbose_name='Bentuk')
+    jumlah = models.TextField(blank=True, null=True, max_length=2000, verbose_name='Jumlah')
+    
+    # Kawasan yang diintervensi
+    desa = models.CharField(max_length=250, blank=True, null=True)
+    kecamatan = models.CharField(max_length=250, blank=True, null=True)
+    kabupaten = models.CharField(max_length=250, blank=True, null=True)
+    provinsi = models.CharField(max_length=250, blank=True, null=True)
+    
+    nama_desa = models.CharField(max_length=150, blank=True, null=True)
+    nama_kecamatan = models.CharField(max_length=150, blank=True, null=True)
+    nama_kabupaten = models.CharField(max_length=150, blank=True, null=True)
+    nama_provinsi = models.CharField(max_length=150, blank=True, null=True)
+
+    jumlah_sasaran = models.TextField(blank=True, null=True, max_length=2000, verbose_name='Jumlah Sasaran')
+    pengaruh = models.TextField(blank=True, null=True, max_length=2000, verbose_name='Pengaruh/Manfaat')
+    kesimpulan = models.TextField(blank=True, null=True, max_length=2000, verbose_name='Simpulan')
+    tindak_lanjut = models.TextField(blank=True, null=True, max_length=2000, verbose_name='Tindak Lanjut')
+    
+    dokumentasi = models.FileField(blank=True, null=True, upload_to="uploads/kegiatan/dayatif/dukungan_stakeholder/")
     
     class Meta:
         ordering = ['-updated_at']

@@ -39,6 +39,26 @@ Rakor Pemetaan
             @blur="searchData($event)" placeholder="Cari Data" />
         </div>
         {% include 'psm/rakor_pemetaan/table.html' %}
+        <nav class="mt-3" aria-label="Page navigation example">
+          <ul class="pagination">
+            <li class="page-item">
+              <button :disabled='currentPage <= 1' class="page-link" href="#" aria-label="Previous"
+                @click="currentPage--">
+                <span aria-hidden="true">&laquo;</span>
+                <span class="sr-only">Previous</span>
+              </button>
+            </li>
+            <template v-for="p in totalPage" :key="i">
+              <li class="page-item"><button class="page-link" @click="currentPage=p">${p}</button></li>
+            </template>
+            <li class="page-item">
+              <button :disabled='currentPage => totalPage' class="page-link" aria-label="Next" @click="currentPage++">
+                <span aria-hidden="true">&raquo;</span>
+                <span class="sr-only">Next</span>
+              </button>
+            </li>
+          </ul>
+        </nav>
       </div>
     </div>
   </div>
@@ -135,12 +155,12 @@ Rakor Pemetaan
               for ([key2, value2] of Object.entries(value.data)) {
                 let peserta = JSON.stringify(value2.peserta);
                 baris = {
-                  'class': 'table-light',
+                  'class': '',
                   'hide_satker': true,
                   'index': (parseInt(key) + 1) + '.' + (parseInt(key2) + 1),
                   'id': value2.id,
                   'satker': value2.satker.nama_satker,
-                  'tanggal': (value2.tanggal_akhir) ? value2.tanggal_awal + '-' + value2.tanggal_akhir : value2.tanggal_awal,
+                  'tanggal': (value2.tanggal_akhir) ? value2.tanggal_awal + ' s/d ' + value2.tanggal_akhir : value2.tanggal_awal,
                   'nama_lingkungan': value2.nama_lingkungan,
                   'peserta': JSON.parse(peserta),
                   'deskripsi': value2.deskripsi,
@@ -176,12 +196,12 @@ Rakor Pemetaan
                 tableContent.push(baris);
                 for ([key4, value4] of Object.entries(value3.data)) {
                   baris = {
-                    'class': 'table-light',
+                    'class': '',
                     'hide_satker': true,
                     'index': (parseInt(key) + 1) + '.' + (parseInt(key2) + 1) + '.' + (parseInt(key3) + 1) + '.' + (parseInt(key4) + 1),
                     'id': value4.id,
                     'satker': value4.satker.nama_satker,
-                    'tanggal': (value4.tanggal_akhir) ? value4.tanggal_awal + '-' + value4.tanggal_akhir : value4.tanggal_awal,
+                    'tanggal': (value4.tanggal_akhir) ? value4.tanggal_awal + ' s/d ' + value4.tanggal_akhir : value4.tanggal_awal,
                     'nama_lingkungan': value4.nama_lingkungan,
                     'peserta': value4.peserta,
                     'deskripsi': value4.deskripsi,
@@ -233,14 +253,6 @@ Rakor Pemetaan
       }
 
       async function handleEditModal(id) {
-        var formRepeater = document.querySelector('#edit__form-repeater');
-        var repeaterList = formRepeater.querySelector('[data-repeater-list="peserta-group"]');
-        var repeaterItemTemplate = repeaterList.querySelector('[data-repeater-item]');
-
-        repeaterList.querySelectorAll('[data-repeater-item]').forEach(function (item) {
-          item.remove();
-        });
-
         try {
           const response = await axios.get(`/kegiatan/api/v1/psm/rakor_pemetaan/get_detail_data/?id=${id}`);
           const data = response.data;
@@ -248,7 +260,6 @@ Rakor Pemetaan
           $('#edit__id').val(data[0].id);
           $('#edit__tanggal_awal').val(data[0].tanggal_awal);
           $('#edit__tanggal_akhir').val(data[0].tanggal_akhir);
-          (data[0].tanggal_akhir ? $('#edit__tanggal_akhir').attr('disabled', false) : $('#edit__tanggal_akhir').attr('disabled', true))
           $('#edit__satker').val(data[0].satker_id).trigger('change');
           $('#edit__lingkungan').val(data[0].nama_lingkungan).trigger('change');
           $('#edit__deskripsi').val(data[0].deskripsi);
@@ -256,27 +267,31 @@ Rakor Pemetaan
           $('#edit__kesimpulan').val(data[0].kesimpulan);
           $('#edit__tindak_lanjut').val(data[0].tindak_lanjut);
 
-          data[0].peserta.forEach(function (peserta) {
-            var newItem = repeaterItemTemplate.cloneNode(true);
-
-            newItem.querySelector('[id="form-repeater-1-1"]').value = peserta.nama;
-            newItem.querySelector('[id="form-repeater-1-2"]').value = peserta.jabatan;
-
-            repeaterList.appendChild(newItem);
-          });
-
-          $('#editModal').modal('show');
-
-          $('#edit__form-repeater').repeater({
+          var formRepeater = $('#edit__form-repeater');
+          formRepeater.repeater({
             show: function () {
               $(this).slideDown();
             },
             hide: function (deleteElement) {
-              if (confirm('Apakah Anda yakin ingin menghapus item ini?')) {
-                $(this).slideUp(deleteElement);
-              }
+              $(this).slideUp(deleteElement);
             }
           });
+          var list = [];
+          data[0].peserta.forEach(function (peserta) {
+            list.push({
+              'repeater_nama': peserta.nama,
+              'repeater_jabatan': peserta.jabatan,
+            });
+          });
+          formRepeater.setList(list);
+          formRepeater.find('[data-repeater-create]').off('click').on('click', function () {
+            var newItem = formRepeater.find('[data-repeater-item]').first().clone();
+            newItem.find('input').val('');
+            newItem.hide()
+            formRepeater.find('[data-repeater-list]').append(newItem)
+            newItem.slideDown();
+          });
+          $('#editModal').modal('show');
         } catch (error) {
           showSwalGenericError();
           console.error('Terjadi kesalahan :', error);
@@ -310,6 +325,7 @@ Rakor Pemetaan
           console.error('Terjadi kesalahan :', error);
         }
       }
+
       onMounted(() => {
         loadData();
       });
@@ -348,7 +364,7 @@ Rakor Pemetaan
     var wb = XLSX.utils.table_to_book(tbl);
 
     // Save the workbook as Excel file
-    XLSX.writeFile(wb, "SheetJSTable.xlsx");
+    XLSX.writeFile(wb, "PSM_RAKOR PEMETAAN.xlsx");
   }
 
   async function handlePost(e) {

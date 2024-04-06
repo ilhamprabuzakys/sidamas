@@ -18,7 +18,7 @@
                   </div>
 
                   <!-- tanggal -->
-                  <div class="row mb-3">
+                  <div class="row mb-3 range_date">
                     <div class="col-6">
                       <div class="mb-3">
                         <label for="create__tanggal_awal" class="col-form-label required">Tanggal Awal:</label>
@@ -88,13 +88,13 @@
 
                   <!-- status index -->
                   <div class="mb-3">
-                    <label for="create__tindak_lanjut" class="col-form-label required">Status Indeks Kemandirian Partisipasi:</label>
-                    <select class="form-select" id="create__status_index" name="status_index">
+                    <label for="create__status_index" class="col-form-label required">Status Indeks Kemandirian Partisipasi:</label>
+                    <select class="form-select" id="create__status_index" required>
                         <option value="" selected disabled>Pilih status indeks kemandirian partisipasi</option>
-                        <option value="4">Sangat Mandiri</option>
-                        <option value="3">Mandiri</option>
-                        <option value="2">Kurang Mandiri</option>
-                        <option value="1">Tidak Mandiri</option>
+                        <option value=4>Sangat Mandiri</option>
+                        <option value=3>Mandiri</option>
+                        <option value=2>Kurang Mandiri</option>
+                        <option value=1>Tidak Mandiri</option>
                     </select>
                   </div>
 
@@ -125,7 +125,8 @@
                   <!-- file yang di lampirkan -->
                   <div class="mb-3">
                     <label for="create__dokumentasi" class="col-form-label required">Dokumentasi</label>
-                    <input type="file" class="form-control" id="create__dokumentasi" required accept=".csv, .xlsx, .pdf, docx." />
+                    <input required type="file" class="form-control" id="create__dokumentasi"
+                      aria-describedby="inputGroupFileAddon03" aria-label="Upload" />
                   </div>
               </div>
               

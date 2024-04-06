@@ -17,7 +17,7 @@
             <div class="col-6">
               <div class="mb-3">
                 <label for="create__tanggal_awal" class="col-form-label required">Tanggal Awal:</label>
-                <input type="date" id="create__tanggal_awal" class="form-control" required onchange="handleDate(event, 'create__');" />
+                <input type="date" id="create__tanggal_awal" class="form-control" required/>
               </div>
             </div>
             <div class="col-6">
@@ -30,7 +30,7 @@
           </div>
           <div class="mb-3">
             <label for="create__satker_target" class="col-form-label required">Satuan Kerja Yang Dibintek:</label>
-            <select class="form-control select2" id="create__satker_target">
+            <select class="form-control select2" id="create__satker_target" required>
               <option value="" selected disabled>Pilih Satuan Kerja</option>
               {% for item in satker %}
                 <option value="{{ item.pk }}">{{ item.nama_satker }}</option>
@@ -55,7 +55,7 @@
           </div>
           <div class="mb-3">
             <label for="create__dokumentasi" class="col-form-label required">Dokumentasi</label>
-            <input type="file" class="form-control" id="create__dokumentasi" required accept=".csv, .xlsx, .pdf, docx." />
+            <input type="file" class="form-control" id="create__dokumentasi" required/>
           </div>
         </div>
         <div class="modal-footer">
